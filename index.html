@@ -59,9 +59,9 @@ window.__bbFire=function(){ if(window.__bbReady)return; window.__bbReady=true;
     <div class="intro-veil"></div>
     <div class="intro-content">
       <img class="intro-logo" src="assets/bb-logo-horizontal.png" alt="BAD BLOOD COMPANY">
-      <p class="intro-line reveal">Every idea begins unseen.</p>
-      <p class="intro-line reveal d1">Before it can move, it needs a <b>pulse</b>.</p>
-      <p class="intro-line reveal d2">Before it can be remembered, it needs a <b>body</b>.</p>
+      <p class="intro-line reveal l1">Every idea begins unseen.</p>
+      <p class="intro-line reveal d1 l2">Before it can move, it needs a <b>pulse</b>.</p>
+      <p class="intro-line reveal d2 l3">Before it can be remembered, it needs a <b>body</b>.</p>
     </div>
     <span class="scroll-cue">Scroll</span>
   </div>
@@ -218,7 +218,25 @@ function bbStart(){
       var canvas = intro.querySelector('.intro-canvas');
       if(!canvas || !canvas.getContext) return;
       var ctx = canvas.getContext('2d', { alpha: false });
-      var COUNT = 120, FADE = 0.34;
+      var COUNT = 120;
+
+      /* Where each line sits on the scrub, matched to what the frames show:
+         L1 the single point of light (frame 1), L2 the red pulse (frames 17-33),
+         L3 the chrome body, which materialises at frame 103 (p 0.86) — the line
+         states the need just before the film answers it. */
+      var L1 = [0, 0, 0.10, 0.15];
+      var L2 = [0.17, 0.21, 0.38, 0.43];
+      var L3 = [0.72, 0.77, 1.01, 1.02];
+      var LOGO = [0, 0, 0.06, 0.11];
+
+      /* fade in a->b, hold b->c, fade out c->d */
+      function band(p, a, b, c, d){
+        if(p <= a) return b > a ? 0 : 1;
+        if(p < b)  return (p - a) / (b - a);
+        if(p < c)  return 1;
+        if(p < d)  return 1 - (p - c) / (d - c);
+        return 0;
+      }
       var imgs = new Array(COUNT), settled = 0, ok = 0;
       var live = false, ticking = false, painted = -1;
 
@@ -244,7 +262,10 @@ function bbStart(){
         var p = -intro.getBoundingClientRect().top / span;
         p = p < 0 ? 0 : (p > 1 ? 1 : p);
         draw(Math.round(p * (COUNT - 1)));
-        intro.style.setProperty('--introText', (p < FADE ? 1 - p / FADE : 0).toFixed(3));
+        intro.style.setProperty('--l1', band(p, L1[0], L1[1], L1[2], L1[3]).toFixed(3));
+        intro.style.setProperty('--l2', band(p, L2[0], L2[1], L2[2], L2[3]).toFixed(3));
+        intro.style.setProperty('--l3', band(p, L3[0], L3[1], L3[2], L3[3]).toFixed(3));
+        intro.style.setProperty('--introLogo', band(p, LOGO[0], LOGO[1], LOGO[2], LOGO[3]).toFixed(3));
         intro.style.setProperty('--introCue',  (p < 0.06 ? 1 - p / 0.06 : 0).toFixed(3));
       }
       function onScroll(){ if(!ticking){ ticking = true; requestAnimationFrame(frame); } }
