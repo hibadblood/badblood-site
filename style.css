@@ -1,7 +1,7 @@
 :root{
   --ink:#08080A; --panel:#131315; --line:#232326;
   --bone:#F2F2EF; --chrome:#9EA2A6; --dim:#5C5C61; --blood:#C8102E;
-  --en:'Space Grotesk',Arial,sans-serif; --th:'Noto Sans Thai','Space Grotesk',sans-serif;
+  --en:'Space Grotesk',Arial,sans-serif; --th:'Space Grotesk',Arial,sans-serif;
 }
 *{margin:0;padding:0;box-sizing:border-box}
 html{scroll-behavior:smooth}
