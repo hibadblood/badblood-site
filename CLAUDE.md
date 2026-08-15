@@ -151,9 +151,10 @@ see?* The answer must be "the content, just without motion."
 
 ## 8. OPEN ITEMS
 
-- `assets/hero.mp4` — hero background video not yet added. Site works without it
-  (hero stays black). Planned upgrade: scroll-scrubbed frame sequence rather
-  than a looping video.
+- `assets/hero.mp4` — added. 1280x720 H.264, no audio, ~7.7 MB, compressed from
+  a 1080p master. The master is kept locally but git-ignored (`assets/*.m4v`);
+  re-encode from it rather than from `hero.mp4` if quality needs changing.
+  Planned upgrade: scroll-scrubbed frame sequence rather than a looping video.
 - Domain `badblood.company` — waiting on nameserver change at Porkbun to
   finish pointing at Cloudflare.
 - Videos currently embed from Google Drive on `work.html`. Planned migration to
