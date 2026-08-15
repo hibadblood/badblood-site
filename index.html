@@ -1,0 +1,254 @@
+<!DOCTYPE html>
+<html lang="th">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>BAD BLOOD COMPANY — We Give Ideas a Body</title>
+<meta name="description" content="BAD BLOOD COMPANY — a Bangkok-based idea engine. Strategy enters. Worlds come out. One brief. One brain. Every medium.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@400;500;700&family=Noto+Sans+Thai:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+<script>
+/* curtain: builds itself in JS only — if this fails or is disabled, the site simply loads normally */
+window.__bbReady=false; window.__bbQueue=[];
+window.__bbFire=function(){ if(window.__bbReady)return; window.__bbReady=true;
+  (window.__bbQueue||[]).forEach(function(f){try{f()}catch(e){}}); window.__bbQueue=[]; };
+(function(){
+  try{
+    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){ window.__bbFire(); return; }
+    var pre=document.createElement('div');
+    pre.className='curtain';
+    pre.innerHTML='<img src="assets/bb-logo-horizontal.png" alt=""><span class="curtain-n">0</span>';
+    document.body.appendChild(pre);
+    document.documentElement.style.overflow='hidden';
+    var n=0, el=pre.querySelector('.curtain-n'), done=false;
+    var tick=setInterval(function(){
+      n+=Math.floor(Math.random()*7)+3;
+      if(n>=100){ n=100; clearInterval(tick); setTimeout(lift,340); }
+      el.textContent=n;
+    },55);
+    function lift(){
+      if(done)return; done=true; clearInterval(tick);
+      pre.classList.add('out');
+      document.documentElement.style.overflow='';
+      window.__bbFire();
+      setTimeout(function(){ if(pre.parentNode) pre.parentNode.removeChild(pre); },1000);
+    }
+    setTimeout(lift,4500); /* hard guard — curtain can never get stuck */
+  }catch(e){ document.documentElement.style.overflow=''; window.__bbFire(); }
+})();
+</script>
+
+<div class="grain" aria-hidden="true"></div>
+
+<div class="chapter-rail" aria-hidden="true">
+  <span data-ch="dna">I</span>
+  <span data-ch="blood">II</span>
+  <span data-ch="skin">III</span>
+</div>
+
+<nav>
+  <div class="wrap nav-in">
+    <a class="nav-logo" href="index.html"><img src="assets/bb-logo-horizontal.png" alt="BAD BLOOD COMPANY"></a>
+    <div class="nav-links">
+      <a href="work.html">Work</a>
+      <a href="#contact">Contact</a>
+    </div>
+  </div>
+</nav>
+
+<header class="intro">
+  <video class="intro-bg" autoplay muted loop playsinline preload="metadata">
+    <source src="assets/hero.mp4" type="video/mp4">
+  </video>
+  <div class="intro-veil"></div>
+  <div class="intro-content">
+    <img class="intro-logo" src="assets/bb-logo-horizontal.png" alt="BAD BLOOD COMPANY">
+    <p class="intro-line reveal">Every idea begins unseen.</p>
+    <p class="intro-line reveal d1">Before it can move, it needs a <b>pulse</b>.</p>
+    <p class="intro-line reveal d2">Before it can be remembered, it needs a <b>body</b>.</p>
+  </div>
+  <span class="scroll-cue">Scroll</span>
+</header>
+
+<section class="drip" id="drip">
+  <div class="drip-stage">
+    <span class="drip-nub"></span>
+    <span class="drip-thread"></span>
+    <span class="drip-bead">
+      <svg viewBox="0 0 100 142" aria-hidden="true">
+        <path d="M50 2 C50 44 98 62 98 92 A48 50 0 0 1 2 92 C2 62 50 44 50 2Z"/>
+      </svg>
+    </span>
+    <span class="drip-pool"></span>
+    <span class="drip-ring"></span>
+  </div>
+</section>
+
+<div class="pulse-line">
+  <div class="wrap">
+    <p class="reveal">We give ideas <span>a body.</span></p>
+  </div>
+</div>
+
+<div class="wrap">
+
+<section class="chapter" id="dna">
+  <div class="chapter-num reveal">Chapter I</div>
+  <div class="chapter-head reveal">
+    <h2>DNA</h2>
+    <p class="poetic">The invisible structure. <b>Invisible systems. Visible impact.</b></p>
+  </div>
+  <div class="chapter-grid">
+    <div class="tagcloud reveal d1">
+      <span>Strategy</span><span>Research</span><span>Systems</span><span>Interface</span>
+      <span>Platform</span><span>Database</span><span>Geometry</span>
+    </div>
+    <div class="services reveal d2">
+      <div class="svc-row"><span class="k">Make it work</span><span class="v">DNA layer</span></div>
+      <div class="svc-row"><span class="k">Strategy &amp; research</span><span class="v">01</span></div>
+      <div class="svc-row"><span class="k">Website &amp; application</span><span class="v">02</span></div>
+      <div class="svc-row"><span class="k">Platform &amp; interactive</span><span class="v">03</span></div>
+      <div class="svc-row"><span class="k">Digital systems</span><span class="v">04</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="chapter" id="blood">
+  <div class="chapter-num reveal">Chapter II</div>
+  <div class="chapter-head reveal">
+    <h2>BLOOD</h2>
+    <p class="poetic">The creative pulse. <b>Emotion needs a language.</b></p>
+  </div>
+  <div class="chapter-grid">
+    <div class="tagcloud reveal d1">
+      <span>Film</span><span>Lens</span><span>Light</span><span>Typography</span>
+      <span>Fabric</span><span>Sound</span><span>Reflection</span>
+    </div>
+    <div class="services reveal d2">
+      <div class="svc-row"><span class="k">Make it matter</span><span class="v">Blood layer</span></div>
+      <div class="svc-row"><span class="k">Creative direction &amp; film</span><span class="v">01</span></div>
+      <div class="svc-row"><span class="k">Photography &amp; identity</span><span class="v">02</span></div>
+      <div class="svc-row"><span class="k">Campaign &amp; fashion</span><span class="v">03</span></div>
+      <div class="svc-row"><span class="k">Music &amp; sound</span><span class="v">04</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="chapter" id="skin">
+  <div class="chapter-num reveal">Chapter III</div>
+  <div class="chapter-head reveal">
+    <h2>SKIN</h2>
+    <p class="poetic">The physical presence. <b>Ideas deserve a place to exist.</b></p>
+  </div>
+  <div class="chapter-grid">
+    <div class="tagcloud reveal d1">
+      <span>Architecture</span><span>Material</span><span>Space</span>
+      <span>People</span><span>Shadow</span><span>Light</span>
+    </div>
+    <div class="services reveal d2">
+      <div class="svc-row"><span class="k">Make it real</span><span class="v">Skin layer</span></div>
+      <div class="svc-row"><span class="k">Events &amp; installation</span><span class="v">01</span></div>
+      <div class="svc-row"><span class="k">Retail &amp; exhibition</span><span class="v">02</span></div>
+      <div class="svc-row"><span class="k">Physical brand experience</span><span class="v">03</span></div>
+    </div>
+  </div>
+</section>
+
+</div>
+
+<div class="band">
+  <div class="wrap"><p class="reveal">Attention is rented.<br><span>Memory is owned.</span></p></div>
+</div>
+
+<div class="wrap">
+<section class="works-cta">
+  <a class="cta-big reveal" href="work.html">
+    <span>See the work</span>
+    <span class="arrow">&rarr;</span>
+  </a>
+</section>
+</div>
+
+<footer id="contact">
+  <div class="wrap">
+    <p class="close-line reveal">Whatever you have in mind — <span>bring it to us.</span><br>We'll give it a body.</p>
+    <p class="foot-poetic reveal">Every idea has a structure.<br>Every structure finds a pulse.<br>Every pulse deserves a body.</p>
+    <p class="foot-logo reveal"><img src="assets/bb-logo-stacked.png" alt="BAD BLOOD COMPANY"></p>
+    <p class="foot-grid reveal"><span>DNA</span><span>BLOOD</span><span>SKIN</span></p>
+    <p class="contact reveal">
+      <a href="mailto:hello@badblood.company">hello@badblood.company</a><br>
+      IG <a href="https://instagram.com/badbloodcompany" target="_blank" rel="noopener">@badbloodcompany</a><br>
+      Bangkok
+    </p>
+    <p class="sign">Bad Blood moves. Culture follows.</p>
+  </div>
+</footer>
+
+<script>
+function bbStart(){
+  try{
+    var okMotion = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+    if(okMotion && 'IntersectionObserver' in window){
+      var els = document.querySelectorAll('.reveal');
+      els.forEach(function(el){ el.classList.add('pre'); });
+      var io = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); }
+        });
+      }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
+      els.forEach(function(el){ io.observe(el); });
+    }
+    /* chapter rail — highlights whichever chapter is crossing the middle of the screen */
+    if('IntersectionObserver' in window){
+      var marks = {}, rail = document.querySelectorAll('.chapter-rail span');
+      rail.forEach(function(s){ marks[s.dataset.ch] = s; });
+      var cio = new IntersectionObserver(function(entries){
+        entries.forEach(function(e){
+          var m = marks[e.target.id];
+          if(m) m.classList.toggle('on', e.isIntersecting);
+        });
+      }, { rootMargin: '-45% 0px -45% 0px' });
+      ['dna','blood','skin'].forEach(function(id){
+        var s = document.getElementById(id); if(s) cio.observe(s);
+      });
+    }
+    /* blood drop — stretch, snap, fall, land. Driven by scroll position. */
+    (function(){
+      var drip = document.getElementById('drip');
+      if(!drip || !okMotion) return;
+      var stage = drip.querySelector('.drip-stage');
+      if(!stage) return;
+      drip.classList.add('live');           /* open the scroll runway only now */
+      var STRETCH = 0.72, TRAVEL = 22, DROP = 32, ticking = false;
+      function frame(){
+        ticking = false;
+        var span = drip.offsetHeight - window.innerHeight;
+        if(span <= 0) return;
+        var p = -drip.getBoundingClientRect().top / span;
+        p = p < 0 ? 0 : (p > 1 ? 1 : p);
+        var s = Math.min(1, p / STRETCH);                 /* 0→1 while stretching   */
+        var f = Math.max(0, (p - STRETCH) / (1 - STRETCH)); /* 0→1 after it releases */
+        var fe = f * f;                                    /* gravity easing         */
+        stage.style.setProperty('--thread', (TRAVEL * s * (1 - f)) + 'vh');
+        stage.style.setProperty('--beadY', (TRAVEL * s + DROP * fe) + 'vh');
+        stage.style.setProperty('--sy', (1 + s * 0.85 - f * 0.55).toFixed(3));
+        stage.style.setProperty('--sx', (1 - s * 0.22 + f * 0.30).toFixed(3));
+        stage.style.setProperty('--land', fe.toFixed(3));
+      }
+      function onScroll(){ if(!ticking){ ticking = true; requestAnimationFrame(frame); } }
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll);
+      frame();
+    })();
+  }catch(e){ /* animation is optional — content is visible by default */ }
+}
+if(window.__bbReady){ bbStart(); }
+else if(window.__bbQueue){ window.__bbQueue.push(bbStart); }
+else { bbStart(); }
+</script>
+</body>
+</html>
