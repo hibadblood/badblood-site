@@ -138,15 +138,6 @@ nav{border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(8,
 .cta-big:hover{border-color:var(--blood)}
 .cta-big:hover .arrow{transform:translateX(10px)}
 
-/* engagement models (quiet system band, not a hard sales block) */
-.models-sec{padding:120px 0;border-top:1px solid var(--line)}
-.models{display:grid;grid-template-columns:repeat(2,1fr);gap:1px;background:var(--line);border:1px solid var(--line);margin-top:52px}
-.model{background:var(--ink);padding:32px 26px}
-.model h3{font-family:var(--en);font-size:16px;letter-spacing:.26em;font-weight:500;text-transform:uppercase}
-.model .m-th{color:var(--blood);font-size:11.5px;margin:8px 0 14px}
-.model p{color:var(--dim);font-size:12.5px;line-height:1.85}
-@media(max-width:640px){.models{grid-template-columns:1fr}}
-
 /* work.html — ledger (unchanged behaviour, refined tone) */
 .hero-simple{padding:76px 0 52px;border-bottom:1px solid var(--line)}
 .eyebrow{font-family:var(--en);font-size:11px;letter-spacing:.42em;color:var(--chrome);text-transform:uppercase}
