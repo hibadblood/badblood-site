@@ -106,7 +106,9 @@ appearing in several places at once, that's a signal something is wrong.
 ## 5. HOMEPAGE SEQUENCE — the order matters
 
 1. **Curtain** — black screen, logo, counter 0→100, lifts
-2. **Hero** — background video (`assets/hero.mp4`), the three-line poem
+2. **Hero** — scroll-scrubbed frame sequence (`assets/hero-frames/`), the three-line
+   poem. The visitor drives the film's timeline: scroll down runs it forward,
+   scroll up runs it backward. The copy fades out over the first third of the scrub.
 3. **Blood drop** — scroll-driven: stretches → snaps → falls → lands
 4. **Statement** — "We give ideas a body."
 5. **Chapters I / II / III** — DNA, BLOOD, SKIN, with the roman-numeral rail
@@ -151,10 +153,14 @@ see?* The answer must be "the content, just without motion."
 
 ## 8. OPEN ITEMS
 
-- `assets/hero.mp4` — added. 1280x720 H.264, no audio, ~7.7 MB, compressed from
-  a 1080p master. The master is kept locally but git-ignored (`assets/*.m4v`);
-  re-encode from it rather than from `hero.mp4` if quality needs changing.
-  Planned upgrade: scroll-scrubbed frame sequence rather than a looping video.
+- Hero scroll-scrub — **done**. `assets/hero-frames/f-001..120.webp`, 1280x720,
+  4.6 MB total, extracted from the 1080p master. Frame count is defined once as
+  `COUNT` in the scrub block in `index.html`; if you re-extract, keep the two in
+  sync. The master is kept locally but git-ignored (`assets/*.m4v`) — always
+  re-encode from it, never from the delivered frames.
+- `assets/hero.mp4` — **no longer referenced by any page.** Superseded by the
+  frame sequence. Left in the repo for now; safe to delete (it stays recoverable
+  in git history at commit `3d5aa9a`).
 - Domain `badblood.company` — waiting on nameserver change at Porkbun to
   finish pointing at Cloudflare.
 - Videos currently embed from Google Drive on `work.html`. Planned migration to

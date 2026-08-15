@@ -50,18 +50,21 @@ window.__bbFire=function(){ if(window.__bbReady)return; window.__bbReady=true;
   <span data-ch="skin">III</span>
 </div>
 
-<header class="intro">
-  <video class="intro-bg" autoplay muted loop playsinline preload="metadata">
-    <source src="assets/hero.mp4" type="video/mp4">
-  </video>
-  <div class="intro-veil"></div>
-  <div class="intro-content">
-    <img class="intro-logo" src="assets/bb-logo-horizontal.png" alt="BAD BLOOD COMPANY">
-    <p class="intro-line reveal">Every idea begins unseen.</p>
-    <p class="intro-line reveal d1">Before it can move, it needs a <b>pulse</b>.</p>
-    <p class="intro-line reveal d2">Before it can be remembered, it needs a <b>body</b>.</p>
+<header class="intro" id="intro">
+  <div class="intro-stage">
+    <!-- poster is the always-visible base layer; the canvas fades in over it only
+         once the scrub frames have actually loaded -->
+    <img class="intro-poster" src="assets/hero-frames/f-001.webp" alt="" aria-hidden="true">
+    <canvas class="intro-canvas" width="1280" height="720" aria-hidden="true"></canvas>
+    <div class="intro-veil"></div>
+    <div class="intro-content">
+      <img class="intro-logo" src="assets/bb-logo-horizontal.png" alt="BAD BLOOD COMPANY">
+      <p class="intro-line reveal">Every idea begins unseen.</p>
+      <p class="intro-line reveal d1">Before it can move, it needs a <b>pulse</b>.</p>
+      <p class="intro-line reveal d2">Before it can be remembered, it needs a <b>body</b>.</p>
+    </div>
+    <span class="scroll-cue">Scroll</span>
   </div>
-  <span class="scroll-cue">Scroll</span>
 </header>
 
 <section class="drip" id="drip">
@@ -206,6 +209,74 @@ function bbStart(){
         var s = document.getElementById(id); if(s) cio.observe(s);
       });
     }
+    /* hero scroll-scrub — the visitor drives the film's timeline with the scrollbar.
+       Scroll down and it runs forward, scroll up and it runs backward. Nothing is
+       enabled until every frame is decoded, so it can never scrub into a gap. */
+    (function(){
+      var intro = document.getElementById('intro');
+      if(!intro || !okMotion) return;          /* reduced motion keeps the still poster */
+      var canvas = intro.querySelector('.intro-canvas');
+      if(!canvas || !canvas.getContext) return;
+      var ctx = canvas.getContext('2d', { alpha: false });
+      var COUNT = 120, FADE = 0.34;
+      var imgs = new Array(COUNT), settled = 0, ok = 0;
+      var live = false, ticking = false, painted = -1;
+
+      function path(i){ return 'assets/hero-frames/f-' + String(i+1).padStart(3,'0') + '.webp'; }
+      function nearest(i){
+        if(imgs[i]) return i;
+        for(var d = 1; d < COUNT; d++){
+          if(i - d >= 0 && imgs[i - d]) return i - d;
+          if(i + d < COUNT && imgs[i + d]) return i + d;
+        }
+        return -1;
+      }
+      function draw(i){
+        var n = nearest(i);
+        if(n < 0 || n === painted) return;
+        ctx.drawImage(imgs[n], 0, 0, canvas.width, canvas.height);
+        painted = n;
+      }
+      function frame(){
+        ticking = false;
+        var span = intro.offsetHeight - window.innerHeight;
+        if(span <= 0) return;
+        var p = -intro.getBoundingClientRect().top / span;
+        p = p < 0 ? 0 : (p > 1 ? 1 : p);
+        draw(Math.round(p * (COUNT - 1)));
+        intro.style.setProperty('--introText', (p < FADE ? 1 - p / FADE : 0).toFixed(3));
+        intro.style.setProperty('--introCue',  (p < 0.06 ? 1 - p / 0.06 : 0).toFixed(3));
+      }
+      function onScroll(){ if(!ticking){ ticking = true; requestAnimationFrame(frame); } }
+      function go(){
+        if(live || ok < COUNT * 0.6) return;
+        /* only open the runway while the visitor is still on the first screen —
+           adding 200vh of height under someone already reading chapter II
+           would yank the page out from under them */
+        if(window.scrollY > window.innerHeight * 0.5) return;
+        live = true;
+        intro.classList.add('live');
+        window.addEventListener('scroll', onScroll, { passive: true });
+        window.addEventListener('resize', onScroll);
+        frame();
+      }
+      for(var i = 0; i < COUNT; i++){
+        (function(i){
+          var im = new Image();
+          im.decoding = 'async';
+          im.onload = function(){
+            imgs[i] = im; ok++; settled++;
+            if(i === 0){ draw(0); intro.classList.add('scrub'); }
+            if(settled === COUNT) go();
+          };
+          im.onerror = function(){ settled++; if(settled === COUNT) go(); };
+          im.src = path(i);
+        })(i);
+      }
+      /* if a few frames never arrive, still enable with what did load */
+      setTimeout(go, 12000);
+    })();
+
     /* blood drop — stretch, snap, fall, land. Driven by scroll position. */
     (function(){
       var drip = document.getElementById('drip');
