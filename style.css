@@ -95,7 +95,12 @@ nav{border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(8,
    three made the page read as chopped. Every caption is pinned dead
    centre and never travels: on a phone, type sliding under your
    thumb while the picture moves reads as a fault. */
-.reel{position:relative;height:760vh;background:var(--ink)}
+/* Collapsed to a single screen until JS has enough frames to scrub with —
+   the same rule the drip and the opening follow. Left tall from the start, the
+   visitor scrolls seven screens of a frozen first frame while the images are
+   still arriving, which is exactly what it looked like on a phone. */
+.reel{position:relative;height:100vh;background:var(--ink)}
+.reel.live{height:760vh}
 .reel-stage{position:sticky;top:0;height:100vh;overflow:hidden;background:#000;
   display:flex;align-items:center;justify-content:center}
 .reel-poster,.reel-canvas{position:absolute;inset:0;width:100%;height:100%;
@@ -132,7 +137,7 @@ nav{border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(8,
   color:#cfd2d6;max-width:46ch;margin:0 auto;line-height:2.1}
 
 @media(max-width:760px){
-  .reel{height:640vh}
+  .reel.live{height:640vh}
   .reel-copy{padding:0 20px}
   .chapter-svc{font-size:9.5px;letter-spacing:.14em}
 }

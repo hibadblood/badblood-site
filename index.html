@@ -287,7 +287,11 @@ function bbStart(){
       }
       function onScroll(){ if(!ticking){ ticking = true; requestAnimationFrame(frame); } }
       function go(){
-        if(live || ok < COUNT * 0.6) return;
+        if(live || ok < COUNT * 0.18) return;
+        /* Opening the runway makes the page 7 screens taller. Do that only
+           while the visitor is still above the reel — adding that height under
+           someone already reading the footer would yank the page from them. */
+        if(sec.getBoundingClientRect().top < -window.innerHeight) return;
         live = true;
         sec.classList.add('live');
         window.addEventListener('scroll', onScroll, { passive:true });
@@ -301,13 +305,14 @@ function bbStart(){
           im.onload = function(){
             imgs[i] = im; ok++; settled++;
             if(i === 0){ draw(0); sec.classList.add('scrub'); }
-            if(settled === COUNT) go();
+            go();          /* every arrival is a chance to start; gaps are covered
+                              by nearest(), so it does not need the whole set */
           };
-          im.onerror = function(){ settled++; if(settled === COUNT) go(); };
+          im.onerror = function(){ settled++; go(); };
           im.src = path(i);
         })(i);
       }
-      setTimeout(go, 15000);   /* a few missing frames must not block the reel */
+      setTimeout(go, 8000);    /* a slow network must not leave it frozen */
     })();
 
   }catch(e){ /* animation is optional — content is visible by default */ }
