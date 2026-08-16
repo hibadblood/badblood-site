@@ -234,7 +234,20 @@ function bbStart(){
       var SMALL = Math.min(window.innerWidth, window.innerHeight) < 700
                   || window.innerWidth < 820;
       var DIR = SMALL ? 'assets/reel-sm' : 'assets/reel';
-      if(SMALL){ canvas.width = 640; canvas.height = 360; }
+
+      /* The canvas is sized to the stage in device pixels and the crop is done
+         here, rather than leaning on object-fit — a 16:9 frame in a tall phone
+         viewport was leaving black bars. Cover maths cannot letterbox. */
+      var DPR = Math.min(window.devicePixelRatio || 1, 2);
+      function fit(){
+        var r = canvas.getBoundingClientRect();
+        var w = Math.max(1, Math.round(r.width * DPR));
+        var h = Math.max(1, Math.round(r.height * DPR));
+        if(canvas.width !== w || canvas.height !== h){
+          canvas.width = w; canvas.height = h;
+          painted = -1;                      /* force a repaint at the new size */
+        }
+      }
 
       /* fade in a→b, hold b→c, fade out c→d */
       /* Bands are fractions of the film's own running time. Each caption holds
@@ -242,8 +255,8 @@ function bbStart(){
          the fades are just the joins. */
       var CAPS = {
         open:  [0.000,0.015,0.105,0.140],   /* the statement, over the first spark */
-        dna:   [0.055,0.085,0.220,0.250],   /* the helix                            */
-        blood: [0.265,0.295,0.425,0.455],   /* the red body, skeleton inside        */
+        dna:   [0.045,0.075,0.175,0.200],   /* the helix — ends before the orb      */
+        blood: [0.260,0.290,0.395,0.425],   /* the red body, skeleton inside        */
         skin:  [0.470,0.500,0.660,0.690]    /* iridescent, crystal, chrome          */
       };
       var caps = {};
@@ -265,11 +278,16 @@ function bbStart(){
       function draw(i){
         var n = nearest(i);
         if(n < 0 || n === painted) return;
-        ctx.drawImage(imgs[n], 0, 0, canvas.width, canvas.height);
+        var im = imgs[n];
+        var cw = canvas.width, ch = canvas.height;
+        var sc = Math.max(cw / im.naturalWidth, ch / im.naturalHeight);  /* cover */
+        var dw = im.naturalWidth * sc, dh = im.naturalHeight * sc;
+        ctx.drawImage(im, (cw - dw) / 2, (ch - dh) / 2, dw, dh);
         painted = n;
       }
       function frame(){
         ticking = false;
+        fit();
         var span = sec.offsetHeight - window.innerHeight;
         if(span <= 0) return;
         var p = -sec.getBoundingClientRect().top / span;
@@ -304,7 +322,7 @@ function bbStart(){
           im.decoding = 'async';
           im.onload = function(){
             imgs[i] = im; ok++; settled++;
-            if(i === 0){ draw(0); sec.classList.add('scrub'); }
+            if(i === 0){ fit(); draw(0); sec.classList.add('scrub'); }
             go();          /* every arrival is a chance to start; gaps are covered
                               by nearest(), so it does not need the whole set */
           };

@@ -60,6 +60,7 @@ nav{border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(8,
 .open-stage{min-height:92vh;display:flex;flex-direction:column;justify-content:center;
   align-items:center;text-align:center;padding:120px 24px 60px;position:relative;overflow:hidden}
 .open.live{height:430vh}
+@media(max-width:760px){.open.live{height:250vh}}
 .open.live .open-stage{position:sticky;top:0;height:100vh;min-height:0;padding:24px}
 .open-logo{height:34px;margin-bottom:56px;opacity:.92}
 /* The logo slides down on arrival rather than on scroll: tying it to the
@@ -104,7 +105,10 @@ nav{border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(8,
 .reel-stage{position:sticky;top:0;height:100vh;overflow:hidden;background:#000;
   display:flex;align-items:center;justify-content:center}
 .reel-poster,.reel-canvas{position:absolute;inset:0;width:100%;height:100%;
-  object-fit:cover;z-index:0;pointer-events:none;transition:opacity .6s ease}
+  z-index:0;pointer-events:none;transition:opacity .6s ease}
+.reel-poster{object-fit:cover}
+/* the canvas does its own cover crop in script, so it must not be scaled again */
+.reel-canvas{display:block}
 .reel-canvas{opacity:0}
 /* swap to the canvas only once the first frame is actually painted */
 .reel.scrub .reel-poster{opacity:0}
