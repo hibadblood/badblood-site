@@ -76,7 +76,7 @@ index.html      one-page site (the experience)
 work.html       the archive — a grid of real frames, tap to play
 style.css       all styles, shared
 wrangler.jsonc  Cloudflare config
-assets/         logos + hero.mp4
+assets/         logos, reel frames, work posters
 ```
 
 ---
@@ -195,10 +195,9 @@ see?* The answer must be "the content, just without motion."
   if you re-extract, keep the two in sync. The master stays local and
   git-ignored (`assets/*.m4v`) — always re-encode from it, never from the
   delivered frames.
-- **Unreferenced after the rebuild, kept for now — ask before deleting:**
-  `assets/hero.mp4` (8 MB) and `assets/hero-frames/` (120 webp, 4.6 MB). Both
-  belonged to the old scroll-scrub hero. Deleting them would cut ~12.6 MB from
-  the deploy; both remain recoverable in git history.
+- `assets/hero.mp4` and `assets/hero-frames/` — **deleted 2026-08-16** at the
+  owner's instruction once the reel replaced them; 12.6 MB off every deploy.
+  Both remain recoverable from git history at commit `7c80d9b`.
 - Video playback could not be verified in the automated browser here — its
   media loader stalls on any local `<video>` even though the files decode
   cleanly and the server serves byte-identical content with working Range
