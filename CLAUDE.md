@@ -73,7 +73,7 @@ no npm dependencies.** Keep it that way unless the owner explicitly asks.
 
 ```
 index.html      one-page site (the experience)
-work.html       the archive — video showcase
+work.html       the archive — a grid of real frames, tap to play
 style.css       all styles, shared
 wrangler.jsonc  Cloudflare config
 assets/         logos + hero.mp4
@@ -105,16 +105,52 @@ appearing in several places at once, that's a signal something is wrong.
 
 ## 5. HOMEPAGE SEQUENCE — the order matters
 
-1. **Curtain** — black screen, logo, counter 0→100, lifts
-2. **Hero** — scroll-scrubbed frame sequence (`assets/hero-frames/`), the three-line
-   poem. The visitor drives the film's timeline: scroll down runs it forward,
-   scroll up runs it backward. The copy fades out over the first third of the scrub.
-3. **Blood drop** — scroll-driven: stretches → snaps → falls → lands
-4. **Statement** — "We give ideas a body."
-5. **Chapters I / II / III** — DNA, BLOOD, SKIN, with the roman-numeral rail
-6. **Doorway** — the single "See the work" CTA
-7. **Footer** — closing lines + the poem:
-   *Every idea has a structure. / Every structure finds a pulse. / Every pulse deserves a body.*
+Rebuilt 2026-08-16 at the owner's direction, twice: first away from the dark
+veil, then away from cutting the film into pieces. The page is now three acts
+and runs about twelve screens instead of twenty.
+
+1. **Opening** (`.open`) — black. The logo slides down on arrival (a CSS
+   entrance, deliberately *not* scroll-driven — tying it to the scrollbar left
+   the first screen empty). Then scroll brings the three lines in one at a
+   time; they accumulate rather than replace each other.
+2. **Blood drop** — scroll-driven: stretches → snaps → falls → lands
+3. **The reel** (`.reel`) — **ONE continuous scroll-scrubbed take of the whole
+   film**, `assets/reel/` (170 webp frames, 1000px, 4.9 MB). Scroll down runs it
+   forward, scroll up runs it backward.
+4. **Doorway** — the single "See the work" CTA
+5. **Footer** — closing lines + the poem
+
+**Two things the owner asked for that must not be undone:**
+
+- **Do not dim the footage.** No veil, no overlay across the frame. If type is
+  unreadable, give the type its own local pool of shade (`.reel-copy::before`)
+  — never a layer over the film.
+- **Do not cut the film into sections.** DNA / BLOOD / SKIN are *moments inside
+  one take*, not separate sections. Their captions fade in when the film reaches
+  what they name. Splitting it into three made the page feel chopped.
+
+Captions are pinned dead centre and never travel with the scroll — on a phone,
+type sliding under your thumb while the picture moves reads as a fault.
+
+Caption timings live in `CAPS` in `index.html` as fractions of the film's own
+running time: DNA on the helix (0.055–0.215), BLOOD on the red body with the
+skeleton inside it (0.260–0.405), SKIN on the surfaces (0.440–0.675). The last
+third runs clean with no type at all. **Re-cut the source and these must be
+re-checked.** The roman-numeral rail is driven by the same scrub, not by
+section intersection.
+
+Frames, not `<video>`: seeking a video on every scroll event stutters badly on
+mobile, which is where this site is mostly read. A phone gets its own 640px set
+(`assets/reel-sm/`) — 170 frames held at 1000px is ~364 MB of bitmap, which a
+phone evicts, turning the scrub into a slideshow.
+
+**Removed 2026-08-16, on purpose — do not put them back without being asked:**
+the curtain preloader (a 0→100 counter announces a slow site), the film-grain
+overlay, the roman-numeral rail, the "Scroll" cue, the "Chapter I/II/III"
+labels, and the word-by-word text stagger. All of them are the visual signature
+of an agency template; the brief was A24 / Apple, which means fewer devices and
+more picture. Display type is large and tightly tracked; only the small utility
+type keeps wide letter-spacing, and that contrast is the point.
 
 ---
 
@@ -126,10 +162,10 @@ never to "invisible or broken content."** Keep it that way.
 - Content is **visible by default in CSS**. JS only *adds* the class that hides
   it right before it starts animating it. Never ship CSS that hides content and
   relies on JS to reveal it.
-- The curtain is created **by JS only** and has a hard timeout — it can never
-  trap a visitor on a black screen.
 - The drip section is `height: 0` by default; JS adds `.live` to open the scroll
   runway, so a no-JS visitor never scrolls through empty space.
+- The reel and the opening both work without JS: the reel shows its poster frame
+  and every caption stays readable, stacked.
 - Honour `prefers-reduced-motion: reduce` everywhere.
 - Scroll handlers must be `passive` and rAF-throttled.
 - **Never use localStorage or sessionStorage.**
@@ -153,14 +189,21 @@ see?* The answer must be "the content, just without motion."
 
 ## 8. OPEN ITEMS
 
-- Hero scroll-scrub — **done**. `assets/hero-frames/f-001..120.webp`, 1280x720,
-  4.6 MB total, extracted from the 1080p master. Frame count is defined once as
-  `COUNT` in the scrub block in `index.html`; if you re-extract, keep the two in
-  sync. The master is kept locally but git-ignored (`assets/*.m4v`) — always
-  re-encode from it, never from the delivered frames.
-- `assets/hero.mp4` — **no longer referenced by any page.** Superseded by the
-  frame sequence. Left in the repo for now; safe to delete (it stays recoverable
-  in git history at commit `3d5aa9a`).
+- Homepage reel — **done**. `assets/reel/f-001..170.webp`, 1000px wide, 4.9 MB
+  total, one continuous pass over the whole 74.7s master. Frame count is
+  declared once as `data-count` on the `.reel` section and read by the scrub;
+  if you re-extract, keep the two in sync. The master stays local and
+  git-ignored (`assets/*.m4v`) — always re-encode from it, never from the
+  delivered frames.
+- **Unreferenced after the rebuild, kept for now — ask before deleting:**
+  `assets/hero.mp4` (8 MB) and `assets/hero-frames/` (120 webp, 4.6 MB). Both
+  belonged to the old scroll-scrub hero. Deleting them would cut ~12.6 MB from
+  the deploy; both remain recoverable in git history.
+- Video playback could not be verified in the automated browser here — its
+  media loader stalls on any local `<video>` even though the files decode
+  cleanly and the server serves byte-identical content with working Range
+  requests. Layout, act order and line timing were verified; **playback itself
+  needs a check on a real machine.**
 - Domain `badblood.company` — waiting on nameserver change at Porkbun to
   finish pointing at Cloudflare.
 - Videos currently embed from Google Drive on `work.html`. Planned migration to

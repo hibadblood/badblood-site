@@ -30,7 +30,7 @@ nav{border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(8,
    Collapsed to zero height by default; JS adds .live to open the
    scroll runway, so a no-JS visitor never scrolls an empty void. */
 .drip{height:0;overflow:hidden;position:relative;background:var(--ink)}
-.drip.live{height:250vh;overflow:visible}
+.drip.live{height:180vh;overflow:visible}
 .drip-stage{position:sticky;top:0;height:100vh;overflow:hidden;
   --thread:0vh; --beadY:0vh; --sy:1; --sx:1; --land:0}
 .drip-nub{position:absolute;left:50%;top:9vh;width:9px;height:9px;margin-left:-4.5px;
@@ -51,114 +51,112 @@ nav{border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(8,
   transform:scale(calc(1 + var(--land)*7))}
 @media (prefers-reduced-motion: reduce){.drip{display:none}}
 
-/* film grain — cinematic texture over the whole site */
-.grain{position:fixed;inset:0;z-index:45;pointer-events:none;opacity:.05;mix-blend-mode:overlay;
-  background-image:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='160' height='160'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3'/%3E%3C/filter%3E%3Crect width='160' height='160' filter='url(%23n)'/%3E%3C/svg%3E")}
-@media (prefers-reduced-motion: reduce){.grain{display:none}}
-
-/* curtain preloader — created by JS only, so it can never trap a non-JS visitor */
-.curtain{position:fixed;inset:0;z-index:999;background:var(--ink);
-  display:flex;flex-direction:column;align-items:center;justify-content:center;gap:34px;
-  transition:opacity .85s ease,visibility .85s ease}
-.curtain img{height:30px;opacity:.9}
-.curtain-n{font-family:var(--en);font-size:12px;letter-spacing:.4em;color:var(--blood);
-  font-variant-numeric:tabular-nums}
-.curtain.out{opacity:0;visibility:hidden;pointer-events:none}
-
-/* chapter rail — fixed roman numerals that track scroll position */
-.chapter-rail{position:fixed;right:30px;top:50%;transform:translateY(-50%);z-index:40;
-  display:flex;flex-direction:column;gap:20px;pointer-events:none}
-.chapter-rail span{font-family:var(--en);font-size:11px;letter-spacing:.28em;color:var(--dim);
-  transition:color .35s ease,transform .35s ease;transform-origin:right center}
-.chapter-rail span.on{color:var(--blood);transform:scale(1.35)}
-@media(max-width:900px){.chapter-rail{display:none}}
-
-/* ── hero / intro sequence ──────────────────────────────────────
-   Default (no JS): a normal 92vh hero showing the first frame as a
-   still poster. JS adds .live to open the scroll runway and pin the
-   stage, which is the only thing that turns on scrubbing. Failure
-   mode is "a static hero image", never a blank or broken screen. */
-.intro{position:relative;background:var(--ink)}
-.intro-stage{min-height:92vh;display:flex;flex-direction:column;justify-content:center;align-items:center;
-  text-align:center;padding:120px 24px 60px;position:relative;overflow:hidden;background:var(--ink)}
-.intro.live{height:300vh}
-.intro.live .intro-stage{position:sticky;top:0;height:100vh;min-height:0;padding:24px}
-/* poster + scrub canvas share the same box; canvas is a replaced element so
-   object-fit:cover applies to it exactly as it does to the image */
-.intro-poster,.intro-canvas{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-  filter:saturate(.75) contrast(1.05);pointer-events:none;z-index:0;
-  transition:opacity .6s ease}
-.intro-poster{opacity:.34}
-.intro-canvas{opacity:0}
-/* swap only once frames are decoded and the first one is painted */
-.intro.scrub .intro-poster{opacity:0}
-.intro.scrub .intro-canvas{opacity:.34}
-.intro-veil{position:absolute;inset:0;z-index:1;pointer-events:none;
-  background:
-    radial-gradient(ellipse at center, rgba(8,8,10,.25) 0%, rgba(8,8,10,.72) 68%, rgba(8,8,10,.94) 100%),
-    linear-gradient(to bottom, rgba(8,8,10,.42) 0%, rgba(8,8,10,.55) 55%, var(--ink) 100%)}
-.intro-content{position:relative;z-index:2;display:flex;flex-direction:column;align-items:center}
-/* The three lines are staged against the film: each one holds the screen while
-   the frames behind it show the thing it names — the spark in the dark, the red
-   pulse, the body forming. Only ever active under .live, so a JS failure leaves
-   the whole poem readable. The short transition smooths the crossfades and
-   keeps the first paint from snapping. */
-.intro.live .intro-logo{opacity:var(--introLogo,1)}
-.intro.live .intro-line{transition:opacity .3s ease}
-.intro.live .intro-line.l1{opacity:var(--l1,1)}
-.intro.live .intro-line.l2{opacity:var(--l2,1)}
-.intro.live .intro-line.l3{opacity:var(--l3,1)}
-.intro.live .scroll-cue{opacity:var(--introCue,1)}
-@media (prefers-reduced-motion: reduce){.intro-canvas{display:none}}
-.intro-logo{height:34px;margin-bottom:56px;opacity:.92}
-.intro-line{font-family:var(--th);font-weight:300;font-size:clamp(17px,2.6vw,26px);
+/* ── ACT 1 · the opening ────────────────────────────────────────
+   Black. The logo comes down, then the three lines arrive one at a
+   time and stay. Default (no JS) is a normal readable hero with all
+   three lines showing; JS adds .live to open the scroll runway and
+   pin the stage. Failure mode is "a static title card", never blank. */
+.open{position:relative;background:var(--ink)}
+.open-stage{min-height:92vh;display:flex;flex-direction:column;justify-content:center;
+  align-items:center;text-align:center;padding:120px 24px 60px;position:relative;overflow:hidden}
+.open.live{height:430vh}
+.open.live .open-stage{position:sticky;top:0;height:100vh;min-height:0;padding:24px}
+.open-logo{height:34px;margin-bottom:56px;opacity:.92}
+/* The logo slides down on arrival rather than on scroll: tying it to the
+   scrollbar left the very first screen empty, which is no way to open. */
+.open.live .open-logo{animation:logodrop 1.15s cubic-bezier(.16,.84,.3,1) both}
+@keyframes logodrop{
+  from{opacity:0;transform:translateY(-54px)}
+  to{opacity:.92;transform:translateY(0)}
+}
+.open-lines{display:flex;flex-direction:column;gap:2px;align-items:center}
+.open-line{font-family:var(--th);font-weight:300;font-size:clamp(17px,2.6vw,26px);
   color:var(--chrome);line-height:1.9;max-width:30ch}
-.intro-line b{color:var(--bone);font-weight:600}
-.intro-line + .intro-line{margin-top:2px}
-.scroll-cue{position:absolute;bottom:36px;left:50%;transform:translateX(-50%);
-  font-family:var(--en);font-size:10px;letter-spacing:.4em;color:var(--dim);text-transform:uppercase}
-.scroll-cue::after{content:'';display:block;width:1px;height:34px;background:var(--dim);margin:10px auto 0;
-  animation:scrolldrop 2s ease-in-out infinite}
-@keyframes scrolldrop{0%{opacity:0;transform:scaleY(0);transform-origin:top}30%{opacity:1;transform:scaleY(1);transform-origin:top}
-  70%{opacity:1;transform:scaleY(1);transform-origin:bottom}100%{opacity:0;transform:scaleY(0);transform-origin:bottom}}
+.open-line b{color:var(--bone);font-weight:600}
+/* Under .live the three lines share one spot — the true middle of the screen —
+   and take it in turn, instead of stacking and sliding as a block. Only one is
+   lit at a time, so nothing ever travels the height of the screen to be read.
+   Centring is done with left/right + text-align, never with a transform: the
+   scrub owns transform, and a translateX here would be wiped out by it. */
+.open.live .open-lines{position:absolute;left:0;right:0;top:50%;
+  display:block;height:0;padding:0 24px}
+.open.live .open-line{position:absolute;left:0;right:0;top:0;
+  margin:0 auto;max-width:min(30ch,86vw);text-align:center;
+  opacity:0;will-change:opacity,transform}
+/* the logo steps up out of the way once the lines start taking the centre */
+/* an <img> stretched between left:0 and right:0 does not centre itself —
+   it needs to be a block with auto margins */
+.open.live .open-logo{position:absolute;left:0;right:0;top:26vh;
+  display:block;margin:0 auto;height:30px;width:auto;object-fit:contain}
+.open.live 
+/* ── ACTS 3–6 · ONE continuous reel ────────────────────────────
+   The whole film is a single scroll-scrubbed take. The three layers
+   are moments inside it, not separate sections — cutting it into
+   three made the page read as chopped. Every caption is pinned dead
+   centre and never travels: on a phone, type sliding under your
+   thumb while the picture moves reads as a fault. */
+.reel{position:relative;height:760vh;background:var(--ink)}
+.reel-stage{position:sticky;top:0;height:100vh;overflow:hidden;background:#000;
+  display:flex;align-items:center;justify-content:center}
+.reel-poster,.reel-canvas{position:absolute;inset:0;width:100%;height:100%;
+  object-fit:cover;z-index:0;pointer-events:none;transition:opacity .6s ease}
+.reel-canvas{opacity:0}
+/* swap to the canvas only once the first frame is actually painted */
+.reel.scrub .reel-poster{opacity:0}
+.reel.scrub .reel-canvas{opacity:1}
 
-/* pulse divider between intro and chapters */
-.pulse-line{padding:70px 0;text-align:center}
-.pulse-line p{font-family:var(--en);font-size:clamp(20px,3.4vw,32px);font-weight:700;
-  text-transform:uppercase;letter-spacing:.06em;color:var(--bone)}
-.pulse-line p span{color:var(--blood)}
+.reel-copy{position:absolute;z-index:2;text-align:center;padding:34px 26px;
+  max-width:680px;left:50%;top:50%;transform:translate(-50%,-50%);
+  will-change:opacity,transform;
+  text-shadow:0 2px 22px rgba(0,0,0,.95),0 0 10px rgba(0,0,0,.9)}
+/* all captions share the centre; only one is lit at a time */
+.reel.live .reel-copy{opacity:0}
+/* A pool of shade that reaches past the type and fades to nothing, so it never
+   reads as a panel on the picture. The footage itself is never dimmed. */
+.reel-copy::before{content:'';position:absolute;
+  left:-70%;right:-70%;top:-90%;bottom:-90%;z-index:-1;pointer-events:none;
+  background:radial-gradient(ellipse 44% 42% at 50% 50%,
+    rgba(6,6,8,.80) 0%, rgba(6,6,8,.55) 42%, rgba(6,6,8,.22) 66%, rgba(6,6,8,0) 82%)}
 
-/* chapters */
-.chapter{padding:120px 0;border-top:1px solid var(--line)}
-.chapter-num{font-family:var(--en);font-size:13px;letter-spacing:.5em;color:var(--blood);text-transform:uppercase;margin-bottom:20px}
-.chapter-head{display:grid;grid-template-columns:1fr;gap:8px;margin-bottom:14px}
-.chapter h2{font-family:var(--en);font-weight:700;text-transform:uppercase;letter-spacing:.06em;
-  font-size:clamp(40px,7vw,78px);line-height:1}
-.chapter .poetic{font-family:var(--th);font-weight:300;font-size:clamp(15px,2vw,18px);color:var(--chrome);
-  margin:20px 0 6px;max-width:38ch}
-.chapter .poetic b{color:var(--bone);font-weight:600}
-.chapter-grid{display:grid;grid-template-columns:1.1fr 1fr;gap:56px;align-items:start;margin-top:52px}
-.tagcloud{display:flex;flex-wrap:wrap;gap:10px 14px}
-.tagcloud span{font-family:var(--en);font-size:11px;letter-spacing:.18em;text-transform:uppercase;
-  color:var(--dim);border:1px solid var(--line);padding:7px 13px}
-.services{border-top:1px solid var(--line)}
-.svc-row{display:flex;justify-content:space-between;gap:20px;padding:15px 2px;border-bottom:1px solid var(--line);
-  font-family:var(--th);font-size:13.5px}
-.svc-row .k{color:var(--bone);font-weight:400}
-.svc-row .v{color:var(--dim);text-align:right;font-size:12.5px}
-@media(max-width:760px){.chapter-grid{grid-template-columns:1fr;gap:34px}.chapter{padding:88px 0}}
+.reel-word{font-family:var(--en);font-size:clamp(26px,5.2vw,58px);font-weight:700;
+  text-transform:uppercase;letter-spacing:-.02em;line-height:1.02;color:var(--bone)}
+.reel-word span{color:var(--blood)}
+.chapter-num{display:block;font-family:var(--en);font-size:12px;letter-spacing:.5em;
+  color:#ff5470;text-transform:uppercase;margin-bottom:16px;font-weight:500}
+.reel-copy h2{font-family:var(--en);font-weight:700;text-transform:uppercase;
+  letter-spacing:-.025em;font-size:clamp(56px,13vw,140px);line-height:.9;margin-bottom:22px}
+.reel-copy .poetic{font-family:var(--th);font-weight:300;font-size:clamp(15px,2.2vw,20px);
+  color:#d8dade;margin:0 auto 16px;max-width:34ch}
+.reel-copy .poetic b{color:var(--bone);font-weight:600}
+.chapter-svc{font-family:var(--en);font-size:10.5px;letter-spacing:.18em;text-transform:uppercase;
+  color:#cfd2d6;max-width:46ch;margin:0 auto;line-height:2.1}
+
+@media(max-width:760px){
+  .reel{height:640vh}
+  .reel-copy{padding:0 20px}
+  .chapter-svc{font-size:9.5px;letter-spacing:.14em}
+}
+/* no motion: no pinning, no scrub — the reel becomes one ordinary panel and
+   every caption is simply readable, stacked */
+@media (prefers-reduced-motion: reduce){
+  .reel{height:auto}
+  .reel-stage{position:relative;height:auto;display:block;padding:80px 0}
+  .reel-canvas{display:none}
+  .reel-copy{position:relative;left:auto;top:auto;transform:none;
+    margin:0 auto 64px;opacity:1}
+}
 
 /* statement band */
 .band{padding:110px 0;border-top:1px solid var(--line);border-bottom:1px solid var(--line);text-align:center}
 .band p{font-family:var(--en);text-transform:uppercase;font-weight:700;
-  font-size:clamp(22px,4vw,40px);letter-spacing:.06em;line-height:1.35}
+  font-size:clamp(26px,5vw,58px);letter-spacing:-.025em;line-height:1.1}
 .band span{color:var(--blood)}
 
 /* single quiet doorway to work — homepage shows no portfolio items itself */
 .works-cta{padding:140px 0;text-align:center;border-top:1px solid var(--line)}
-.cta-big{display:inline-flex;align-items:center;gap:18px;text-decoration:none;color:var(--bone);
-  font-family:var(--en);font-weight:700;text-transform:uppercase;letter-spacing:.08em;
-  font-size:clamp(26px,5vw,48px);padding-bottom:10px;border-bottom:1px solid var(--line);transition:border-color .25s}
+.cta-big{display:inline-flex;align-items:center;gap:20px;text-decoration:none;color:var(--bone);
+  font-family:var(--en);font-weight:700;text-transform:uppercase;letter-spacing:-.025em;
+  font-size:clamp(34px,6.5vw,72px);padding-bottom:12px;border-bottom:1px solid var(--line);transition:border-color .25s}
 .cta-big .arrow{color:var(--blood);transition:transform .25s}
 .cta-big:hover{border-color:var(--blood)}
 .cta-big:hover .arrow{transform:translateX(10px)}
@@ -167,8 +165,8 @@ nav{border-bottom:1px solid var(--line);position:sticky;top:0;background:rgba(8,
 .hero-simple{padding:76px 0 52px;border-bottom:1px solid var(--line)}
 .eyebrow{font-family:var(--en);font-size:11px;letter-spacing:.42em;color:var(--chrome);text-transform:uppercase}
 .eyebrow .drop{color:var(--blood)}
-h1.h-simple{font-family:var(--en);font-weight:700;text-transform:uppercase;letter-spacing:.04em;
-   font-size:clamp(34px,5.6vw,60px);line-height:1.02;margin:22px 0 18px}
+h1.h-simple{font-family:var(--en);font-weight:700;text-transform:uppercase;letter-spacing:-.03em;
+   font-size:clamp(46px,8vw,96px);line-height:.94;margin:26px 0 20px}
 h1.h-simple em{font-style:normal;color:var(--blood)}
 .lede{max-width:54ch;color:var(--chrome);font-size:15px;line-height:1.85}
 .notice{display:inline-block;margin-top:8px;padding:8px 14px;border:1px solid var(--line);
@@ -178,23 +176,49 @@ section.plain{padding:64px 0 8px}
 .sec-head h2{font-family:var(--en);font-size:13px;font-weight:500;letter-spacing:.38em;text-transform:uppercase}
 .sec-head .count{font-family:var(--en);font-size:11px;color:var(--dim);letter-spacing:.2em}
 .sec-note{color:var(--dim);font-size:12.5px;margin-bottom:22px}
-.row{border-top:1px solid var(--line)}
-.row:last-child{border-bottom:1px solid var(--line)}
-.row-head{display:grid;grid-template-columns:52px 1fr auto;align-items:baseline;gap:16px;
-  padding:19px 4px;cursor:pointer;user-select:none;background:none;border:none;width:100%;text-align:left;color:inherit;font-family:inherit}
-.row-head:focus-visible{outline:2px solid var(--blood);outline-offset:2px}
-.idx{font-family:var(--en);font-size:11px;color:var(--dim);letter-spacing:.14em}
-.brand{font-family:var(--en);font-size:clamp(16px,2.6vw,22px);font-weight:500;
-  text-transform:uppercase;letter-spacing:.14em;transition:color .18s}
-.tag{display:block;font-family:var(--th);font-size:12.5px;color:var(--dim);letter-spacing:.02em;
-  margin-top:5px;text-transform:none;font-weight:300}
-.state{font-family:var(--en);font-size:16px;color:var(--dim);transition:transform .2s,color .18s}
-.row-head:hover .brand,.row.open .brand{color:var(--blood)}
-.row.open .state{transform:rotate(45deg);color:var(--blood)}
-.player{display:none;padding:0 4px 26px}
+/* ── the work ledger ──────────────────────────────────────────
+   A film company's portfolio has to lead with the picture. This was
+   a list of titles with a plus sign; now every piece shows a real
+   frame from the film itself, and the title sits on it. */
+.ledger{display:grid;grid-template-columns:repeat(auto-fill,minmax(320px,1fr));
+  gap:2px;margin-top:18px}
+.row{position:relative;background:#000}
+.row.open{grid-column:1/-1}
+.row-head{display:block;width:100%;padding:0;border:0;background:none;
+  color:inherit;text-align:left;cursor:pointer;position:relative}
+.row-head:focus-visible{outline:2px solid var(--blood);outline-offset:-2px}
+.still{position:relative;display:block;width:100%;aspect-ratio:16/9;overflow:hidden;background:#000}
+.still img{width:100%;height:100%;object-fit:cover;display:block;
+  filter:saturate(.92);transform:scale(1.001);
+  transition:transform .9s cubic-bezier(.2,.7,.2,1),opacity .5s;opacity:.86}
+.row-head:hover .still img{transform:scale(1.045);opacity:1}
+/* the title sits on the frame, on a shade that only touches the lower band */
+.meta{position:absolute;left:0;right:0;bottom:0;z-index:2;padding:44px 18px 16px;
+  display:block;pointer-events:none;
+  background:linear-gradient(to top,rgba(0,0,0,.82) 0%,rgba(0,0,0,.34) 55%,rgba(0,0,0,0) 100%)}
+.idx{font-family:var(--en);font-size:10px;color:var(--chrome);letter-spacing:.28em;
+  display:block;margin-bottom:6px}
+.brand{display:block;font-family:var(--en);font-size:clamp(17px,2vw,21px);font-weight:500;
+  letter-spacing:-.01em;color:var(--bone);line-height:1.15}
+.tag{display:block;font-family:var(--th);font-size:12.5px;color:var(--chrome);margin-top:3px}
+/* a quiet play mark, so it reads as a film and not a photograph */
+.play{position:absolute;top:14px;right:14px;z-index:2;width:30px;height:30px;
+  border:1px solid rgba(242,242,239,.5);border-radius:50%;
+  transition:background .2s,border-color .2s}
+.play::after{content:'';position:absolute;left:11px;top:9px;
+  border-style:solid;border-width:6px 0 6px 9px;
+  border-color:transparent transparent transparent rgba(242,242,239,.9)}
+.row-head:hover .play{background:var(--blood);border-color:var(--blood)}
+.row.open .play{background:var(--blood);border-color:var(--blood)}
+.player{display:none;padding:2px 0 0}
 .row.open .player{display:block}
-.frame{position:relative;width:100%;aspect-ratio:16/9;background:var(--panel);border:1px solid var(--line)}
+.row.open .still{display:none}
+.frame{position:relative;width:100%;aspect-ratio:16/9;background:#000}
 .frame iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+@media(max-width:640px){
+  .ledger{grid-template-columns:1fr}
+  .meta{padding:38px 14px 13px}
+}
 .badge{position:absolute;top:10px;left:10px;z-index:2;background:rgba(8,8,10,.85);
   font-family:var(--en);font-size:9px;letter-spacing:.3em;color:var(--chrome);
   padding:5px 9px;text-transform:uppercase;pointer-events:none}

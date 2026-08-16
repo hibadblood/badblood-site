@@ -12,61 +12,27 @@
 <body>
 
 <script>
-/* curtain: builds itself in JS only — if this fails or is disabled, the site simply loads normally */
-window.__bbReady=false; window.__bbQueue=[];
-window.__bbFire=function(){ if(window.__bbReady)return; window.__bbReady=true;
-  (window.__bbQueue||[]).forEach(function(f){try{f()}catch(e){}}); window.__bbQueue=[]; };
-(function(){
-  try{
-    if(window.matchMedia('(prefers-reduced-motion: reduce)').matches){ window.__bbFire(); return; }
-    var pre=document.createElement('div');
-    pre.className='curtain';
-    pre.innerHTML='<img src="assets/bb-logo-horizontal.png" alt=""><span class="curtain-n">0</span>';
-    document.body.appendChild(pre);
-    document.documentElement.style.overflow='hidden';
-    var n=0, el=pre.querySelector('.curtain-n'), done=false;
-    var tick=setInterval(function(){
-      n+=Math.floor(Math.random()*7)+3;
-      if(n>=100){ n=100; clearInterval(tick); setTimeout(lift,340); }
-      el.textContent=n;
-    },55);
-    function lift(){
-      if(done)return; done=true; clearInterval(tick);
-      pre.classList.add('out');
-      document.documentElement.style.overflow='';
-      window.__bbFire();
-      setTimeout(function(){ if(pre.parentNode) pre.parentNode.removeChild(pre); },1000);
-    }
-    setTimeout(lift,4500); /* hard guard — curtain can never get stuck */
-  }catch(e){ document.documentElement.style.overflow=''; window.__bbFire(); }
-})();
+/* No preloader. A counter ticking 0→100 tells a visitor the site is slow; the
+   opening act is already a black title card, which is the only thing a
+   preloader was ever standing in for. The old curtain also owned the "ready"
+   signal, so that is now simply fired on load. */
+window.__bbReady = true; window.__bbQueue = [];
 </script>
 
-<div class="grain" aria-hidden="true"></div>
-
-<div class="chapter-rail" aria-hidden="true">
-  <span data-ch="dna">I</span>
-  <span data-ch="blood">II</span>
-  <span data-ch="skin">III</span>
-</div>
-
-<header class="intro" id="intro">
-  <div class="intro-stage">
-    <!-- poster is the always-visible base layer; the canvas fades in over it only
-         once the scrub frames have actually loaded -->
-    <img class="intro-poster" src="assets/hero-frames/f-001.webp" alt="" aria-hidden="true">
-    <canvas class="intro-canvas" width="1280" height="720" aria-hidden="true"></canvas>
-    <div class="intro-veil"></div>
-    <div class="intro-content">
-      <img class="intro-logo" src="assets/bb-logo-horizontal.png" alt="BAD BLOOD COMPANY">
-      <p class="intro-line reveal l1">Every idea begins unseen.</p>
-      <p class="intro-line reveal d1 l2">Before it can move, it needs a <b>pulse</b>.</p>
-      <p class="intro-line reveal d2 l3">Before it can be remembered, it needs a <b>body</b>.</p>
+<!-- ACT 1 — the logo comes down, then the three lines arrive one at a time.
+     Black. No film yet: the words have to land before anything moves. -->
+<header class="open" id="open">
+  <div class="open-stage">
+    <img class="open-logo" src="assets/bb-logo-horizontal.png" alt="BAD BLOOD COMPANY">
+    <div class="open-lines">
+      <p class="open-line" data-beat="o1">Every idea begins unseen.</p>
+      <p class="open-line" data-beat="o2">Before it can move, it needs a <b>pulse</b>.</p>
+      <p class="open-line" data-beat="o3">Before it can be remembered, it needs a <b>body</b>.</p>
     </div>
-    <span class="scroll-cue">Scroll</span>
   </div>
 </header>
 
+<!-- ACT 2 — the drop stretches, snaps, falls, lands. -->
 <section class="drip" id="drip">
   <div class="drip-stage">
     <span class="drip-nub"></span>
@@ -81,77 +47,44 @@ window.__bbFire=function(){ if(window.__bbReady)return; window.__bbReady=true;
   </div>
 </section>
 
-<div class="pulse-line">
-  <div class="wrap">
-    <p class="reveal">We give ideas <span>a body.</span></p>
-  </div>
-</div>
+<!-- ACTS 3–6 — ONE film, one take, scrubbed end to end. The three layers are
+     not separate sections: they are moments inside the same continuous shot,
+     and their names arrive when the film reaches them. Cutting it into three
+     pieces made the page feel chopped, which is exactly what it should not be. -->
+<section class="reel" id="reel" data-count="170">
+  <div class="reel-stage">
+    <img class="reel-poster" src="assets/reel/f-001.webp"
+         srcset="assets/reel-sm/f-001.webp 640w, assets/reel/f-001.webp 1000w"
+         sizes="100vw" alt="" aria-hidden="true">
+    <canvas class="reel-canvas" width="1000" height="562" aria-hidden="true"></canvas>
 
-<div class="wrap">
-
-<section class="chapter" id="dna">
-  <div class="chapter-num reveal">Chapter I</div>
-  <div class="chapter-head reveal">
-    <h2>DNA</h2>
-    <p class="poetic">The invisible structure. <b>Invisible systems. Visible impact.</b></p>
-  </div>
-  <div class="chapter-grid">
-    <div class="tagcloud reveal d1">
-      <span>Strategy</span><span>Research</span><span>Systems</span><span>Interface</span>
-      <span>Platform</span><span>Database</span><span>Geometry</span>
+    <!-- every caption is pinned dead centre and never travels with the scroll -->
+    <div class="reel-copy" data-cap="open">
+      <p class="reel-word">We give ideas <span>a body.</span></p>
     </div>
-    <div class="services reveal d2">
-      <div class="svc-row"><span class="k">Make it work</span><span class="v">DNA layer</span></div>
-      <div class="svc-row"><span class="k">Strategy &amp; research</span><span class="v">01</span></div>
-      <div class="svc-row"><span class="k">Website &amp; application</span><span class="v">02</span></div>
-      <div class="svc-row"><span class="k">Platform &amp; interactive</span><span class="v">03</span></div>
-      <div class="svc-row"><span class="k">Digital systems</span><span class="v">04</span></div>
+
+    <div class="reel-copy" data-cap="dna" id="dna">
+      <h2>DNA</h2>
+      <p class="poetic">Make it work. <b>Invisible systems. Visible impact.</b></p>
+      <p class="chapter-svc">Strategy &amp; research · Website &amp; application ·
+         Platform &amp; interactive · Digital systems</p>
+    </div>
+
+    <div class="reel-copy" data-cap="blood" id="blood">
+      <h2>BLOOD</h2>
+      <p class="poetic">Make it matter. <b>Emotion needs a language.</b></p>
+      <p class="chapter-svc">Creative direction &amp; film · Photography &amp; identity ·
+         Campaign &amp; fashion · Music &amp; sound</p>
+    </div>
+
+    <div class="reel-copy" data-cap="skin" id="skin">
+      <h2>SKIN</h2>
+      <p class="poetic">Make it real. <b>Ideas deserve a place to exist.</b></p>
+      <p class="chapter-svc">Events &amp; installation · Retail &amp; exhibition ·
+         Physical brand experience</p>
     </div>
   </div>
 </section>
-
-<section class="chapter" id="blood">
-  <div class="chapter-num reveal">Chapter II</div>
-  <div class="chapter-head reveal">
-    <h2>BLOOD</h2>
-    <p class="poetic">The creative pulse. <b>Emotion needs a language.</b></p>
-  </div>
-  <div class="chapter-grid">
-    <div class="tagcloud reveal d1">
-      <span>Film</span><span>Lens</span><span>Light</span><span>Typography</span>
-      <span>Fabric</span><span>Sound</span><span>Reflection</span>
-    </div>
-    <div class="services reveal d2">
-      <div class="svc-row"><span class="k">Make it matter</span><span class="v">Blood layer</span></div>
-      <div class="svc-row"><span class="k">Creative direction &amp; film</span><span class="v">01</span></div>
-      <div class="svc-row"><span class="k">Photography &amp; identity</span><span class="v">02</span></div>
-      <div class="svc-row"><span class="k">Campaign &amp; fashion</span><span class="v">03</span></div>
-      <div class="svc-row"><span class="k">Music &amp; sound</span><span class="v">04</span></div>
-    </div>
-  </div>
-</section>
-
-<section class="chapter" id="skin">
-  <div class="chapter-num reveal">Chapter III</div>
-  <div class="chapter-head reveal">
-    <h2>SKIN</h2>
-    <p class="poetic">The physical presence. <b>Ideas deserve a place to exist.</b></p>
-  </div>
-  <div class="chapter-grid">
-    <div class="tagcloud reveal d1">
-      <span>Architecture</span><span>Material</span><span>Space</span>
-      <span>People</span><span>Shadow</span><span>Light</span>
-    </div>
-    <div class="services reveal d2">
-      <div class="svc-row"><span class="k">Make it real</span><span class="v">Skin layer</span></div>
-      <div class="svc-row"><span class="k">Events &amp; installation</span><span class="v">01</span></div>
-      <div class="svc-row"><span class="k">Retail &amp; exhibition</span><span class="v">02</span></div>
-      <div class="svc-row"><span class="k">Physical brand experience</span><span class="v">03</span></div>
-    </div>
-  </div>
-</section>
-
-</div>
 
 <div class="band">
   <div class="wrap"><p class="reveal">Attention is rented.<br><span>Memory is owned.</span></p></div>
@@ -185,6 +118,7 @@ window.__bbFire=function(){ if(window.__bbReady)return; window.__bbReady=true;
 function bbStart(){
   try{
     var okMotion = !window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
     if(okMotion && 'IntersectionObserver' in window){
       var els = document.querySelectorAll('.reveal');
       els.forEach(function(el){ el.classList.add('pre'); });
@@ -195,110 +129,62 @@ function bbStart(){
       }, { threshold: 0.15, rootMargin: '0px 0px -8% 0px' });
       els.forEach(function(el){ io.observe(el); });
     }
-    /* chapter rail — highlights whichever chapter is crossing the middle of the screen */
-    if('IntersectionObserver' in window){
-      var marks = {}, rail = document.querySelectorAll('.chapter-rail span');
-      rail.forEach(function(s){ marks[s.dataset.ch] = s; });
-      var cio = new IntersectionObserver(function(entries){
-        entries.forEach(function(e){
-          var m = marks[e.target.id];
-          if(m) m.classList.toggle('on', e.isIntersecting);
-        });
-      }, { rootMargin: '-45% 0px -45% 0px' });
-      ['dna','blood','skin'].forEach(function(id){
-        var s = document.getElementById(id); if(s) cio.observe(s);
-      });
+
+    /* Every caption on this page behaves the same way: it rises into the middle
+       of the screen, holds dead still while it is read, then lifts away as the
+       next one arrives. Nothing ever slides the full height of the screen —
+       that is what made it unreadable. Words inside a line are staggered, so
+       each one arrives a beat after the last. */
+    function beat(p, a, b, c, d){
+      if(p <= a || p >= d) return { o:0, y: p <= a ? 18 : -18 };
+      if(p < b){ var t = (p-a)/(b-a); return { o:t, y:18*(1-t) }; }   /* in     */
+      if(p < c) return { o:1, y:0 };                                   /* hold   */
+      var u = (p-c)/(d-c);        return { o:1-u, y:-18*u };           /* out    */
     }
-    /* hero scroll-scrub — the visitor drives the film's timeline with the scrollbar.
-       Scroll down and it runs forward, scroll up and it runs backward. Nothing is
-       enabled until every frame is decoded, so it can never scrub into a gap. */
+    /* A line arrives as a line. Staggering it word by word is the language of
+       an effects demo, not of a film — the houses this is measured against fade
+       the whole line at once and let the picture do the moving. */
+    function paint(el, st){
+      el.style.opacity = st.o.toFixed(3);
+      el.style.transform = 'translateY(' + st.y.toFixed(1) + 'px)';
+    }
+
+    /* ACT 1 — the opening. The logo lands, then each line takes the middle of
+       the screen in turn: it rises in, holds, and lifts away before the next. */
     (function(){
-      var intro = document.getElementById('intro');
-      if(!intro || !okMotion) return;          /* reduced motion keeps the still poster */
-      var canvas = intro.querySelector('.intro-canvas');
-      if(!canvas || !canvas.getContext) return;
-      var ctx = canvas.getContext('2d', { alpha: false });
-      var COUNT = 120;
-
-      /* Where each line sits on the scrub, matched to what the frames show:
-         L1 the single point of light (frame 1), L2 the red pulse (frames 17-33),
-         L3 the chrome body, which materialises at frame 103 (p 0.86) — the line
-         states the need just before the film answers it. */
-      var L1 = [0, 0, 0.10, 0.15];
-      var L2 = [0.17, 0.21, 0.38, 0.43];
-      var L3 = [0.72, 0.77, 1.01, 1.02];
-      var LOGO = [0, 0, 0.06, 0.11];
-
-      /* fade in a->b, hold b->c, fade out c->d */
-      function band(p, a, b, c, d){
-        if(p <= a) return b > a ? 0 : 1;
-        if(p < b)  return (p - a) / (b - a);
-        if(p < c)  return 1;
-        if(p < d)  return 1 - (p - c) / (d - c);
-        return 0;
-      }
-      var imgs = new Array(COUNT), settled = 0, ok = 0;
-      var live = false, ticking = false, painted = -1;
-
-      function path(i){ return 'assets/hero-frames/f-' + String(i+1).padStart(3,'0') + '.webp'; }
-      function nearest(i){
-        if(imgs[i]) return i;
-        for(var d = 1; d < COUNT; d++){
-          if(i - d >= 0 && imgs[i - d]) return i - d;
-          if(i + d < COUNT && imgs[i + d]) return i + d;
-        }
-        return -1;
-      }
-      function draw(i){
-        var n = nearest(i);
-        if(n < 0 || n === painted) return;
-        ctx.drawImage(imgs[n], 0, 0, canvas.width, canvas.height);
-        painted = n;
-      }
+      var open = document.getElementById('open');
+      if(!open || !okMotion) return;
+      open.classList.add('live');
+      var lines = open.querySelectorAll('.open-line');
+      /* Each line owns a third of the runway, and two thirds of its own share is
+         HOLD — dead still, long enough to actually read. The first version gave
+         each line only 0.22 of a screen of hold, which is one flick of a
+         trackpad: the type was locked, it just wasn't locked for long enough to
+         look locked. */
+      var BANDS = {
+        o1: [0.00, 0.07, 0.28, 0.34],
+        o2: [0.34, 0.41, 0.61, 0.67],
+        o3: [0.67, 0.74, 0.96, 1.01]
+      };
+      var ticking = false;
       function frame(){
         ticking = false;
-        var span = intro.offsetHeight - window.innerHeight;
+        var span = open.offsetHeight - window.innerHeight;
         if(span <= 0) return;
-        var p = -intro.getBoundingClientRect().top / span;
+        var p = -open.getBoundingClientRect().top / span;
         p = p < 0 ? 0 : (p > 1 ? 1 : p);
-        draw(Math.round(p * (COUNT - 1)));
-        intro.style.setProperty('--l1', band(p, L1[0], L1[1], L1[2], L1[3]).toFixed(3));
-        intro.style.setProperty('--l2', band(p, L2[0], L2[1], L2[2], L2[3]).toFixed(3));
-        intro.style.setProperty('--l3', band(p, L3[0], L3[1], L3[2], L3[3]).toFixed(3));
-        intro.style.setProperty('--introLogo', band(p, LOGO[0], LOGO[1], LOGO[2], LOGO[3]).toFixed(3));
-        intro.style.setProperty('--introCue',  (p < 0.06 ? 1 - p / 0.06 : 0).toFixed(3));
+        lines.forEach(function(el){
+          var b = BANDS[el.dataset.beat]; if(!b) return;
+          paint(el, beat(p, b[0], b[1], b[2], b[3]));
+        });
       }
       function onScroll(){ if(!ticking){ ticking = true; requestAnimationFrame(frame); } }
-      function go(){
-        if(live || ok < COUNT * 0.6) return;
-        /* only open the runway while the visitor is still on the first screen —
-           adding 200vh of height under someone already reading chapter II
-           would yank the page out from under them */
-        if(window.scrollY > window.innerHeight * 0.5) return;
-        live = true;
-        intro.classList.add('live');
-        window.addEventListener('scroll', onScroll, { passive: true });
-        window.addEventListener('resize', onScroll);
-        frame();
-      }
-      for(var i = 0; i < COUNT; i++){
-        (function(i){
-          var im = new Image();
-          im.decoding = 'async';
-          im.onload = function(){
-            imgs[i] = im; ok++; settled++;
-            if(i === 0){ draw(0); intro.classList.add('scrub'); }
-            if(settled === COUNT) go();
-          };
-          im.onerror = function(){ settled++; if(settled === COUNT) go(); };
-          im.src = path(i);
-        })(i);
-      }
-      /* if a few frames never arrive, still enable with what did load */
-      setTimeout(go, 12000);
+      window.addEventListener('scroll', onScroll, { passive: true });
+      window.addEventListener('resize', onScroll);
+      frame();
     })();
 
-    /* blood drop — stretch, snap, fall, land. Driven by scroll position. */
+    /* ACT 2 — blood drop: stretch, snap, fall, land. Driven by scroll. */
     (function(){
       var drip = document.getElementById('drip');
       if(!drip || !okMotion) return;
@@ -312,9 +198,9 @@ function bbStart(){
         if(span <= 0) return;
         var p = -drip.getBoundingClientRect().top / span;
         p = p < 0 ? 0 : (p > 1 ? 1 : p);
-        var s = Math.min(1, p / STRETCH);                 /* 0→1 while stretching   */
+        var s = Math.min(1, p / STRETCH);                   /* 0→1 while stretching  */
         var f = Math.max(0, (p - STRETCH) / (1 - STRETCH)); /* 0→1 after it releases */
-        var fe = f * f;                                    /* gravity easing         */
+        var fe = f * f;                                     /* gravity easing        */
         stage.style.setProperty('--thread', (TRAVEL * s * (1 - f)) + 'vh');
         stage.style.setProperty('--beadY', (TRAVEL * s + DROP * fe) + 'vh');
         stage.style.setProperty('--sy', (1 + s * 0.85 - f * 0.55).toFixed(3));
@@ -326,6 +212,104 @@ function bbStart(){
       window.addEventListener('resize', onScroll);
       frame();
     })();
+
+    /* ACTS 3–6 — one continuous scrub. The visitor drives the whole film with
+       the scrollbar, and each layer's name fades in when the film arrives at
+       the thing it names: the helix for DNA, the body with a skeleton inside
+       it for BLOOD, the surfaces for SKIN. Bands are fractions of the film's
+       own running time, so re-cutting the source means re-checking these. */
+    (function(){
+      var sec = document.getElementById('reel');
+      if(!sec || !okMotion) return;
+      var canvas = sec.querySelector('.reel-canvas');
+      if(!canvas || !canvas.getContext) return;
+      var ctx = canvas.getContext('2d', { alpha:false });
+      var COUNT = parseInt(sec.dataset.count,10) || 170;
+
+      /* A phone gets its own smaller set. Held at 1000px, 170 decoded frames
+         would be ~364 MB of bitmap — a phone will simply evict them and the
+         scrub turns into a slideshow. At 640px it is 149 MB and the frames are
+         still larger than the screen. Chosen once, on load: swapping sets on
+         rotate would throw away everything already decoded. */
+      var SMALL = Math.min(window.innerWidth, window.innerHeight) < 700
+                  || window.innerWidth < 820;
+      var DIR = SMALL ? 'assets/reel-sm' : 'assets/reel';
+      if(SMALL){ canvas.width = 640; canvas.height = 360; }
+
+      /* fade in a→b, hold b→c, fade out c→d */
+      /* Bands are fractions of the film's own running time. Each caption holds
+         for the better part of a screen of scrolling — the hold is the point,
+         the fades are just the joins. */
+      var CAPS = {
+        open:  [0.000,0.015,0.105,0.140],   /* the statement, over the first spark */
+        dna:   [0.055,0.085,0.220,0.250],   /* the helix                            */
+        blood: [0.265,0.295,0.425,0.455],   /* the red body, skeleton inside        */
+        skin:  [0.470,0.500,0.660,0.690]    /* iridescent, crystal, chrome          */
+      };
+      var caps = {};
+      sec.querySelectorAll('.reel-copy').forEach(function(el){
+        caps[el.dataset.cap] = el;
+      });
+
+      var imgs = new Array(COUNT), ok = 0, settled = 0;
+      var live = false, ticking = false, painted = -1;
+      function path(i){ return DIR + '/f-' + String(i+1).padStart(3,'0') + '.webp'; }
+      function nearest(i){
+        if(imgs[i]) return i;
+        for(var d=1; d<COUNT; d++){
+          if(i-d >= 0 && imgs[i-d]) return i-d;
+          if(i+d < COUNT && imgs[i+d]) return i+d;
+        }
+        return -1;
+      }
+      function draw(i){
+        var n = nearest(i);
+        if(n < 0 || n === painted) return;
+        ctx.drawImage(imgs[n], 0, 0, canvas.width, canvas.height);
+        painted = n;
+      }
+      function frame(){
+        ticking = false;
+        var span = sec.offsetHeight - window.innerHeight;
+        if(span <= 0) return;
+        var p = -sec.getBoundingClientRect().top / span;
+        p = p < 0 ? 0 : (p > 1 ? 1 : p);
+        draw(Math.round(p * (COUNT - 1)));
+        for(var k in CAPS){
+          var st = beat(p, CAPS[k][0], CAPS[k][1], CAPS[k][2], CAPS[k][3]);
+          var el = caps[k];
+          if(el){
+            el.style.opacity = st.o.toFixed(3);
+            /* the caption keeps its own centring; only Y is animated on top */
+            el.style.transform = 'translate(-50%,-50%) translateY(' + st.y.toFixed(1) + 'px)';
+          }
+        }
+      }
+      function onScroll(){ if(!ticking){ ticking = true; requestAnimationFrame(frame); } }
+      function go(){
+        if(live || ok < COUNT * 0.6) return;
+        live = true;
+        sec.classList.add('live');
+        window.addEventListener('scroll', onScroll, { passive:true });
+        window.addEventListener('resize', onScroll);
+        frame();
+      }
+      for(var i=0;i<COUNT;i++){
+        (function(i){
+          var im = new Image();
+          im.decoding = 'async';
+          im.onload = function(){
+            imgs[i] = im; ok++; settled++;
+            if(i === 0){ draw(0); sec.classList.add('scrub'); }
+            if(settled === COUNT) go();
+          };
+          im.onerror = function(){ settled++; if(settled === COUNT) go(); };
+          im.src = path(i);
+        })(i);
+      }
+      setTimeout(go, 15000);   /* a few missing frames must not block the reel */
+    })();
+
   }catch(e){ /* animation is optional — content is visible by default */ }
 }
 if(window.__bbReady){ bbStart(); }
