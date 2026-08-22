@@ -1227,9 +1227,13 @@ function placeHit(){
   hitLast={x:x,y:y,d:s};
   hit.style.width=hit.style.height=s+'px';
   hit.style.left=(x-s*.5)+'px'; hit.style.top=(y-s*.5)+'px';
+  /* the readout follows her, but never sits on the corner marks: when she is
+     low on the screen it goes above her instead of underneath */
   var es=$('eyestate');
-  es.style.left = clamp(x - s*.5, 12, VW-190)+'px';
-  es.style.top  = clamp(y + s*.5 + 10, 12, VH-52)+'px';
+  var below = y + s*.5 + 12, above = y - s*.5 - 40;
+  var ey2 = (below > VH*.80 && above > 60) ? above : below;
+  es.style.left = clamp(x - s*.5, 12, VW-200)+'px';
+  es.style.top  = clamp(ey2, 60, VH-108)+'px';
 }
 
 /* ═══ THE SCHEDULER ══ one loop for the whole site ═══════════════════════ */
@@ -1391,6 +1395,7 @@ function openIris(seed, from){
   opener = from || document.activeElement;
   portalFrom = { y:scrollY };
   portal.classList.add('on'); portalOpen=true; portalT=0; portalMode='listen';
+  MEMO.a=0; MEMO.img=null;
   document.body.classList.add('raised');
   document.body.style.overflow='hidden'; shut(true);
   $('portalState').textContent='IRIS / LISTENING';
