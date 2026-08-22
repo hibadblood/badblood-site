@@ -1,0 +1,1358 @@
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Bad Blood Organism</title>
+<meta name="description" content="Bad Blood Company — a creative intelligence company. We build things that live.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Space+Grotesk:wght@400;500&display=swap">
+<style>
+/* ══════════════════════════════════════════════════════════════════════
+   BAD BLOOD — VISUAL SYSTEM
+   ──────────────────────────────────────────────────────────────────────
+   Every locked value from the repo's style.css survives untouched:
+   --ink --bone --chrome --blood --line, and the old --dim is now --smoke
+   at the same hex. What is added is depth in the black — the brief asks
+   for warm black, carbon, deep red-black rather than one flat #08080A —
+   and a subsurface red that exists only inside the eye.
+
+   Type is three roles, not one face. Archivo carries DISPLAY (compressed,
+   heavy, architectural) and EDITORIAL (normal width, light). Space Grotesk
+   survives as MICRO — the technical annotation voice — which keeps the
+   locked face in the system rather than deleting it.
+   ══════════════════════════════════════════════════════════════════════ */
+:root{
+  /* ground — depth, not one flat black */
+  --void:#050506; --ink:#08080A; --carbon:#0B0B0F; --graphite:#15151A;
+  --steel:#26262E; --line:#232326;
+  /* light */
+  --bone:#F2F2EF; --chrome:#9EA2A6; --smoke:#5C5C61; --ash:#3A3A40;
+  /* signal — biological, never decoration */
+  --blood:#C8102E; --blood-deep:#4A0710; --blood-wash:rgba(200,16,46,.13);
+
+  --display:'Archivo',Impact,'Arial Narrow',sans-serif;
+  --edit:'Archivo',-apple-system,Helvetica,Arial,sans-serif;
+  --micro:'Space Grotesk',ui-monospace,monospace;
+
+  /* motion: mass. Nothing here floats. */
+  --lux:cubic-bezier(.19,1,.22,1);       /* slow, heavy, luxury */
+  --focus:cubic-bezier(.7,0,.25,1);      /* mechanical, precise */
+  --cut:cubic-bezier(.85,0,.15,1);       /* sharp, for BLOOD */
+  --t-slow:1.25s; --t-mid:.7s; --t-fast:.28s;
+
+  --edge:clamp(18px,4.2vw,72px);
+  --micro-size:clamp(8px,.72vw,9.5px);
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{-webkit-text-size-adjust:100%;background:var(--void)}
+body{background:var(--ink);color:var(--bone);font-family:var(--edit);font-weight:300;
+  -webkit-font-smoothing:antialiased;overflow-x:hidden;line-height:1.45;
+  font-variation-settings:'wdth' 100}
+img{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-align:left}
+:focus-visible{outline:1px solid var(--blood);outline-offset:4px}
+::selection{background:var(--blood);color:var(--bone)}
+
+/* ── texture ── generated, not a PNG overlay. Sits above everything at a
+   level you notice only when it is removed. */
+.grain{position:fixed;inset:-50%;z-index:9;pointer-events:none;opacity:.038;
+  background-image:url("data:image/svg+xml;utf8,<svg xmlns='http://www.w3.org/2000/svg' width='220' height='220'><filter id='n'><feTurbulence type='fractalNoise' baseFrequency='.85' numOctaves='3' stitchTiles='stitch'/><feColorMatrix type='saturate' values='0'/></filter><rect width='220' height='220' filter='url(%23n)'/></svg>");
+  mix-blend-mode:overlay;will-change:transform}
+@media (prefers-reduced-motion:no-preference){
+  .grain{animation:drift 7s steps(6) infinite}
+  @keyframes drift{0%{transform:translate(0,0)}20%{transform:translate(-2%,1%)}
+    40%{transform:translate(1%,-2%)}60%{transform:translate(-1%,-1%)}
+    80%{transform:translate(2%,1%)}100%{transform:translate(0,0)}}
+}
+/* ── the deep vignette that gives the black somewhere to go ── */
+.depth{position:fixed;inset:0;z-index:1;pointer-events:none;
+  background:radial-gradient(130% 90% at 50% 38%,transparent 34%,rgba(5,5,6,.62) 100%)}
+
+/* ══ TYPE ══════════════════════════════════════════════════════════════ */
+.mi{font-family:var(--micro);font-size:var(--micro-size);letter-spacing:.34em;
+  text-transform:uppercase;color:var(--smoke);font-weight:400;line-height:1.6}
+.mi.hot{color:var(--blood)}
+.mi.lit{color:var(--chrome)}
+
+.disp{font-family:var(--display);font-weight:800;font-variation-settings:'wdth' 78,'wght' 800;
+  line-height:.80;letter-spacing:-.035em;text-transform:uppercase;color:var(--bone);
+  text-wrap:balance}
+.xxl{font-size:clamp(3.4rem,15.5vw,15rem)}
+.xl {font-size:clamp(2.8rem,10.5vw,9.5rem)}
+.lg {font-size:clamp(2.1rem,6.4vw,5.4rem)}
+
+.ed{font-family:var(--edit);font-variation-settings:'wdth' 100,'wght' 300;
+  font-size:clamp(15px,1.35vw,18px);line-height:1.7;color:var(--chrome);max-width:54ch}
+.ed.big{font-size:clamp(19px,2.5vw,32px);line-height:1.35;color:var(--bone);
+  font-variation-settings:'wdth' 100,'wght' 400;max-width:22ch;letter-spacing:-.015em}
+.red{color:var(--blood)}
+
+/* ══ NAV ══ sits on the canvas. No bar, no container, no backdrop. ══════ */
+.nav{position:fixed;top:0;left:0;right:0;z-index:60;display:flex;align-items:flex-start;
+  justify-content:space-between;gap:20px;padding:var(--edge) var(--edge) 0;
+  mix-blend-mode:difference}
+.nav img{height:15px;width:auto}
+.nav::before{content:'';position:absolute;inset:0;z-index:-1;pointer-events:none;
+  background:linear-gradient(to bottom,rgba(5,5,6,.55),transparent);
+  height:calc(var(--edge)*3);mix-blend-mode:normal}
+.nav-l{display:flex;gap:clamp(12px,2vw,26px);align-items:flex-start}
+.nav-l a{transition:color var(--t-fast) var(--focus)}
+.nav-l a:hover{color:var(--bone)}
+@media (max-width:820px){.nav-l a{display:none}}
+
+/* the primary action is type and a reaction, never a pill */
+.act{display:inline-flex;align-items:baseline;gap:.6em;font-family:var(--micro);
+  font-size:clamp(9.5px,1vw,11px);letter-spacing:.3em;text-transform:uppercase;
+  color:var(--bone);position:relative;padding-bottom:7px}
+.act::after{content:'';position:absolute;left:0;bottom:0;height:1px;width:100%;
+  background:var(--steel);transform-origin:left;transition:transform var(--t-mid) var(--focus),
+  background var(--t-mid)}
+.act:hover::after{background:var(--blood);transform:scaleX(1.06)}
+.act i{font-style:normal;transition:transform var(--t-mid) var(--lux);color:var(--blood)}
+.act:hover i{transform:translateX(7px)}
+
+/* ══ SHELL ═════════════════════════════════════════════════════════════ */
+main{position:relative;z-index:2}
+.scene{position:relative;min-height:100svh;display:flex;flex-direction:column;
+  justify-content:center;padding:calc(var(--edge)*2.4) var(--edge)}
+.bleed{padding-left:0;padding-right:0}
+.hold{width:100%;max-width:1560px;margin:0 auto}
+
+/* micro corner marks — the world's system readout, used sparingly */
+.marks{position:fixed;inset:0;z-index:58;pointer-events:none}
+.marks span{position:absolute;font-family:var(--micro);font-size:var(--micro-size);
+  letter-spacing:.34em;text-transform:uppercase;color:var(--ash)}
+.marks .bl{left:var(--edge);bottom:var(--edge)}
+.marks .br{right:var(--edge);bottom:var(--edge);text-align:right}
+@media (max-width:820px){.marks .br{display:none}}
+
+/* ══ 01 · ARRIVAL ══════════════════════════════════════════════════════
+   Negative space carries this. The wordmark is small, the statement is
+   enormous, and the eye is cropped by the right edge — already there
+   before the visitor arrived. */
+.arrive{min-height:100svh;position:relative;display:grid;
+  grid-template-rows:1fr auto 1fr;padding:calc(var(--edge)*3) var(--edge) var(--edge);
+  overflow:hidden}
+.arrive .line{overflow:hidden}
+.arrive .line b{display:block;font-weight:inherit;
+  transform:translateY(102%);transition:transform 1.3s var(--lux)}
+.arrive.up .line b{transform:none}
+.arrive .line:nth-child(2) b{transition-delay:.10s}
+.arrive .line:nth-child(3) b{transition-delay:.20s}
+/* clears the fixed corner readouts rather than printing on top of them */
+.arrive-foot{display:flex;justify-content:flex-start;align-items:flex-end;
+  gap:24px;flex-wrap:wrap;padding-bottom:clamp(26px,4vh,44px)}
+
+/* the eye, cropped by the viewport on arrival */
+.eyewell{position:absolute;right:-16vw;top:50%;transform:translateY(-50%);
+  width:min(78vw,760px);aspect-ratio:1;z-index:0;pointer-events:auto}
+.eyewell canvas{width:100%;height:100%;display:block;cursor:none}
+@media (max-width:900px){
+  .eyewell{right:-38vw;top:26%;width:110vw;opacity:.7}
+}
+.eyestate{position:absolute;left:6%;bottom:14%;display:flex;flex-direction:column;gap:3px;
+  opacity:0;transition:opacity var(--t-mid) var(--focus)}
+.eyewell.aware .eyestate{opacity:1}
+
+/* resident eye for the rest of the page */
+.dock{position:fixed;right:var(--edge);bottom:calc(var(--edge) + 46px);z-index:57;
+  width:clamp(52px,5.4vw,76px);aspect-ratio:1;opacity:0;
+  transition:opacity var(--t-slow) var(--lux);pointer-events:none}
+.dock.on{opacity:1;pointer-events:auto}
+.dock canvas{width:100%;height:100%;display:block;cursor:pointer;border-radius:50%}
+
+/* ══ 02 · THE QUESTION ═════════════════════════════════════════════════ */
+.ask-scene{display:grid;gap:clamp(24px,4vw,54px);align-content:center}
+.ask-grid{display:grid;grid-template-columns:1fr;gap:clamp(20px,3vw,48px);align-items:end}
+@media (min-width:940px){.ask-grid{grid-template-columns:1.35fr .65fr}}
+
+/* ══ 03 · ANATOMY ══ one instrument, three states ══════════════════════ */
+.organ{position:relative;min-height:118svh;display:flex;align-items:center;
+  padding:calc(var(--edge)*2.4) var(--edge);overflow:hidden}
+.organ .field{position:absolute;inset:0;width:100%;height:100%;z-index:0;pointer-events:none}
+.organ .hold{position:relative;z-index:2}
+.organ-head{display:grid;gap:clamp(14px,2vw,26px)}
+.organ-body{display:grid;grid-template-columns:1fr;gap:clamp(22px,3.4vw,60px);
+  margin-top:clamp(28px,5vh,72px);align-items:start}
+@media (min-width:940px){.organ-body{grid-template-columns:1fr auto}}
+.keywords{display:flex;flex-wrap:wrap;gap:0 clamp(14px,2vw,30px);max-width:34ch}
+.keywords span{font-family:var(--display);font-variation-settings:'wdth' 88,'wght' 400;
+  font-size:clamp(15px,1.7vw,22px);text-transform:uppercase;letter-spacing:.02em;
+  color:var(--ash);transition:color var(--t-mid) var(--focus),
+  font-variation-settings var(--t-mid) var(--focus);cursor:default;line-height:1.5}
+.keywords span:hover{color:var(--bone);font-variation-settings:'wdth' 88,'wght' 700}
+.organ.live .keywords span{color:var(--smoke)}
+
+/* the seam between organs — the transition is a moment, not a fade */
+.seam{position:relative;height:64svh;display:flex;align-items:center;
+  padding:0 var(--edge);overflow:hidden}
+.seam canvas{position:absolute;inset:0;width:100%;height:100%;z-index:0}
+.seam .hold{position:relative;z-index:2}
+.seam .mi{display:block}
+.seam .lg{max-width:16ch}
+
+/* ══ SCARS ══ one project per moment, full bleed ═══════════════════════ */
+.scar{position:relative;min-height:100svh;display:flex;align-items:flex-end;
+  overflow:hidden;cursor:pointer;width:100%}
+.scar-media{position:absolute;inset:0;z-index:0;overflow:hidden}
+.scar-media img{width:100%;height:100%;object-fit:cover;
+  transform:scale(1.06);transition:transform 2.4s var(--lux),filter 1.2s var(--focus);
+  filter:saturate(.9) contrast(1.06) brightness(.72)}
+.scar.near .scar-media img{transform:scale(1);filter:saturate(1) contrast(1.04) brightness(.86)}
+.scar-media::after{content:'';position:absolute;inset:0;
+  background:linear-gradient(to top,rgba(5,5,6,.94) 0%,rgba(5,5,6,.35) 38%,rgba(5,5,6,.1) 70%)}
+.scar-in{position:relative;z-index:2;width:100%;padding:var(--edge);
+  display:grid;gap:12px}
+.scar-meta{display:flex;gap:clamp(12px,2vw,26px);flex-wrap:wrap;align-items:baseline;
+  opacity:.35;transform:translateY(6px);
+  transition:opacity var(--t-mid) var(--focus),transform var(--t-mid) var(--focus)}
+.scar.near .scar-meta{opacity:1;transform:none}
+.scar-note{max-width:40ch;opacity:0;transform:translateY(8px);
+  transition:opacity var(--t-slow) var(--lux),transform var(--t-slow) var(--lux)}
+.scar.near .scar-note{opacity:1;transform:none}
+
+/* ══ ORIGINALS ══ no cards. Ruled rows. ════════════════════════════════ */
+.rows{display:grid;border-top:1px solid var(--line)}
+.row{display:grid;grid-template-columns:1fr;gap:8px;padding:clamp(20px,3vw,38px) 0;
+  border-bottom:1px solid var(--line);transition:padding-left var(--t-mid) var(--lux)}
+@media (min-width:820px){.row{grid-template-columns:minmax(0,.42fr) minmax(0,1fr) auto;
+  gap:clamp(20px,3vw,50px);align-items:baseline}}
+.row:hover{padding-left:clamp(8px,1.4vw,22px)}
+.row h3{font-family:var(--display);font-variation-settings:'wdth' 84,'wght' 600;
+  font-size:clamp(20px,2.6vw,34px);text-transform:uppercase;letter-spacing:-.02em;
+  line-height:1;color:var(--bone)}
+.row p{font-size:clamp(13.5px,1.15vw,15.5px);line-height:1.65;color:var(--smoke);max-width:52ch;
+  transition:color var(--t-mid)}
+.row:hover p{color:var(--chrome)}
+
+/* ══ PORTAL ══ not a chat. Typography in space. ════════════════════════ */
+.portal{position:fixed;inset:0;z-index:95;background:var(--void);
+  display:none;flex-direction:column;padding:var(--edge);overflow:hidden}
+.portal.on{display:flex}
+.portal-top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;
+  position:relative;z-index:3}
+.portal-eye{position:absolute;left:50%;top:50%;transform:translate(-50%,-50%);
+  width:min(120vh,120vw);aspect-ratio:1;z-index:0;opacity:.5;pointer-events:none;
+  transition:opacity 1.4s var(--lux),transform 1.6s var(--lux)}
+.portal.deep .portal-eye{opacity:.24;transform:translate(-50%,-50%) scale(1.28)}
+/* the question and the field shrink out of the way once she is reading */
+.portal.deep #pStage h2{font-size:clamp(15px,1.7vw,22px);margin-bottom:clamp(10px,1.6vh,20px);
+  color:var(--smoke);transition:font-size var(--t-mid) var(--focus),color var(--t-mid)}
+.portal.deep .pinput input{font-size:clamp(15px,2vw,26px)}
+.portal.deep .seeds{display:none}
+#pStage h2,.pinput input{transition:font-size var(--t-mid) var(--focus)}
+.portal-eye canvas{width:100%;height:100%;display:block}
+.portal-body{flex:1;display:flex;flex-direction:column;justify-content:center;gap:clamp(16px,3vh,36px);
+  position:relative;z-index:2;overflow-y:auto;padding:clamp(16px,4vh,40px) 0}
+.pinput{display:flex;align-items:baseline;gap:clamp(10px,2vw,22px);
+  border-bottom:1px solid var(--steel);padding-bottom:clamp(10px,1.6vh,18px);max-width:1100px}
+.pinput input{flex:1;background:none;border:0;color:var(--bone);font-family:var(--display);
+  font-variation-settings:'wdth' 82,'wght' 500;font-size:clamp(20px,4.4vw,54px);
+  text-transform:uppercase;letter-spacing:-.02em;padding:0;min-width:0}
+.pinput input::placeholder{color:var(--ash);font-variation-settings:'wdth' 82,'wght' 300}
+.pinput input:focus{outline:none}
+.seeds{display:flex;flex-wrap:wrap;gap:clamp(12px,2vw,30px)}
+.seed{font-family:var(--micro);font-size:var(--micro-size);letter-spacing:.3em;
+  text-transform:uppercase;color:var(--smoke);padding-bottom:5px;border-bottom:1px solid transparent;
+  transition:color var(--t-fast),border-color var(--t-fast)}
+.seed:hover{color:var(--bone);border-color:var(--blood)}
+
+/* the analysis — words become structure */
+.parse{display:flex;flex-wrap:wrap;gap:clamp(14px,1.8vw,26px) clamp(10px,1.6vw,22px);
+  align-items:flex-start;margin-bottom:clamp(12px,2.4vh,26px)}
+.tok{display:grid;gap:5px;opacity:0;transform:translateY(10px);
+  transition:opacity .5s var(--focus),transform .5s var(--focus)}
+.tok.in{opacity:1;transform:none}
+.tok b{font-family:var(--display);font-variation-settings:'wdth' 80,'wght' 700;
+  font-size:clamp(20px,4.2vw,52px);text-transform:uppercase;letter-spacing:-.025em;
+  line-height:.9;color:var(--bone);position:relative;display:inline-block;
+  /* the rule must be the width of the word, not of the label beneath it */
+  justify-self:start;width:max-content}
+.tok.strike b{color:var(--ash)}
+.tok.strike b::after{content:'';position:absolute;left:-2%;right:-2%;top:52%;height:2px;
+  background:var(--blood);transform:scaleX(0);transform-origin:left;
+  transition:transform .55s var(--cut) .15s}
+.tok.strike.in b::after{transform:scaleX(1)}
+.tok em{font-family:var(--micro);font-size:var(--micro-size);letter-spacing:.28em;
+  text-transform:uppercase;color:var(--smoke);font-style:normal}
+.tok.strike em{color:var(--blood)}
+.verdict{display:grid;gap:clamp(10px,1.8vh,20px);max-width:30ch;opacity:0;
+  transform:translateY(14px);transition:opacity .9s var(--lux),transform .9s var(--lux)}
+.verdict.in{opacity:1;transform:none}
+.pnext{display:grid;gap:8px;max-width:46ch}
+
+/* ══ CASE ══════════════════════════════════════════════════════════════ */
+.case{position:fixed;inset:0;z-index:90;background:var(--ink);overflow-y:auto;display:none}
+.case.on{display:block}
+.case-hero{position:relative;height:74svh;overflow:hidden}
+.case-hero img{width:100%;height:100%;object-fit:cover;filter:saturate(.95) brightness(.8)}
+.case-hero::after{content:'';position:absolute;inset:0;
+  background:linear-gradient(to top,var(--ink),transparent 55%)}
+.case-title{position:absolute;left:var(--edge);bottom:var(--edge);z-index:2;display:grid;gap:10px}
+.case-wrap{padding:0 var(--edge) calc(var(--edge)*3);max-width:1560px;margin:0 auto}
+.beat{display:grid;grid-template-columns:1fr;gap:clamp(10px,1.6vw,22px);
+  padding:clamp(38px,7vh,96px) 0;border-bottom:1px solid var(--line)}
+@media (min-width:940px){
+  .beat{grid-template-columns:minmax(0,.3fr) minmax(0,.7fr);gap:clamp(30px,5vw,90px)}
+  .beat.wide{grid-template-columns:1fr}
+  .beat.wide .beat-t{max-width:none}
+}
+.beat h4{font-family:var(--micro);font-size:var(--micro-size);letter-spacing:.34em;
+  text-transform:uppercase;color:var(--smoke);font-weight:400}
+.beat .beat-t{font-size:clamp(16px,1.6vw,21px);line-height:1.62;color:var(--chrome);max-width:56ch}
+.beat.lead .beat-t{font-family:var(--display);font-variation-settings:'wdth' 88,'wght' 500;
+  font-size:clamp(22px,3.4vw,46px);line-height:1.06;letter-spacing:-.025em;
+  color:var(--bone);text-transform:none;max-width:20ch}
+.beat.scar-beat .beat-t{color:var(--smoke);font-style:italic}
+
+/* ══ LOADER ══ the pupil focuses. No percentage, no spinner. ═══════════ */
+.boot{position:fixed;inset:0;z-index:120;background:var(--void);display:grid;
+  place-items:center;transition:opacity .8s var(--lux),visibility .8s}
+.boot.gone{opacity:0;visibility:hidden}
+.boot canvas{width:clamp(70px,9vw,120px);aspect-ratio:1;display:block}
+
+/* ══ CURSOR ════════════════════════════════════════════════════════════ */
+.cur{position:fixed;left:0;top:0;z-index:110;pointer-events:none;width:7px;height:7px;
+  border-radius:50%;background:var(--bone);mix-blend-mode:difference;
+  transition:width var(--t-fast) var(--focus),height var(--t-fast) var(--focus),
+  opacity var(--t-fast);opacity:0;margin:-3.5px 0 0 -3.5px}
+.cur.on{opacity:1}
+.cur.wide{width:34px;height:34px;margin:-17px 0 0 -17px;background:transparent;
+  border:1px solid var(--bone)}
+@media (hover:none),(pointer:coarse){.cur{display:none}}
+
+/* ══ REVEAL ══ visible by default. JS only ever ADDS the hidden state. ══ */
+.rv{transition:opacity 1.1s var(--lux),transform 1.1s var(--lux)}
+.rv.pre{opacity:0;transform:translateY(20px)}
+.rv.pre.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){
+  *{animation:none!important;transition:none!important;scroll-behavior:auto!important}
+  .rv.pre,.tok,.verdict{opacity:1!important;transform:none!important}
+  .arrive .line b{transform:none!important}
+  .grain{display:none}
+}
+</style>
+<div class="boot" id="boot"><canvas id="bootEye" width="260" height="260" aria-hidden="true"></canvas></div>
+<div class="cur" id="cur" aria-hidden="true"></div>
+<div class="depth" aria-hidden="true"></div>
+<div class="grain" aria-hidden="true"></div>
+
+<nav class="nav">
+  <a href="#top" aria-label="Bad Blood Company"><img src="ASSET_PNG_REMOVED" alt="Bad Blood Company"></a>
+  <div class="nav-l mi">
+    <a href="#scars">Work</a><a href="#anatomy">Anatomy</a>
+    <a href="#originals">Originals</a><a href="#company">Company</a>
+  </div>
+  <button class="act" data-iris>Bring us a problem <i>→</i></button>
+</nav>
+
+<div class="marks" aria-hidden="true">
+  <span class="bl mi" id="markL">BB / 2026</span>
+  <span class="br mi" id="markR">Bangkok / TH</span>
+</div>
+
+<div class="dock" id="dock">
+  <canvas id="dockEye" width="200" height="200" role="button" tabindex="0"
+          aria-label="Enter IRIS"></canvas>
+</div>
+
+<main id="top">
+
+<!-- ══ 01 · ARRIVAL ══ negative space, one statement, an eye already there ══ -->
+<header class="arrive" id="arrive">
+  <div class="eyewell" id="eyewell">
+    <canvas id="heroEye" width="900" height="900" aria-label="IRIS"></canvas>
+    <div class="eyestate">
+      <span class="mi hot" id="eyeState">IRIS / DORMANT</span>
+      <span class="mi">Ask IRIS</span>
+    </div>
+  </div>
+  <div></div>
+  <h1 class="disp xxl">
+    <span class="line"><b>We build</b></span>
+    <span class="line"><b>things</b></span>
+    <span class="line"><b>that live.</b></span>
+  </h1>
+  <div class="arrive-foot">
+    <span class="mi lit">Bad Blood Company — A Creative Intelligence Company</span>
+  </div>
+</header>
+
+<!-- ══ 02 · THE QUESTION ══ declaration becomes conversation ══ -->
+<section class="scene ask-scene">
+  <div class="hold ask-scene">
+    <span class="mi rv">01 / The shift</span>
+    <h2 class="disp xl rv">What needs<br>to happen?</h2>
+    <div class="ask-grid">
+      <p class="ed rv">Every brief arrives already answered. A video. A website. A campaign.
+        The answer is stated before the problem is, and the work spends its life defending
+        a format nobody examined.</p>
+      <div class="rv" style="display:grid;gap:14px">
+        <span class="mi">The problem chooses the idea</span>
+        <span class="mi">The idea chooses the medium</span>
+        <button class="act" data-iris style="margin-top:8px">Ask IRIS <i>→</i></button>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 03 · ANATOMY OPENING ══ -->
+<section class="scene" id="anatomy">
+  <div class="hold" style="display:grid;gap:clamp(18px,3vh,40px)">
+    <span class="mi rv">02 / The anatomy</span>
+    <h2 class="disp lg rv" style="max-width:14ch">Everything we build has an anatomy.</h2>
+    <p class="ed rv">Not departments. Departments are how a company is filed, and filing is
+      why a film company answers every problem with a film.</p>
+  </div>
+</section>
+
+<!-- ══ DNA ══ -->
+<section class="organ" data-organ="DNA" data-mode="dna" data-mark="Anatomy / 01">
+  <canvas class="field" data-field="dna" aria-hidden="true"></canvas>
+  <div class="hold">
+    <div class="organ-head">
+      <span class="mi">DNA — It knows</span>
+      <h2 class="disp xl rv">The intelligence<br>inside the thing.</h2>
+    </div>
+    <div class="organ-body">
+      <div class="keywords rv">
+        <span>Strategy</span><span>Systems</span><span>Intelligence</span>
+        <span>Business</span><span>Technology</span><span>AI</span>
+      </div>
+      <div class="rv" style="display:grid;gap:9px">
+        <span class="mi">What should exist</span>
+        <span class="mi">Why should it exist</span>
+        <span class="mi">What does it know</span>
+        <span class="mi">How should it evolve</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ SEAM · DNA → BLOOD ══ intelligence acquiring a heartbeat ══ -->
+<section class="seam" data-seam="pulse" data-mark="Transition / 01">
+  <canvas aria-hidden="true"></canvas>
+  <div class="hold">
+    <span class="mi rv">Transition</span>
+    <p class="disp lg rv">Intelligence acquires a heartbeat.</p>
+  </div>
+</section>
+
+<!-- ══ BLOOD ══ -->
+<section class="organ" data-organ="BLOOD" data-mode="blood" data-mark="Anatomy / 02">
+  <canvas class="field" data-field="blood" aria-hidden="true"></canvas>
+  <div class="hold">
+    <div class="organ-head">
+      <span class="mi hot">BLOOD — It moves</span>
+      <h2 class="disp xl rv">The force that<br>makes people care.</h2>
+    </div>
+    <div class="organ-body">
+      <div class="keywords rv">
+        <span>Ideas</span><span>Film</span><span>Story</span>
+        <span>Characters</span><span>Music</span><span>Worlds</span>
+      </div>
+      <div class="rv" style="display:grid;gap:9px">
+        <span class="mi">Why should anyone care</span>
+        <span class="mi">What makes people stop</span>
+        <span class="mi">What makes them share it</span>
+        <span class="mi">What does it feel like</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ BLOOD MEDIA ══ memories moving through the organism ══ -->
+<section class="scene bleed" data-mark="Anatomy / 02" style="min-height:auto;padding-top:0">
+  <div class="strip" id="strip" aria-label="Selected frames"></div>
+</section>
+
+<!-- ══ SEAM · BLOOD → SKIN ══ life acquiring form ══ -->
+<section class="seam" data-seam="matter" data-mark="Transition / 02">
+  <canvas aria-hidden="true"></canvas>
+  <div class="hold">
+    <span class="mi rv">Transition</span>
+    <p class="disp lg rv">Life acquires form.</p>
+  </div>
+</section>
+
+<!-- ══ SKIN ══ -->
+<section class="organ" data-organ="SKIN" data-mode="skin" data-mark="Anatomy / 03">
+  <canvas class="field" data-field="skin" aria-hidden="true"></canvas>
+  <div class="hold">
+    <div class="organ-head">
+      <span class="mi">SKIN — It meets the world</span>
+      <h2 class="disp xl rv">Where the idea<br>touches reality.</h2>
+    </div>
+    <div class="organ-body">
+      <div class="keywords rv">
+        <span>Surface</span><span>Material</span><span>Interface</span>
+        <span>Space</span><span>Product</span><span>Contact</span>
+      </div>
+      <div class="rv" style="display:grid;gap:9px">
+        <span class="mi">Where does it become tangible</span>
+        <span class="mi">How does a person meet it</span>
+        <span class="mi">What do they touch</span>
+        <span class="mi">Where does interaction happen</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ CULTURE ══ leave the organism, open the scale ══ -->
+<section class="scene" data-mark="Culture">
+  <div class="hold" style="display:grid;gap:clamp(28px,7vh,90px)">
+    <p class="disp lg rv">Then we let it out.</p>
+    <p class="disp xl rv" style="justify-self:end;text-align:right">Into culture.</p>
+    <p class="ed rv" style="justify-self:end;text-align:right">The world answers back. What the
+      answer leaves behind is the only result worth measuring — and it is what the next
+      version is built from.</p>
+  </div>
+</section>
+
+<!-- ══ SCARS ══ one project per moment ══ -->
+<section class="scene" id="scars" data-mark="Scars">
+  <div class="hold" style="display:grid;gap:clamp(16px,3vh,38px)">
+    <span class="mi rv">03 / Scars — selected work</span>
+    <h2 class="disp xl rv" style="max-width:13ch">Build what culture can't ignore.</h2>
+  </div>
+</section>
+<div id="scarStack"></div>
+
+<!-- ══ IRIS REVEAL ══ -->
+<section class="scene" data-mark="IRIS" style="text-align:center;align-items:center">
+  <div class="hold" style="display:grid;gap:clamp(20px,4vh,54px);justify-items:center">
+    <p class="disp lg rv">She wasn't hired.</p>
+    <p class="disp xxl rv">She was built.</p>
+    <div class="rv" style="display:grid;gap:12px;justify-items:center">
+      <span class="mi">IRIS — Bad Blood intelligence</span>
+      <span class="mi lit">One of the things we built to live</span>
+      <button class="act" data-iris style="margin-top:14px">Enter IRIS <i>→</i></button>
+    </div>
+  </div>
+</section>
+
+<!-- ══ ORIGINALS ══ -->
+<section class="scene" id="originals" data-mark="Originals">
+  <div class="hold" style="display:grid;gap:clamp(20px,4vh,50px)">
+    <span class="mi rv">04 / Bad Blood Originals</span>
+    <h2 class="disp lg rv" style="max-width:15ch">Clients are not the only source of ideas.</h2>
+    <div class="rows rv" id="rows"></div>
+  </div>
+</section>
+
+<!-- ══ COMPANY ══ -->
+<section class="scene" id="company" data-mark="Company">
+  <div class="hold" style="display:grid;gap:clamp(46px,11vh,150px)">
+    <p class="disp lg rv" style="max-width:13ch">Intelligence without taste is just noise.</p>
+    <p class="disp lg rv" style="justify-self:end;text-align:right;max-width:13ch">
+      One brief. One brain. Every medium.</p>
+    <p class="disp lg rv" style="max-width:13ch">We collect chaos and call it beauty.</p>
+  </div>
+</section>
+
+<!-- ══ FINAL ══ -->
+<section class="scene" data-mark="BB / 2026">
+  <div class="hold" style="display:grid;gap:clamp(20px,4vh,48px)">
+    <span class="mi rv">05 / Bring us a problem</span>
+    <h2 class="disp xl rv" style="max-width:15ch">Don't tell us what you want made.</h2>
+    <p class="disp lg rv red">Tell us what needs to happen.</p>
+    <button class="act rv" data-iris style="justify-self:start;font-size:clamp(11px,1.3vw,14px)">
+      Bring us a problem <i>→</i></button>
+  </div>
+</section>
+
+<footer class="scene" style="min-height:auto;padding-block:calc(var(--edge)*1.4)">
+  <div class="hold" style="display:flex;flex-wrap:wrap;gap:22px;justify-content:space-between;
+    align-items:flex-end;border-top:1px solid var(--line);padding-top:26px">
+    <img src="ASSET_PNG_REMOVED" alt="Bad Blood Company" style="height:17px;width:auto">
+    <span class="mi">Visual draft — not live. Concept films are self-initiated
+      and were not commissioned by the brands shown.</span>
+  </div>
+</footer>
+
+</main>
+
+<!-- ══ PORTAL ══ -->
+<div class="portal" id="portal" role="dialog" aria-modal="true" aria-label="IRIS">
+  <div class="portal-eye"><canvas id="portalEye" width="600" height="600" aria-hidden="true"></canvas></div>
+  <div class="portal-top">
+    <span class="mi hot" id="portalState">IRIS / LISTENING</span>
+    <button class="act" id="portalX">Close <i>×</i></button>
+  </div>
+  <div class="portal-body" id="pBody">
+    <div id="pStage">
+      <h2 class="disp lg" style="max-width:16ch;margin-bottom:clamp(18px,4vh,44px)">
+        What needs to happen?</h2>
+      <div class="pinput">
+        <span class="mi">You</span>
+        <input id="pIn" type="text" autocomplete="off" spellcheck="false"
+               placeholder="Say the problem, not the deliverable" aria-label="Your problem">
+      </div>
+      <div class="seeds" style="margin-top:clamp(14px,2.6vh,26px)">
+        <button class="seed" data-seed="I need a viral film.">I need a viral film</button>
+        <button class="seed" data-seed="I need a campaign for a new hotel.">A new hotel</button>
+        <button class="seed" data-seed="I need a website.">I need a website</button>
+        <button class="seed" data-seed="I want to build something.">Build something</button>
+      </div>
+    </div>
+    <div id="pOut"></div>
+  </div>
+</div>
+
+<!-- ══ CASE ══ -->
+<div class="case" id="case" role="dialog" aria-modal="true" aria-label="Case study">
+  <div class="case-hero">
+    <img id="cImg" src="" alt="">
+    <div class="case-title">
+      <span class="mi" id="cKind">Concept work</span>
+      <h2 class="disp lg" id="cName">—</h2>
+      <span class="mi lit" id="cTags"></span>
+    </div>
+  </div>
+  <div class="case-wrap">
+    <div style="display:flex;justify-content:flex-end;padding-top:22px">
+      <button class="act" id="caseX">Close <i>×</i></button>
+    </div>
+    <div id="cBeats"></div>
+  </div>
+</div>
+<script>
+(function(){
+"use strict";
+var RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
+var TOUCH = matchMedia('(hover:none),(pointer:coarse)').matches;
+var $ = function(id){ return document.getElementById(id); };
+function esc(s){ return String(s==null?'':s).replace(/[&<>"']/g,function(c){
+  return {'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]; }); }
+
+/* ═══ DATA ═══════════════════════════════════════════════════════════════
+   Real frames from the archive. Nothing about a result is asserted anywhere:
+   where a scar has not been measured the field says exactly that. */
+var SCARS = [
+  { name:"Thai Future Fantasy", kind:"Original", year:"2026", img:"ASSET_WEBP_REMOVED",
+    tags:"DNA / BLOOD / SKIN",
+    note:"Thai culture is exported in the past tense. This films it as science fiction.",
+    problem:"Thai visual culture travels as heritage — temples, silk, tradition. Nothing in the export says the country has a future worth imagining.",
+    dna:"A position built on tension rather than nostalgia: a culture is taken seriously when it is allowed to speculate about itself, not only to preserve itself.",
+    blood:"Bangkok read as a set for something that has not happened yet. The ordinary street furniture of the city, filmed as though it were evidence.",
+    skin:"Built for the feed first. Vertical framing, sound designed to survive a phone speaker, cuts timed to the thumb rather than to a broadcast slot.",
+    scar:"Not measured. This is self-initiated work and no result has been recorded — placeholder." },
+  { name:"Saint Laurent", kind:"Concept work", year:"2025", img:"ASSET_WEBP_REMOVED",
+    tags:"BLOOD",
+    note:"Fashion film that stops performing fashion.",
+    problem:"Fashion film has one grammar. Every house arrives at the same edit, and the clothes stop being the subject.",
+    dna:"Strip the performance. What is left is posture, light and the specific way a garment moves when nobody is selling it.",
+    blood:"One continuous idea carried by movement. The camera commits early and does not cut to rescue itself.",
+    skin:"Cut for a cinema-first release with a vertical companion that is composed rather than cropped.",
+    scar:"Concept work, not commissioned by Saint Laurent. No result to report." },
+  { name:"Burning City", kind:"Original", year:"2025", img:"ASSET_WEBP_REMOVED",
+    tags:"BLOOD / SKIN",
+    note:"A city filmed at the hour it stops pretending.",
+    problem:"Bangkok is photographed either as a postcard or as chaos. Neither is what living in it feels like.",
+    dna:"The interesting hour is the one between the two — when the light goes and the city is briefly neither.",
+    blood:"Long lenses, no establishing shots, and a sound design built from the room rather than from a library.",
+    skin:"Made to be seen large. The frame assumes a wall, not a phone.",
+    scar:"Not measured. Self-initiated — placeholder." },
+  { name:"Rimowa — Baggage Has Memory", kind:"Concept work", year:"2025", img:"ASSET_WEBP_REMOVED",
+    tags:"DNA / BLOOD",
+    note:"The scratches are the product.",
+    problem:"A case that lasts thirty years is sold with the language of a case that lasts one season.",
+    dna:"Reposition the damage. Wear on a luggage shell is the record of where a person has been — the only part of the product the owner authored.",
+    blood:"The film never shows a new case. It opens on a surface that has already lived.",
+    skin:"Extends into retail without translation: the same idea works as a wall of used shells in a store window.",
+    scar:"Concept work, not commissioned by Rimowa. No result to report." },
+  { name:"Leica — Through Our Eyes", kind:"Concept work", year:"2025", img:"ASSET_WEBP_REMOVED",
+    tags:"BLOOD",
+    note:"Nobody buying this is buying a camera.",
+    problem:"Camera advertising sells the camera. The people who buy this one are not buying a camera.",
+    dna:"They are purchasing a way of looking, and a way of looking cannot be demonstrated by a spec sheet.",
+    blood:"Shot as if the viewer already owns one — the frame behaves like an eye that has learned what to hold on.",
+    skin:"A single long-form cut, and a stills set that works as an exhibition rather than as social assets.",
+    scar:"Concept work, not commissioned by Leica. No result to report." },
+];
+var STRIP = ["ASSET_WEBP_REMOVED","ASSET_WEBP_REMOVED","ASSET_WEBP_REMOVED","ASSET_WEBP_REMOVED","ASSET_WEBP_REMOVED","ASSET_WEBP_REMOVED","ASSET_WEBP_REMOVED","ASSET_WEBP_REMOVED"];
+var ROWS = [
+  ["IRIS","Operating","The intelligence interface of the company. She keeps what has been learned, argues with a brief before accepting it, and is the reason the claim does not have to be believed."],
+  ["Rule Maker","In production","An owned world and its production line. Each episode is also a research instrument — it observes a behaviour, breaks one assumption, and what it learns returns as company DNA."],
+  ["Bad Blood Ventures","Architecture only","When an organism becomes a product, a platform or a business capable of generating its own value, Bad Blood can be its builder and its owner rather than its agency."],
+  ["The Chapters","Ongoing","Self-initiated films made to find out what a medium can carry before a client asks for it. Where technique is developed, and where it fails cheaply."],
+];
+
+/* ═══ THE EYE ════════════════════════════════════════════════════════════
+   The signature object, and the only place on this site where real technical
+   effort is spent. It is not a circle with a gradient: it is built in layers
+   the way an eye is — socket, limbus, stroma with fibre at three depths,
+   a collarette that is deliberately not concentric, crypts, an aperture with
+   distance behind it, and a glass cornea over all of it that refracts what
+   is underneath and carries one hard catchlight.
+
+   Attention is modelled, not tracked. Following a cursor one-to-one is a
+   gimmick and reads as one. This acquires after a dwell, saccades with an
+   overshoot, settles, drifts, and sometimes declines to look at all. The
+   latency is the personality.
+   ══════════════════════════════════════════════════════════════════════ */
+function Eye(cv, opt){
+  opt = opt || {};
+  var ctx = cv.getContext('2d'), DPR = Math.min(2, window.devicePixelRatio||1);
+  var W=0,H=0,cx=0,cy=0,R=0;
+  var mode='idle';
+  /* gaze: where it is looking (-1..1). tgt: where it wants to look. */
+  var gx=0,gy=0,tx=0,ty=0,vx=0,vy=0;
+  var dil=0, dilT=0, open=opt.open==null?1:opt.open, openT=open;
+  var aware=0, awareT=0, dwell=0, ignoreUntil=0, driftT=0;
+  var pointer=null;
+
+  /* fibre at three depths — deep ones are longer and darker, surface ones
+     short and bright. The variation is per-fibre and fixed, so the iris has
+     a stable identity rather than boiling. */
+  var FIB=[], N = opt.n || 220;
+  for(var i=0;i<N;i++){
+    var d = i%3;
+    FIB.push({ a:(i/N)*6.2832 + (Math.random()-.5)*.02, depth:d,
+      len:(d===0?.72:d===1?.55:.38) * (.82+Math.random()*.30),
+      w:(d===0?1.5:d===1?.95:.6)*(.7+Math.random()*.7),
+      ph:Math.random()*6.2832, sp:.5+Math.random()*.9,
+      bend:(Math.random()-.5)*.09 });
+  }
+  /* crypts — the imperfections. Placed once, asymmetric on purpose. */
+  var CRYPT=[]; for(var c=0;c<9;c++) CRYPT.push({
+    a:Math.random()*6.2832, r:.42+Math.random()*.38,
+    s:.018+Math.random()*.035, o:.16+Math.random()*.24 });
+
+  function size(){
+    var r = cv.getBoundingClientRect();
+    W = Math.max(1, Math.round(r.width*DPR)); H = Math.max(1, Math.round(r.height*DPR));
+    cv.width=W; cv.height=H; cx=W/2; cy=H/2; R=Math.min(W,H)/2;
+  }
+  size();
+
+  function tone(){
+    /* the iris colour is a state, not a hue swap: BLOOD lets the subsurface
+       red come up through the stroma, SKIN cools and flattens it */
+    if(mode==='blood') return ['#1d0509','#4A0710','#0a0507'];
+    if(mode==='skin')  return ['#0d0d11','#2b2b33','#08080a'];
+    if(mode==='dna')   return ['#08080c','#1a1a21','#060608'];
+    return ['#0a0a0e','#1a1a20','#070709'];
+  }
+
+  function draw(t){
+    ctx.clearRect(0,0,W,H);
+
+    /* ── attention ─────────────────────────────────────────────────── */
+    if(!RM){
+      if(pointer && t > ignoreUntil){
+        var d = Math.hypot(pointer.x-cx, pointer.y-cy)/R;
+        if(d < (opt.radius||2.6)){
+          dwell += 1/60;
+          /* the delay before it acquires is what reads as intelligence */
+          if(dwell > .28){
+            awareT = 1;
+            tx = Math.max(-1, Math.min(1, (pointer.x-cx)/(R*1.9)));
+            ty = Math.max(-1, Math.min(1, (pointer.y-cy)/(R*1.9)));
+            /* and occasionally it simply declines */
+            if(Math.random() < .0016){ ignoreUntil = t + 1.1 + Math.random()*1.6;
+              tx = (Math.random()-.5)*.5; ty = (Math.random()-.5)*.4; }
+          }
+        } else { dwell = 0; awareT = 0; }
+      } else if(!pointer){ awareT = 0; dwell = 0; }
+
+      if(awareT < .5){
+        /* rest: slow drift plus microsaccades, never perfectly still */
+        driftT -= 1/60;
+        if(driftT <= 0){ driftT = .9 + Math.random()*2.4;
+          tx = (Math.random()-.5)*.30; ty = (Math.random()-.5)*.22; }
+      }
+    }
+    /* spring with overshoot — mass, then braking */
+    var k = awareT>.5 ? .052 : .018, damp = awareT>.5 ? .80 : .90;
+    vx = (vx + (tx-gx)*k) * damp; vy = (vy + (ty-gy)*k) * damp;
+    gx += vx; gy += vy;
+    aware += (awareT-aware)*.07;
+    dil += (dilT-dil)*.05; open += (openT-open)*.08;
+
+    var beat = mode==='blood' ? Math.pow(Math.sin(t*1.9)*.5+.5, 3)*.05 : 0;
+    var pr = R*(.20 + dil*.11 + beat - aware*.022);
+    var ox = gx*R*.055, oy = gy*R*.05;
+    /* the stroma parallaxes against the cornea — that is what makes it read
+       as having a thickness rather than being printed on the surface */
+    var px = -gx*R*.014, py = -gy*R*.012;
+
+    ctx.save();
+    /* eyelid aperture: 0..1. Used by the boot sequence and nothing else. */
+    if(open < .999){
+      ctx.beginPath();
+      ctx.ellipse(cx,cy,R,R*Math.max(.02,open),0,0,6.2832);
+      ctx.clip();
+    }
+
+    var col = tone();
+
+    /* ── stroma ground ─────────────────────────────────────────────── */
+    var g = ctx.createRadialGradient(cx+ox*1.4, cy+oy*1.4, pr*.4, cx+px, cy+py, R);
+    g.addColorStop(0, col[0]); g.addColorStop(.52, col[1]); g.addColorStop(1, col[2]);
+    ctx.beginPath(); ctx.arc(cx,cy,R,0,6.2832); ctx.fillStyle=g; ctx.fill();
+
+    /* subsurface light — deep, never a glow ring */
+    if(mode==='blood' || aware>.2){
+      var sg = ctx.createRadialGradient(cx+px, cy+py, pr*.7, cx+px, cy+py, R*.92);
+      var amt = mode==='blood' ? .5 : aware*.16;
+      sg.addColorStop(0,'rgba(200,16,46,'+(amt*.6)+')');
+      sg.addColorStop(.55,'rgba(200,16,46,'+(amt*.16)+')');
+      sg.addColorStop(1,'rgba(200,16,46,0)');
+      ctx.beginPath(); ctx.arc(cx,cy,R,0,6.2832); ctx.fillStyle=sg; ctx.fill();
+    }
+
+    /* ── fibre, deepest first ──────────────────────────────────────── */
+    for(var i=0;i<N;i++){
+      var f=FIB[i], a=f.a, wob=0, L=f.len;
+      if(mode==='dna'){ a = Math.round(f.a/(6.2832/96))*(6.2832/96); L = f.len*.94; }
+      else if(mode==='blood'){ wob = Math.sin(t*2.0*f.sp+f.ph)*.032;
+        L = f.len*(.93+Math.sin(t*2.2+f.ph)*.07); }
+      else if(mode==='skin'){ L = f.len*.66; }
+      else { wob = Math.sin(t*.34*f.sp+f.ph)*.010; }
+      var a1 = a+wob, a2 = a+wob+f.bend;
+      var r0 = pr*1.02, r1 = pr + (R-pr)*Math.min(.9, L);
+      ctx.beginPath();
+      ctx.moveTo(cx+ox+Math.cos(a1)*r0, cy+oy+Math.sin(a1)*r0);
+      ctx.quadraticCurveTo(
+        cx+px+Math.cos((a1+a2)/2)*(r0+r1)*.5, cy+py+Math.sin((a1+a2)/2)*(r0+r1)*.5,
+        cx+px+Math.cos(a2)*r1, cy+py+Math.sin(a2)*r1);
+      /* the stroma is dark. Fibre catches light, it does not emit it —
+         and it fades out before the limbus so the iris has an edge. */
+      var reach = (r1-pr)/(R-pr);
+      var fall = 1 - Math.pow(Math.max(0,Math.min(1,reach)), 1.7);
+      var base = (f.depth===0 ? .030 : f.depth===1 ? .052 : .082) * (.35+fall*.75);
+      if(mode==='skin') base *= .62;
+      ctx.strokeStyle = mode==='blood'
+        ? 'rgba('+(220)+','+(70+f.depth*40)+','+(80+f.depth*30)+','+(base+ .07*Math.abs(Math.sin(t*1.5+f.ph)))+')'
+        : 'rgba(242,242,239,'+base+')';
+      ctx.lineWidth = f.w*DPR*(mode==='dna'?.75:1);
+      ctx.stroke();
+    }
+
+    /* ── crypts ── the flaws that stop it reading as generated ─────── */
+    for(var q=0;q<CRYPT.length;q++){ var cr=CRYPT[q];
+      ctx.beginPath();
+      ctx.ellipse(cx+px+Math.cos(cr.a)*R*cr.r, cy+py+Math.sin(cr.a)*R*cr.r,
+        R*cr.s*1.7, R*cr.s, cr.a, 0, 6.2832);
+      ctx.fillStyle='rgba(4,4,6,'+cr.o+')'; ctx.fill();
+    }
+
+    /* ── collarette ── deliberately not a circle ───────────────────── */
+    ctx.beginPath();
+    for(var s=0;s<=64;s++){
+      var sa=s/64*6.2832, rr=pr*1.30*(1+Math.sin(sa*3+1.1)*.055+Math.sin(sa*7)*.022);
+      var X=cx+ox+Math.cos(sa)*rr, Y=cy+oy+Math.sin(sa)*rr;
+      s?ctx.lineTo(X,Y):ctx.moveTo(X,Y);
+    }
+    ctx.closePath();
+    ctx.strokeStyle = mode==='blood' ? 'rgba(200,16,46,.20)' : 'rgba(242,242,239,.055)';
+    ctx.lineWidth=1.2*DPR; ctx.stroke();
+
+    /* ── thinking ── the structure reorganises; nothing spins ──────── */
+    if(mode==='think'){
+      for(var b=0;b<3;b++){
+        var st=t*(b%2?-.85:1.25)+b*2.1, sw=.5+Math.sin(t*1.4+b)*.35;
+        ctx.beginPath(); ctx.arc(cx+px,cy+py,pr*1.6+b*R*.13, st, st+sw);
+        ctx.strokeStyle='rgba(200,16,46,'+(.42-b*.11)+')';
+        ctx.lineWidth=1.3*DPR; ctx.stroke();
+      }
+    }
+
+    /* ── aperture, with distance behind it ─────────────────────────── */
+    var pg = ctx.createRadialGradient(cx+ox, cy+oy, 0, cx+ox, cy+oy, pr);
+    pg.addColorStop(0,'#000'); pg.addColorStop(.7,'#000'); pg.addColorStop(1,'#08080b');
+    ctx.beginPath(); ctx.arc(cx+ox,cy+oy,pr,0,6.2832); ctx.fillStyle=pg; ctx.fill();
+    /* one reflection deep inside, so the pupil has a floor */
+    ctx.beginPath();
+    ctx.ellipse(cx+ox+pr*.28, cy+oy+pr*.3, pr*.16, pr*.09, .8, 0, 6.2832);
+    ctx.fillStyle='rgba(200,16,46,'+(mode==='blood'?.22:.07)+')'; ctx.fill();
+    ctx.beginPath(); ctx.arc(cx+ox,cy+oy,pr,0,6.2832);
+    ctx.strokeStyle='rgba(0,0,0,.9)'; ctx.lineWidth=1.4*DPR; ctx.stroke();
+
+    /* ── limbus ── dark, soft, slightly irregular ──────────────────── */
+    var lg = ctx.createRadialGradient(cx,cy,R*.52, cx,cy,R);
+    lg.addColorStop(0,'rgba(5,5,6,0)'); lg.addColorStop(.42,'rgba(5,5,6,.30)');
+    lg.addColorStop(.74,'rgba(5,5,6,.80)'); lg.addColorStop(1,'rgba(5,5,6,1)');
+    ctx.beginPath(); ctx.arc(cx,cy,R,0,6.2832); ctx.fillStyle=lg; ctx.fill();
+
+    /* ── cornea ── the glass over everything ───────────────────────── */
+    var wet = ctx.createRadialGradient(cx-R*.36, cy-R*.42, R*.04, cx-R*.2, cy-R*.28, R*1.15);
+    wet.addColorStop(0,'rgba(242,242,239,.13)');
+    wet.addColorStop(.34,'rgba(242,242,239,.03)');
+    wet.addColorStop(1,'rgba(242,242,239,0)');
+    ctx.beginPath(); ctx.arc(cx,cy,R,0,6.2832); ctx.fillStyle=wet; ctx.fill();
+    /* rim light on the far side gives the dome its thickness */
+    ctx.beginPath(); ctx.arc(cx,cy,R*.995, .55, 2.0);
+    ctx.strokeStyle='rgba(242,242,239,'+(.035+aware*.035)+')'; ctx.lineWidth=1.8*DPR; ctx.stroke();
+    /* the hard catchlight — small, and the only sharp thing in the object */
+    ctx.beginPath();
+    ctx.ellipse(cx-R*.30+ox*.4, cy-R*.36+oy*.4, R*.055, R*.032, -.7, 0, 6.2832);
+    ctx.fillStyle='rgba(255,255,255,'+(.5+aware*.25)+')'; ctx.fill();
+
+    ctx.restore();
+  }
+
+  var raf=null, running=false, t0=performance.now();
+  function loop(now){ draw((now-t0)/1000); raf=requestAnimationFrame(loop); }
+  var api = {
+    start:function(){ if(running) return; running=true;
+      if(RM){ draw(0); return; } raf=requestAnimationFrame(loop); },
+    stop:function(){ running=false; if(raf) cancelAnimationFrame(raf); raf=null; },
+    mode:function(m){ mode=m;
+      dilT = m==='listen'?.55 : m==='think'?.10 : m==='blood'?.24 : m==='skin'?.06 : 0;
+      if(RM) draw(0); },
+    point:function(p){ pointer = p ? { x:p.x*DPR, y:p.y*DPR } : null; },
+    aperture:function(v){ openT=v; },
+    isAware:function(){ return aware>.55; },
+    resize:function(){ size(); if(RM||!running) draw(0); },
+    paint:function(){ draw(0); }
+  };
+  addEventListener('resize', api.resize, {passive:true});
+  return api;
+}
+
+/* ═══ FIELDS ═══ the room each organ is in ══════════════════════════════ */
+function Field(cv, kind){
+  var ctx=cv.getContext('2d'), DPR=Math.min(2,devicePixelRatio||1), raf=null, t0=performance.now();
+  var W=0,H=0, seed=[];
+  function size(){ var r=cv.getBoundingClientRect();
+    W=Math.max(1,Math.round(r.width*DPR)); H=Math.max(1,Math.round(r.height*DPR));
+    cv.width=W; cv.height=H;
+    seed=[]; for(var i=0;i<26;i++) seed.push({x:Math.random(),y:Math.random(),
+      r:Math.random(),ph:Math.random()*6.2832,sp:.4+Math.random()}); }
+  size(); addEventListener('resize', size, {passive:true});
+
+  function draw(t){
+    ctx.clearRect(0,0,W,H);
+    if(kind==='dna'){
+      /* measured space. A registration grid and one travelling datum —
+         architecture and optics, never a node network. */
+      var st=Math.max(52*DPR, Math.min(W,H)/9);
+      ctx.lineWidth=1*DPR; ctx.strokeStyle='rgba(158,162,166,.055)';
+      ctx.beginPath();
+      for(var x=st;x<W;x+=st){ ctx.moveTo(x,0); ctx.lineTo(x,H); }
+      for(var y=st;y<H;y+=st){ ctx.moveTo(0,y); ctx.lineTo(W,y); }
+      ctx.stroke();
+      ctx.strokeStyle='rgba(242,242,239,.16)'; ctx.lineWidth=1*DPR; ctx.beginPath();
+      for(var i=0;i<seed.length;i+=3){ var s=seed[i],
+        qx=Math.round(s.x*W/st)*st, qy=Math.round(s.y*H/st)*st, m=5*DPR;
+        ctx.moveTo(qx-m,qy); ctx.lineTo(qx+m,qy); ctx.moveTo(qx,qy-m); ctx.lineTo(qx,qy+m); }
+      ctx.stroke();
+      var dy=((t*.028)%1)*H;
+      ctx.strokeStyle='rgba(242,242,239,.13)'; ctx.beginPath();
+      ctx.moveTo(0,dy); ctx.lineTo(W,dy); ctx.stroke();
+      ctx.strokeStyle='rgba(242,242,239,.26)'; ctx.beginPath();
+      for(var tx2=0;tx2<W;tx2+=st/2){ ctx.moveTo(tx2,dy-3*DPR); ctx.lineTo(tx2,dy+3*DPR); }
+      ctx.stroke();
+    } else if(kind==='blood'){
+      /* the grid is still under here, just no longer in charge */
+      var st2=Math.max(52*DPR, Math.min(W,H)/9);
+      ctx.lineWidth=1*DPR; ctx.strokeStyle='rgba(158,162,166,.022)'; ctx.beginPath();
+      for(var gx2=st2;gx2<W;gx2+=st2){ ctx.moveTo(gx2,0); ctx.lineTo(gx2,H); }
+      ctx.stroke();
+      for(var k=0;k<7;k++){ var p=seed[k], yy=p.y*H;
+        ctx.beginPath(); ctx.moveTo(0,yy); ctx.lineTo(W,yy);
+        ctx.strokeStyle='rgba(200,16,46,.04)'; ctx.lineWidth=1*DPR; ctx.stroke();
+        var head=((t*.13*p.sp+p.ph/6.2832)%1), gxp=head*W, gr=W*.1;
+        var lg2=ctx.createLinearGradient(gxp-gr,0,gxp+gr,0);
+        lg2.addColorStop(0,'rgba(200,16,46,0)');
+        lg2.addColorStop(.5,'rgba(200,16,46,.34)');
+        lg2.addColorStop(1,'rgba(200,16,46,0)');
+        ctx.beginPath(); ctx.moveTo(gxp-gr,yy); ctx.lineTo(gxp+gr,yy);
+        ctx.strokeStyle=lg2; ctx.lineWidth=1.6*DPR; ctx.stroke(); }
+    } else {
+      /* matter: planes with weight, and one slow reflection crossing them */
+      for(var m2=0;m2<14;m2++){ var q=seed[m2];
+        var w=W*(.08+q.r*.2), h=H*(.03+q.r*.07);
+        ctx.fillStyle='rgba(242,242,239,'+(.012+q.r*.014)+')';
+        ctx.fillRect(q.x*W-w/2, q.y*H-h/2, w, h);
+        ctx.strokeStyle='rgba(242,242,239,.02)'; ctx.lineWidth=1*DPR;
+        ctx.strokeRect(q.x*W-w/2, q.y*H-h/2, w, h); }
+      var sx=((t*.04)%1.7-.35)*W;
+      var sg2=ctx.createLinearGradient(sx-W*.2,0,sx+W*.2,H);
+      sg2.addColorStop(0,'rgba(242,242,239,0)');
+      sg2.addColorStop(.5,'rgba(242,242,239,.04)');
+      sg2.addColorStop(1,'rgba(242,242,239,0)');
+      ctx.fillStyle=sg2; ctx.fillRect(0,0,W,H);
+    }
+  }
+  function loop(n){ draw((n-t0)/1000); raf=requestAnimationFrame(loop); }
+  return { start:function(){ if(raf) return; if(RM){ draw(0); return; }
+             raf=requestAnimationFrame(loop); },
+           stop:function(){ if(raf) cancelAnimationFrame(raf); raf=null; } };
+}
+
+/* ═══ SEAMS ═══ the two signature transitions ═══════════════════════════ */
+function Seam(cv, kind){
+  var ctx=cv.getContext('2d'), DPR=Math.min(2,devicePixelRatio||1), raf=null;
+  var W=0,H=0, prog=0;
+  function size(){ var r=cv.getBoundingClientRect();
+    W=Math.max(1,Math.round(r.width*DPR)); H=Math.max(1,Math.round(r.height*DPR));
+    cv.width=W; cv.height=H; }
+  size(); addEventListener('resize', size, {passive:true});
+  function draw(t){
+    ctx.clearRect(0,0,W,H);
+    var st=Math.max(46*DPR, H/6), n=Math.ceil(W/st)+1;
+    if(kind==='pulse'){
+      /* order destabilises, then one red beat crosses it */
+      for(var i=0;i<n;i++){
+        var x=i*st, off=Math.sin(t*.9+i*.42)*prog*st*.5;
+        ctx.beginPath(); ctx.moveTo(x+off,0); ctx.lineTo(x-off,H);
+        ctx.strokeStyle='rgba(158,162,166,'+(.075-prog*.03)+')';
+        ctx.lineWidth=1*DPR; ctx.stroke();
+      }
+      var beat=(t*.42)%1, by=beat*H;
+      var bg=ctx.createLinearGradient(0,by-H*.16,0,by+H*.16);
+      bg.addColorStop(0,'rgba(200,16,46,0)');
+      bg.addColorStop(.5,'rgba(200,16,46,'+(.30*prog)+')');
+      bg.addColorStop(1,'rgba(200,16,46,0)');
+      ctx.fillStyle=bg; ctx.fillRect(0,by-H*.16,W,H*.32);
+    } else {
+      /* rhythm congeals: lines thicken into planes */
+      for(var j=0;j<n;j++){
+        var xx=j*st, th=1+prog*st*.42*(0.5+Math.sin(j*1.7)*.5);
+        ctx.fillStyle='rgba(242,242,239,'+(.03+prog*.022)+')';
+        ctx.fillRect(xx, H*.5-H*(.16+prog*.3)/2, th*DPR, H*(.16+prog*.3));
+      }
+      var sx=((t*.09)%1.6-.3)*W;
+      var sg=ctx.createLinearGradient(sx-W*.12,0,sx+W*.12,0);
+      sg.addColorStop(0,'rgba(242,242,239,0)');
+      sg.addColorStop(.5,'rgba(242,242,239,'+(.07*prog)+')');
+      sg.addColorStop(1,'rgba(242,242,239,0)');
+      ctx.fillStyle=sg; ctx.fillRect(0,0,W,H);
+    }
+  }
+  var t0=performance.now();
+  function loop(n2){ draw((n2-t0)/1000); raf=requestAnimationFrame(loop); }
+  return { start:function(){ if(raf) return; if(RM){ draw(0); return; }
+             raf=requestAnimationFrame(loop); },
+           stop:function(){ if(raf) cancelAnimationFrame(raf); raf=null; },
+           prog:function(p){ prog=p; if(RM) draw(0); } };
+}
+
+/* ═══ BUILD ══════════════════════════════════════════════════════════════ */
+/* film strip — memories moving through the organism, not video cards */
+(function(){
+  var s=$('strip'); if(!s) return;
+  s.style.cssText='display:flex;gap:2px;overflow-x:auto;overflow-y:hidden;'+
+    'scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch;padding:0';
+  s.setAttribute('role','list');
+  STRIP.forEach(function(src,i){
+    var f=document.createElement('div');
+    f.setAttribute('role','listitem');
+    f.style.cssText='flex:0 0 auto;width:clamp(190px,26vw,420px);aspect-ratio:'+
+      (i%3===0?'3/4':'16/9')+';overflow:hidden;scroll-snap-align:center;background:var(--carbon)';
+    var im=document.createElement('img');
+    im.src=src; im.alt=''; im.loading='lazy'; im.decoding='async';
+    im.style.cssText='width:100%;height:100%;object-fit:cover;'+
+      'filter:saturate(.94) contrast(1.05) brightness(.8);'+
+      'transition:filter .8s var(--focus),transform 1.6s var(--lux);transform:scale(1.04)';
+    f.appendChild(im);
+    f.addEventListener('pointerenter',function(){
+      im.style.filter='saturate(1.05) contrast(1.04) brightness(1)'; im.style.transform='scale(1)'; });
+    f.addEventListener('pointerleave',function(){
+      im.style.filter='saturate(.94) contrast(1.05) brightness(.8)'; im.style.transform='scale(1.04)'; });
+    s.appendChild(f);
+  });
+})();
+
+/* scars — one project per full-height moment */
+(function(){
+  var host=$('scarStack');
+  SCARS.forEach(function(p,i){
+    var el=document.createElement('button');
+    el.className='scar'; el.type='button';
+    el.dataset.mark='Scars / '+String(i+1).padStart(3,'0');
+    el.setAttribute('aria-label','Open case study: '+p.name);
+    el.innerHTML=
+      '<div class="scar-media"><img loading="lazy" decoding="async" src="'+p.img+
+        '" alt="'+esc(p.name)+'"></div>'+
+      '<div class="scar-in">'+
+        '<div class="scar-meta">'+
+          '<span class="mi">Project / '+String(i+1).padStart(3,'0')+'</span>'+
+          '<span class="mi lit">'+esc(p.tags)+'</span>'+
+          '<span class="mi">'+esc(p.year)+'</span><span class="mi hot">'+esc(p.kind)+'</span></div>'+
+        '<h3 class="disp lg">'+esc(p.name)+'</h3>'+
+        '<p class="ed scar-note">'+esc(p.note)+'</p>'+
+      '</div>';
+    el.addEventListener('click', function(){ openCase(i); });
+    host.appendChild(el);
+  });
+})();
+
+/* originals — ruled rows, no cards */
+(function(){
+  var r=$('rows');
+  ROWS.forEach(function(o){
+    var d=document.createElement('div'); d.className='row';
+    d.innerHTML='<h3>'+esc(o[0])+'</h3><p>'+esc(o[2])+'</p>'+
+      '<span class="mi">'+esc(o[1])+'</span>';
+    r.appendChild(d);
+  });
+})();
+
+/* reveal — the hidden class is only ever ADDED, so a JS failure leaves
+   every word on the page. The opening is excluded: it animates on load. */
+if(!RM && 'IntersectionObserver' in window){
+  var rvs=[].slice.call(document.querySelectorAll('.rv'));
+  rvs.forEach(function(e){ e.classList.add('pre'); });
+  var rio=new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){
+      e.target.classList.add('in'); rio.unobserve(e.target); } });
+  },{ rootMargin:'0px 0px -6% 0px', threshold:.05 });
+  rvs.forEach(function(e){ rio.observe(e); });
+}
+
+/* ═══ EYES ═══════════════════════════════════════════════════════════════ */
+var heroEye = Eye($('heroEye'), { n:300, radius:3.4 });
+var dockEye = Eye($('dockEye'), { n:150, radius:4.5 });
+var portalEye = Eye($('portalEye'), { n:340, radius:6 });
+var bootEye = Eye($('bootEye'), { n:120, open:.04 });
+
+/* boot: the pupil opens. No counter, no spinner, and it never waits for drama. */
+(function(){
+  var b=$('boot');
+  bootEye.start();
+  function done(){
+    bootEye.aperture(1);
+    setTimeout(function(){
+      b.classList.add('gone');
+      $('arrive').classList.add('up');
+      heroEye.start();
+      setTimeout(function(){ bootEye.stop(); }, 900);
+    }, RM?0:420);
+  }
+  if(RM){ b.classList.add('gone'); $('arrive').classList.add('up'); heroEye.start(); bootEye.stop(); return; }
+  if(document.readyState==='complete') setTimeout(done,140);
+  else addEventListener('load', function(){ setTimeout(done,140); });
+  /* never hold the visitor hostage to the animation */
+  setTimeout(done, 2200);
+})();
+
+/* pointer → the eyes. Coordinates are canvas-local; the eye decides what to
+   do with them, which is the whole point of §15. */
+var eyewell=$('eyewell'), eyeState=$('eyeState');
+if(!TOUCH && !RM){
+  var cur=$('cur');
+  addEventListener('pointermove', function(e){
+    cur.classList.add('on');
+    cur.style.transform='translate('+e.clientX+'px,'+e.clientY+'px)';
+    [[heroEye,$('heroEye')],[dockEye,$('dockEye')],[portalEye,$('portalEye')]]
+      .forEach(function(pair){
+        var r=pair[1].getBoundingClientRect();
+        if(!r.width) return pair[0].point(null);
+        pair[0].point({ x:e.clientX-r.left, y:e.clientY-r.top });
+      });
+  }, {passive:true});
+  addEventListener('pointerleave', function(){ cur.classList.remove('on'); });
+  /* the cursor widens over anything that will answer */
+  document.addEventListener('pointerover', function(e){
+    var t=e.target.closest('button,a,.scar,.row,input');
+    $('cur').classList.toggle('wide', !!t);
+  });
+  /* IRIS / AWARE is written only when she actually is */
+  setInterval(function(){
+    var a=heroEye.isAware();
+    eyewell.classList.toggle('aware', a);
+    eyeState.textContent = a ? 'IRIS / AWARE' : 'IRIS / DORMANT';
+  }, 180);
+}else{
+  eyewell.classList.add('aware'); eyeState.textContent='IRIS / AWARE';
+}
+
+/* ═══ SECTION STATE ══════════════════════════════════════════════════════ */
+var fields=[].slice.call(document.querySelectorAll('.field')).map(function(c){
+  return { el:c, fx:Field(c, c.dataset.field) }; });
+var seams=[].slice.call(document.querySelectorAll('.seam')).map(function(s){
+  return { el:s, fx:Seam(s.querySelector('canvas'), s.dataset.seam) }; });
+var markL=$('markL'), dock=$('dock');
+
+if('IntersectionObserver' in window){
+  var mio=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      if(!e.isIntersecting) return;
+      var m=e.target.dataset.mark, mo=e.target.dataset.mode;
+      if(m) markL.textContent=m;
+      if(!portalOpen){
+        dockEye.mode(mo||'idle'); heroEye.mode(mo||'idle');
+      }
+      if(e.target.classList.contains('organ')) e.target.classList.add('live');
+    });
+  },{ threshold:.35 });
+  [].slice.call(document.querySelectorAll('[data-mark]')).forEach(function(s){ mio.observe(s); });
+
+  var fio=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      var f=fields.filter(function(x){return x.el===e.target;})[0];
+      if(f) e.isIntersecting ? f.fx.start() : f.fx.stop();
+      var s=seams.filter(function(x){return x.el===e.target;})[0];
+      if(s) e.isIntersecting ? s.fx.start() : s.fx.stop();
+    });
+  },{ threshold:.02 });
+  fields.forEach(function(f){ fio.observe(f.el); });
+  seams.forEach(function(s){ fio.observe(s.el); });
+
+  /* the dock eye appears only once the hero eye has left */
+  var dio=new IntersectionObserver(function(es){
+    es.forEach(function(e){
+      var gone = !e.isIntersecting;
+      dock.classList.toggle('on', gone);
+      gone ? dockEye.start() : dockEye.stop();
+    });
+  },{ threshold:.15 });
+  dio.observe($('arrive'));
+
+  /* a project wakes when it owns the screen */
+  var sio=new IntersectionObserver(function(es){
+    es.forEach(function(e){ e.target.classList.toggle('near', e.isIntersecting); });
+  },{ threshold:.45 });
+  [].slice.call(document.querySelectorAll('.scar')).forEach(function(s){ sio.observe(s); });
+}else{
+  fields.forEach(function(f){ f.fx.start(); });
+  seams.forEach(function(s){ s.fx.start(); });
+  [].slice.call(document.querySelectorAll('.scar')).forEach(function(s){ s.classList.add('near'); });
+  dock.classList.add('on'); dockEye.start();
+}
+
+/* seams read their own progress through the viewport — the transition is
+   driven by where the visitor is, not by a timer */
+var ticking=false;
+addEventListener('scroll', function(){
+  if(ticking) return; ticking=true;
+  requestAnimationFrame(function(){
+    ticking=false;
+    seams.forEach(function(s){
+      var r=s.el.getBoundingClientRect(), vh=innerHeight;
+      var p=1-Math.abs((r.top+r.height/2)-vh/2)/(vh*.9);
+      s.fx.prog(Math.max(0,Math.min(1,p)));
+    });
+  });
+}, {passive:true});
+
+/* ═══ PORTAL ═══ conversation as typography, not a chat ══════════════════ */
+var portal=$('portal'), portalOpen=false, pIn=$('pIn'), pOut=$('pOut'), lastFocus=null;
+
+var MEDIUM = /^(film|video|movie|website|site|web|app|campaign|ad|advert|commercial|content|logo|brand|deck|animation)s?$/i;
+var OUTCOME = /^(viral|awareness|engagement|sales|growth|reach|conversion|famous|trending|buzz)$/i;
+var SKIP = /^(i|a|an|the|for|of|to|my|our|we|new|need|want|make|build|please|some|and|with|that|this)$/i;
+
+var VERDICTS = [
+  { k:/hotel|resort|hospitality/i,
+    v:"They should not understand the hotel. They should already be inside it.",
+    n:"What should people feel before they know the price?" },
+  { k:/viral|famous|trending/i,
+    v:"Viral is a result. It is not a brief.",
+    n:"Who is it worth being interesting to?" },
+  { k:/website|site|web|app|platform|software/i,
+    v:"Most things built did not need to be built.",
+    n:"Who is worse off if this never exists?" },
+  { k:/film|video|commercial/i,
+    v:"They understand it. They do not want it. Only one of those is a film.",
+    n:"What should happen after someone sees this?" },
+];
+var FALLBACK = { v:"Nothing here says what should change yet.",
+  n:"What should be true afterwards that is not true now?" };
+
+function analyse(text){
+  var words = String(text).replace(/[.!?,]/g,'').split(/\s+/).filter(Boolean).slice(0,9);
+  var toks = words.map(function(w){
+    if(MEDIUM.test(w))  return { w:w, tag:'medium selected too early', strike:true };
+    if(OUTCOME.test(w)) return { w:w, tag:'outcome?', strike:false };
+    if(SKIP.test(w))    return { w:w, tag:'', strike:false, quiet:true };
+    return { w:w, tag:'assumption', strike:false };
+  });
+  var v=FALLBACK;
+  for(var i=0;i<VERDICTS.length;i++) if(VERDICTS[i].k.test(text)){ v=VERDICTS[i]; break; }
+
+  pOut.innerHTML='<div class="parse" id="parse"></div>'+
+    '<div class="verdict" id="verdict">'+
+      '<span class="mi hot">What actually needs to change</span>'+
+      '<p class="disp" style="font-size:clamp(22px,3.4vw,44px);line-height:1.02">'+
+        esc(v.v)+'</p></div>'+
+    '<div class="pnext" id="pnext" style="margin-top:clamp(16px,3vh,32px);opacity:0;'+
+      'transition:opacity .8s var(--lux)">'+
+      '<span class="mi">Next question</span>'+
+      '<p class="ed" style="color:var(--bone);font-size:clamp(16px,1.9vw,24px)">'+esc(v.n)+'</p>'+
+      '<span class="mi" style="margin-top:14px">Draft — this reply is written, not generated. '+
+      'Public IRIS holds no client memory.</span></div>';
+
+  var p=$('parse');
+  toks.forEach(function(tk){
+    var d=document.createElement('div');
+    d.className='tok'+(tk.strike?' strike':'');
+    if(tk.quiet) d.style.opacity='.4';
+    d.innerHTML='<b>'+esc(tk.w)+'</b><em>'+esc(tk.tag||'')+'</em>';
+    p.appendChild(d);
+  });
+  $('portalState').textContent='IRIS / READING';
+  portalEye.mode('think'); dockEye.mode('think');
+
+  var kids=[].slice.call(p.children), step = RM?0:105;
+  kids.forEach(function(d,i){ setTimeout(function(){ d.classList.add('in'); }, i*step); });
+  setTimeout(function(){
+    portal.classList.add('deep');
+    var pb2=$('pBody'); if(pb2) pb2.style.justifyContent='flex-start';
+    $('verdict').classList.add('in');
+    $('portalState').textContent='IRIS / ANSWERING';
+    portalEye.mode('listen'); dockEye.mode('listen');
+  }, kids.length*step + (RM?0:520));
+  setTimeout(function(){ var n=$('pnext'); if(n) n.style.opacity='1'; },
+    kids.length*step + (RM?0:1150));
+}
+
+function openIris(seed){
+  lastFocus=document.activeElement;
+  portal.classList.add('on'); portalOpen=true;
+  var pb=$('pBody'); if(pb){ pb.style.justifyContent='center'; pb.scrollTop=0; }
+  document.body.style.overflow='hidden';
+  portalEye.resize(); portalEye.start(); portalEye.mode('listen');
+  $('portalState').textContent='IRIS / LISTENING';
+  setTimeout(function(){ pIn.focus(); },80);
+  if(seed){ pIn.value=seed; analyse(seed); }
+}
+function closeIris(){
+  portal.classList.remove('on','deep'); portalOpen=false;
+  document.body.style.overflow=''; portalEye.stop();
+  pOut.innerHTML=''; pIn.value='';
+  dockEye.mode('idle'); heroEye.mode('idle');
+  if(lastFocus && lastFocus.focus) lastFocus.focus();
+}
+[].slice.call(document.querySelectorAll('[data-iris]')).forEach(function(b){
+  b.addEventListener('click', function(){ openIris(''); }); });
+$('dockEye').addEventListener('click', function(){ openIris(''); });
+$('dockEye').addEventListener('keydown', function(e){
+  if(e.key==='Enter'||e.key===' '){ e.preventDefault(); openIris(''); } });
+$('heroEye').addEventListener('click', function(){ openIris(''); });
+$('portalX').addEventListener('click', closeIris);
+pIn.addEventListener('keydown', function(e){
+  if(e.key==='Enter' && pIn.value.trim()) analyse(pIn.value); });
+[].slice.call(document.querySelectorAll('.seed')).forEach(function(s){
+  s.addEventListener('click', function(){ pIn.value=s.dataset.seed; analyse(s.dataset.seed); }); });
+addEventListener('keydown', function(e){
+  if(e.key!=='Escape') return;
+  if(portalOpen) closeIris(); else if(caseOpen) closeCase(); });
+
+/* ═══ CASE ═══ editorial pacing, each beat weighted differently ══════════ */
+var caseEl=$('case'), caseOpen=false;
+function openCase(i){
+  var p=SCARS[i];
+  $('cImg').src=p.img; $('cImg').alt=p.name;
+  $('cKind').textContent=p.kind+' · '+p.year;
+  $('cName').textContent=p.name;
+  $('cTags').textContent=p.tags;
+  $('cBeats').innerHTML=
+    '<div class="beat lead wide"><h4>The problem</h4><div class="beat-t">'+esc(p.problem)+'</div></div>'+
+    '<div class="beat"><h4>The DNA</h4><div class="beat-t">'+esc(p.dna)+'</div></div>'+
+    '<div class="beat"><h4>The blood</h4><div class="beat-t">'+esc(p.blood)+'</div></div>'+
+    '<div class="beat"><h4>The skin</h4><div class="beat-t">'+esc(p.skin)+'</div></div>'+
+    '<div class="beat scar-beat"><h4>The scar</h4><div class="beat-t">'+esc(p.scar)+'</div></div>';
+  caseEl.classList.add('on'); caseOpen=true; caseEl.scrollTop=0;
+  document.body.style.overflow='hidden';
+}
+function closeCase(){ caseEl.classList.remove('on'); caseOpen=false;
+  if(!portalOpen) document.body.style.overflow=''; }
+$('caseX').addEventListener('click', closeCase);
+
+})();
+</script>
