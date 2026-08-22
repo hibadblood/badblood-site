@@ -1,4 +1,5 @@
 <meta charset="utf-8">
+<meta name="bb-build" content="v3-nervous-system-2026-08-22">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Bad Blood Organism</title>
 <meta name="description" content="Bad Blood Company — a creative intelligence company. We build things that live.">
@@ -30,7 +31,13 @@
   --micro-size:clamp(8px,.72vw,9.5px);
 }
 *{margin:0;padding:0;box-sizing:border-box}
-html{-webkit-text-size-adjust:100%;background:var(--ink)}
+html{-webkit-text-size-adjust:100%;background:var(--ink);
+  /* the world is a pure function of scroll position, so the browser may never
+     move that position on its own. Scroll anchoring does exactly that whenever
+     in-flow content shifts — the DNA baseline lock shifted a block, anchoring
+     moved the scroll, the moved scroll changed the state, the state moved the
+     block: a feedback loop that read as the page drifting by itself. */
+  overflow-anchor:none}
 /* the world canvas paints the ground; the image stage sits between html and it */
 /* One ground for the whole site. Every section is transparent so the world
    canvas is the only thing that paints depth. */
@@ -46,7 +53,7 @@ button{font:inherit;color:inherit;background:none;border:0;cursor:pointer;text-a
 [inert]{pointer-events:none}
 
 /* ── THE LIVING WORLD ── the only visual surface ────────────────────── */
-#livingWorld{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:0;
+#livingWorld{position:fixed;inset:0;overflow:hidden;pointer-events:none;z-index:1;
   transition:z-index 0s}
 body.raised #livingWorld{z-index:94;background:var(--void)}
 body.raised #worldShade{opacity:0}
@@ -55,20 +62,27 @@ body.raised .nav,body.raised .marks,body.raised #irisHitTarget{opacity:0;pointer
 #worldCanvas{position:absolute;inset:0;width:100%;height:100%;display:block;
   pointer-events:none}
 /* One legibility layer. Natural falloff in the lighting, not a UI panel. */
-#worldShade{position:absolute;inset:0;pointer-events:none;opacity:var(--shadeA,1);
+#worldShade{position:absolute;inset:0;pointer-events:none;
   background:
     radial-gradient(120% 80% at 50% 40%,transparent 40%,rgba(5,5,6,.55) 100%),
     linear-gradient(100deg,rgba(5,5,6,.72) 0%,rgba(5,5,6,.30) 38%,transparent 62%);
-  opacity:var(--shade,1);transition:opacity .9s var(--lux)}
+  opacity:var(--shadeA,1);transition:opacity .5s var(--lux)}
 main{position:relative;z-index:2}
 /* project imagery sits UNDER the world so the optical exposure develops it.
    A fixed layer inside <main> would still paint over #livingWorld, so the
    image is hoisted into its own fixed stage below the canvas and only the
    copy stays in flow. */
-#workStage{position:fixed;inset:0;z-index:-1;pointer-events:none;overflow:hidden}
+/* explicit stacking: imagery 0 · optical world 1 · content 2 · hit target 6 */
+#workStage{position:fixed;inset:0;z-index:0;pointer-events:none;overflow:hidden;background:var(--void)}
+/* Exposure, not opacity. Every frame is screened over the void: at
+   brightness 0 it contributes nothing, and as its luminance develops it adds
+   light. Two frames developing at once cross-expose instead of one covering
+   the other — which is what happened when the inactive frames were simply
+   black and opaque, stacked above the active one. */
 #workStage img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;
-  opacity:0;transform:scale(1.035);will-change:opacity,transform,filter;
-  filter:saturate(.9) contrast(1.06)}
+  transform:scale(1.035);will-change:transform,filter;mix-blend-mode:screen;
+  visibility:hidden;filter:brightness(0) saturate(.9) contrast(1.06)}
+#workStage img[data-on="1"]{visibility:visible}
 
 /* IRIS's hit target is a real button that tracks where she is. The canvas
    itself is never focusable and never announced. */
@@ -159,7 +173,11 @@ body.onwork .nav::before{background:linear-gradient(to bottom,rgba(5,5,6,.92),rg
 .keywords span:hover{color:var(--bone);font-variation-settings:'wdth' 88,'wght' 700}
 .seam{position:relative;height:76svh;display:flex;align-items:center;padding:0 var(--edge)}
 @media (max-width:820px){
-  .seam{height:100svh;align-items:flex-start;padding-top:52svh}
+  .seam{height:125svh;display:block;padding:0}
+  /* doubled selector: the desktop .seam .hold{position:relative} rule is
+     declared later and would otherwise win */
+  .seam.seam .hold{position:sticky;top:0;height:100svh;display:flex;align-items:flex-start;
+    padding:48svh var(--edge) 0}
   .seam .lg{max-width:80vw}
 }
 .seam .hold{position:relative;z-index:2}
@@ -193,7 +211,12 @@ body.onwork .nav::before{background:linear-gradient(to bottom,rgba(5,5,6,.92),rg
 .scar.near .scar-note{opacity:1;transform:none}
 
 /* ══ ORIGINALS ══ ruled rows ══════════════════════════════════════════ */
-@media (max-width:820px){.reveal{min-height:112svh;justify-content:flex-start;padding-top:18svh}}
+@media (max-width:820px){
+  .reveal{min-height:135svh;display:block;padding:0}
+  .reveal .hold{position:sticky;top:0;height:100svh;display:grid;align-content:center;
+    padding:0 var(--edge);
+    background:radial-gradient(60% 40% at 50% 52%,rgba(5,5,6,.55),rgba(5,5,6,0))}
+}
 .rows{display:grid;border-top:1px solid var(--line)}
 .row{display:grid;grid-template-columns:1fr;gap:8px;padding:clamp(20px,3vw,38px) 0;
   border-bottom:1px solid var(--line);transition:padding-left var(--t-mid) var(--lux)}
@@ -209,9 +232,10 @@ body.onwork .nav::before{background:linear-gradient(to bottom,rgba(5,5,6,.92),rg
 
 /* ══ PORTAL ══ same eye, raised stage ═════════════════════════════════ */
 .portal{position:fixed;inset:0;z-index:95;display:none;flex-direction:column;
-  padding:var(--edge);overflow:hidden;
+  padding:var(--edge);overflow:hidden;height:100dvh;
   background:radial-gradient(115% 85% at 50% 50%,rgba(5,5,6,0),rgba(5,5,6,.55))}
-.portal.on{display:flex}
+.portal.on,.portal.closing{display:flex}
+.portal.closing{pointer-events:none;opacity:0;transition:opacity .45s var(--focus)}
 .portal-top{display:flex;justify-content:space-between;align-items:flex-start;gap:16px;
   position:relative;z-index:3}
 .portal-body{flex:1;display:flex;flex-direction:column;justify-content:center;
@@ -243,6 +267,10 @@ body.onwork .nav::before{background:linear-gradient(to bottom,rgba(5,5,6,.92),rg
 .tok{display:grid;gap:5px;opacity:0;transform:translateY(10px);
   transition:opacity .5s var(--focus),transform .5s var(--focus)}
 .tok.in{opacity:1;transform:none}
+/* THINK: what was read recedes to 12%; only the challenged assumption stays */
+.parse.think .tok{opacity:.12}
+.parse.think .tok.keep{opacity:1}
+.beat-hide{opacity:0;transition:opacity .4s var(--focus);pointer-events:none;height:0;overflow:hidden;margin:0}
 .tok b{font-family:var(--display);font-variation-settings:'wdth' 80,'wght' 700;
   font-size:clamp(20px,4.2vw,52px);text-transform:uppercase;letter-spacing:-.025em;
   line-height:.9;color:var(--bone);position:relative;display:inline-block;
@@ -292,8 +320,8 @@ body.onwork .nav::before{background:linear-gradient(to bottom,rgba(5,5,6,.92),rg
   margin:-3.5px 0 0 -3.5px;
   transition:width var(--t-fast) var(--focus),height var(--t-fast) var(--focus),opacity var(--t-fast)}
 .cur.on{opacity:1}
-.cur.wide{width:34px;height:34px;margin:-17px 0 0 -17px;background:transparent;
-  border:1px solid var(--bone)}
+.cur.wide{width:18px;height:18px;margin:-9px 0 0 -9px;background:var(--bone)}
+.cur.off{opacity:0}
 @media (hover:none),(pointer:coarse),(max-width:820px){.cur{display:none!important}}
 
 .rv{transition:opacity 1.1s var(--lux),transform 1.1s var(--lux)}
@@ -571,6 +599,15 @@ body.onwork .nav::before{background:linear-gradient(to bottom,rgba(5,5,6,.92),rg
 <script>
 (function(){
 "use strict";
+var BUILD="v3-nervous-system-2026-08-22"; console.info("[BB] build", BUILD);
+if(location.search.indexOf('dbg')>=0){ window.__log=[]; ['scrollTo','scrollBy','scroll'].forEach(function(n){ var o=window[n]; window[n]=function(){ window.__log.push({fn:n,a:[].slice.call(arguments).map(function(x){return typeof x==='object'?JSON.stringify(x):x;}).join(','),st:(new Error().stack||'').split('\n').slice(1,4).join('|')}); return o.apply(window,arguments); }; });
+  var oF=HTMLElement.prototype.focus; HTMLElement.prototype.focus=function(){ window.__log.push({fn:'focus',el:(this.id||this.className||this.tagName),st:(new Error().stack||'').split('\n').slice(1,3).join('|')}); return oF.apply(this,arguments); };
+  var oS=Element.prototype.scrollIntoView; Element.prototype.scrollIntoView=function(){ window.__log.push({fn:'siv',el:(this.id||this.className)}); return oS.apply(this,arguments); };
+  addEventListener('scroll',function(){ if(window.__log.length<400) window.__log.push({fn:'scrollEvent',y:Math.round(scrollY),t:Math.round(performance.now())}); },{passive:true}); }
+/* the world is a function of scroll; a restored scroll position on reload
+   would replay a state the visitor never arrived at */
+if("scrollRestoration" in history) history.scrollRestoration="manual";
+document.documentElement.dataset.build=BUILD;
 var RM = matchMedia('(prefers-reduced-motion: reduce)').matches;
 var COARSE = matchMedia('(hover:none),(pointer:coarse)').matches;
 var SAVE = !!(navigator.connection && navigator.connection.saveData);
@@ -639,15 +676,43 @@ var FIB = [];
   for(var b=0;b<22;b++) bandA.push((b/22)*6.2832 + (RND()-.5)*.05);
   for(var j=0;j<FIB_N;j++) FIB[j].sknA = bandA[FIB[j].band];
 })();
-var CRYPT=[]; (function(){ for(var c=0;c<11;c++) CRYPT.push({
-  a:RND()*6.2832, r:.40+RND()*.40, s:.016+RND()*.032,
-  o:.14+RND()*.22, rot:RND()*6.2832 }); })();
-/* collarette: DNA precise, BLOOD unstable, SKIN a flat architectural ring */
-var COLLAR=[]; (function(){ for(var s=0;s<=72;s++){
-  var a=s/72*6.2832;
-  COLLAR.push({ dna: 1 + Math.sin(a*12)*.012,
-                bld: 1 + Math.sin(a*3+1.1)*.075 + Math.sin(a*7)*.03 + (RND()-.5)*.02,
-                skn: 1 }); } })();
+/* ═══ ROOT VEINS ═══ the nervous system. Fourteen fibres, chosen from the seed
+   and never rechosen, continue past the limbus into the environment and are
+   the lines a visitor can follow from DNA to WORK. Each has a seeded reach and
+   the lattice node it binds to is resolved from geometry, not at random. */
+var ROOTS=[]; (function(){
+  var n=14;
+  for(var i=0;i<n;i++){
+    var fi = Math.floor((i/n)*FIB_N + RND()*(FIB_N/n)*.6);
+    ROOTS.push({ fi:fi, reach:1.55+RND()*.9, tension:.6+RND()*.8, ph:RND()*6.2832,
+                 w:1.1+RND()*1.3 });
+  }
+})();
+/* limbus: 4–8% seeded deformation from low harmonics — biology, not a disc */
+var LIMB=[]; (function(){
+  var h=[ [2,RND()*6.28,.020+RND()*.014],[3,RND()*6.28,.014+RND()*.012],
+          [5,RND()*6.28,.008+RND()*.006],[7,RND()*6.28,.004] ];
+  for(var s=0;s<=96;s++){ var a=s/96*6.2832, r=1;
+    for(var k=0;k<h.length;k++) r+=Math.sin(a*h[k][0]+h[k][1])*h[k][2];
+    LIMB.push(r); }
+})();
+/* crypts in two uneven clusters, not sprinkled */
+var CRYPT=[]; (function(){
+  var c1=RND()*6.2832, c2=c1+2.2+RND()*1.4;
+  for(var c=0;c<12;c++){ var cl = c<7?c1:c2;
+    CRYPT.push({ a:cl+(RND()-.5)*(c<7?1.3:.9), r:.40+RND()*.40, s:.014+RND()*.034,
+                 o:.14+RND()*.24, rot:RND()*6.2832 }); }
+})();
+/* collarette: precise in DNA, unstable in BLOOD, flat in SKIN — and broken:
+   seeded gaps so it is never a perfect ring */
+var COLLAR=[]; (function(){ var gap=RND()*6.2832, gap2=gap+2.6+RND();
+  for(var s=0;s<=72;s++){ var a=s/72*6.2832;
+    var dg=Math.min(Math.abs(((a-gap+9.42)%6.2832)-3.14), Math.abs(((a-gap2+9.42)%6.2832)-3.14));
+    COLLAR.push({ dna: 1 + Math.sin(a*12)*.012,
+                  bld: 1 + Math.sin(a*3+1.1)*.075 + Math.sin(a*7)*.03 + (RND()-.5)*.02,
+                  skn: 1, on: dg>.28 }); } })();
+/* pupil eccentricity under pressure — a seeded direction */
+var PUPIL_ECC = RND()*6.2832;
 
 /* The world structure is ONE seeded lattice. In DNA it is a registration
    grid; under pressure its lines bend toward IRIS and become channels; in
@@ -708,257 +773,296 @@ var P = { x:.5, y:.5, d:.12, o:1, dna:0, blood:0, skin:0, photo:0,
 var T = { x:.5, y:.5, d:.12, o:1, dna:0, blood:0, skin:0, photo:0,
           bend:0, lid:0, pupil:0, gx:0, gy:0 };
 
+/* the limbus as a path, deformed by the seed. Used for every fill and clip
+   that used to be a circle, so the whole object stops being a disc. */
+function limbusPath(cx,cy,R,scale){
+  scale = scale==null?1:scale;
+  ctx.beginPath();
+  for(var s=0;s<LIMB.length;s++){ var a=s/(LIMB.length-1)*6.2832, r=R*scale*LIMB[s];
+    var X=cx+Math.cos(a)*r, Y=cy+Math.sin(a)*r; s?ctx.lineTo(X,Y):ctx.moveTo(X,Y); }
+  ctx.closePath();
+}
+/* nearest lattice node along a direction from the eye, resolved each frame
+   from the deformed lattice so the root stays bound to the same node index */
+function bindNode(ex,ey,ang,dist){
+  if(!LAT||!LAT.dx) return null;
+  var tx=ex+Math.cos(ang)*dist, ty=ey+Math.sin(ang)*dist;
+  var st=LAT.step, i=Math.round(tx/st)+1, j=Math.round(ty/st)+1;
+  if(i<0||j<0||i>=LAT.cols||j>=LAT.rows) return null;
+  var k=j*LAT.cols+i; return { x:LAT.dx[k], y:LAT.dy[k], k:k };
+}
+/* one pressure event, not a loop: fired from IRIS outward every ~6s in BLOOD */
+var PULSE={ t0:-10, next:2.5 };
+
+function fibreState(f, wd, wb, ws, rest, t, d){
+  var A = f.bldA*rest + f.dnaA*wd + f.bldA*wb + f.sknA*ws;
+  var L = f.bldL*.9*rest + f.dnaL*wd + f.bldL*wb + f.sknL*ws;
+  var W = f.bldW*.8*rest + f.dnaW*wd + f.bldW*wb + f.sknW*ws;
+  var B = f.bldB*.4*rest + f.dnaB*wd + f.bldB*wb + f.sknB*ws;
+  var mv = Math.sin(t*2.0*f.sp+f.ph);
+  A += mv*.034*wb*(d===0?1:.45) + Math.sin(t*.34*f.sp+f.ph)*.009*rest;
+  L *= 1 + mv*.07*wb;
+  B += Math.sin(t*1.3+f.ph)*.06*wb*(d===0?1:.3);
+  return { A:A, L:L, W:W, B:B };
+}
+
 function drawWorld(t, dt){
   ctx.clearRect(0,0,CW,CH);
+  var R = Math.min(CW,CH)*.5*P.d, ex = P.x*CW, ey = P.y*CH;
+  var wd=P.dna, wb=P.blood, ws=P.skin, rest=Math.max(0,1-wd-wb-ws), ph=P.photo;
 
-  var R = Math.min(CW,CH)*.5*P.d;
-  var ex = P.x*CW, ey = P.y*CH;
-  /* normalised weights — the three always sum to at most one, and the
-     remainder is the neutral resting state */
-  var wd=P.dna, wb=P.blood, ws=P.skin;
-
-  /* ── environment ── one ground, never a panel ───────────────────────── */
-  /* the ground. Opaque while the world is alone; it thins as a photograph
-     develops underneath, so the image can own the frame and the fibres stay
-     as residue rather than as a veil */
-  var groundA = 1 - P.photo*.92;
+  /* ground — thins as a photograph develops beneath */
+  var groundA = 1 - ph*.92;
   ctx.fillStyle='rgba(8,8,10,'+groundA.toFixed(3)+')'; ctx.fillRect(0,0,CW,CH);
   var g0 = ctx.createRadialGradient(ex, ey, R*.2, CW*.5, CH*.5, Math.max(CW,CH)*.85);
   g0.addColorStop(0,'rgba(16,16,20,'+(.55*groundA)+')'); g0.addColorStop(.45,'rgba(9,9,12,'+(.35*groundA)+')');
-  g0.addColorStop(1,'rgba(5,5,6,0)');
-  ctx.fillStyle=g0; ctx.fillRect(0,0,CW,CH);
+  g0.addColorStop(1,'rgba(5,5,6,0)'); ctx.fillStyle=g0; ctx.fillRect(0,0,CW,CH);
 
-  /* ── THE LATTICE ── grid → pressure channel → plane, one structure ─── */
-  var structA = wd*.105 + wb*.060 + ws*.050;
-  if(structA > .002 && LAT){
-    var st=LAT.step, cols=LAT.cols, rows=LAT.rows;
-    var bend = P.bend, reach = Math.max(CW,CH)*.55;
-    /* deform every node once per frame, into a scratch buffer */
-    if(!LAT.dx || LAT.dx.length!==LAT.x.length){ LAT.dx=new Float32Array(LAT.x.length); LAT.dy=new Float32Array(LAT.x.length); }
+  /* ── lattice: deform toward IRIS ─────────────────────────────────────── */
+  var structA = (wd*.105 + wb*.060 + ws*.050)*(1-ph*.9);
+  if(LAT){
+    var st=LAT.step, cols=LAT.cols, rows=LAT.rows, bend=P.bend, reach=Math.max(CW,CH)*.55;
+    if(!LAT.dx||LAT.dx.length!==LAT.x.length){ LAT.dx=new Float32Array(LAT.x.length); LAT.dy=new Float32Array(LAT.x.length); }
+    /* DNA: the grid reacts to her — nodes near the limbus align radially */
+    var react = wd*.5 + bend;
     for(var k=0;k<LAT.x.length;k++){
       var gx=LAT.x[k], gy=LAT.y[k];
-      if(bend>.001){
+      if(react>.001){
         var dx=ex-gx, dy=ey-gy, dl=Math.hypot(dx,dy)+1e-3;
-        var f = bend*Math.max(0,1-dl/reach)*Math.min(1,dl/(R*1.2));
+        var f = react*Math.max(0,1-dl/reach)*Math.min(1,dl/(R*1.2));
         gx += dx/dl*f*st*.9; gy += dy/dl*f*st*.9;
       }
-      /* BLOOD: the channels carry a slow travelling pressure */
-      if(wb>.01){ gy += Math.sin(t*1.4 + LAT.ph[k]*6.28 + gx*.004)*wb*st*.06; }
+      if(wb>.01) gy += Math.sin(t*1.4 + LAT.ph[k]*6.28 + gx*.004)*wb*st*.06;
       LAT.dx[k]=gx; LAT.dy[k]=gy;
     }
-    /* thin lines: the grid that persists underneath everything */
-    ctx.lineWidth=1*PX; ctx.strokeStyle='rgba(158,162,166,'+structA+')';
-    ctx.beginPath();
-    for(var j=0;j<rows;j++) for(var i=0;i<cols;i++){
-      var kk=j*cols+i;
-      if(i<cols-1){ ctx.moveTo(LAT.dx[kk],LAT.dy[kk]); ctx.lineTo(LAT.dx[kk+1],LAT.dy[kk+1]); }
-      if(j<rows-1){ ctx.moveTo(LAT.dx[kk],LAT.dy[kk]); ctx.lineTo(LAT.dx[kk+cols],LAT.dy[kk+cols]); }
-    }
-    ctx.stroke();
-    /* the same lines, where seeded, thicken with BLOOD and become planes in SKIN */
-    var thickW = wb*.35 + ws*1;
-    if(thickW>.01){
-      for(var j2=0;j2<rows-1;j2++) for(var i2=0;i2<cols-1;i2++){
-        var k2=j2*cols+i2, th=LAT.thick[k2]; if(!th) continue;
-        var w = (1 + th*thickW*st*.22)*PX;
-        var ruby = wb*(1-ws)*th;
-        ctx.strokeStyle='rgba('+Math.round(158+ruby*40)+','+Math.round(162-ruby*130)+','+
-          Math.round(166-ruby*100)+','+(thickW*(.028+th*.04))+')';
-        ctx.lineWidth=w; ctx.beginPath();
-        ctx.moveTo(LAT.dx[k2],LAT.dy[k2]); ctx.lineTo(LAT.dx[k2+1],LAT.dy[k2+1]); ctx.stroke();
-        /* pressure travels along the channel as a gradient inside the line */
-        if(wb>.02 && ws<.5){ var head=((t*.13*(.6+LAT.ph[k2]*.7)+LAT.ph[k2])%1);
-          var x0=LAT.dx[k2], x1=LAT.dx[k2+1], hx=x0+(x1-x0)*head, gr=Math.abs(x1-x0)*.45;
-          var pg2=ctx.createLinearGradient(hx-gr,0,hx+gr,0);
-          pg2.addColorStop(0,'rgba(120,12,30,0)'); pg2.addColorStop(.5,'rgba(120,12,30,'+(wb*(1-ws)*.30*th)+')');
-          pg2.addColorStop(1,'rgba(120,12,30,0)');
-          ctx.strokeStyle=pg2; ctx.lineWidth=w; ctx.beginPath();
-          ctx.moveTo(x0,LAT.dy[k2]); ctx.lineTo(x1,LAT.dy[k2+1]); ctx.stroke(); }
+    if(structA>.002){
+      ctx.lineWidth=1*PX; ctx.strokeStyle='rgba(158,162,166,'+structA+')'; ctx.beginPath();
+      for(var j=0;j<rows;j++) for(var i=0;i<cols;i++){ var kk=j*cols+i;
+        if(i<cols-1){ ctx.moveTo(LAT.dx[kk],LAT.dy[kk]); ctx.lineTo(LAT.dx[kk+1],LAT.dy[kk+1]); }
+        if(j<rows-1){ ctx.moveTo(LAT.dx[kk],LAT.dy[kk]); ctx.lineTo(LAT.dx[kk+cols],LAT.dy[kk+cols]); } }
+      ctx.stroke();
+      if(wd>.05){
+        ctx.strokeStyle='rgba(242,242,239,'+(wd*.28)+')'; ctx.beginPath();
+        for(var m=0;m<rows;m+=3) for(var n=0;n<cols;n+=3){ var km=m*cols+n, q=5*PX;
+          ctx.moveTo(LAT.dx[km]-q,LAT.dy[km]); ctx.lineTo(LAT.dx[km]+q,LAT.dy[km]);
+          ctx.moveTo(LAT.dx[km],LAT.dy[km]-q); ctx.lineTo(LAT.dx[km],LAT.dy[km]+q); }
+        ctx.stroke();
+        var dyy=((t*.028)%1)*CH; ctx.strokeStyle='rgba(242,242,239,'+(wd*.13)+')';
+        ctx.beginPath(); ctx.moveTo(0,dyy); ctx.lineTo(CW,dyy); ctx.stroke();
       }
     }
-    /* DNA registration crosses and one travelling datum */
-    if(wd>.05){
-      ctx.strokeStyle='rgba(242,242,239,'+(wd*.28)+')'; ctx.lineWidth=1*PX; ctx.beginPath();
-      for(var m=0;m<rows;m+=3) for(var n=0;n<cols;n+=3){
-        var km=m*cols+n, q=5*PX;
-        ctx.moveTo(LAT.dx[km]-q,LAT.dy[km]); ctx.lineTo(LAT.dx[km]+q,LAT.dy[km]);
-        ctx.moveTo(LAT.dx[km],LAT.dy[km]-q); ctx.lineTo(LAT.dx[km],LAT.dy[km]+q); }
-      ctx.stroke();
-      var dyy=((t*.028)%1)*CH;
-      ctx.strokeStyle='rgba(242,242,239,'+(wd*.13)+')'; ctx.beginPath();
-      ctx.moveTo(0,dyy); ctx.lineTo(CW,dyy); ctx.stroke();
-    }
-    /* SKIN: one broad reflection crossing the planes */
-    if(ws>.02){
-      var sx=((t*.04)%1.7-.35)*CW;
-      var sg=ctx.createLinearGradient(sx-CW*.2,0,sx+CW*.2,CH);
-      sg.addColorStop(0,'rgba(242,242,239,0)'); sg.addColorStop(.5,'rgba(242,242,239,'+(ws*.045)+')');
-      sg.addColorStop(1,'rgba(242,242,239,0)');
-      ctx.fillStyle=sg; ctx.fillRect(0,0,CW,CH);
+  }
+
+  /* ── the pressure event ── one, from IRIS outward, then quiet ─────────── */
+  if(wb>.3 && !RM){ if(t>PULSE.next){ PULSE.t0=t; PULSE.next=t+5.5+ (ROOTS[0].ph/6.28)*3; } }
+  var pulseAge = t-PULSE.t0, pulseR = pulseAge*R*1.6;     /* radius of the wavefront */
+  var pulseA = (pulseAge>0 && pulseAge<2.2) ? (1-pulseAge/2.2)*wb : 0;
+
+  /* ── ROOT VEINS outside the limbus ── the same fourteen, always ────────
+     DNA: straight, bound to a lattice node. BLOOD: curved by tension, one
+     pressure event travelling outward. SKIN: the spaces between roots become
+     lamellae. WORK: residue at 6–10%, then gone. */
+  var rootA = (wd*.26 + wb*.34 + ws*.22 + rest*.12)*(1-ph*.9) + (ph>.6&&ph<.97 ? .08 : 0);
+  var rootEnd=[];
+  for(var r=0;r<ROOTS.length;r++){
+    var ro=ROOTS[r], f=FIB[ro.fi], fs=fibreState(f,wd,wb,ws,rest,t,0);
+    var a=fs.A+fs.B, dist=R*ro.reach*(1+ws*.25);
+    var node=bindNode(ex,ey,a,dist);
+    var endX, endY;
+    if(node && (wd+ws)>.05){ endX=lerp(ex+Math.cos(a)*dist, node.x, wd+ws*.5); endY=lerp(ey+Math.sin(a)*dist, node.y, wd+ws*.5); }
+    else { endX=ex+Math.cos(a)*dist; endY=ey+Math.sin(a)*dist; }
+    /* BLOOD curvature: the root sags under tension, perpendicular to itself */
+    var sag = wb*ro.tension*R*.18*Math.sin(t*.6+ro.ph) + rest*R*.02*Math.sin(t*.3+ro.ph);
+    var mx=(ex+Math.cos(a)*R*1.02+endX)*.5 + Math.cos(a+1.5708)*sag;
+    var my=(ey+Math.sin(a)*R*1.02+endY)*.5 + Math.sin(a+1.5708)*sag;
+    rootEnd.push({a:a, ex:endX, ey:endY, mx:mx, my:my, w:ro.w});
+    if(rootA>.004){
+      ctx.beginPath();
+      ctx.moveTo(ex+Math.cos(a)*R*1.0*LIMB[Math.floor(((a%6.2832)+6.2832)%6.2832/6.2832*96)], ey+Math.sin(a)*R*1.0*LIMB[Math.floor(((a%6.2832)+6.2832)%6.2832/6.2832*96)]);
+      ctx.quadraticCurveTo(mx,my,endX,endY);
+      var ruby = wb*(1-ws);
+      ctx.strokeStyle='rgba('+Math.round(200-ws*40)+','+Math.round(200-ruby*150)+','+Math.round(200-ruby*140)+','+rootA+')';
+      ctx.lineWidth=(ro.w*(1+wb*.6+ws*1.4))*PX; ctx.stroke();
+      if(pulseA>0){ /* the event along this root: a short bright segment at the wavefront */
+        var seg=Math.hypot(endX-ex,endY-ey), u=clamp((pulseR-R)/Math.max(1,seg-R),0,1);
+        if(u>0&&u<1){ var qx=ex+Math.cos(a)*R+(endX-ex-Math.cos(a)*R)*u, qy=ey+Math.sin(a)*R+(endY-ey-Math.sin(a)*R)*u;
+          var pg=ctx.createRadialGradient(qx,qy,0,qx,qy,R*.16);
+          pg.addColorStop(0,'rgba(150,14,34,'+(pulseA*.55)+')'); pg.addColorStop(1,'rgba(150,14,34,0)');
+          ctx.fillStyle=pg; ctx.beginPath(); ctx.arc(qx,qy,R*.16,0,6.2832); ctx.fill(); }
+      }
     }
   }
 
-  drawIris(t, ex, ey, R);
+  /* ── SKIN lamellae ── filled quads between adjacent roots, front edge and a
+     grazing reflection. Built from the roots, so they are the same organism. */
+  if(ws>.02 || (ph>.15 && ph<.75)){
+    var lamA = ws*(1-ph*.8);
+    rootEnd.sort(function(p,q){ return p.a-q.a; });
+    for(var L=0;L<rootEnd.length;L++){
+      var A0=rootEnd[L], A1=rootEnd[(L+1)%rootEnd.length];
+      var th = LAT ? LAT.thick[(L*7)%LAT.thick.length] : .5;
+      var depth = .35+th*.65;
+      ctx.beginPath();
+      ctx.moveTo(ex+Math.cos(A0.a)*R*1.01, ey+Math.sin(A0.a)*R*1.01);
+      ctx.quadraticCurveTo(A0.mx,A0.my,A0.ex,A0.ey);
+      ctx.lineTo(A1.ex,A1.ey);
+      ctx.quadraticCurveTo(A1.mx,A1.my, ex+Math.cos(A1.a)*R*1.01, ey+Math.sin(A1.a)*R*1.01);
+      ctx.closePath();
+      var lg=ctx.createLinearGradient(A0.ex,A0.ey,A1.ex,A1.ey);
+      lg.addColorStop(0,'rgba(242,242,239,'+(lamA*.05*depth)+')');
+      lg.addColorStop(.5,'rgba(242,242,239,'+(lamA*.018*depth)+')');
+      lg.addColorStop(1,'rgba(242,242,239,'+(lamA*.055*depth)+')');
+      ctx.fillStyle=lg; ctx.fill();
+      /* front edge */
+      ctx.strokeStyle='rgba(242,242,239,'+(lamA*.16*depth)+')'; ctx.lineWidth=1.2*PX;
+      ctx.beginPath(); ctx.moveTo(A0.ex,A0.ey); ctx.lineTo(A1.ex,A1.ey); ctx.stroke();
+    }
+    /* grazing reflection crossing the lamellae */
+    var sx=((t*.04)%1.7-.35)*CW;
+    var sg=ctx.createLinearGradient(sx-CW*.2,0,sx+CW*.2,CH);
+    sg.addColorStop(0,'rgba(242,242,239,0)'); sg.addColorStop(.5,'rgba(242,242,239,'+(ws*.045)+')');
+    sg.addColorStop(1,'rgba(242,242,239,0)'); ctx.fillStyle=sg; ctx.fillRect(0,0,CW,CH);
+  }
 
-  /* ── corneal exposure ── the catchlight opening into a photographic band */
-  if(P.photo > .01){
-    var bandY = ey - R*.34, h = R*(.5 + P.photo*2.6);
+  drawIris(t, ex, ey, R, rest, pulseR, pulseA);
+
+  /* ── SKIN → WORK: the exposure. A lamella widens into a band, the band
+     develops the frame. photo .2–.6 is the band; .6–1 the frame owns it. */
+  if(ph > .05){
+    var bandP = clamp((ph-.15)/.5,0,1), bandY = ey - R*.34;
+    var h = R*(.08 + smoother(bandP)*3.2);
     var eg = ctx.createLinearGradient(0, bandY-h, 0, bandY+h);
-    eg.addColorStop(0,'rgba(242,242,239,0)');
-    eg.addColorStop(.5,'rgba(242,242,239,'+(P.photo*.085)+')');
-    eg.addColorStop(1,'rgba(242,242,239,0)');
+    var ea = (.04 + bandP*.10)*(1-clamp((ph-.75)/.25,0,1));
+    eg.addColorStop(0,'rgba('+ENV.r+','+ENV.g+','+ENV.b+',0)');
+    eg.addColorStop(.5,'rgba('+Math.round(lerp(242,ENV.r,ph))+','+Math.round(lerp(242,ENV.g,ph))+','+Math.round(lerp(239,ENV.b,ph))+','+ea+')');
+    eg.addColorStop(1,'rgba('+ENV.r+','+ENV.g+','+ENV.b+',0)');
     ctx.fillStyle=eg; ctx.fillRect(0, bandY-h, CW, h*2);
   }
-  if(NOISE){ ctx.globalAlpha=.5; ctx.fillStyle=NOISE; ctx.fillRect(0,0,CW,CH); ctx.globalAlpha=1; }
+  if(NOISE){ ctx.globalAlpha=.5*(1-ph*.5); ctx.fillStyle=NOISE; ctx.fillRect(0,0,CW,CH); ctx.globalAlpha=1; }
 }
 
-function drawIris(t, cx, cy, R){
+function drawIris(t, cx, cy, R, rest, pulseR, pulseA){
   if(P.o < .01 || R < 2) return;
-  ctx.save(); ctx.globalAlpha = P.o;
-  var wd=P.dna, wb=P.blood, ws=P.skin, rest=Math.max(0,1-wd-wb-ws);
-
+  var wd=P.dna, wb=P.blood, ws=P.skin, ph=P.photo;
+  var fade = (1 - ph*.86);
+  /* once the work owns the frame she withdraws entirely — a grey disc over a
+     photograph is not residue, it is an obstruction. Her consequence (the
+     exposure band, the root residue) is what remains. */
+  ctx.save(); ctx.globalAlpha = P.o * (1 - clamp((ph-.55)/.4,0,1));
   var closure = clamp(P.lid,0,1);
   if(closure > .002){ ctx.beginPath();
     ctx.rect(cx-R*1.2, cy-R + closure*2*R*.70, R*2.4, 2*R - closure*2*R); ctx.clip(); }
 
-  /* pupil: precise and contracted in DNA, breathing in BLOOD, a wide
-     architectural void in SKIN. Continuous, no thresholds. */
+  /* pupil: contracted/precise in DNA, breathing and eccentric under BLOOD,
+     a wide architectural void in SKIN; the catchlight takes the project's
+     colour first as WORK approaches */
   var breath = Math.sin(t*.55)*.014*(rest+wb*.5);
-  var beat = Math.pow(Math.sin(t*1.9)*.5+.5,3)*.045*wb;
+  var beat = Math.pow(Math.sin(t*1.9)*.5+.5,3)*.045*wb + pulseA*.03;
   var pr = R*(.205 + P.pupil*.10 + breath + beat - wd*.03 + ws*.06);
-  var ox = P.gx*R*.052, oy = P.gy*R*.048;
+  var ecc = wb*R*.045;
+  var ox = P.gx*R*.052 + Math.cos(PUPIL_ECC)*ecc, oy = P.gy*R*.048 + Math.sin(PUPIL_ECC)*ecc;
   var px = -P.gx*R*.013, py = -P.gy*R*.011;
-  var fade = 1 - P.photo*.82;
 
-  /* stroma ground — dark warm graphite; ruby lives only in the deep layer */
+  /* stroma, inside the deformed limbus */
+  limbusPath(cx,cy,R); ctx.save(); ctx.clip();
   var g = ctx.createRadialGradient(cx+ox*1.4, cy+oy*1.4, pr*.4, cx+px, cy+py, R);
-  g.addColorStop(0,'rgb('+Math.round(10+wb*6)+','+Math.round(10)+','+Math.round(14+ws*3)+')');
+  g.addColorStop(0,'rgb('+Math.round(10+wb*6)+','+10+','+Math.round(14+ws*3)+')');
   g.addColorStop(.52,'rgb('+Math.round(33+wb*10+ws*14)+','+Math.round(33-wb*4+ws*14)+','+Math.round(41-wb*4+ws*17)+')');
-  g.addColorStop(1,'#08080b');
-  ctx.beginPath(); ctx.arc(cx,cy,R,0,6.2832); ctx.fillStyle=g; ctx.fill();
-
-  /* subsurface ruby — beneath the fibres, bounded by the iris, never a ring */
+  g.addColorStop(1,'#08080b'); ctx.fillStyle=g; ctx.fillRect(cx-R*1.1,cy-R*1.1,R*2.2,R*2.2);
   if(wb > .01){
     var sg2 = ctx.createRadialGradient(cx+px, cy+py, pr*.55, cx+px, cy+py, R*.80);
-    sg2.addColorStop(0,'rgba(120,12,30,'+(wb*.42)+')');
-    sg2.addColorStop(.55,'rgba(90,10,24,'+(wb*.14)+')');
-    sg2.addColorStop(1,'rgba(74,7,16,0)');
-    ctx.beginPath(); ctx.arc(cx,cy,R*.82,0,6.2832); ctx.fillStyle=sg2; ctx.fill();
+    sg2.addColorStop(0,'rgba(120,12,30,'+(wb*.42)+')'); sg2.addColorStop(.55,'rgba(90,10,24,'+(wb*.14)+')');
+    sg2.addColorStop(1,'rgba(74,7,16,0)'); ctx.fillStyle=sg2; ctx.fillRect(cx-R,cy-R,R*2,R*2);
   }
 
-  /* ── FIBRE ── one geometry, three targets, blended by weight ─────────
-     depth 0 = deepest (ruby under BLOOD), 1 = middle (warm graphite),
-     2 = surface (neutral bone reflection). Drawn deepest first. */
+  /* fibre — one geometry, three selves; root fibres drawn heavier and brighter */
+  var rootSet={}; for(var rr=0;rr<ROOTS.length;rr++) rootSet[ROOTS[rr].fi]=ROOTS[rr];
   for(var d=0; d<3; d++){
-    ctx.beginPath();
-    var wSum=0, n=0;
+    ctx.beginPath(); var wSum=0, n=0;
     for(var i=d;i<FIB_N;i+=3){
-      var f=FIB[i];
-      var restA = f.bldA, restL=f.bldL*.9, restW=f.bldW*.8, restB=f.bldB*.4;
-      var A = restA*rest + f.dnaA*wd + f.bldA*wb + f.sknA*ws;
-      var L = restL*rest + f.dnaL*wd + f.bldL*wb + f.sknL*ws;
-      var W = restW*rest + f.dnaW*wd + f.bldW*wb + f.sknW*ws;
-      var B = restB*rest + f.dnaB*wd + f.bldB*wb + f.sknB*ws;
-      /* motion: DNA holds still; BLOOD moves at depth; SKIN is inert */
-      var mv = Math.sin(t*2.0*f.sp+f.ph);
-      A += mv*.034*wb*(d===0?1:.45) + Math.sin(t*.34*f.sp+f.ph)*.009*rest;
-      L *= 1 + mv*.07*wb;
-      B += Math.sin(t*1.3+f.ph)*.06*wb*(d===0?1:.3);
-      wSum+=W; n++;
-      var a1=A, a2=A+B;
-      var r0=pr*1.02, r1=pr+(R-pr)*Math.min(.92,L);
+      var f=FIB[i], fs=fibreState(f,wd,wb,ws,rest,t,d);
+      /* variable spacing: a seeded per-fibre gap so the sunburst breaks */
+      var spacing = 1 + (f.ph%1.3-.65)*.08*(1-wd);
+      var a1=fs.A*spacing+(1-spacing)*f.bldA, a2=a1+fs.B;
+      var r0=pr*1.02, r1=pr+(R-pr)*Math.min(.92,fs.L);
+      wSum+=fs.W; n++;
       ctx.moveTo(cx+ox+Math.cos(a1)*r0, cy+oy+Math.sin(a1)*r0);
-      ctx.quadraticCurveTo(
-        cx+px+Math.cos((a1+a2)*.5)*(r0+r1)*.5, cy+py+Math.sin((a1+a2)*.5)*(r0+r1)*.5,
+      ctx.quadraticCurveTo(cx+px+Math.cos((a1+a2)*.5)*(r0+r1)*.5, cy+py+Math.sin((a1+a2)*.5)*(r0+r1)*.5,
         cx+px+Math.cos(a2)*r1, cy+py+Math.sin(a2)*r1);
     }
-    /* colour by depth. Ruby only at depth 0 and only with BLOOD weight;
-       the surface layer is always a neutral reflection. */
-    var base = (d===0?.062:d===1?.105:.165)*fade*(1+wd*.85);
-    var col;
-    if(d===0)      col='rgba('+Math.round(150+wb*40)+','+Math.round(150-wb*120)+','+Math.round(155-wb*105)+','+(base+wb*.06)+')';
-    else if(d===1) col='rgba('+Math.round(175+wb*12)+','+Math.round(175-wb*40)+','+Math.round(178-wb*40)+','+base+')';
-    else           col='rgba(242,242,239,'+(base*(1+ws*.5))+')';
-    ctx.strokeStyle=col;
-    ctx.lineWidth=(wSum/Math.max(1,n))*PX;
-    ctx.stroke();
+    var base=(d===0?.062:d===1?.105:.165)*fade*(1+wd*.85);
+    var col = d===0 ? 'rgba('+Math.round(150+wb*40)+','+Math.round(150-wb*120)+','+Math.round(155-wb*105)+','+(base+wb*.06)+')'
+            : d===1 ? 'rgba('+Math.round(175+wb*12)+','+Math.round(175-wb*40)+','+Math.round(178-wb*40)+','+base+')'
+            : 'rgba(242,242,239,'+(base*(1+ws*.5))+')';
+    ctx.strokeStyle=col; ctx.lineWidth=(wSum/Math.max(1,n))*PX; ctx.stroke();
   }
+  /* the roots inside the iris: the same fourteen, heavier, so the line
+     a visitor follows outside is the line they see inside */
+  ctx.beginPath();
+  for(var r2=0;r2<ROOTS.length;r2++){ var fr=FIB[ROOTS[r2].fi], fs2=fibreState(fr,wd,wb,ws,rest,t,0);
+    var b1=fs2.A, b2=b1+fs2.B, q0=pr*1.02, q1=R*1.0;
+    ctx.moveTo(cx+ox+Math.cos(b1)*q0, cy+oy+Math.sin(b1)*q0);
+    ctx.quadraticCurveTo(cx+px+Math.cos((b1+b2)*.5)*(q0+q1)*.5, cy+py+Math.sin((b1+b2)*.5)*(q0+q1)*.5, cx+Math.cos(b2)*q1, cy+Math.sin(b2)*q1); }
+  ctx.strokeStyle='rgba('+Math.round(230-wb*40)+','+Math.round(230-wb*150)+','+Math.round(228-wb*140)+','+((.14+wd*.1+wb*.08+ws*.1)*fade)+')';
+  ctx.lineWidth=(1.6+wb*.8+ws*1.8)*PX; ctx.stroke();
 
-  /* DNA measures itself: a fine tick ring at the fibre reach, only under DNA */
-  if(wd>.03){
-    var tr=pr+(R-pr)*.72, tk=R*.018;
+  if(wd>.03){ var tr=pr+(R-pr)*.72, tk=R*.018;
     ctx.strokeStyle='rgba(242,242,239,'+(wd*.22*fade)+')'; ctx.lineWidth=1*PX; ctx.beginPath();
     for(var ti=0;ti<96;ti++){ var ta=ti/96*6.2832, big=ti%8===0;
       ctx.moveTo(cx+px+Math.cos(ta)*tr, cy+py+Math.sin(ta)*tr);
       ctx.lineTo(cx+px+Math.cos(ta)*(tr+tk*(big?2.2:1)), cy+py+Math.sin(ta)*(tr+tk*(big?2.2:1))); }
-    ctx.stroke();
-  }
-  /* crypts — fade out as SKIN flattens the biology */
-  for(var q=0;q<CRYPT.length;q++){ var cr=CRYPT[q];
-    ctx.beginPath();
-    ctx.ellipse(cx+px+Math.cos(cr.a)*R*cr.r, cy+py+Math.sin(cr.a)*R*cr.r,
-      R*cr.s*1.7, R*cr.s, cr.rot, 0, 6.2832);
+    ctx.stroke(); }
+  for(var q=0;q<CRYPT.length;q++){ var cr=CRYPT[q]; ctx.beginPath();
+    ctx.ellipse(cx+px+Math.cos(cr.a)*R*cr.r, cy+py+Math.sin(cr.a)*R*cr.r, R*cr.s*1.7, R*cr.s, cr.rot, 0, 6.2832);
     ctx.fillStyle='rgba(4,4,6,'+(cr.o*fade*(1-ws*.85)*(1-wd*.75))+')'; ctx.fill(); }
 
-  /* collarette — precise / unstable / flat, blended */
-  ctx.beginPath();
-  for(var s=0;s<COLLAR.length;s++){
-    var c=COLLAR[s], sa=s/(COLLAR.length-1)*6.2832;
-    var mul = c.bld*rest + c.dna*wd + (c.bld + Math.sin(t*2.2+sa*5)*.03)*wb + c.skn*ws;
-    var rr=pr*1.30*mul;
-    var X=cx+ox+Math.cos(sa)*rr, Y=cy+oy+Math.sin(sa)*rr;
-    s?ctx.lineTo(X,Y):ctx.moveTo(X,Y);
-  }
-  ctx.closePath();
+  /* collarette — broken ring, three selves */
+  ctx.lineWidth=(1.2+ws*1.6)*PX;
   ctx.strokeStyle='rgba('+Math.round(242-wb*90)+','+Math.round(242-wb*200)+','+Math.round(239-wb*190)+','+((.055+wd*.06+wb*.12+ws*.04)*fade)+')';
-  ctx.lineWidth=(1.2+ws*1.6)*PX; ctx.stroke();
+  ctx.beginPath(); var pen=false;
+  for(var s=0;s<COLLAR.length;s++){ var c=COLLAR[s], sa=s/(COLLAR.length-1)*6.2832;
+    var mul = c.bld*rest + c.dna*wd + (c.bld + Math.sin(t*2.2+sa*5)*.03)*wb + c.skn*ws;
+    var rr2=pr*1.30*mul, X=cx+ox+Math.cos(sa)*rr2, Y=cy+oy+Math.sin(sa)*rr2;
+    if(!c.on){ pen=false; continue; }
+    pen?ctx.lineTo(X,Y):ctx.moveTo(X,Y); pen=true; }
+  ctx.stroke();
 
-  /* aperture with distance behind it */
+  /* aperture */
   var pg=ctx.createRadialGradient(cx+ox,cy+oy,0,cx+ox,cy+oy,pr);
   pg.addColorStop(0,'#000'); pg.addColorStop(.72,'#000'); pg.addColorStop(1,'#07070a');
   ctx.beginPath(); ctx.arc(cx+ox,cy+oy,pr,0,6.2832); ctx.fillStyle=pg; ctx.fill();
-  ctx.beginPath();
-  ctx.ellipse(cx+ox+pr*.28, cy+oy+pr*.30, pr*.16, pr*.09, .8, 0, 6.2832);
+  ctx.beginPath(); ctx.ellipse(cx+ox+pr*.28, cy+oy+pr*.30, pr*.16, pr*.09, .8, 0, 6.2832);
   ctx.fillStyle='rgba(120,12,30,'+(.05+wb*.14)+')'; ctx.fill();
-  ctx.beginPath(); ctx.arc(cx+ox,cy+oy,pr,0,6.2832);
-  ctx.strokeStyle='rgba(0,0,0,.92)'; ctx.lineWidth=1.4*PX; ctx.stroke();
+  ctx.beginPath(); ctx.arc(cx+ox,cy+oy,pr,0,6.2832); ctx.strokeStyle='rgba(0,0,0,.92)'; ctx.lineWidth=1.4*PX; ctx.stroke();
+  ctx.restore(); /* end limbus clip */
 
-  /* limbus — nearly black, always */
-  var lg2=ctx.createRadialGradient(cx,cy,R*.50,cx,cy,R*1.02);
+  /* limbus — nearly black, following the deformed edge */
+  var lg2=ctx.createRadialGradient(cx,cy,R*.50,cx,cy,R*1.06);
   lg2.addColorStop(0,'rgba(5,5,6,0)'); lg2.addColorStop(.40,'rgba(5,5,6,.22)');
-  lg2.addColorStop(.76,'rgba(5,5,6,.74)'); lg2.addColorStop(1,'rgba(5,5,6,1)');
-  ctx.beginPath(); ctx.arc(cx,cy,R*1.02,0,6.2832); ctx.fillStyle=lg2; ctx.fill();
+  lg2.addColorStop(.74,'rgba(5,5,6,.74)'); lg2.addColorStop(1,'rgba(5,5,6,1)');
+  limbusPath(cx,cy,R,1.06); ctx.fillStyle=lg2; ctx.fill();
+  /* local occlusion: the upper lid's shadow, a depth cue that a disc lacks */
+  var oc=ctx.createLinearGradient(0,cy-R,0,cy-R*.45);
+  oc.addColorStop(0,'rgba(5,5,6,.55)'); oc.addColorStop(1,'rgba(5,5,6,0)');
+  limbusPath(cx,cy,R); ctx.fillStyle=oc; ctx.fill();
 
-  /* ── CORNEA ── glass over everything. IRIS receives only derived
-     environmental information: the world's average colour and luminance
-     and its light direction. No raster, no edge, no picture. */
+  /* cornea — derived environment colour only, never a picture */
   var lightX = cx - R*(.34 + LIGHT.x*.10), lightY = cy - R*(.40 + LIGHT.y*.10);
-  var envA = ENV.a*.10;
-  if(envA>.003){
-    var eg2 = ctx.createRadialGradient(cx+ox*2, cy-R*.25+oy*2, R*.05, cx, cy, R*.95);
-    eg2.addColorStop(0,'rgba('+ENV.r+','+ENV.g+','+ENV.b+','+envA+')');
-    eg2.addColorStop(.6,'rgba('+ENV.r+','+ENV.g+','+ENV.b+','+(envA*.3)+')');
-    eg2.addColorStop(1,'rgba('+ENV.r+','+ENV.g+','+ENV.b+',0)');
-    ctx.beginPath(); ctx.arc(cx,cy,R*.95,0,6.2832); ctx.fillStyle=eg2; ctx.fill();
-  }
+  var envA = ENV.a*.10 + ph*.12;
+  if(envA>.003){ var eg2=ctx.createRadialGradient(cx+ox*2, cy-R*.25+oy*2, R*.05, cx, cy, R*.95);
+    eg2.addColorStop(0,'rgba('+ENV.r+','+ENV.g+','+ENV.b+','+envA+')'); eg2.addColorStop(.6,'rgba('+ENV.r+','+ENV.g+','+ENV.b+','+(envA*.3)+')');
+    eg2.addColorStop(1,'rgba('+ENV.r+','+ENV.g+','+ENV.b+',0)'); limbusPath(cx,cy,R,.96); ctx.fillStyle=eg2; ctx.fill(); }
   var wet=ctx.createRadialGradient(lightX, lightY, R*.04, cx-R*.18, cy-R*.26, R*1.18);
-  wet.addColorStop(0,'rgba(242,242,239,'+(.18+ws*.08)+')');
-  wet.addColorStop(.32,'rgba(242,242,239,.035)');
-  wet.addColorStop(1,'rgba(242,242,239,0)');
-  ctx.beginPath(); ctx.arc(cx,cy,R,0,6.2832); ctx.fillStyle=wet; ctx.fill();
-  ctx.beginPath(); ctx.arc(cx,cy,R*.995,.5,2.05);
-  ctx.strokeStyle='rgba(242,242,239,.062)'; ctx.lineWidth=1.9*PX; ctx.stroke();
-  /* SKIN widens the reflection into a band across the dome */
-  if(ws>.02){
-    var bw=ctx.createLinearGradient(cx-R, cy-R*.5, cx+R, cy+R*.2);
-    bw.addColorStop(0,'rgba(242,242,239,0)'); bw.addColorStop(.5,'rgba(242,242,239,'+(ws*.07)+')');
-    bw.addColorStop(1,'rgba(242,242,239,0)');
-    ctx.beginPath(); ctx.arc(cx,cy,R,0,6.2832); ctx.fillStyle=bw; ctx.fill();
-  }
-  var cl = 1 + P.photo*7;
-  ctx.beginPath();
-  ctx.ellipse(lightX, lightY, R*.052*cl, R*.030*(1+P.photo*2.2), -.7, 0, 6.2832);
-  ctx.fillStyle='rgba(255,255,255,'+(.52*(1-P.photo*.45))+')'; ctx.fill();
+  wet.addColorStop(0,'rgba(242,242,239,'+(.18+ws*.08)+')'); wet.addColorStop(.32,'rgba(242,242,239,.035)');
+  wet.addColorStop(1,'rgba(242,242,239,0)'); limbusPath(cx,cy,R); ctx.fillStyle=wet; ctx.fill();
+  ctx.beginPath(); ctx.arc(cx,cy,R*.995,.5,2.05); ctx.strokeStyle='rgba(242,242,239,.062)'; ctx.lineWidth=1.9*PX; ctx.stroke();
+  if(ws>.02){ var bw=ctx.createLinearGradient(cx-R, cy-R*.5, cx+R, cy+R*.2);
+    bw.addColorStop(0,'rgba(242,242,239,0)'); bw.addColorStop(.5,'rgba(242,242,239,'+(ws*.07)+')'); bw.addColorStop(1,'rgba(242,242,239,0)');
+    limbusPath(cx,cy,R); ctx.fillStyle=bw; ctx.fill(); }
+  /* the catchlight: project colour enters here first, then it widens into the band */
+  var cl = 1 + ph*7, tint = clamp(ph*2.5,0,1);
+  ctx.beginPath(); ctx.ellipse(lightX, lightY, R*.052*cl, R*.030*(1+ph*2.2), -.7, 0, 6.2832);
+  ctx.fillStyle='rgba('+Math.round(lerp(255,ENV.r+40,tint))+','+Math.round(lerp(255,ENV.g+40,tint))+','+Math.round(lerp(255,ENV.b+40,tint))+','+(.52*(1-ph*.45))+')'; ctx.fill();
   ctx.restore();
 }
 
@@ -1061,7 +1165,7 @@ var MOB = {
   question:  {x:.90,y:.74,d:.68,o:.52},
   anatomy:   {x:.90,y:.74,d:.68,o:.34},
   dna:       {x:.94,y:.78,d:.56,o:.78,dna:1},
-  pressure:  {x:.94,y:.72,d:.66,o:.50,dna:.45,blood:.55,bend:1},
+  pressure:  {x:.86,y:.60,d:.77,o:.52,dna:.45,blood:.55,bend:1},
   blood:     {x:.94,y:.78,d:.56,o:.82,blood:1},
   media:     {x:.10,y:.22,d:.60,o:.28,blood:.75},
   matter:    {x:.60,y:.62,d:.78,o:.40,blood:.45,skin:.55},
@@ -1232,7 +1336,7 @@ function readScroll(){
     if(!im) continue;
     /* only the current and adjacent frames are ever active */
     if(b.bottom < -VH*.9 || b.top > VH*1.9){
-      if(im.style.opacity!=='0'){ im.style.opacity='0'; im.style.transform='scale(1.035)'; }
+      if(im.dataset.on){ im.dataset.on='0'; im.style.filter='brightness(0) saturate(.9) contrast(1.06)'; im.style.transform='scale(1.035)'; }
       el.style.setProperty('--ex','0'); el.classList.remove('near'); continue;
     }
     var centre = (b.top+b.height*.5) - VH*.5;
@@ -1240,8 +1344,9 @@ function readScroll(){
     var e2 = smoother(prox);
     /* develops from shadow: luminance comes up before the image is fully there,
        outgoing frames drift 1.00→1.035, incoming settle 1.025→1.00 */
-    im.style.opacity = (e2*.98).toFixed(3);
-    im.style.filter = 'brightness('+(.18+e2*.72).toFixed(3)+') saturate('+(.55+e2*.45).toFixed(3)+') contrast(1.06)';
+    if(im.dataset.on!=='1') im.dataset.on='1';
+    /* from shadow: luminance develops, saturation follows, nothing fades */
+    im.style.filter = 'brightness('+(e2*.90).toFixed(3)+') saturate('+(.55+e2*.45).toFixed(3)+') contrast(1.06)';
     im.style.transform = 'scale('+(1.035 - e2*.035).toFixed(4)+')';
     el.style.setProperty('--ex', e2.toFixed(3));
     el.classList.toggle('near', prox>.45);
@@ -1313,6 +1418,30 @@ function tickBlink(t, dt){
 }
 var blinkHalf=false;
 
+/* ═══ CHAPTER PHYSICS ══ one physical event per chapter, no text animation ═
+   DNA: the headline's baseline locks to the lattice. BLOOD: the composition
+   compresses toward the pressure source. SKIN: a lamella passes behind the
+   type (the canvas is beneath it). WORK: copy goes quiet. */
+var dnaHold=document.querySelector('.organ[data-mode="dna"] .hold');
+var bloodHold=document.querySelector('.organ[data-mode="blood"] .hold');
+var lastPhys='';
+function chapterPhysics(){
+  if(RM) return;
+  var key=(P.dna>.5?'D':'-')+P.blood.toFixed(1);
+  if(key===lastPhys) return; lastPhys=key;
+  if(dnaHold && LAT){
+    /* lock: move the block so its headline top sits on a lattice line */
+    var h=dnaHold.querySelector('h2'); var r=h.getBoundingClientRect();
+    var stepCss=LAT.step/PX, off=((r.top%stepCss)+stepCss)%stepCss;
+    var snap=(off<stepCss/2?-off:stepCss-off)*(P.dna>.5?1:0);
+    dnaHold.style.transform='translate3d(0,'+snap.toFixed(1)+'px,0)';
+  }
+  if(bloodHold){
+    /* compress toward her: a few vw, the letterforms untouched */
+    var dir = P.x>.5?1:-1;
+    bloodHold.style.transform='translate3d('+(dir*P.blood*2.2).toFixed(2)+'vw,0,0)';
+  }
+}
 /* ═══ HIT TARGET ══ a real button that follows her ═══════════════════════ */
 var hit=$('irisHitTarget'), hitLast={x:0,y:0,d:0};
 function placeHit(){
@@ -1333,6 +1462,7 @@ function placeHit(){
 
 /* ═══ THE SCHEDULER ══ one loop for the whole site ═══════════════════════ */
 var running=false, rafId=null, last=0, boosted=0, lastNav='';
+var QA={};  /* diagnostic switches, only ever set from the #qa hook */
 var LAM = { pos:7, geo:5, gaze:11, pupil:8, op:9 };
 
 function frame(now){
@@ -1346,9 +1476,11 @@ function frame(now){
   if(Math.abs(scrollVel*dt) > VH){ boosted = t + .15; }
   var k = t < boosted ? 3.2 : 1;
 
-  readScroll();
-  sweepReveals(dt, Math.abs(scrollVel*dt) > VH*.9);
+  if(!QA.noRead) readScroll();
+  if(!QA.noReveal) sweepReveals(dt, Math.abs(scrollVel*dt) > VH*.9);
   if(portalOpen || portalT>0) applyPortalOverride(dt);
+  if(!portalOpen && portalT<=0 && portal.classList.contains('closing')){
+    portal.classList.remove('closing'); pOut.innerHTML=''; pIn.value=''; }
 
   P.x = approach(P.x, T.x, LAM.pos*k, dt);
   P.y = approach(P.y, T.y, LAM.pos*k, dt);
@@ -1377,8 +1509,9 @@ function frame(now){
   ENV.r = approach(ENV.r, ENV.tr, 2.0, dt); ENV.g = approach(ENV.g, ENV.tg, 2.0, dt);
   ENV.b = approach(ENV.b, ENV.tb, 2.0, dt);
 
-  drawWorld(t, dt);
-  placeHit();
+  if(!QA.noDraw) drawWorld(t, dt);
+  if(!QA.noHit) placeHit();
+  if(!QA.noPhys) chapterPhysics();
 
   /* the nav earns a scrim only while a photograph is under it */
   var ns = clamp(P.photo*1.15, 0, 1).toFixed(2);
@@ -1459,8 +1592,10 @@ if(!COARSE && !RM){
   }, {passive:true});
   addEventListener('pointerleave', function(){ ptr=null; cur.classList.remove('on'); });
   document.addEventListener('pointerover', function(e){
-    var el=e.target.closest && e.target.closest('button,a,.scar,.row,input');
+    var onIris = e.target===hit;
+    var el=!onIris && e.target.closest && e.target.closest('a,button.act,.seed,.row,.scar,input');
     cur.classList.toggle('wide', !!el);
+    cur.classList.toggle('off', onIris);
   });
 }
 
@@ -1474,8 +1609,10 @@ function applyPortalOverride(dt){
   var e = smoother(portalT);
   var mob = VW<820;
   T.x = lerp(T.x, mob?.5:.72, e); T.y = lerp(T.y, mob?.30:.54, e);
-  T.d = lerp(T.d, mob?1.10:1.00, e);
-  T.o = lerp(T.o, portalMode==='listen'&&!$('pOut').innerHTML ? .62 : .36, e);
+  T.d = lerp(T.d, mob?(kbUp?.62:1.10):1.00, e);
+  if(mob && kbUp) T.y = lerp(T.y, .18, e);
+  /* contrast steps down while she is being read */
+  T.o = lerp(T.o, portalMode==='listen'&&!$('pOut').innerHTML ? .62 : portalMode==='think' ? .22 : .36, e);
   T.dna = lerp(T.dna, portalMode==='read'?.55:0, e);
   T.blood = lerp(T.blood, 0, e);
   T.skin = lerp(T.skin, 0, e);
@@ -1501,6 +1638,7 @@ function shut(on){
 }
 function openIris(seed, from){
   if(portalOpen) return;
+  cancelBeats(); portal.classList.remove('closing');
   opener = from || document.activeElement;
   portalFrom = { y:scrollY };
   portal.classList.add('on'); portalOpen=true; portalT=0; portalMode='listen';
@@ -1514,11 +1652,14 @@ function openIris(seed, from){
 }
 function closeIris(){
   if(!portalOpen) return;
-  portal.classList.remove('on','deep'); portalOpen=false; portalMode='listen';
+  cancelBeats();
+  /* reversible: the UI stays (fading) until the eye has travelled back */
+  portal.classList.remove('on','deep'); portal.classList.add('closing');
+  portalOpen=false; portalMode='listen'; kbUp=false;
   document.body.classList.remove('raised');
   document.body.style.overflow=''; shut(false);
-  pOut.innerHTML=''; pIn.value='';
   var pb=$('pBody'); if(pb){ pb.style.justifyContent='center'; pb.scrollTop=0; }
+  $('pStage').classList.remove('beat-hide');
   if(RM) portalT=0;
   if(portalFrom) scrollTo(0, portalFrom.y);
   if(RM) staticFrame();
@@ -1545,55 +1686,67 @@ var VERDICTS=[
 var FALLBACK={ v:"Nothing here says what should change yet.",
   n:"What should be true afterwards that is not true now?" };
 
+var beatTimers=[];
+function later(fn,ms){ var id=setTimeout(fn, RM?0:ms); beatTimers.push(id); return id; }
+function cancelBeats(){ beatTimers.forEach(clearTimeout); beatTimers.length=0; }
+
+/* FOUR BEATS. Each replaces the last; nothing stacks.
+   LISTEN — one input. READ — the sentence on one baseline, medium separated
+   from problem. THINK — the read recedes to 12%, the challenged assumption
+   stays, IRIS dims. REFRAME — one verdict, one next input, LISTENING. */
 function analyse(text){
+  cancelBeats();
   var words=String(text).replace(/[.!?,]/g,'').split(/\s+/).filter(Boolean).slice(0,9);
   var toks=words.map(function(w){
-    if(MEDIUM.test(w))  return {w:w,tag:'medium selected too early',strike:true};
-    if(OUTCOME.test(w)) return {w:w,tag:'outcome?',strike:false};
-    if(SKIP.test(w))    return {w:w,tag:'',strike:false,quiet:true};
-    return {w:w,tag:'assumption',strike:false};
+    if(MEDIUM.test(w))  return {w:w,tag:'medium — selected too early',strike:true,keep:true};
+    if(OUTCOME.test(w)) return {w:w,tag:'outcome',keep:true};
+    if(SKIP.test(w))    return {w:w,tag:'',quiet:true};
+    return {w:w,tag:'the problem'};
   });
-  var v=FALLBACK;
-  for(var i=0;i<VERDICTS.length;i++) if(VERDICTS[i].k.test(text)){ v=VERDICTS[i]; break; }
+  if(!toks.some(function(t){return t.keep;})){ var last=toks.filter(function(t){return !t.quiet;}).pop(); if(last){ last.keep=true; last.tag='assumption'; } }
+  var v=FALLBACK; for(var i=0;i<VERDICTS.length;i++) if(VERDICTS[i].k.test(text)){ v=VERDICTS[i]; break; }
 
-  pOut.innerHTML='<div class="parse" id="parse"></div>'+
+  /* READ */
+  $('pStage').classList.add('beat-hide');
+  pOut.innerHTML='<span class="mi">You said</span><div class="parse" id="parse"></div>'+
     '<div class="verdict" id="verdict"><span class="mi hot">What actually needs to change</span>'+
     '<p class="disp" style="font-size:clamp(22px,3.4vw,44px);line-height:1.02">'+esc(v.v)+'</p></div>'+
-    '<div class="pnext" id="pnext" style="margin-top:clamp(16px,3vh,32px);opacity:0;'+
-    'transition:opacity .8s var(--lux)"><span class="mi hot">IRIS asks</span>'+
+    '<div class="pnext" id="pnext" style="opacity:0;transition:opacity .8s var(--lux)">'+
+    '<span class="mi hot">IRIS asks</span>'+
     '<p class="ed" style="color:var(--bone);font-size:clamp(16px,1.9vw,24px)">'+esc(v.n)+'</p>'+
     '<div class="pinput"><span class="mi">You</span>'+
     '<input id="pNext" type="text" autocomplete="off" spellcheck="false" placeholder="Answer her" aria-label="Your answer"></div>'+
-    '<span class="mi" style="margin-top:14px">Draft — this reply is written, not generated. '+
-    'Public IRIS holds no client memory.</span></div>';
-  var p=$('parse');
-  toks.forEach(function(tk){
-    var d=document.createElement('div');
-    d.className='tok'+(tk.strike?' strike':'');
-    if(tk.quiet) d.style.opacity='.4';
-    d.innerHTML='<b>'+esc(tk.w)+'</b><em>'+esc(tk.tag||'')+'</em>';
-    p.appendChild(d);
-  });
+    '<span class="mi" style="margin-top:14px">Draft — written, not generated. Public IRIS holds no client memory.</span></div>';
+  var parse=$('parse');
+  toks.forEach(function(tk){ var d=document.createElement('div');
+    d.className='tok'+(tk.strike?' strike':'')+(tk.keep?' keep':''); if(tk.quiet) d.style.opacity='.4';
+    d.innerHTML='<b>'+esc(tk.w)+'</b><em>'+esc(tk.tag||'')+'</em>'; parse.appendChild(d); });
   portalMode='read'; $('portalState').textContent='IRIS / READING';
-  var kids=[].slice.call(p.children), step=RM?0:105;
-  kids.forEach(function(d,i){ setTimeout(function(){ d.classList.add('in'); }, i*step); });
-  setTimeout(function(){ portalMode='think'; $('portalState').textContent='IRIS / THINKING'; },
-    kids.length*step*.6);
-  setTimeout(function(){
-    portal.classList.add('deep');
+  var kids=[].slice.call(parse.children), step=105;
+  kids.forEach(function(d,i){ later(function(){ d.classList.add('in'); if(d.style.opacity==='.4') d.style.opacity=''; }, i*step); });
+
+  /* THINK */
+  later(function(){ parse.classList.add('think'); portalMode='think';
+    $('portalState').textContent='IRIS / THINKING'; }, kids.length*step+450);
+
+  /* REFRAME */
+  later(function(){ portal.classList.add('deep');
     var pb=$('pBody'); if(pb) pb.style.justifyContent='flex-start';
-    $('verdict').classList.add('in');
-    portalMode='answer'; $('portalState').textContent='IRIS / ANSWERING';
-  }, kids.length*step + (RM?0:520));
-  setTimeout(function(){ var n=$('pnext'); if(n) n.style.opacity='1';
-    /* she has asked; she is listening again */
+    $('verdict').classList.add('in'); portalMode='answer';
+    $('portalState').textContent='IRIS / ANSWERING'; }, kids.length*step+1350);
+  later(function(){ var n=$('pnext'); if(n) n.style.opacity='1';
     portalMode='listen'; $('portalState').textContent='IRIS / LISTENING';
     var nx=$('pNext'); if(nx){ nx.focus();
-      nx.addEventListener('keydown', function(e){ if(e.key==='Enter' && nx.value.trim()) analyse(nx.value); }); }
-  }, kids.length*step + (RM?0:1150));
+      nx.addEventListener('keydown', function(e){ if(e.key==='Enter' && nx.value.trim()) analyse(nx.value); });
+      nx.addEventListener('focus', keyboardUp); nx.addEventListener('blur', keyboardDown); }
+  }, kids.length*step+2100);
 }
+/* the mobile keyboard: dvh handles the layout, and IRIS steps back so the
+   column she shares the screen with is not covered */
+var kbUp=false; function keyboardUp(){ kbUp=true; } function keyboardDown(){ kbUp=false; }
 pIn.addEventListener('keydown', function(e){
   if(e.key==='Enter' && pIn.value.trim()) analyse(pIn.value); });
+pIn.addEventListener('focus', keyboardUp); pIn.addEventListener('blur', keyboardDown);
 [].slice.call(document.querySelectorAll('.seed')).forEach(function(s){
   s.addEventListener('click', function(){ pIn.value=s.dataset.seed; analyse(s.dataset.seed); }); });
 
@@ -1632,9 +1785,10 @@ addEventListener('keydown', function(e){
 });
 
 if(location.hash==='#qa'){
-  window.__BB = { P:P, T:T, draw:function(t){ drawWorld(t||0,0); }, stop:stop, start:start,
+  window.__BB = { P:P, T:T, QA:QA, draw:function(t){ drawWorld(t||0,0); }, stop:stop, start:start,
                   ENV:ENV, fib:FIB.length,
-                  dbg:function(){ return { curName:curName, ptrDwell:ptrDwell, ptrMoved:ptrMoved, ptr:!!ptr, portalT:portalT }; } };
+                  dbg:function(){ return { curName:curName, ptrDwell:ptrDwell, ptrMoved:ptrMoved, ptr:!!ptr, portalT:portalT,
+                    anchors:ANCH.map(function(a){ return a.name+'@'+Math.round(a.y); }) }; } };
 }
 /* honour saveData by not eagerly warming imagery */
 if(SAVE){ [].slice.call(document.querySelectorAll('img[loading="eager"]'))

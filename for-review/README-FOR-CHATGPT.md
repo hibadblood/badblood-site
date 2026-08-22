@@ -4,20 +4,37 @@
 An interactive visual prototype of the next badblood.company. It sits beside
 the live site; `index.html` is untouched.
 
+## Build
+Every frame in this folder was rendered from build `v3-nervous-system-2026-08-22`
+(`console.info('[BB] build …')` and `<html data-build>`). World-state values
+at each checkpoint are recorded in the commit message.
+
 ## Look at the pictures first
 `draft-2026.source.html` is one file with no build step, but almost everything
 you would judge is drawn into a canvas at runtime. Reading the HTML alone will
 not show you the design. The JPEGs are the design.
 
-- `01-arrival.jpg` — first frame, desktop
+- `01-arrival.jpg` — first frame, desktop 1512×805
 - `02-dna.jpg` — DNA state
 - `03-blood.jpg` — BLOOD state
-- `04-work.jpg` — a project, developed under corneal exposure
-- `05-iris-portal.jpg` — a brief taken apart as typography
-- `06-mobile-pressure.jpg`, `07-mobile-iris-reveal.jpg` — mobile art direction
+- `04-skin.jpg` — SKIN state
+- `05-skin-to-work-midpoint.jpg` — the corneal exposure, root-vein residue over the developing frame
+- `06-work.jpg` — WORK fully developed; IRIS has withdrawn, her consequence remains
+- `07-portal-listen.jpg`, `08-portal-reframe.jpg` — the four-beat portal
+- `09-mobile-pressure.jpg`, `10-mobile-reveal.jpg` — mobile art direction at 390×844
 
 Media is stripped from the source (`ASSET_..._REMOVED`) so it is 74 KB rather
 than 1.2 MB. Keep those placeholders exactly; do not invent replacement imagery.
+
+## The nervous system
+Fourteen ROOT VEINS are chosen from the seeded iris geometry once and never
+rechosen. They continue past the limbus and bind to lattice nodes; in DNA they
+straighten into measured directions, in BLOOD they curve under tension and
+carry one pressure event outward, in SKIN the spaces between them become
+filled lamellae with a front edge and a grazing reflection, and in WORK they
+remain as 6–10% residue under the exposure until the frame owns itself. The
+limbus carries a 4–8% seeded deformation, the pupil goes eccentric under
+pressure, the collarette is broken, and the crypts sit in two uneven clusters.
 
 ## The architecture, in one paragraph
 There is **one** `<canvas>` on the page. `#worldCanvas` renders the
