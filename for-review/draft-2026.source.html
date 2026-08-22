@@ -1,5 +1,5 @@
 <meta charset="utf-8">
-<meta name="bb-build" content="v3-nervous-system-2026-08-22">
+<meta name="bb-build" content="v3.1-taste-release-2026-08-22">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Bad Blood Organism</title>
 <meta name="description" content="Bad Blood Company — a creative intelligence company. We build things that live.">
@@ -110,6 +110,8 @@ main{position:relative;z-index:2}
   justify-content:space-between;gap:20px;padding:var(--edge) var(--edge) 0;
   mix-blend-mode:difference}
 body.onwork .nav{mix-blend-mode:normal}
+body.onwork .marks{opacity:0;transition:opacity .4s}
+body.onwork #scars .hold{opacity:0;transition:opacity .5s var(--lux)}
 body.onwork .nav,body.onwork .nav a,body.onwork .nav .act{color:var(--bone)}
 .nav::before{content:'';position:absolute;left:0;right:0;top:0;
   height:calc(var(--edge)*3.4);pointer-events:none;mix-blend-mode:normal;
@@ -164,7 +166,9 @@ body.onwork .nav::before{background:linear-gradient(to bottom,rgba(5,5,6,.92),rg
 .organ-head{display:grid;gap:clamp(14px,2vw,26px)}
 .organ-body{display:grid;grid-template-columns:1fr;gap:clamp(22px,3.4vw,60px);
   margin-top:clamp(28px,5vh,72px);align-items:start}
-@media (min-width:940px){.organ-body{grid-template-columns:1fr auto}}
+@media (min-width:940px){.organ-body{grid-template-columns:1fr auto}
+  /* DNA: she sits bottom-right, so the microcopy stays left of the limbus */
+  .organ[data-mode="dna"] .organ-body{grid-template-columns:1fr;max-width:46vw}}
 .keywords{display:flex;flex-wrap:wrap;gap:0 clamp(14px,2vw,30px);max-width:34ch}
 .keywords span{font-family:var(--display);font-variation-settings:'wdth' 88,'wght' 400;
   font-size:clamp(15px,1.7vw,22px);text-transform:uppercase;letter-spacing:.02em;
@@ -213,9 +217,11 @@ body.onwork .nav::before{background:linear-gradient(to bottom,rgba(5,5,6,.92),rg
 /* ══ ORIGINALS ══ ruled rows ══════════════════════════════════════════ */
 @media (max-width:820px){
   .reveal{min-height:135svh;display:block;padding:0}
-  .reveal .hold{position:sticky;top:0;height:100svh;display:grid;align-content:center;
-    padding:0 var(--edge);
-    background:radial-gradient(60% 40% at 50% 52%,rgba(5,5,6,.55),rgba(5,5,6,0))}
+  .reveal{text-align:left}
+  .reveal .hold{position:sticky;top:0;height:100svh;display:grid;align-content:start;
+    justify-items:start;padding:17svh var(--edge) 0;
+    background:linear-gradient(to bottom,rgba(5,5,6,.78) 0%,rgba(5,5,6,.45) 42%,rgba(5,5,6,0) 62%)}
+  .reveal .hold > div{justify-items:start!important}
 }
 .rows{display:grid;border-top:1px solid var(--line)}
 .row{display:grid;grid-template-columns:1fr;gap:8px;padding:clamp(20px,3vw,38px) 0;
@@ -240,7 +246,7 @@ body.onwork .nav::before{background:linear-gradient(to bottom,rgba(5,5,6,.92),rg
   position:relative;z-index:3}
 .portal-body{flex:1;display:flex;flex-direction:column;justify-content:center;
   gap:clamp(16px,3vh,36px);position:relative;z-index:2;overflow-y:auto;
-  padding:clamp(16px,4vh,40px) 0;max-width:58%}
+  padding:clamp(16px,4vh,40px) 0;max-width:44vw}
 @media (max-width:820px){.portal-body{max-width:100%}}
 /* local falloff behind the reading column — light, not a panel */
 .portal::before{content:'';position:absolute;inset:0;pointer-events:none;z-index:1;
@@ -259,7 +265,7 @@ body.onwork .nav::before{background:linear-gradient(to bottom,rgba(5,5,6,.92),rg
 .pinput input:focus{outline:none}
 .seeds{display:flex;flex-wrap:wrap;gap:clamp(12px,2vw,30px)}
 .seed{font-family:var(--micro);font-size:var(--micro-size);letter-spacing:.3em;
-  text-transform:uppercase;color:var(--smoke);padding-bottom:5px;
+  text-transform:uppercase;color:var(--chrome);min-height:44px;padding:12px 0 5px;
   border-bottom:1px solid transparent;transition:color var(--t-fast),border-color var(--t-fast)}
 .seed:hover{color:var(--bone);border-color:var(--blood)}
 .parse{display:flex;flex-wrap:wrap;gap:clamp(14px,1.8vw,26px) clamp(10px,1.6vw,22px);
@@ -287,6 +293,8 @@ body.onwork .nav::before{background:linear-gradient(to bottom,rgba(5,5,6,.92),rg
   transform:translateY(14px);transition:opacity .9s var(--lux),transform .9s var(--lux)}
 .verdict.in{opacity:1;transform:none}
 .pnext{display:grid;gap:8px;max-width:46ch}
+.portal .mi{color:var(--chrome)}
+.portal .mi.hot{color:var(--blood)}
 .portal.deep #pStage h2{font-size:clamp(15px,1.7vw,22px);
   margin-bottom:clamp(10px,1.6vh,20px);color:var(--smoke)}
 .portal.deep .pinput input{font-size:clamp(15px,2vw,26px)}
@@ -495,11 +503,13 @@ body.onwork .nav::before{background:linear-gradient(to bottom,rgba(5,5,6,.92),rg
   </div>
 </section>
 
-<section class="scene" id="scars" data-world-state="scarsIntro" data-mark="Scars">
-  <div class="hold" style="display:grid;gap:clamp(16px,3vh,38px)">
+<section class="scene" id="scars" data-world-state="scarsIntro" data-mark="Scars"
+         style="justify-content:flex-start;min-height:215svh;padding-top:0;padding-bottom:0">
+  <div class="hold" style="position:sticky;top:14svh;display:grid;gap:clamp(16px,3vh,38px)">
     <span class="mi rv">03 / Scars — selected work</span>
     <h2 class="disp xl rv" style="max-width:13ch">Build what culture can't ignore.</h2>
   </div>
+  <div data-world-state="expose" data-mark="Scars" style="margin-top:auto;margin-bottom:34svh;height:0" aria-hidden="true"></div>
 </section>
 <div id="scarStack"></div>
 
@@ -567,7 +577,7 @@ body.onwork .nav::before{background:linear-gradient(to bottom,rgba(5,5,6,.92),rg
       <div class="pinput">
         <span class="mi">You</span>
         <input id="pIn" type="text" autocomplete="off" spellcheck="false"
-               placeholder="Say the problem, not the deliverable" aria-label="Your problem">
+               placeholder="State the problem." aria-label="Your problem">
       </div>
       <div class="seeds" style="margin-top:clamp(14px,2.6vh,26px)">
         <button class="seed" data-seed="I need a viral film.">I need a viral film</button>
@@ -599,7 +609,7 @@ body.onwork .nav::before{background:linear-gradient(to bottom,rgba(5,5,6,.92),rg
 <script>
 (function(){
 "use strict";
-var BUILD="v3-nervous-system-2026-08-22"; console.info("[BB] build", BUILD);
+var BUILD="v3.1-taste-release-2026-08-22"; console.info("[BB] build", BUILD);
 if(location.search.indexOf('dbg')>=0){ window.__log=[]; ['scrollTo','scrollBy','scroll'].forEach(function(n){ var o=window[n]; window[n]=function(){ window.__log.push({fn:n,a:[].slice.call(arguments).map(function(x){return typeof x==='object'?JSON.stringify(x):x;}).join(','),st:(new Error().stack||'').split('\n').slice(1,4).join('|')}); return o.apply(window,arguments); }; });
   var oF=HTMLElement.prototype.focus; HTMLElement.prototype.focus=function(){ window.__log.push({fn:'focus',el:(this.id||this.className||this.tagName),st:(new Error().stack||'').split('\n').slice(1,3).join('|')}); return oF.apply(this,arguments); };
   var oS=Element.prototype.scrollIntoView; Element.prototype.scrollIntoView=function(){ window.__log.push({fn:'siv',el:(this.id||this.className)}); return oS.apply(this,arguments); };
@@ -680,15 +690,29 @@ var FIB = [];
    and never rechosen, continue past the limbus into the environment and are
    the lines a visitor can follow from DNA to WORK. Each has a seeded reach and
    the lattice node it binds to is resolved from geometry, not at random. */
+/* ═══ ROOT VEINS ═══ fourteen in the topology; never fourteen on the surface.
+   Dominance is seeded once: three irregular clusters decide which six lead,
+   and each root carries its own taper, interruption and depth. The rest stay
+   under the stroma at 0–3%. */
 var ROOTS=[]; (function(){
-  var n=14;
+  var n=14, centres=[RND()*6.2832, 0, 0]; centres[1]=centres[0]+1.9+RND()*.8; centres[2]=centres[1]+2.0+RND()*.9;
   for(var i=0;i<n;i++){
     var fi = Math.floor((i/n)*FIB_N + RND()*(FIB_N/n)*.6);
-    ROOTS.push({ fi:fi, reach:1.55+RND()*.9, tension:.6+RND()*.8, ph:RND()*6.2832,
-                 w:1.1+RND()*1.3 });
+    var a = FIB[fi].bldA, best=9;
+    for(var c=0;c<3;c++){ var d=Math.abs(((a-centres[c]+9.42)%6.2832)-3.14); if(d<best) best=d; }
+    ROOTS.push({ fi:fi, reach:1.45+RND()*1.0, tension:.6+RND()*.8, ph:RND()*6.2832,
+      w:1.0+RND()*1.2, score: best + RND()*.55, taper:.35+RND()*.5,
+      gapAt:.30+RND()*.40, gapLen: RND()<.55 ? .05+RND()*.12 : 0,
+      depth: i%3, nodeK:-1, dom:false, lam:false });
   }
+  var order=ROOTS.map(function(r,i){return i;}).sort(function(p,q){return ROOTS[p].score-ROOTS[q].score;});
+  for(var k=0;k<6;k++) ROOTS[order[k]].dom=true;
+  /* lamellae: four consecutive dominant roots on one seeded side */
+  var doms=ROOTS.filter(function(r){return r.dom;}).sort(function(p,q){return FIB[p.fi].sknA-FIB[q.fi].sknA;});
+  var start=Math.floor(RND()*doms.length);
+  for(var l=0;l<4;l++) doms[(start+l)%doms.length].lam=true;
+  ROOTS.DOM=order.slice(0,6);
 })();
-/* limbus: 4–8% seeded deformation from low harmonics — biology, not a disc */
 var LIMB=[]; (function(){
   var h=[ [2,RND()*6.28,.020+RND()*.014],[3,RND()*6.28,.014+RND()*.012],
           [5,RND()*6.28,.008+RND()*.006],[7,RND()*6.28,.004] ];
@@ -718,22 +742,25 @@ var PUPIL_ECC = RND()*6.2832;
    grid; under pressure its lines bend toward IRIS and become channels; in
    SKIN the channels gain thickness and settle into planes. The same node
    indices carry through, so a line can be followed across the whole arc. */
+/* The world structure is ONE seeded lattice. Every root is bound to a logical
+   node when the lattice is built — never re-resolved per frame — so an
+   endpoint cannot snap to a neighbour while she moves or the visitor scrolls
+   back. Rebuilt only on a genuine width/orientation change. */
 var LAT = null;
 function buildLattice(){
   var r = mulberry32(0x1A77ACE);
   var step = Math.max(52*PX, Math.min(CW,CH)/9);
-  var cols = Math.ceil(CW/step)+2, rows = Math.ceil(CH/step)+2;
-  var n = cols*rows;
-  LAT = { step:step, cols:cols, rows:rows,
-          x:new Float32Array(n), y:new Float32Array(n),
-          thick:new Float32Array(n), ph:new Float32Array(n) };
-  for(var j=0;j<rows;j++) for(var i=0;i<cols;i++){
-    var k=j*cols+i;
-    LAT.x[k]=(i-1)*step; LAT.y[k]=(j-1)*step;
-    /* which lines become planes in SKIN is seeded, not random per frame */
-    LAT.thick[k] = r()<.28 ? .35+r()*.65 : 0;
-    LAT.ph[k] = r();
-  }
+  var cols = Math.ceil(CW/step)+2, rows = Math.ceil(CH/step)+2, n = cols*rows;
+  LAT = { step:step, cols:cols, rows:rows, x:new Float32Array(n), y:new Float32Array(n),
+          dx:new Float32Array(n), dy:new Float32Array(n), thick:new Float32Array(n), ph:new Float32Array(n) };
+  for(var j=0;j<rows;j++) for(var i=0;i<cols;i++){ var k=j*cols+i;
+    LAT.x[k]=(i-1)*step; LAT.y[k]=(j-1)*step; LAT.thick[k]= r()<.28 ? .35+r()*.65 : 0; LAT.ph[k]=r(); }
+  /* bind each root to the node its DNA self reaches for */
+  var sd = stateOf('dna'), ex=sd.x*CW, ey=sd.y*CH, R=Math.min(CW,CH)*.5*sd.d;
+  for(var q=0;q<ROOTS.length;q++){ var ro=ROOTS[q], a=FIB[ro.fi].dnaA, dist=R*ro.reach;
+    var tx=ex+Math.cos(a)*dist, ty=ey+Math.sin(a)*dist;
+    var ci=clamp(Math.round(tx/step)+1,0,cols-1), cj=clamp(Math.round(ty/step)+1,0,rows-1);
+    ro.nodeK = cj*cols+ci; }
 }
 
 /* ═══ THE WORLD ══════════════════════════════════════════════════════════
@@ -776,292 +803,262 @@ var T = { x:.5, y:.5, d:.12, o:1, dna:0, blood:0, skin:0, photo:0,
 /* the limbus as a path, deformed by the seed. Used for every fill and clip
    that used to be a circle, so the whole object stops being a disc. */
 function limbusPath(cx,cy,R,scale){
-  scale = scale==null?1:scale;
-  ctx.beginPath();
+  scale = scale==null?1:scale; ctx.beginPath();
   for(var s=0;s<LIMB.length;s++){ var a=s/(LIMB.length-1)*6.2832, r=R*scale*LIMB[s];
     var X=cx+Math.cos(a)*r, Y=cy+Math.sin(a)*r; s?ctx.lineTo(X,Y):ctx.moveTo(X,Y); }
   ctx.closePath();
 }
-/* nearest lattice node along a direction from the eye, resolved each frame
-   from the deformed lattice so the root stays bound to the same node index */
-function bindNode(ex,ey,ang,dist){
-  if(!LAT||!LAT.dx) return null;
-  var tx=ex+Math.cos(ang)*dist, ty=ey+Math.sin(ang)*dist;
-  var st=LAT.step, i=Math.round(tx/st)+1, j=Math.round(ty/st)+1;
-  if(i<0||j<0||i>=LAT.cols||j>=LAT.rows) return null;
-  var k=j*LAT.cols+i; return { x:LAT.dx[k], y:LAT.dy[k], k:k };
-}
-/* one pressure event, not a loop: fired from IRIS outward every ~6s in BLOOD */
-var PULSE={ t0:-10, next:2.5 };
+/* one pressure event, fired on entering BLOOD and not again while there */
+var PULSE={ t0:-10, armed:true, root:0 };
 
-function fibreState(f, wd, wb, ws, rest, t, d){
-  var A = f.bldA*rest + f.dnaA*wd + f.bldA*wb + f.sknA*ws;
-  var L = f.bldL*.9*rest + f.dnaL*wd + f.bldL*wb + f.sknL*ws;
-  var W = f.bldW*.8*rest + f.dnaW*wd + f.bldW*wb + f.sknW*ws;
-  var B = f.bldB*.4*rest + f.dnaB*wd + f.bldB*wb + f.sknB*ws;
-  var mv = Math.sin(t*2.0*f.sp+f.ph);
-  A += mv*.034*wb*(d===0?1:.45) + Math.sin(t*.34*f.sp+f.ph)*.009*rest;
-  L *= 1 + mv*.07*wb;
-  B += Math.sin(t*1.3+f.ph)*.06*wb*(d===0?1:.3);
-  return { A:A, L:L, W:W, B:B };
+/* reusable numeric buffers — nothing here allocates per frame */
+var FS_A=new Float32Array(FIB_N), FS_L=new Float32Array(FIB_N), FS_W=new Float32Array(FIB_N), FS_B=new Float32Array(FIB_N);
+var RE=[]; for(var _r=0;_r<14;_r++) RE.push({a:0,ex:0,ey:0,mx:0,my:0,sx:0,sy:0,alpha:0,w:1,i:_r});
+function fibreStates(wd,wb,ws,rest,t){
+  for(var i=0;i<FIB_N;i++){ var f=FIB[i], d=i%3;
+    var A = f.bldA*rest + f.dnaA*wd + f.bldA*wb + f.sknA*ws;
+    var L = f.bldL*.9*rest + f.dnaL*wd + f.bldL*wb + f.sknL*ws;
+    var W = f.bldW*.8*rest + f.dnaW*wd + f.bldW*wb + f.sknW*ws;
+    var B = f.bldB*.4*rest + f.dnaB*wd + f.bldB*wb + f.sknB*ws;
+    var mv = Math.sin(t*2.0*f.sp+f.ph);
+    A += mv*.034*wb*(d===0?1:.45) + Math.sin(t*.34*f.sp+f.ph)*.009*rest;
+    L *= 1 + mv*.07*wb; B += Math.sin(t*1.3+f.ph)*.06*wb*(d===0?1:.3);
+    FS_A[i]=A; FS_L[i]=L; FS_W[i]=W; FS_B[i]=B; }
+}
+/* the first project's structural line, in viewport pixels, through cover-fit */
+function projectLine(p){
+  if(!p||!p.line) return null;
+  var iw=1400, ih=788, sc=Math.max(CW/iw, CH/ih), w=iw*sc, h=ih*sc, ox=(CW-w)/2, oy=(CH-h)/2;
+  return { x0:ox+p.line[0]*w, y0:oy+p.line[1]*h, x1:ox+p.line[2]*w, y1:oy+p.line[3]*h };
 }
 
 function drawWorld(t, dt){
   ctx.clearRect(0,0,CW,CH);
   var R = Math.min(CW,CH)*.5*P.d, ex = P.x*CW, ey = P.y*CH;
   var wd=P.dna, wb=P.blood, ws=P.skin, rest=Math.max(0,1-wd-wb-ws), ph=P.photo;
-
-  /* ground — thins as a photograph develops beneath */
   var groundA = 1 - ph*.92;
   ctx.fillStyle='rgba(8,8,10,'+groundA.toFixed(3)+')'; ctx.fillRect(0,0,CW,CH);
   var g0 = ctx.createRadialGradient(ex, ey, R*.2, CW*.5, CH*.5, Math.max(CW,CH)*.85);
   g0.addColorStop(0,'rgba(16,16,20,'+(.55*groundA)+')'); g0.addColorStop(.45,'rgba(9,9,12,'+(.35*groundA)+')');
   g0.addColorStop(1,'rgba(5,5,6,0)'); ctx.fillStyle=g0; ctx.fillRect(0,0,CW,CH);
+  fibreStates(wd,wb,ws,rest,t);
 
-  /* ── lattice: deform toward IRIS ─────────────────────────────────────── */
-  var structA = (wd*.105 + wb*.060 + ws*.050)*(1-ph*.9);
+  /* ── lattice ── */
+  var structA = (wd*.105 + wb*.055 + ws*.045)*(1-ph*.9);
   if(LAT){
-    var st=LAT.step, cols=LAT.cols, rows=LAT.rows, bend=P.bend, reach=Math.max(CW,CH)*.55;
-    if(!LAT.dx||LAT.dx.length!==LAT.x.length){ LAT.dx=new Float32Array(LAT.x.length); LAT.dy=new Float32Array(LAT.x.length); }
-    /* DNA: the grid reacts to her — nodes near the limbus align radially */
-    var react = wd*.5 + bend;
-    for(var k=0;k<LAT.x.length;k++){
-      var gx=LAT.x[k], gy=LAT.y[k];
-      if(react>.001){
-        var dx=ex-gx, dy=ey-gy, dl=Math.hypot(dx,dy)+1e-3;
-        var f = react*Math.max(0,1-dl/reach)*Math.min(1,dl/(R*1.2));
-        gx += dx/dl*f*st*.9; gy += dy/dl*f*st*.9;
-      }
+    var st=LAT.step, cols=LAT.cols, rows=LAT.rows, bend=P.bend, reach=Math.max(CW,CH)*.55, react=wd*.5+bend;
+    for(var k=0;k<LAT.x.length;k++){ var gx=LAT.x[k], gy=LAT.y[k];
+      if(react>.001){ var dx=ex-gx, dy=ey-gy, dl=Math.hypot(dx,dy)+1e-3;
+        var f=react*Math.max(0,1-dl/reach)*Math.min(1,dl/(R*1.2)); gx+=dx/dl*f*st*.9; gy+=dy/dl*f*st*.9; }
       if(wb>.01) gy += Math.sin(t*1.4 + LAT.ph[k]*6.28 + gx*.004)*wb*st*.06;
-      LAT.dx[k]=gx; LAT.dy[k]=gy;
-    }
+      LAT.dx[k]=gx; LAT.dy[k]=gy; }
     if(structA>.002){
       ctx.lineWidth=1*PX; ctx.strokeStyle='rgba(158,162,166,'+structA+')'; ctx.beginPath();
       for(var j=0;j<rows;j++) for(var i=0;i<cols;i++){ var kk=j*cols+i;
         if(i<cols-1){ ctx.moveTo(LAT.dx[kk],LAT.dy[kk]); ctx.lineTo(LAT.dx[kk+1],LAT.dy[kk+1]); }
         if(j<rows-1){ ctx.moveTo(LAT.dx[kk],LAT.dy[kk]); ctx.lineTo(LAT.dx[kk+cols],LAT.dy[kk+cols]); } }
       ctx.stroke();
-      if(wd>.05){
-        ctx.strokeStyle='rgba(242,242,239,'+(wd*.28)+')'; ctx.beginPath();
+      if(wd>.05){ ctx.strokeStyle='rgba(242,242,239,'+(wd*.28)+')'; ctx.beginPath();
         for(var m=0;m<rows;m+=3) for(var n=0;n<cols;n+=3){ var km=m*cols+n, q=5*PX;
           ctx.moveTo(LAT.dx[km]-q,LAT.dy[km]); ctx.lineTo(LAT.dx[km]+q,LAT.dy[km]);
           ctx.moveTo(LAT.dx[km],LAT.dy[km]-q); ctx.lineTo(LAT.dx[km],LAT.dy[km]+q); }
         ctx.stroke();
         var dyy=((t*.028)%1)*CH; ctx.strokeStyle='rgba(242,242,239,'+(wd*.13)+')';
-        ctx.beginPath(); ctx.moveTo(0,dyy); ctx.lineTo(CW,dyy); ctx.stroke();
-      }
+        ctx.beginPath(); ctx.moveTo(0,dyy); ctx.lineTo(CW,dyy); ctx.stroke(); }
     }
   }
 
-  /* ── the pressure event ── one, from IRIS outward, then quiet ─────────── */
-  if(wb>.3 && !RM){ if(t>PULSE.next){ PULSE.t0=t; PULSE.next=t+5.5+ (ROOTS[0].ph/6.28)*3; } }
-  var pulseAge = t-PULSE.t0, pulseR = pulseAge*R*1.6;     /* radius of the wavefront */
-  var pulseA = (pulseAge>0 && pulseAge<2.2) ? (1-pulseAge/2.2)*wb : 0;
+  /* ── the pressure event: armed below BLOOD, fired once on entering it ── */
+  if(wb<.3) PULSE.armed=true;
+  if(wb>.55 && PULSE.armed && !RM){ PULSE.armed=false; PULSE.t0=t; PULSE.root=ROOTS.DOM[Math.floor((t*7)%ROOTS.DOM.length)]; }
+  var pulseAge=t-PULSE.t0, pulseU=clamp(pulseAge/1.7,0,1), pulseA=(pulseAge>0&&pulseAge<2.2)?(1-pulseAge/2.2)*wb:0;
 
-  /* ── ROOT VEINS outside the limbus ── the same fourteen, always ────────
-     DNA: straight, bound to a lattice node. BLOOD: curved by tension, one
-     pressure event travelling outward. SKIN: the spaces between roots become
-     lamellae. WORK: residue at 6–10%, then gone. */
-  var rootA = (wd*.26 + wb*.34 + ws*.22 + rest*.12)*(1-ph*.9) + (ph>.6&&ph<.97 ? .08 : 0);
-  var rootEnd=[];
+  /* ── ROOT VEINS ── the same fourteen, six on the surface at most ─────── */
+  var line = projectLine(SCARS[0]);
+  var sigRoot = ROOTS.DOM[0];
+  var haveLat = !!(LAT && LAT.dx);
   for(var r=0;r<ROOTS.length;r++){
-    var ro=ROOTS[r], f=FIB[ro.fi], fs=fibreState(f,wd,wb,ws,rest,t,0);
-    var a=fs.A+fs.B, dist=R*ro.reach*(1+ws*.25);
-    var node=bindNode(ex,ey,a,dist);
-    var endX, endY;
-    if(node && (wd+ws)>.05){ endX=lerp(ex+Math.cos(a)*dist, node.x, wd+ws*.5); endY=lerp(ey+Math.sin(a)*dist, node.y, wd+ws*.5); }
-    else { endX=ex+Math.cos(a)*dist; endY=ey+Math.sin(a)*dist; }
-    /* BLOOD curvature: the root sags under tension, perpendicular to itself */
-    var sag = wb*ro.tension*R*.18*Math.sin(t*.6+ro.ph) + rest*R*.02*Math.sin(t*.3+ro.ph);
-    var mx=(ex+Math.cos(a)*R*1.02+endX)*.5 + Math.cos(a+1.5708)*sag;
-    var my=(ey+Math.sin(a)*R*1.02+endY)*.5 + Math.sin(a+1.5708)*sag;
-    rootEnd.push({a:a, ex:endX, ey:endY, mx:mx, my:my, w:ro.w});
-    if(rootA>.004){
-      ctx.beginPath();
-      ctx.moveTo(ex+Math.cos(a)*R*1.0*LIMB[Math.floor(((a%6.2832)+6.2832)%6.2832/6.2832*96)], ey+Math.sin(a)*R*1.0*LIMB[Math.floor(((a%6.2832)+6.2832)%6.2832/6.2832*96)]);
-      ctx.quadraticCurveTo(mx,my,endX,endY);
-      var ruby = wb*(1-ws);
-      ctx.strokeStyle='rgba('+Math.round(200-ws*40)+','+Math.round(200-ruby*150)+','+Math.round(200-ruby*140)+','+rootA+')';
-      ctx.lineWidth=(ro.w*(1+wb*.6+ws*1.4))*PX; ctx.stroke();
-      if(pulseA>0){ /* the event along this root: a short bright segment at the wavefront */
-        var seg=Math.hypot(endX-ex,endY-ey), u=clamp((pulseR-R)/Math.max(1,seg-R),0,1);
-        if(u>0&&u<1){ var qx=ex+Math.cos(a)*R+(endX-ex-Math.cos(a)*R)*u, qy=ey+Math.sin(a)*R+(endY-ey-Math.sin(a)*R)*u;
-          var pg=ctx.createRadialGradient(qx,qy,0,qx,qy,R*.16);
-          pg.addColorStop(0,'rgba(150,14,34,'+(pulseA*.55)+')'); pg.addColorStop(1,'rgba(150,14,34,0)');
-          ctx.fillStyle=pg; ctx.beginPath(); ctx.arc(qx,qy,R*.16,0,6.2832); ctx.fill(); }
-      }
+    var ro=ROOTS[r], fi=ro.fi, e=RE[r];
+    var a=FS_A[fi]+FS_B[fi], dist=R*ro.reach*(1+ws*.25);
+    var nx=ex+Math.cos(a)*dist, ny=ey+Math.sin(a)*dist;
+    if(haveLat && ro.nodeK>=0 && (wd+ws)>.02){ var bw=clamp(wd+ws*.6,0,1);
+      var nxk=LAT.dx[ro.nodeK], nyk=LAT.dy[ro.nodeK];
+      /* bound in direction, limited in length: a node on the far side of
+         the page pulls the root's heading, never its whole length */
+      var ddx=nxk-ex, ddy=nyk-ey, dd=Math.hypot(ddx,ddy)||1, lim=Math.min(dd, dist*1.6);
+      nx=lerp(nx, ex+ddx/dd*lim, bw); ny=lerp(ny, ey+ddy/dd*lim, bw); }
+    /* the signature vein bends into the first project's real line */
+    if(r===sigRoot && line && ph>.02){ var u=smoother(clamp(ph/.85,0,1));
+      nx=lerp(nx, line.x0, u); ny=lerp(ny, line.y0, u); }
+    var la=Math.floor(((a%6.2832)+6.2832)%6.2832/6.2832*96);
+    e.sx=ex+Math.cos(a)*R*LIMB[la]; e.sy=ey+Math.sin(a)*R*LIMB[la];
+    var sag=wb*ro.tension*R*.16*Math.sin(t*.6+ro.ph) + rest*R*.02*Math.sin(t*.3+ro.ph);
+    e.mx=(e.sx+nx)*.5+Math.cos(a+1.5708)*sag; e.my=(e.sy+ny)*.5+Math.sin(a+1.5708)*sag;
+    e.ex=nx; e.ey=ny; e.a=a; e.w=ro.w;
+    /* visibility by state: dominant roots lead, the rest stay under the stroma */
+    var lead = ro.dom ? (rest*.06 + wd*.30 + wb*.34 + ws*(ro.lam?.22:.06)) : (wd*.02+wb*.03+ws*.01);
+    var depthA = ro.depth===0?1:ro.depth===1?.62:.38;
+    e.alpha = lead*depthA*(1-ph*.9) + ((ph>.55&&ph<.97&&ro.dom)?.08*(1-clamp((ph-.8)/.17,0,1)):0);
+    if(r===sigRoot && ph>.02) e.alpha = Math.max(e.alpha, .34*(1-clamp((ph-.8)/.2,0,1)));
+  }
+  /* draw deep roots first so the lattice and shallow roots occlude them */
+  for(var dep=2; dep>=0; dep--){
+    for(var r2=0;r2<ROOTS.length;r2++){ var ro2=ROOTS[r2]; if(ro2.depth!==dep) continue;
+      var e2=RE[r2]; if(e2.alpha<.004) continue;
+      var wdt=(ro2.w*(1+wb*.5+ws*1.3)*(dep===0?1:dep===1?.8:.6))*PX;
+      var carrying = (r2===PULSE.root && pulseA>0);
+      var col = carrying ? null : 'rgba('+Math.round(196-ws*30)+','+Math.round(196-ws*30)+','+Math.round(198-ws*28)+','+e2.alpha+')';
+      /* taper: alpha falls along the length; interruption: a seeded gap */
+      var g=ctx.createLinearGradient(e2.sx,e2.sy,e2.ex,e2.ey);
+      var base='rgba('+Math.round(196-ws*30)+','+Math.round(196-ws*30)+','+Math.round(198-ws*28)+',';
+      g.addColorStop(0, base+e2.alpha+')');
+      if(ro2.gapLen){ g.addColorStop(Math.max(0,ro2.gapAt-.01), base+(e2.alpha*(1-ro2.gapAt*ro2.taper))+')');
+        g.addColorStop(ro2.gapAt, base+'0)'); g.addColorStop(Math.min(1,ro2.gapAt+ro2.gapLen), base+'0)');
+        g.addColorStop(Math.min(1,ro2.gapAt+ro2.gapLen+.01), base+(e2.alpha*(1-(ro2.gapAt+ro2.gapLen)*ro2.taper))+')'); }
+      g.addColorStop(1, base+(e2.alpha*(1-ro2.taper))+')');
+      if(carrying){ /* ruby exists only inside the root carrying pressure, as a travelling front */
+        var head=pulseU, span=.22;
+        g=ctx.createLinearGradient(e2.sx,e2.sy,e2.ex,e2.ey);
+        g.addColorStop(0, base+e2.alpha+')'); g.addColorStop(clamp(head-span,0,1), base+e2.alpha+')');
+        g.addColorStop(clamp(head,0,1), 'rgba(150,14,34,'+(e2.alpha+pulseA*.5)+')');
+        g.addColorStop(clamp(head+span*.6,0,1), base+(e2.alpha*.8)+')'); g.addColorStop(1, base+(e2.alpha*(1-ro2.taper))+')'); }
+      ctx.strokeStyle=g; ctx.lineWidth=wdt; ctx.beginPath();
+      ctx.moveTo(e2.sx,e2.sy); ctx.quadraticCurveTo(e2.mx,e2.my,e2.ex,e2.ey); ctx.stroke();
+      if(dep===2){ /* softness for the deepest layer */
+        ctx.strokeStyle='rgba(5,5,6,'+(e2.alpha*.5)+')'; ctx.lineWidth=wdt*2.4; ctx.beginPath();
+        ctx.moveTo(e2.sx,e2.sy+2*PX); ctx.quadraticCurveTo(e2.mx,e2.my+2*PX,e2.ex,e2.ey+2*PX); ctx.stroke(); }
     }
   }
+  /* the signature vein continues as the real line itself */
+  if(line && ph>.08){ var la2=clamp((ph-.08)/.5,0,1)*(1-clamp((ph-.85)/.15,0,1));
+    ctx.strokeStyle='rgba(242,242,239,'+(la2*.28)+')'; ctx.lineWidth=1.4*PX; ctx.beginPath();
+    ctx.moveTo(line.x0,line.y0); ctx.lineTo(line.x1,line.y1); ctx.stroke(); }
 
-  /* ── SKIN lamellae ── filled quads between adjacent roots, front edge and a
-     grazing reflection. Built from the roots, so they are the same organism. */
-  if(ws>.02 || (ph>.15 && ph<.75)){
-    var lamA = ws*(1-ph*.8);
-    rootEnd.sort(function(p,q){ return p.a-q.a; });
-    for(var L=0;L<rootEnd.length;L++){
-      var A0=rootEnd[L], A1=rootEnd[(L+1)%rootEnd.length];
-      var th = LAT ? LAT.thick[(L*7)%LAT.thick.length] : .5;
-      var depth = .35+th*.65;
-      ctx.beginPath();
-      ctx.moveTo(ex+Math.cos(A0.a)*R*1.01, ey+Math.sin(A0.a)*R*1.01);
-      ctx.quadraticCurveTo(A0.mx,A0.my,A0.ex,A0.ey);
-      ctx.lineTo(A1.ex,A1.ey);
-      ctx.quadraticCurveTo(A1.mx,A1.my, ex+Math.cos(A1.a)*R*1.01, ey+Math.sin(A1.a)*R*1.01);
-      ctx.closePath();
+  /* ── SKIN lamellae ── four adjacent, one side, with thickness ─────────── */
+  if(ws>.02){
+    var lamA=ws*(1-ph*.8), L=[];
+    for(var q2=0;q2<ROOTS.length;q2++) if(ROOTS[q2].lam) L.push(RE[q2]);
+    L.sort(function(p,q){return p.a-q.a;});
+    for(var li=0;li<L.length-1;li++){ var A0=L[li], A1=L[li+1]; if(A1.a-A0.a>2.2) continue;
+      var th=LAT?LAT.thick[(li*7)%LAT.thick.length]:.5, depth=.45+th*.55;
+      /* thickness: the same quad, offset, darker, under */
+      ctx.beginPath(); ctx.moveTo(A0.sx,A0.sy+3*PX); ctx.quadraticCurveTo(A0.mx,A0.my+3*PX,A0.ex,A0.ey+3*PX);
+      ctx.lineTo(A1.ex,A1.ey+3*PX); ctx.quadraticCurveTo(A1.mx,A1.my+3*PX,A1.sx,A1.sy+3*PX); ctx.closePath();
+      ctx.fillStyle='rgba(5,5,6,'+(lamA*.35)+')'; ctx.fill();
+      ctx.beginPath(); ctx.moveTo(A0.sx,A0.sy); ctx.quadraticCurveTo(A0.mx,A0.my,A0.ex,A0.ey);
+      ctx.lineTo(A1.ex,A1.ey); ctx.quadraticCurveTo(A1.mx,A1.my,A1.sx,A1.sy); ctx.closePath();
       var lg=ctx.createLinearGradient(A0.ex,A0.ey,A1.ex,A1.ey);
-      lg.addColorStop(0,'rgba(242,242,239,'+(lamA*.05*depth)+')');
-      lg.addColorStop(.5,'rgba(242,242,239,'+(lamA*.018*depth)+')');
-      lg.addColorStop(1,'rgba(242,242,239,'+(lamA*.055*depth)+')');
-      ctx.fillStyle=lg; ctx.fill();
-      /* front edge */
-      ctx.strokeStyle='rgba(242,242,239,'+(lamA*.16*depth)+')'; ctx.lineWidth=1.2*PX;
-      ctx.beginPath(); ctx.moveTo(A0.ex,A0.ey); ctx.lineTo(A1.ex,A1.ey); ctx.stroke();
-    }
-    /* grazing reflection crossing the lamellae */
-    var sx=((t*.04)%1.7-.35)*CW;
-    var sg=ctx.createLinearGradient(sx-CW*.2,0,sx+CW*.2,CH);
+      lg.addColorStop(0,'rgba(242,242,239,'+(lamA*.07*depth)+')'); lg.addColorStop(.5,'rgba(242,242,239,'+(lamA*.025*depth)+')');
+      lg.addColorStop(1,'rgba(242,242,239,'+(lamA*.075*depth)+')'); ctx.fillStyle=lg; ctx.fill();
+      ctx.strokeStyle='rgba(242,242,239,'+(lamA*.20*depth)+')'; ctx.lineWidth=1.3*PX; ctx.beginPath();
+      ctx.moveTo(A0.ex,A0.ey); ctx.lineTo(A1.ex,A1.ey); ctx.stroke(); }
+    var sx=((t*.04)%1.7-.35)*CW, sg=ctx.createLinearGradient(sx-CW*.2,0,sx+CW*.2,CH);
     sg.addColorStop(0,'rgba(242,242,239,0)'); sg.addColorStop(.5,'rgba(242,242,239,'+(ws*.045)+')');
     sg.addColorStop(1,'rgba(242,242,239,0)'); ctx.fillStyle=sg; ctx.fillRect(0,0,CW,CH);
   }
 
-  drawIris(t, ex, ey, R, rest, pulseR, pulseA);
+  drawIris(t, ex, ey, R, rest, pulseU, pulseA);
 
-  /* ── SKIN → WORK: the exposure. A lamella widens into a band, the band
-     develops the frame. photo .2–.6 is the band; .6–1 the frame owns it. */
-  if(ph > .05){
-    var bandP = clamp((ph-.15)/.5,0,1), bandY = ey - R*.34;
-    var h = R*(.08 + smoother(bandP)*3.2);
-    var eg = ctx.createLinearGradient(0, bandY-h, 0, bandY+h);
-    var ea = (.04 + bandP*.10)*(1-clamp((ph-.75)/.25,0,1));
+  /* ── the exposure edge is the vein's line, developing outward ── */
+  if(ph>.05 && line){ var ang=Math.atan2(line.y1-line.y0,line.x1-line.x0), nxv=-Math.sin(ang), nyv=Math.cos(ang);
+    var half=R*(.06+smoother(clamp((ph-.1)/.6,0,1))*2.4), ea=(.05+ph*.09)*(1-clamp((ph-.78)/.22,0,1));
+    var cxl=(line.x0+line.x1)/2, cyl=(line.y0+line.y1)/2;
+    var eg=ctx.createLinearGradient(cxl-nxv*half,cyl-nyv*half,cxl+nxv*half,cyl+nyv*half);
     eg.addColorStop(0,'rgba('+ENV.r+','+ENV.g+','+ENV.b+',0)');
     eg.addColorStop(.5,'rgba('+Math.round(lerp(242,ENV.r,ph))+','+Math.round(lerp(242,ENV.g,ph))+','+Math.round(lerp(239,ENV.b,ph))+','+ea+')');
-    eg.addColorStop(1,'rgba('+ENV.r+','+ENV.g+','+ENV.b+',0)');
-    ctx.fillStyle=eg; ctx.fillRect(0, bandY-h, CW, h*2);
-  }
+    eg.addColorStop(1,'rgba('+ENV.r+','+ENV.g+','+ENV.b+',0)'); ctx.fillStyle=eg; ctx.fillRect(0,0,CW,CH); }
   if(NOISE){ ctx.globalAlpha=.5*(1-ph*.5); ctx.fillStyle=NOISE; ctx.fillRect(0,0,CW,CH); ctx.globalAlpha=1; }
 }
 
-function drawIris(t, cx, cy, R, rest, pulseR, pulseA){
+function drawIris(t, cx, cy, R, rest, pulseU, pulseA){
   if(P.o < .01 || R < 2) return;
-  var wd=P.dna, wb=P.blood, ws=P.skin, ph=P.photo;
-  var fade = (1 - ph*.86);
-  /* once the work owns the frame she withdraws entirely — a grey disc over a
-     photograph is not residue, it is an obstruction. Her consequence (the
-     exposure band, the root residue) is what remains. */
-  ctx.save(); ctx.globalAlpha = P.o * (1 - clamp((ph-.55)/.4,0,1));
-  var closure = clamp(P.lid,0,1);
-  if(closure > .002){ ctx.beginPath();
-    ctx.rect(cx-R*1.2, cy-R + closure*2*R*.70, R*2.4, 2*R - closure*2*R); ctx.clip(); }
+  var wd=P.dna, wb=P.blood, ws=P.skin, ph=P.photo, fade=(1-ph*.86);
+  ctx.save(); ctx.globalAlpha = P.o * (1 - clamp((ph-.28)/.34,0,1));
+  var closure=clamp(P.lid,0,1);
+  if(closure>.002){ ctx.beginPath(); ctx.rect(cx-R*1.2, cy-R+closure*2*R*.70, R*2.4, 2*R-closure*2*R); ctx.clip(); }
+  var breath=Math.sin(t*.55)*.014*(rest+wb*.5), beat=Math.pow(Math.sin(t*1.9)*.5+.5,3)*.045*wb + pulseA*.03;
+  var pr=R*(.205 + P.pupil*.10 + breath + beat - wd*.03 + ws*.06);
+  var ecc=wb*R*.045, ox=P.gx*R*.052+Math.cos(PUPIL_ECC)*ecc, oy=P.gy*R*.048+Math.sin(PUPIL_ECC)*ecc;
+  var px=-P.gx*R*.013, py=-P.gy*R*.011;
 
-  /* pupil: contracted/precise in DNA, breathing and eccentric under BLOOD,
-     a wide architectural void in SKIN; the catchlight takes the project's
-     colour first as WORK approaches */
-  var breath = Math.sin(t*.55)*.014*(rest+wb*.5);
-  var beat = Math.pow(Math.sin(t*1.9)*.5+.5,3)*.045*wb + pulseA*.03;
-  var pr = R*(.205 + P.pupil*.10 + breath + beat - wd*.03 + ws*.06);
-  var ecc = wb*R*.045;
-  var ox = P.gx*R*.052 + Math.cos(PUPIL_ECC)*ecc, oy = P.gy*R*.048 + Math.sin(PUPIL_ECC)*ecc;
-  var px = -P.gx*R*.013, py = -P.gy*R*.011;
-
-  /* stroma, inside the deformed limbus */
   limbusPath(cx,cy,R); ctx.save(); ctx.clip();
-  var g = ctx.createRadialGradient(cx+ox*1.4, cy+oy*1.4, pr*.4, cx+px, cy+py, R);
-  g.addColorStop(0,'rgb('+Math.round(10+wb*6)+','+10+','+Math.round(14+ws*3)+')');
+  var g=ctx.createRadialGradient(cx+ox*1.4, cy+oy*1.4, pr*.4, cx+px, cy+py, R);
+  g.addColorStop(0,'rgb('+Math.round(10+wb*6)+',10,'+Math.round(14+ws*3)+')');
   g.addColorStop(.52,'rgb('+Math.round(33+wb*10+ws*14)+','+Math.round(33-wb*4+ws*14)+','+Math.round(41-wb*4+ws*17)+')');
   g.addColorStop(1,'#08080b'); ctx.fillStyle=g; ctx.fillRect(cx-R*1.1,cy-R*1.1,R*2.2,R*2.2);
-  if(wb > .01){
-    var sg2 = ctx.createRadialGradient(cx+px, cy+py, pr*.55, cx+px, cy+py, R*.80);
+  if(wb>.01){ var sg2=ctx.createRadialGradient(cx+px,cy+py,pr*.55,cx+px,cy+py,R*.80);
     sg2.addColorStop(0,'rgba(120,12,30,'+(wb*.42)+')'); sg2.addColorStop(.55,'rgba(90,10,24,'+(wb*.14)+')');
-    sg2.addColorStop(1,'rgba(74,7,16,0)'); ctx.fillStyle=sg2; ctx.fillRect(cx-R,cy-R,R*2,R*2);
-  }
+    sg2.addColorStop(1,'rgba(74,7,16,0)'); ctx.fillStyle=sg2; ctx.fillRect(cx-R,cy-R,R*2,R*2); }
 
-  /* fibre — one geometry, three selves; root fibres drawn heavier and brighter */
-  var rootSet={}; for(var rr=0;rr<ROOTS.length;rr++) rootSet[ROOTS[rr].fi]=ROOTS[rr];
-  for(var d=0; d<3; d++){
-    ctx.beginPath(); var wSum=0, n=0;
-    for(var i=d;i<FIB_N;i+=3){
-      var f=FIB[i], fs=fibreState(f,wd,wb,ws,rest,t,d);
-      /* variable spacing: a seeded per-fibre gap so the sunburst breaks */
-      var spacing = 1 + (f.ph%1.3-.65)*.08*(1-wd);
-      var a1=fs.A*spacing+(1-spacing)*f.bldA, a2=a1+fs.B;
-      var r0=pr*1.02, r1=pr+(R-pr)*Math.min(.92,fs.L);
-      wSum+=fs.W; n++;
+  /* SKIN carries the lamellae inside: the same four wedges, as matter */
+  if(ws>.02){ var Li=[]; for(var q3=0;q3<ROOTS.length;q3++) if(ROOTS[q3].lam) Li.push(RE[q3].a);
+    Li.sort(function(p,q){return p-q;});
+    for(var w2=0;w2<Li.length-1;w2++){ if(Li[w2+1]-Li[w2]>2.2) continue;
+      ctx.beginPath(); ctx.moveTo(cx+ox+Math.cos(Li[w2])*pr*1.05, cy+oy+Math.sin(Li[w2])*pr*1.05);
+      ctx.arc(cx,cy,R*.98,Li[w2],Li[w2+1]); ctx.lineTo(cx+ox+Math.cos(Li[w2+1])*pr*1.05, cy+oy+Math.sin(Li[w2+1])*pr*1.05);
+      ctx.arc(cx+ox,cy+oy,pr*1.05,Li[w2+1],Li[w2],true); ctx.closePath();
+      var wg=ctx.createRadialGradient(cx+ox,cy+oy,pr,cx,cy,R);
+      wg.addColorStop(0,'rgba(242,242,239,'+(ws*.05)+')'); wg.addColorStop(.7,'rgba(242,242,239,'+(ws*.10)+')'); wg.addColorStop(1,'rgba(242,242,239,'+(ws*.03)+')');
+      ctx.fillStyle=wg; ctx.fill();
+      ctx.strokeStyle='rgba(242,242,239,'+(ws*.16)+')'; ctx.lineWidth=1.6*PX; ctx.beginPath();
+      ctx.moveTo(cx+ox+Math.cos(Li[w2])*pr*1.05, cy+oy+Math.sin(Li[w2])*pr*1.05); ctx.lineTo(cx+Math.cos(Li[w2])*R*.98, cy+Math.sin(Li[w2])*R*.98); ctx.stroke(); } }
+
+  /* fibre — buffers, three depth strokes, receding under SKIN */
+  for(var d=0; d<3; d++){ ctx.beginPath(); var wSum=0, n=0;
+    for(var i=d;i<FIB_N;i+=3){ var f=FIB[i], spacing=1+(f.ph%1.3-.65)*.08*(1-wd);
+      var a1=FS_A[i]*spacing+(1-spacing)*f.bldA, a2=a1+FS_B[i], r0=pr*1.02, r1=pr+(R-pr)*Math.min(.92,FS_L[i]);
+      wSum+=FS_W[i]; n++;
       ctx.moveTo(cx+ox+Math.cos(a1)*r0, cy+oy+Math.sin(a1)*r0);
-      ctx.quadraticCurveTo(cx+px+Math.cos((a1+a2)*.5)*(r0+r1)*.5, cy+py+Math.sin((a1+a2)*.5)*(r0+r1)*.5,
-        cx+px+Math.cos(a2)*r1, cy+py+Math.sin(a2)*r1);
-    }
-    var base=(d===0?.062:d===1?.105:.165)*fade*(1+wd*.85);
-    var col = d===0 ? 'rgba('+Math.round(150+wb*40)+','+Math.round(150-wb*120)+','+Math.round(155-wb*105)+','+(base+wb*.06)+')'
-            : d===1 ? 'rgba('+Math.round(175+wb*12)+','+Math.round(175-wb*40)+','+Math.round(178-wb*40)+','+base+')'
-            : 'rgba(242,242,239,'+(base*(1+ws*.5))+')';
-    ctx.strokeStyle=col; ctx.lineWidth=(wSum/Math.max(1,n))*PX; ctx.stroke();
-  }
-  /* the roots inside the iris: the same fourteen, heavier, so the line
-     a visitor follows outside is the line they see inside */
-  ctx.beginPath();
-  for(var r2=0;r2<ROOTS.length;r2++){ var fr=FIB[ROOTS[r2].fi], fs2=fibreState(fr,wd,wb,ws,rest,t,0);
-    var b1=fs2.A, b2=b1+fs2.B, q0=pr*1.02, q1=R*1.0;
+      ctx.quadraticCurveTo(cx+px+Math.cos((a1+a2)*.5)*(r0+r1)*.5, cy+py+Math.sin((a1+a2)*.5)*(r0+r1)*.5, cx+px+Math.cos(a2)*r1, cy+py+Math.sin(a2)*r1); }
+    var base=(d===0?.062:d===1?.105:.165)*fade*(1+wd*.85)*(1-ws*.72);
+    var col= d===0 ? 'rgba('+Math.round(150+wb*40)+','+Math.round(150-wb*120)+','+Math.round(155-wb*105)+','+(base+wb*.06)+')'
+           : d===1 ? 'rgba('+Math.round(175+wb*12)+','+Math.round(175-wb*40)+','+Math.round(178-wb*40)+','+base+')'
+           : 'rgba(242,242,239,'+base+')';
+    ctx.strokeStyle=col; ctx.lineWidth=(wSum/Math.max(1,n))*PX; ctx.stroke(); }
+  /* the dominant roots inside, continuous with outside; ruby only in the carrier */
+  for(var r2=0;r2<ROOTS.length;r2++){ var ro=ROOTS[r2]; if(!ro.dom) continue; var fi=ro.fi;
+    var b1=FS_A[fi], b2=b1+FS_B[fi], q0=pr*1.02, q1=R*1.0, carrying=(r2===PULSE.root&&pulseA>0);
+    var ra=(.10+wd*.12+wb*.08+ws*.06)*fade*(ro.depth===0?1:.7);
+    var ig=ctx.createLinearGradient(cx+ox+Math.cos(b1)*q0, cy+oy+Math.sin(b1)*q0, cx+Math.cos(b2)*q1, cy+Math.sin(b2)*q1);
+    if(carrying){ var h=clamp(pulseU*2,0,1); ig.addColorStop(0,'rgba(150,14,34,'+(ra+pulseA*.4)+')');
+      ig.addColorStop(clamp(h,0,1),'rgba(150,14,34,'+(ra+pulseA*.5)+')'); ig.addColorStop(clamp(h+.2,0,1),'rgba(215,215,212,'+ra+')'); ig.addColorStop(1,'rgba(215,215,212,'+ra+')'); }
+    else { ig.addColorStop(0,'rgba(215,215,212,'+(ra*.6)+')'); ig.addColorStop(1,'rgba(230,230,228,'+ra+')'); }
+    ctx.strokeStyle=ig; ctx.lineWidth=(1.5+wb*.6+ws*1.6)*(ro.depth===0?1:.75)*PX; ctx.beginPath();
     ctx.moveTo(cx+ox+Math.cos(b1)*q0, cy+oy+Math.sin(b1)*q0);
-    ctx.quadraticCurveTo(cx+px+Math.cos((b1+b2)*.5)*(q0+q1)*.5, cy+py+Math.sin((b1+b2)*.5)*(q0+q1)*.5, cx+Math.cos(b2)*q1, cy+Math.sin(b2)*q1); }
-  ctx.strokeStyle='rgba('+Math.round(230-wb*40)+','+Math.round(230-wb*150)+','+Math.round(228-wb*140)+','+((.14+wd*.1+wb*.08+ws*.1)*fade)+')';
-  ctx.lineWidth=(1.6+wb*.8+ws*1.8)*PX; ctx.stroke();
+    ctx.quadraticCurveTo(cx+px+Math.cos((b1+b2)*.5)*(q0+q1)*.5, cy+py+Math.sin((b1+b2)*.5)*(q0+q1)*.5, cx+Math.cos(b2)*q1, cy+Math.sin(b2)*q1); ctx.stroke(); }
 
-  if(wd>.03){ var tr=pr+(R-pr)*.72, tk=R*.018;
-    ctx.strokeStyle='rgba(242,242,239,'+(wd*.22*fade)+')'; ctx.lineWidth=1*PX; ctx.beginPath();
+  if(wd>.03){ var tr=pr+(R-pr)*.72, tk=R*.018; ctx.strokeStyle='rgba(242,242,239,'+(wd*.22*fade)+')'; ctx.lineWidth=1*PX; ctx.beginPath();
     for(var ti=0;ti<96;ti++){ var ta=ti/96*6.2832, big=ti%8===0;
-      ctx.moveTo(cx+px+Math.cos(ta)*tr, cy+py+Math.sin(ta)*tr);
-      ctx.lineTo(cx+px+Math.cos(ta)*(tr+tk*(big?2.2:1)), cy+py+Math.sin(ta)*(tr+tk*(big?2.2:1))); }
+      ctx.moveTo(cx+px+Math.cos(ta)*tr, cy+py+Math.sin(ta)*tr); ctx.lineTo(cx+px+Math.cos(ta)*(tr+tk*(big?2.2:1)), cy+py+Math.sin(ta)*(tr+tk*(big?2.2:1))); }
     ctx.stroke(); }
   for(var q=0;q<CRYPT.length;q++){ var cr=CRYPT[q]; ctx.beginPath();
     ctx.ellipse(cx+px+Math.cos(cr.a)*R*cr.r, cy+py+Math.sin(cr.a)*R*cr.r, R*cr.s*1.7, R*cr.s, cr.rot, 0, 6.2832);
     ctx.fillStyle='rgba(4,4,6,'+(cr.o*fade*(1-ws*.85)*(1-wd*.75))+')'; ctx.fill(); }
-
-  /* collarette — broken ring, three selves */
   ctx.lineWidth=(1.2+ws*1.6)*PX;
   ctx.strokeStyle='rgba('+Math.round(242-wb*90)+','+Math.round(242-wb*200)+','+Math.round(239-wb*190)+','+((.055+wd*.06+wb*.12+ws*.04)*fade)+')';
   ctx.beginPath(); var pen=false;
   for(var s=0;s<COLLAR.length;s++){ var c=COLLAR[s], sa=s/(COLLAR.length-1)*6.2832;
-    var mul = c.bld*rest + c.dna*wd + (c.bld + Math.sin(t*2.2+sa*5)*.03)*wb + c.skn*ws;
-    var rr2=pr*1.30*mul, X=cx+ox+Math.cos(sa)*rr2, Y=cy+oy+Math.sin(sa)*rr2;
-    if(!c.on){ pen=false; continue; }
-    pen?ctx.lineTo(X,Y):ctx.moveTo(X,Y); pen=true; }
+    var mul=c.bld*rest+c.dna*wd+(c.bld+Math.sin(t*2.2+sa*5)*.03)*wb+c.skn*ws, rr2=pr*1.30*mul, X=cx+ox+Math.cos(sa)*rr2, Y=cy+oy+Math.sin(sa)*rr2;
+    if(!c.on){ pen=false; continue; } pen?ctx.lineTo(X,Y):ctx.moveTo(X,Y); pen=true; }
   ctx.stroke();
-
-  /* aperture */
-  var pg=ctx.createRadialGradient(cx+ox,cy+oy,0,cx+ox,cy+oy,pr);
-  pg.addColorStop(0,'#000'); pg.addColorStop(.72,'#000'); pg.addColorStop(1,'#07070a');
+  var pg=ctx.createRadialGradient(cx+ox,cy+oy,0,cx+ox,cy+oy,pr); pg.addColorStop(0,'#000'); pg.addColorStop(.72,'#000'); pg.addColorStop(1,'#07070a');
   ctx.beginPath(); ctx.arc(cx+ox,cy+oy,pr,0,6.2832); ctx.fillStyle=pg; ctx.fill();
-  ctx.beginPath(); ctx.ellipse(cx+ox+pr*.28, cy+oy+pr*.30, pr*.16, pr*.09, .8, 0, 6.2832);
-  ctx.fillStyle='rgba(120,12,30,'+(.05+wb*.14)+')'; ctx.fill();
+  ctx.beginPath(); ctx.ellipse(cx+ox+pr*.28, cy+oy+pr*.30, pr*.16, pr*.09, .8, 0, 6.2832); ctx.fillStyle='rgba(120,12,30,'+(.05+wb*.14)+')'; ctx.fill();
   ctx.beginPath(); ctx.arc(cx+ox,cy+oy,pr,0,6.2832); ctx.strokeStyle='rgba(0,0,0,.92)'; ctx.lineWidth=1.4*PX; ctx.stroke();
-  ctx.restore(); /* end limbus clip */
-
-  /* limbus — nearly black, following the deformed edge */
-  var lg2=ctx.createRadialGradient(cx,cy,R*.50,cx,cy,R*1.06);
-  lg2.addColorStop(0,'rgba(5,5,6,0)'); lg2.addColorStop(.40,'rgba(5,5,6,.22)');
-  lg2.addColorStop(.74,'rgba(5,5,6,.74)'); lg2.addColorStop(1,'rgba(5,5,6,1)');
+  ctx.restore();
+  var lg2=ctx.createRadialGradient(cx,cy,R*.50,cx,cy,R*1.06); lg2.addColorStop(0,'rgba(5,5,6,0)'); lg2.addColorStop(.40,'rgba(5,5,6,.22)'); lg2.addColorStop(.74,'rgba(5,5,6,.74)'); lg2.addColorStop(1,'rgba(5,5,6,1)');
   limbusPath(cx,cy,R,1.06); ctx.fillStyle=lg2; ctx.fill();
-  /* local occlusion: the upper lid's shadow, a depth cue that a disc lacks */
-  var oc=ctx.createLinearGradient(0,cy-R,0,cy-R*.45);
-  oc.addColorStop(0,'rgba(5,5,6,.55)'); oc.addColorStop(1,'rgba(5,5,6,0)');
-  limbusPath(cx,cy,R); ctx.fillStyle=oc; ctx.fill();
-
-  /* cornea — derived environment colour only, never a picture */
-  var lightX = cx - R*(.34 + LIGHT.x*.10), lightY = cy - R*(.40 + LIGHT.y*.10);
-  var envA = ENV.a*.10 + ph*.12;
+  var oc=ctx.createLinearGradient(0,cy-R,0,cy-R*.45); oc.addColorStop(0,'rgba(5,5,6,.55)'); oc.addColorStop(1,'rgba(5,5,6,0)'); limbusPath(cx,cy,R); ctx.fillStyle=oc; ctx.fill();
+  var lightX=cx-R*(.34+LIGHT.x*.10), lightY=cy-R*(.40+LIGHT.y*.10), envA=ENV.a*.10+ph*.12;
   if(envA>.003){ var eg2=ctx.createRadialGradient(cx+ox*2, cy-R*.25+oy*2, R*.05, cx, cy, R*.95);
-    eg2.addColorStop(0,'rgba('+ENV.r+','+ENV.g+','+ENV.b+','+envA+')'); eg2.addColorStop(.6,'rgba('+ENV.r+','+ENV.g+','+ENV.b+','+(envA*.3)+')');
-    eg2.addColorStop(1,'rgba('+ENV.r+','+ENV.g+','+ENV.b+',0)'); limbusPath(cx,cy,R,.96); ctx.fillStyle=eg2; ctx.fill(); }
-  var wet=ctx.createRadialGradient(lightX, lightY, R*.04, cx-R*.18, cy-R*.26, R*1.18);
-  wet.addColorStop(0,'rgba(242,242,239,'+(.18+ws*.08)+')'); wet.addColorStop(.32,'rgba(242,242,239,.035)');
-  wet.addColorStop(1,'rgba(242,242,239,0)'); limbusPath(cx,cy,R); ctx.fillStyle=wet; ctx.fill();
+    eg2.addColorStop(0,'rgba('+ENV.r+','+ENV.g+','+ENV.b+','+envA+')'); eg2.addColorStop(.6,'rgba('+ENV.r+','+ENV.g+','+ENV.b+','+(envA*.3)+')'); eg2.addColorStop(1,'rgba('+ENV.r+','+ENV.g+','+ENV.b+',0)');
+    limbusPath(cx,cy,R,.96); ctx.fillStyle=eg2; ctx.fill(); }
+  var wet=ctx.createRadialGradient(lightX,lightY,R*.04,cx-R*.18,cy-R*.26,R*1.18); wet.addColorStop(0,'rgba(242,242,239,'+(.18+ws*.08)+')'); wet.addColorStop(.32,'rgba(242,242,239,.035)'); wet.addColorStop(1,'rgba(242,242,239,0)');
+  limbusPath(cx,cy,R); ctx.fillStyle=wet; ctx.fill();
   ctx.beginPath(); ctx.arc(cx,cy,R*.995,.5,2.05); ctx.strokeStyle='rgba(242,242,239,.062)'; ctx.lineWidth=1.9*PX; ctx.stroke();
-  if(ws>.02){ var bw=ctx.createLinearGradient(cx-R, cy-R*.5, cx+R, cy+R*.2);
-    bw.addColorStop(0,'rgba(242,242,239,0)'); bw.addColorStop(.5,'rgba(242,242,239,'+(ws*.07)+')'); bw.addColorStop(1,'rgba(242,242,239,0)');
-    limbusPath(cx,cy,R); ctx.fillStyle=bw; ctx.fill(); }
-  /* the catchlight: project colour enters here first, then it widens into the band */
-  var cl = 1 + ph*7, tint = clamp(ph*2.5,0,1);
-  ctx.beginPath(); ctx.ellipse(lightX, lightY, R*.052*cl, R*.030*(1+ph*2.2), -.7, 0, 6.2832);
+  if(ws>.02){ var bw2=ctx.createLinearGradient(cx-R,cy-R*.5,cx+R,cy+R*.2); bw2.addColorStop(0,'rgba(242,242,239,0)'); bw2.addColorStop(.5,'rgba(242,242,239,'+(ws*.07)+')'); bw2.addColorStop(1,'rgba(242,242,239,0)'); limbusPath(cx,cy,R); ctx.fillStyle=bw2; ctx.fill(); }
+  var cl=1+ph*7, tint=clamp(ph*2.5,0,1);
+  ctx.beginPath(); ctx.ellipse(lightX,lightY,R*.052*cl,R*.030*(1+ph*2.2),-.7,0,6.2832);
   ctx.fillStyle='rgba('+Math.round(lerp(255,ENV.r+40,tint))+','+Math.round(lerp(255,ENV.g+40,tint))+','+Math.round(lerp(255,ENV.b+40,tint))+','+(.52*(1-ph*.45))+')'; ctx.fill();
   ctx.restore();
 }
@@ -1087,14 +1084,14 @@ function sampleEnv(img){
 
 /* ═══ DATA ═══ unchanged from the previous draft ═════════════════════════ */
 var SCARS = [
-  { name:"Thai Future Fantasy", kind:"Original", year:"2026", img:"ASSET_WEBP_REMOVED",
-    tags:"DNA / BLOOD / SKIN", eye:{x:.80,y:.30,d:.30,o:.30},
-    note:"Thai culture is exported in the past tense. This films it as science fiction.",
-    problem:"Thai visual culture travels as heritage — temples, silk, tradition. Nothing in the export says the country has a future worth imagining.",
-    dna:"A position built on tension rather than nostalgia: a culture is taken seriously when it is allowed to speculate about itself, not only to preserve itself.",
-    blood:"Bangkok read as a set for something that has not happened yet. The ordinary street furniture of the city, filmed as though it were evidence.",
-    skin:"Built for the feed first. Vertical framing, sound designed to survive a phone speaker, cuts timed to the thumb rather than to a broadcast slot.",
-    scar:"Not measured. This is self-initiated work and no result has been recorded — placeholder." },
+  { name:"Burning City", kind:"Original", year:"2025", img:"ASSET_WEBP_REMOVED",
+    tags:"BLOOD / SKIN", eye:{x:.16,y:.28,d:.34,o:.34}, line:[0,.66,1,.615],
+    note:"A city filmed at the hour it stops pretending.",
+    problem:"Bangkok is photographed either as a postcard or as chaos. Neither is what living in it feels like.",
+    dna:"The interesting hour is the one between the two — when the light goes and the city is briefly neither.",
+    blood:"Long lenses, no establishing shots, and a sound design built from the room rather than from a library.",
+    skin:"Made to be seen large. The frame assumes a wall, not a phone.",
+    scar:"Not measured. Self-initiated — placeholder." },
   { name:"Saint Laurent", kind:"Concept work", year:"2025", img:"ASSET_WEBP_REMOVED",
     tags:"BLOOD", eye:{x:.90,y:.72,d:.26,o:.22},
     note:"Fashion film that stops performing fashion.",
@@ -1103,14 +1100,14 @@ var SCARS = [
     blood:"One continuous idea carried by movement. The camera commits early and does not cut to rescue itself.",
     skin:"Cut for a cinema-first release with a vertical companion that is composed rather than cropped.",
     scar:"Concept work, not commissioned by Saint Laurent. No result to report." },
-  { name:"Burning City", kind:"Original", year:"2025", img:"ASSET_WEBP_REMOVED",
-    tags:"BLOOD / SKIN", eye:{x:.16,y:.28,d:.34,o:.34},
-    note:"A city filmed at the hour it stops pretending.",
-    problem:"Bangkok is photographed either as a postcard or as chaos. Neither is what living in it feels like.",
-    dna:"The interesting hour is the one between the two — when the light goes and the city is briefly neither.",
-    blood:"Long lenses, no establishing shots, and a sound design built from the room rather than from a library.",
-    skin:"Made to be seen large. The frame assumes a wall, not a phone.",
-    scar:"Not measured. Self-initiated — placeholder." },
+  { name:"Thai Future Fantasy", kind:"Original", year:"2026", img:"ASSET_WEBP_REMOVED",
+    tags:"DNA / BLOOD / SKIN", eye:{x:.80,y:.30,d:.30,o:.30},
+    note:"Thai culture is exported in the past tense. This films it as science fiction.",
+    problem:"Thai visual culture travels as heritage — temples, silk, tradition. Nothing in the export says the country has a future worth imagining.",
+    dna:"A position built on tension rather than nostalgia: a culture is taken seriously when it is allowed to speculate about itself, not only to preserve itself.",
+    blood:"Bangkok read as a set for something that has not happened yet. The ordinary street furniture of the city, filmed as though it were evidence.",
+    skin:"Built for the feed first. Vertical framing, sound designed to survive a phone speaker, cuts timed to the thumb rather than to a broadcast slot.",
+    scar:"Not measured. This is self-initiated work and no result has been recorded — placeholder." },
   { name:"Rimowa — Baggage Has Memory", kind:"Concept work", year:"2025", img:"ASSET_WEBP_REMOVED",
     tags:"DNA / BLOOD", eye:{x:.84,y:.26,d:.30,o:.30},
     note:"The scratches are the product.",
@@ -1150,7 +1147,8 @@ var DESK = {
   matter:    {x:.54,y:.55,d:.82,o:.42,blood:.45,skin:.55},
   skin:      {x:.15,y:.68,d:.50,o:.78,skin:1},
   culture:   {x:.88,y:.42,d:.66,o:.35,skin:.40},
-  scarsIntro:{x:.50,y:.55,d:1.40,o:.42,skin:.15,photo:.55},
+  scarsIntro:{x:.50,y:.62,d:1.20,o:.45,skin:.30,photo:.10},
+  expose:    {x:.50,y:.62,d:1.30,o:.40,skin:.12,photo:.62},
   work:      {x:.86,y:.74,d:.30,o:.26,photo:1},
   reveal:    {x:.50,y:.50,d:1.24,o:.72,photo:.10},
   originals: {x:.88,y:.70,d:.38,o:.58},
@@ -1171,9 +1169,10 @@ var MOB = {
   matter:    {x:.60,y:.62,d:.78,o:.40,blood:.45,skin:.55},
   skin:      {x:.94,y:.78,d:.56,o:.74,skin:1},
   culture:   {x:.90,y:.74,d:.68,o:.32,skin:.40},
-  scarsIntro:{x:.50,y:.55,d:1.30,o:.28,skin:.15,photo:.45},
+  scarsIntro:{x:.50,y:.60,d:1.30,o:.40,skin:.30,photo:.10},
+  expose:    {x:.50,y:.60,d:1.35,o:.36,skin:.12,photo:.62},
   work:      {x:.82,y:.20,d:.38,o:.30,photo:1},
-  reveal:    {x:.50,y:.50,d:1.38,o:.70,photo:.10},
+  reveal:    {x:.50,y:.66,d:1.38,o:.70,photo:.10},
   originals: {x:.90,y:.74,d:.68,o:.52},
   company:   {x:.50,y:.48,d:.96,o:.28},
   final:     {x:.96,y:.64,d:.94,o:.84},
@@ -1353,6 +1352,24 @@ function readScroll(){
     if(prox>.30) onWork=true;
     if(prox>.45){ scarNear=true; sampleEnv(im); ENV.ta=prox*.8; }
   }
+  /* the signature: before the first project is "near", it develops outward
+     from the line the vein became, through a mask — not a wipe, not a fade */
+  var im0=imgs[0];
+  if(im0 && P.photo>.04 && !scarEls[0].classList.contains('near')){
+    var ln=projectLine(SCARS[0]);
+    if(ln){ var u=smoother(clamp((P.photo-.08)/.8,0,1));
+      if(im0.dataset.on!=='1') im0.dataset.on='1';
+      im0.style.filter='brightness('+(u*.9).toFixed(3)+') saturate('+(.55+u*.45).toFixed(3)+') contrast(1.06)';
+      im0.style.transform='scale('+(1.035-u*.035).toFixed(4)+')';
+      var ang=Math.atan2(ln.y1-ln.y0,ln.x1-ln.x0)*180/Math.PI+90, cy0=((ln.y0+ln.y1)/2)/PX, cx0=((ln.x0+ln.x1)/2)/PX;
+      var half=(6+u*u*120), pct=cy0/VH*100;
+      var lin='linear-gradient('+ang.toFixed(1)+'deg, transparent 0%, transparent calc('+pct.toFixed(1)+'% - '+(half*1.6).toFixed(0)+'vh), rgba(0,0,0,.6) calc('+pct.toFixed(1)+'% - '+(half*.7).toFixed(0)+'vh), black '+pct.toFixed(1)+'%, rgba(0,0,0,.6) calc('+pct.toFixed(1)+'% + '+(half*.7).toFixed(0)+'vh), transparent calc('+pct.toFixed(1)+'% + '+(half*1.6).toFixed(0)+'vh))';
+      var r1='radial-gradient(ellipse '+(18+u*60).toFixed(0)+'vw '+(8+u*40).toFixed(0)+'vh at 28% '+pct.toFixed(1)+'%, black 40%, transparent 100%)';
+      var r2='radial-gradient(ellipse '+(14+u*70).toFixed(0)+'vw '+(6+u*44).toFixed(0)+'vh at 74% '+(pct-2).toFixed(1)+'%, black 35%, transparent 100%)';
+      var mk=(u>=.995)?'none':(lin+','+r1+','+r2);
+      if(im0.style.webkitMaskImage!==mk){ im0.style.webkitMaskImage=mk; im0.style.maskImage=mk; im0.style.webkitMaskComposite='source-over'; im0.style.maskComposite='add'; }
+    }
+  } else if(im0 && im0.style.webkitMaskImage && im0.style.webkitMaskImage!=='none'){ im0.style.webkitMaskImage='none'; im0.style.maskImage='none'; }
   if(onWork!==wasOnWork){ wasOnWork=onWork; document.body.classList.toggle('onwork', onWork); }
 }
 var scarNear=false, wasOnWork=false;
@@ -1479,8 +1496,7 @@ function frame(now){
   if(!QA.noRead) readScroll();
   if(!QA.noReveal) sweepReveals(dt, Math.abs(scrollVel*dt) > VH*.9);
   if(portalOpen || portalT>0) applyPortalOverride(dt);
-  if(!portalOpen && portalT<=0 && portal.classList.contains('closing')){
-    portal.classList.remove('closing'); pOut.innerHTML=''; pIn.value=''; }
+  if(!portalOpen && portalT<=0 && portal.classList.contains('closing')) finishPortalClose();
 
   P.x = approach(P.x, T.x, LAM.pos*k, dt);
   P.y = approach(P.y, T.y, LAM.pos*k, dt);
@@ -1539,7 +1555,7 @@ function staticFrame(){
   /* reduced motion still has to show the portal state, not the scroll state */
   if(portalOpen){ portalT=1; applyPortalOverride(1); } else portalT=0;
   for(var i=0;i<KEYS.length;i++) P[KEYS[i]] = T[KEYS[i]];
-  P.lid=0; P.pupil=0; P.gx=-.1; P.gy=0;
+  P.lid=0; P.pupil=T.pupil; P.gx=-.1; P.gy=0;
   LIGHT.x=0; LIGHT.y=0;
   drawWorld(0,0); placeHit();
 }
@@ -1617,7 +1633,7 @@ function applyPortalOverride(dt){
   T.blood = lerp(T.blood, 0, e);
   T.skin = lerp(T.skin, 0, e);
   T.photo = lerp(T.photo, 0, e);
-  T.pupil = portalMode==='read' ? -.06 : portalMode==='think' ? .02 : .40;
+  T.pupil = lerp(T.pupil, portalMode==='read' ? -.06 : portalMode==='think' ? .02 : .40, e);
 }
 var portalMode='listen';
 
@@ -1650,20 +1666,26 @@ function openIris(seed, from){
   setTimeout(function(){ pIn.focus(); },80);
   if(seed){ pIn.value=seed; analyse(seed); }
 }
+/* the end of a close, in one place: called from the frame loop once the eye
+   has travelled back (portalT → 0), or immediately under reduced motion */
+function finishPortalClose(){
+  portal.classList.remove('closing'); document.body.classList.remove('raised');
+  pOut.innerHTML=''; pIn.value=''; var nx=$('pNext'); if(nx) nx.value='';
+  var pb=$('pBody'); if(pb){ pb.style.justifyContent='center'; pb.scrollTop=0; }
+  $('pStage').classList.remove('beat-hide');
+  if(opener && opener.focus) opener.focus();
+}
 function closeIris(){
   if(!portalOpen) return;
   cancelBeats();
-  /* reversible: the UI stays (fading) until the eye has travelled back */
+  /* reversible: the UI stays (fading) and the world stays raised until the
+     eye has travelled back */
   portal.classList.remove('on','deep'); portal.classList.add('closing');
   portalOpen=false; portalMode='listen'; kbUp=false;
-  document.body.classList.remove('raised');
   document.body.style.overflow=''; shut(false);
-  var pb=$('pBody'); if(pb){ pb.style.justifyContent='center'; pb.scrollTop=0; }
-  $('pStage').classList.remove('beat-hide');
-  if(RM) portalT=0;
+  if(RM){ portalT=0; finishPortalClose(); }
   if(portalFrom) scrollTo(0, portalFrom.y);
   if(RM) staticFrame();
-  if(opener && opener.focus) opener.focus();
 }
 [].slice.call(document.querySelectorAll('[data-iris]')).forEach(function(b){
   b.addEventListener('click', function(){ openIris('', b); }); });
@@ -1701,9 +1723,10 @@ function analyse(text){
     if(MEDIUM.test(w))  return {w:w,tag:'medium — selected too early',strike:true,keep:true};
     if(OUTCOME.test(w)) return {w:w,tag:'outcome',keep:true};
     if(SKIP.test(w))    return {w:w,tag:'',quiet:true};
-    return {w:w,tag:'the problem'};
+    return {w:w,tag:''};
   });
   if(!toks.some(function(t){return t.keep;})){ var last=toks.filter(function(t){return !t.quiet;}).pop(); if(last){ last.keep=true; last.tag='assumption'; } }
+  toks.forEach(function(t){ if(t.tag==='outcome') t.tag='intended outcome'; });
   var v=FALLBACK; for(var i=0;i<VERDICTS.length;i++) if(VERDICTS[i].k.test(text)){ v=VERDICTS[i]; break; }
 
   /* READ */
@@ -1786,7 +1809,7 @@ addEventListener('keydown', function(e){
 
 if(location.hash==='#qa'){
   window.__BB = { P:P, T:T, QA:QA, draw:function(t){ drawWorld(t||0,0); }, stop:stop, start:start,
-                  ENV:ENV, fib:FIB.length,
+                  ENV:ENV, fib:FIB.length, PULSE:PULSE, RE:RE, ROOTS:ROOTS,
                   dbg:function(){ return { curName:curName, ptrDwell:ptrDwell, ptrMoved:ptrMoved, ptr:!!ptr, portalT:portalT,
                     anchors:ANCH.map(function(a){ return a.name+'@'+Math.round(a.y); }) }; } };
 }
