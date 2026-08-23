@@ -1,0 +1,897 @@
+{
+ "lab": {
+  "info": {
+   "build": "v6-iris-phase-body-final-candidate-2026-08-23",
+   "active": 12,
+   "meshOn": true,
+   "coarse": false,
+   "rm": false,
+   "inner": [
+    1512,
+    805
+   ]
+  },
+  "landmarks": {
+   "AWARE\u2192DNA": {
+    "maxStepJumpPx_perFivePercentQ": 44.8,
+    "minLandmarkAlpha": 0.95,
+    "pairedAlphaSums": [
+     1,
+     1,
+     1,
+     1,
+     1,
+     "\u2026"
+    ],
+    "reverseVsForwardMaxErrPx": 50.73
+   },
+   "DNA\u2192BLOOD": {
+    "maxStepJumpPx_perFivePercentQ": 140.7,
+    "minLandmarkAlpha": 0.95,
+    "pairedAlphaSums": [
+     1,
+     1,
+     1,
+     1,
+     1,
+     "\u2026"
+    ],
+    "reverseVsForwardMaxErrPx": 155.88
+   },
+   "BLOOD\u2192SKIN": {
+    "maxStepJumpPx_perFivePercentQ": 388.1,
+    "minLandmarkAlpha": 0.94,
+    "pairedAlphaSums": [
+     1,
+     1,
+     1,
+     1,
+     1,
+     "\u2026"
+    ],
+    "reverseVsForwardMaxErrPx": 502.33
+   },
+   "SKIN\u2192WORK": {
+    "maxStepJumpPx_perFivePercentQ": 331.7,
+    "minLandmarkAlpha": 0.94,
+    "pairedAlphaSums": [
+     1,
+     1,
+     1,
+     1,
+     1,
+     "\u2026"
+    ],
+    "reverseVsForwardMaxErrPx": 532.84
+   },
+   "WORK\u2192REVEAL": {
+    "maxStepJumpPx_perFivePercentQ": 548.3,
+    "minLandmarkAlpha": 0.95,
+    "pairedAlphaSums": [
+     1,
+     1,
+     1,
+     1,
+     1,
+     "\u2026"
+    ],
+    "reverseVsForwardMaxErrPx": 747.27
+   }
+  },
+  "errors": []
+ },
+ "desktop": {
+  "info": {
+   "build": "v6-iris-phase-body-final-candidate-2026-08-23",
+   "active": 12,
+   "meshOn": true,
+   "coarse": false,
+   "rm": false,
+   "inner": [
+    1512,
+    805
+   ]
+  },
+  "transitions": {
+   "AWARE\u2192DNA": [
+    {
+     "seg": [
+      "arrival",
+      "question"
+     ],
+     "q": 0,
+     "env": 0,
+     "from": 0,
+     "to": 0,
+     "alpha": {
+      "EYEA": 1,
+      "MESHA": 0
+     },
+     "bodyWidthVw": 33.1,
+     "outCopy": 1,
+     "inCopy": 1,
+     "pupil": [
+      0,
+      0,
+      0,
+      255
+     ]
+    },
+    {
+     "seg": [
+      "question",
+      "anatomy"
+     ],
+     "q": 0.24,
+     "env": 1,
+     "from": 0,
+     "to": 1,
+     "alpha": {
+      "EYEA": 0,
+      "MESHA": 1
+     },
+     "bodyWidthVw": 38,
+     "outCopy": 0,
+     "inCopy": 0,
+     "pupil": [
+      16,
+      16,
+      19,
+      255
+     ]
+    },
+    {
+     "seg": [
+      "question",
+      "anatomy"
+     ],
+     "q": 0.5,
+     "env": 1,
+     "from": 0,
+     "to": 1,
+     "alpha": {
+      "EYEA": 0,
+      "MESHA": 1
+     },
+     "bodyWidthVw": 38,
+     "outCopy": 0,
+     "inCopy": 0,
+     "pupil": [
+      18,
+      18,
+      21,
+      255
+     ]
+    },
+    {
+     "seg": [
+      "question",
+      "anatomy"
+     ],
+     "q": 0.75,
+     "env": 1,
+     "from": 0,
+     "to": 1,
+     "alpha": {
+      "EYEA": 0,
+      "MESHA": 1
+     },
+     "bodyWidthVw": 38,
+     "outCopy": 0,
+     "inCopy": 0,
+     "pupil": [
+      12,
+      12,
+      16,
+      255
+     ]
+    },
+    {
+     "seg": [
+      "question",
+      "anatomy"
+     ],
+     "q": 1,
+     "env": 0,
+     "from": 0,
+     "to": 1,
+     "alpha": {
+      "EYEA": 1,
+      "MESHA": 0
+     },
+     "bodyWidthVw": 27.7,
+     "outCopy": 0,
+     "inCopy": 1,
+     "pupil": [
+      0,
+      0,
+      0,
+      255
+     ]
+    }
+   ],
+   "DNA\u2192BLOOD": [
+    {
+     "seg": [
+      "dna",
+      "pressure"
+     ],
+     "q": 0,
+     "env": 0,
+     "from": 1,
+     "to": 2,
+     "alpha": {
+      "EYEA": 0,
+      "MESHA": 1
+     },
+     "bodyWidthVw": 21.3,
+     "outCopy": 1,
+     "inCopy": 0,
+     "pupil": [
+      0,
+      0,
+      0,
+      255
+     ]
+    },
+    {
+     "seg": [
+      "dna",
+      "pressure"
+     ],
+     "q": 0.25,
+     "env": 1,
+     "from": 1,
+     "to": 2,
+     "alpha": {
+      "EYEA": 0,
+      "MESHA": 1
+     },
+     "bodyWidthVw": 38,
+     "outCopy": 0,
+     "inCopy": 0,
+     "pupil": [
+      16,
+      16,
+      19,
+      255
+     ]
+    },
+    {
+     "seg": [
+      "dna",
+      "pressure"
+     ],
+     "q": 0.5,
+     "env": 1,
+     "from": 1,
+     "to": 2,
+     "alpha": {
+      "EYEA": 0,
+      "MESHA": 1
+     },
+     "bodyWidthVw": 38,
+     "outCopy": 0,
+     "inCopy": 0,
+     "pupil": [
+      13,
+      13,
+      17,
+      255
+     ]
+    },
+    {
+     "seg": [
+      "dna",
+      "pressure"
+     ],
+     "q": 0.75,
+     "env": 1,
+     "from": 1,
+     "to": 2,
+     "alpha": {
+      "EYEA": 0,
+      "MESHA": 1
+     },
+     "bodyWidthVw": 38,
+     "outCopy": 0,
+     "inCopy": 0,
+     "pupil": [
+      17,
+      17,
+      20,
+      255
+     ]
+    },
+    {
+     "seg": [
+      "dna",
+      "pressure"
+     ],
+     "q": 1,
+     "env": 0,
+     "from": 1,
+     "to": 2,
+     "alpha": {
+      "EYEA": 0,
+      "MESHA": 1
+     },
+     "bodyWidthVw": 36.2,
+     "outCopy": 0,
+     "inCopy": 1,
+     "pupil": [
+      0,
+      0,
+      0,
+      255
+     ]
+    }
+   ],
+   "BLOOD\u2192SKIN": [
+    {
+     "seg": [
+      "blood",
+      "media"
+     ],
+     "q": 0.04,
+     "env": 0,
+     "from": 2,
+     "to": 2,
+     "alpha": {
+      "EYEA": 0,
+      "MESHA": 1
+     },
+     "bodyWidthVw": 34.1,
+     "outCopy": 1,
+     "inCopy": 1,
+     "pupil": [
+      0,
+      0,
+      0,
+      255
+     ]
+    },
+    {
+     "seg": [
+      "media",
+      "matter"
+     ],
+     "q": 0.25,
+     "env": 1,
+     "from": 2,
+     "to": 3,
+     "alpha": {
+      "EYEA": 0,
+      "MESHA": 1
+     },
+     "bodyWidthVw": 38,
+     "outCopy": 0,
+     "inCopy": 0,
+     "pupil": [
+      17,
+      17,
+      19,
+      255
+     ]
+    },
+    {
+     "seg": [
+      "media",
+      "matter"
+     ],
+     "q": 0.5,
+     "env": 1,
+     "from": 2,
+     "to": 3,
+     "alpha": {
+      "EYEA": 0,
+      "MESHA": 1
+     },
+     "bodyWidthVw": 38,
+     "outCopy": 0,
+     "inCopy": 0,
+     "pupil": [
+      12,
+      12,
+      15,
+      255
+     ]
+    },
+    {
+     "seg": [
+      "media",
+      "matter"
+     ],
+     "q": 0.75,
+     "env": 1,
+     "from": 2,
+     "to": 3,
+     "alpha": {
+      "EYEA": 0,
+      "MESHA": 1
+     },
+     "bodyWidthVw": 38,
+     "outCopy": 0,
+     "inCopy": 0,
+     "pupil": [
+      19,
+      19,
+      22,
+      255
+     ]
+    },
+    {
+     "seg": [
+      "media",
+      "matter"
+     ],
+     "q": 1,
+     "env": 0,
+     "from": 2,
+     "to": 3,
+     "alpha": {
+      "EYEA": 0,
+      "MESHA": 1
+     },
+     "bodyWidthVw": 43.7,
+     "outCopy": 0,
+     "inCopy": 1,
+     "pupil": [
+      7,
+      7,
+      8,
+      255
+     ]
+    }
+   ],
+   "SKIN\u2192WORK": [
+    {
+     "seg": [
+      "skin",
+      "culture"
+     ],
+     "q": 0,
+     "env": 0,
+     "from": 3,
+     "to": 3,
+     "alpha": {
+      "EYEA": 0,
+      "MESHA": 1
+     },
+     "bodyWidthVw": 35.1,
+     "outCopy": 1,
+     "inCopy": 1,
+     "pupil": [
+      0,
+      0,
+      0,
+      255
+     ]
+    },
+    {
+     "seg": [
+      "culture",
+      "scarsIntro"
+     ],
+     "q": 0.25,
+     "env": 1,
+     "from": 3,
+     "to": 4,
+     "alpha": {
+      "EYEA": 0,
+      "MESHA": 1
+     },
+     "bodyWidthVw": 38,
+     "outCopy": 0,
+     "inCopy": 0,
+     "pupil": [
+      14,
+      14,
+      17,
+      255
+     ]
+    },
+    {
+     "seg": [
+      "culture",
+      "scarsIntro"
+     ],
+     "q": 0.49,
+     "env": 1,
+     "from": 3,
+     "to": 4,
+     "alpha": {
+      "EYEA": 0,
+      "MESHA": 1
+     },
+     "bodyWidthVw": 38,
+     "outCopy": 0,
+     "inCopy": 0,
+     "pupil": [
+      18,
+      18,
+      21,
+      255
+     ]
+    },
+    {
+     "seg": [
+      "culture",
+      "scarsIntro"
+     ],
+     "q": 0.74,
+     "env": 1,
+     "from": 3,
+     "to": 4,
+     "alpha": {
+      "EYEA": 0,
+      "MESHA": 1
+     },
+     "bodyWidthVw": 38,
+     "outCopy": 0,
+     "inCopy": 0,
+     "pupil": [
+      14,
+      14,
+      17,
+      255
+     ]
+    },
+    {
+     "seg": [
+      "scarsIntro",
+      "expose"
+     ],
+     "q": 0.02,
+     "env": 0,
+     "from": 4,
+     "to": 4,
+     "alpha": {
+      "EYEA": 0,
+      "MESHA": 1
+     },
+     "bodyWidthVw": 63.8,
+     "outCopy": 1,
+     "inCopy": 1,
+     "pupil": [
+      17,
+      17,
+      20,
+      255
+     ]
+    }
+   ],
+   "WORK\u2192REVEAL": [
+    {
+     "seg": [
+      "work",
+      "work"
+     ],
+     "q": 0,
+     "env": 0,
+     "from": 4,
+     "to": 4,
+     "alpha": {
+      "EYEA": 0.004248480529744247,
+      "MESHA": 0.9957515194702558
+     },
+     "bodyWidthVw": 16.2,
+     "outCopy": 1,
+     "inCopy": 1,
+     "pupil": null
+    },
+    {
+     "seg": [
+      "work",
+      "reveal"
+     ],
+     "q": 0.23,
+     "env": 1,
+     "from": 4,
+     "to": 5,
+     "alpha": {
+      "EYEA": 0,
+      "MESHA": 1
+     },
+     "bodyWidthVw": 38,
+     "outCopy": 0,
+     "inCopy": 0,
+     "pupil": null
+    },
+    {
+     "seg": [
+      "work",
+      "reveal"
+     ],
+     "q": 0.48,
+     "env": 1,
+     "from": 4,
+     "to": 5,
+     "alpha": {
+      "EYEA": 0,
+      "MESHA": 1
+     },
+     "bodyWidthVw": 38,
+     "outCopy": 0,
+     "inCopy": 0,
+     "pupil": [
+      191,
+      191,
+      191,
+      4
+     ]
+    },
+    {
+     "seg": [
+      "work",
+      "reveal"
+     ],
+     "q": 0.72,
+     "env": 1,
+     "from": 4,
+     "to": 5,
+     "alpha": {
+      "EYEA": 0,
+      "MESHA": 1
+     },
+     "bodyWidthVw": 38,
+     "outCopy": 0,
+     "inCopy": 0,
+     "pupil": [
+      15,
+      15,
+      18,
+      255
+     ]
+    },
+    {
+     "seg": [
+      "work",
+      "reveal"
+     ],
+     "q": 0.96,
+     "env": 0,
+     "from": 4,
+     "to": 5,
+     "alpha": {
+      "EYEA": 0,
+      "MESHA": 1
+     },
+     "bodyWidthVw": 65,
+     "outCopy": 0,
+     "inCopy": 1,
+     "pupil": [
+      0,
+      0,
+      0,
+      255
+     ]
+    }
+   ]
+  },
+  "perfClean": {
+   "drawCpuP95ms_canvas2d": 5.2,
+   "frameIntervalP95ms": 50
+  },
+  "errors": []
+ },
+ "videos": {
+  "AWARE\u2192DNA": {
+   "codec": "vp8",
+   "w": 1512,
+   "h": 804,
+   "container_fps": 25.0,
+   "duration_s": 19.52,
+   "decoded_frames": 488,
+   "effective_fps": 25.0,
+   "bytes": 2299915
+  },
+  "DNA\u2192BLOOD": {
+   "codec": "vp8",
+   "w": 1512,
+   "h": 804,
+   "container_fps": 25.0,
+   "duration_s": 19.4,
+   "decoded_frames": 485,
+   "effective_fps": 25.0,
+   "bytes": 2278152
+  },
+  "BLOOD\u2192SKIN": {
+   "codec": "vp8",
+   "w": 1512,
+   "h": 804,
+   "container_fps": 25.0,
+   "duration_s": 19.52,
+   "decoded_frames": 488,
+   "effective_fps": 25.0,
+   "bytes": 2251516
+  },
+  "SKIN\u2192WORK": {
+   "codec": "vp8",
+   "w": 1512,
+   "h": 804,
+   "container_fps": 25.0,
+   "duration_s": 19.72,
+   "decoded_frames": 493,
+   "effective_fps": 25.0,
+   "bytes": 2342614
+  },
+  "WORK\u2192REVEAL": {
+   "codec": "vp8",
+   "w": 1512,
+   "h": 804,
+   "container_fps": 25.0,
+   "duration_s": 19.52,
+   "decoded_frames": 488,
+   "effective_fps": 25.0,
+   "bytes": 2060689
+  },
+  "FULL": {
+   "codec": "vp8",
+   "w": 1512,
+   "h": 804,
+   "container_fps": 25.0,
+   "duration_s": 86.44,
+   "decoded_frames": 2161,
+   "effective_fps": 25.0,
+   "bytes": 10269284
+  },
+  "MOBILE_390": {
+   "codec": "vp8",
+   "w": 390,
+   "h": 844,
+   "container_fps": 25.0,
+   "duration_s": 65.52,
+   "decoded_frames": 1638,
+   "effective_fps": 25.0,
+   "bytes": 7145956
+  }
+ },
+ "390x844": {
+  "info": {
+   "build": "v6-iris-phase-body-final-candidate-2026-08-23",
+   "active": 12,
+   "meshOn": true,
+   "coarse": true,
+   "rm": false,
+   "inner": [
+    390,
+    844
+   ]
+  },
+  "transitions": {
+   "AWARE\u2192DNA": {
+    "q": 0.5,
+    "bodyWidthVw": 68,
+    "onScreen": true,
+    "overflowX": false
+   },
+   "DNA\u2192BLOOD": {
+    "q": 0.5,
+    "bodyWidthVw": 68,
+    "onScreen": true,
+    "overflowX": false
+   },
+   "BLOOD\u2192SKIN": {
+    "q": 0.5,
+    "bodyWidthVw": 68,
+    "onScreen": true,
+    "overflowX": false
+   },
+   "SKIN\u2192WORK": {
+    "q": 0.5,
+    "bodyWidthVw": 68,
+    "onScreen": true,
+    "overflowX": false
+   },
+   "WORK\u2192REVEAL": {
+    "q": 0.5,
+    "bodyWidthVw": 68,
+    "onScreen": true,
+    "overflowX": false
+   }
+  },
+  "perfClean": {
+   "drawCpuP95ms_canvas2d": 2.8,
+   "frameIntervalP95ms": 50
+  },
+  "keyboard": {
+   "inner": [
+    390,
+    450
+   ],
+   "meshA": {
+    "EYEA": 1,
+    "MESHA": 0
+   },
+   "label": "IRIS / LISTENING",
+   "focused": "pIn"
+  },
+  "closeThenScroll": {
+   "raised": false,
+   "overflow": "",
+   "cur": "dna"
+  },
+  "errors": []
+ },
+ "430x932": {
+  "info": {
+   "build": "v6-iris-phase-body-final-candidate-2026-08-23",
+   "active": 12,
+   "meshOn": true,
+   "coarse": true,
+   "rm": false,
+   "inner": [
+    430,
+    932
+   ]
+  },
+  "transitions": {
+   "AWARE\u2192DNA": {
+    "q": 0.5,
+    "bodyWidthVw": 68,
+    "onScreen": true,
+    "overflowX": false
+   },
+   "DNA\u2192BLOOD": {
+    "q": 0.5,
+    "bodyWidthVw": 68,
+    "onScreen": true,
+    "overflowX": false
+   },
+   "BLOOD\u2192SKIN": {
+    "q": 0.5,
+    "bodyWidthVw": 68,
+    "onScreen": true,
+    "overflowX": false
+   },
+   "SKIN\u2192WORK": {
+    "q": 0.5,
+    "bodyWidthVw": 68,
+    "onScreen": true,
+    "overflowX": false
+   },
+   "WORK\u2192REVEAL": {
+    "q": 0.5,
+    "bodyWidthVw": 68,
+    "onScreen": true,
+    "overflowX": false
+   }
+  },
+  "perfClean": {
+   "drawCpuP95ms_canvas2d": 2.7,
+   "frameIntervalP95ms": 50
+  },
+  "keyboard": {
+   "inner": [
+    430,
+    450
+   ],
+   "meshA": {
+    "EYEA": 1,
+    "MESHA": 0
+   },
+   "label": "IRIS / LISTENING",
+   "focused": "pIn"
+  },
+  "closeThenScroll": {
+   "raised": false,
+   "overflow": "",
+   "cur": "dna"
+  },
+  "errors": []
+ },
+ "reducedMotion": {
+  "info": {
+   "build": "v6-iris-phase-body-final-candidate-2026-08-23",
+   "active": 12,
+   "meshOn": false,
+   "coarse": false,
+   "rm": true,
+   "inner": [
+    1512,
+    805
+   ]
+  }
+ }
+}
