@@ -1,5 +1,5 @@
 <meta charset="utf-8">
-<meta name="bb-build" content="v4.2-living-membrane-2026-08-23">
+<meta name="bb-build" content="v4.2.1-temporal-clean-2026-08-23">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Bad Blood Organism</title>
 <meta name="description" content="Bad Blood Company — a creative intelligence company. We build things that live.">
@@ -210,7 +210,9 @@ body.onwork .nav::before{background:linear-gradient(to bottom,rgba(5,5,6,.92),rg
 .scar::after{content:'';position:absolute;inset:0;z-index:1;pointer-events:none;
   background:linear-gradient(to top,rgba(5,5,6,.90) 0%,rgba(5,5,6,.28) 42%,transparent 70%);
   opacity:var(--ex,0)}
-.scar-in{position:relative;z-index:2;width:100%;padding:var(--edge);display:grid;gap:12px}
+.scar-in{position:relative;z-index:2;width:100%;padding:var(--edge);display:grid;gap:12px;
+  opacity:var(--wco,1);transform:translate3d(0,calc((1 - var(--wco,1)) * -14px),0)}
+.reveal .hold{opacity:var(--rco,1)}
 .scar-meta{display:flex;gap:clamp(12px,2vw,26px);flex-wrap:wrap;align-items:baseline;
   opacity:.4;transform:translateY(6px);
   transition:opacity var(--t-mid) var(--focus),transform var(--t-mid) var(--focus)}
@@ -614,7 +616,7 @@ body.onwork .nav::before{background:linear-gradient(to bottom,rgba(5,5,6,.92),rg
 <script>
 (function(){
 "use strict";
-var BUILD="v4.2-living-membrane-2026-08-23"; console.info("[BB] build", BUILD);
+var BUILD="v4.2.1-temporal-clean-2026-08-23"; console.info("[BB] build", BUILD);
 if(location.search.indexOf('dbg')>=0){ window.__log=[]; ['scrollTo','scrollBy','scroll'].forEach(function(n){ var o=window[n]; window[n]=function(){ window.__log.push({fn:n,a:[].slice.call(arguments).map(function(x){return typeof x==='object'?JSON.stringify(x):x;}).join(','),st:(new Error().stack||'').split('\n').slice(1,4).join('|')}); return o.apply(window,arguments); }; });
   var oF=HTMLElement.prototype.focus; HTMLElement.prototype.focus=function(){ window.__log.push({fn:'focus',el:(this.id||this.className||this.tagName),st:(new Error().stack||'').split('\n').slice(1,3).join('|')}); return oF.apply(this,arguments); };
   var oS=Element.prototype.scrollIntoView; Element.prototype.scrollIntoView=function(){ window.__log.push({fn:'siv',el:(this.id||this.className)}); return oS.apply(this,arguments); };
@@ -865,7 +867,8 @@ var lastDir=1, PUP={x:0,y:0,r:0,pa:1,on:0};
 var BOFF=[-.52,-.24,0,.25,.55], BASY=[], BTAP=[], BND=[];
 (function(){ var r=mulberry32(0x5EAF); for(var i=0;i<5;i++){ BASY.push(i===2?1:(1+(r()-.5)*.26)); BTAP.push(i===2?1:(.66+r()*.3)); BND.push({sx:0,sy:0,c1x:0,c1y:0,c2x:0,c2y:0,ex:0,ey:0,a:0}); } })();
 /* the membrane: eight fixed control samples along the physical edge (up/down amplitude) */
-var MEM_N=8, MEM_UP=new Float32Array(MEM_N), MEM_DN=new Float32Array(MEM_N);
+var MEM_N=8, MEM_UP=new Float32Array(MEM_N), MEM_DN=new Float32Array(MEM_N), TEAR=[.11,.085,.58,.06,0,0];
+(function(){ var r=mulberry32(0x7EA2); TEAR[2]=.48+r()*.26; TEAR[3]=.05+r()*.03; TEAR[4]=r()*6.28; TEAR[5]=r()*6.28; })();
 (function(){ var r=mulberry32(0x3E3B); for(var i=0;i<MEM_N;i++){ MEM_UP[i]=.45+r()*1.2; MEM_DN[i]=.45+r()*1.2; } })();
 function catmull(arr,t){ var n=arr.length-1, x=clamp(t,0,1)*n, i=Math.floor(x), f=x-i; if(i>=n) return arr[n];
   var p0=arr[Math.max(0,i-1)], p1=arr[i], p2=arr[i+1], p3=arr[Math.min(n,i+2)];
@@ -980,12 +983,18 @@ function drawWorld(t, dt){
     var e1=smoother(clamp((ph-.04)/.26,0,1)), e2=Math.pow(smoother(clamp((ph-.30)/.40,0,1)),1.5);
     var base=(2+e1*7)*PX + e2*CH*.9, feather=(18+e2*18)*PX;
     var lx=line.x1-line.x0, ly=line.y1-line.y0, ll=Math.hypot(lx,ly)||1, nxv=-ly/ll, nyv=lx/ll;
+    /* onset: one or two tears anchored near where the active root meets the edge,
+       with a low-frequency vertical wander; the envelope opens to the whole edge
+       only after the first tear (photo .30 →) */
+    var spread=smoother(clamp((ph-.28)/.24,0,1)), wander=(18+e2*22)*PX;
+    function env(tt){ var d1=(tt-TEAR[0])/TEAR[1], d2=(tt-TEAR[2])/TEAR[3]; var g=Math.max(Math.exp(-d1*d1), .7*Math.exp(-d2*d2)); return lerp(g, 1, spread); }
+    function dev(tt){ return Math.sin(tt*8.2+TEAR[4])*wander*(1-spread*.35) + Math.sin(tt*3.1+TEAR[5])*wander*.6; }
     var NSEG=48, passes=[[1,.22],[.66,.3],[.33,.42],[0,1]];
     for(var pi=0;pi<passes.length;pi++){ var fo=passes[pi][0]*feather, fa=passes[pi][1];
       ctx.save(); ctx.globalCompositeOperation='destination-out'; ctx.fillStyle='rgba(0,0,0,'+fa+')'; ctx.beginPath();
-      for(var si=0;si<=NSEG;si++){ var tt=si/NSEG, px0=line.x0+lx*tt, py0=line.y0+ly*tt, hu=base*catmull(MEM_UP,tt)+fo;
+      for(var si=0;si<=NSEG;si++){ var tt=si/NSEG, ev=env(tt), dv=dev(tt), px0=line.x0+lx*tt+nxv*dv, py0=line.y0+ly*tt+nyv*dv, hu=(base*catmull(MEM_UP,tt)+fo)*ev;
         var X=px0-nxv*hu, Y=py0-nyv*hu; si?ctx.lineTo(X,Y):ctx.moveTo(X,Y); }
-      for(var sj=NSEG;sj>=0;sj--){ var tt2=sj/NSEG, px1=line.x0+lx*tt2, py1=line.y0+ly*tt2, hd=base*catmull(MEM_DN,tt2)+fo;
+      for(var sj=NSEG;sj>=0;sj--){ var tt2=sj/NSEG, ev2=env(tt2), dv2=dev(tt2), px1=line.x0+lx*tt2+nxv*dv2, py1=line.y0+ly*tt2+nyv*dv2, hd=(base*catmull(MEM_DN,tt2)+fo)*ev2;
         ctx.lineTo(px1+nxv*hd, py1+nyv*hd); }
       ctx.closePath(); ctx.fill(); ctx.restore(); }
   }
@@ -1073,10 +1082,7 @@ function drawWorld(t, dt){
   /* non-active roots, deep first; the active root last and on top */
   for(var dep=2; dep>=0; dep--) for(var r2=0;r2<ROOTS.length;r2++){ if(r2===ACTIVE || ROOTS[r2].depth!==dep) continue; strokeRoot(r2); }
   strokeRoot(ACTIVE);
-  /* the procedural stroke along the real line: gone before photo .45 */
-  if(line && match>.05){ var la2=clamp((match-.05)/.5,0,1)*(1-clamp((ph-.2)/.25,0,1));
-    if(la2>.002){ ctx.strokeStyle='rgba(242,242,239,'+(la2*.28)+')'; ctx.lineWidth=1.4*PX; ctx.beginPath();
-      ctx.moveTo(line.x0,line.y0); ctx.lineTo(line.x1,line.y1); ctx.stroke(); } }
+  /* no procedural stroke along the edge: the first readable event is the tear */
 
   /* ── SKIN ── five guaranteed boundary curves derived from the active cubic
      (index 2 is the active curve itself), four planes 0–1, 1–2, 2–3, 3–4. The
@@ -1128,9 +1134,9 @@ function drawPupil(ip){
   if(Math.abs(MP.limbusAspect-1)>.001){ ctx.translate(cx,cy); ctx.scale(MP.limbusAspect,1); ctx.translate(-cx,-cy); }
   var closure=clamp(P.lid,0,1);
   if(closure>.002){ ctx.beginPath(); ctx.rect(cx-R*1.2, cy-R+closure*2*R*.70, R*2.4, 2*R-closure*2*R); ctx.clip(); }
-  var pr=PUP.r*Math.pow(clamp(ip,0,1),1.4);   /* ip .65 → 55%, ip .35 → 23% of the settled radius */
+  var pr=PUP.r;                               /* exactly the stored geometry, scaled once in drawIris */
   ctx.beginPath(); ctx.ellipse(PUP.x,PUP.y,pr*PUP.pa,pr,PUPIL_ECC,0,6.2832); ctx.fillStyle='#000'; ctx.fill();
-  ctx.beginPath(); ctx.ellipse(PUP.x+pr*.28, PUP.y+pr*.30, pr*.16, pr*.09, .8, 0, 6.2832); ctx.fillStyle='rgba(120,12,30,'+(.05+P.blood*.14)+')'; ctx.fill();
+  ctx.beginPath(); ctx.ellipse(PUP.x+pr*.28, PUP.y+pr*.30, pr*.16, pr*.09, .8, 0, 6.2832); ctx.fillStyle='rgba(120,12,30,'+(.04+PRESS.front*P.blood*.10)+')'; ctx.fill();
   ctx.beginPath(); ctx.ellipse(PUP.x,PUP.y,pr*PUP.pa,pr,PUPIL_ECC,0,6.2832); ctx.strokeStyle='rgba(0,0,0,.92)'; ctx.lineWidth=1.4*PX; ctx.stroke();
   ctx.restore();
 }
@@ -1139,6 +1145,9 @@ function drawIris(t, cx, cy, R, rest, ip){
   PUP.on=0;
   if(P.o < .01 || R < 2 || ip<=.001) return;
   var wd=P.dna, wb=P.blood, ws=P.skin, ph=P.photo, still=1-MP.dissolve;
+  /* BLOOD tint follows the pressure cycle, not the chapter: neutral before the
+     front, ruby while it travels, drained to warm graphite after it */
+  var bt=wb*clamp(PRESS.front*1.1 + PRESS.tension*(1-PRESS.drain)*.45, 0, 1);
   /* layer presence: stroma and fibres first, roots next, limbus and wet surface last */
   var ipS=clamp(ip*1.4,0,1), ipR=clamp(ip/.35,0,1), ipL=clamp((ip-.45)/.55,0,1), ipW=clamp((ip-.6)/.4,0,1);
   ctx.save(); ctx.globalAlpha = P.o;
@@ -1147,18 +1156,19 @@ function drawIris(t, cx, cy, R, rest, ip){
   if(closure>.002){ ctx.beginPath(); ctx.rect(cx-R*1.2, cy-R+closure*2*R*.70, R*2.4, 2*R-closure*2*R); ctx.clip(); }
   var breath=RM?0:Math.sin(t*.55)*.014*(rest+wb*.5)*MP.wetness, beat=RM?0:Math.pow(Math.sin(t*1.9)*.5+.5,3)*.035*wb*still;
   var aper=MP.aperture*(1-.04*HERO.u)*(1-.025*PRESS.front);
-  var pr=Math.max(.5, R*(.205 + P.pupil*.10 + breath + beat)*aper*Math.pow(clamp(ip,0,1),1.4));
+  var pupilScale=Math.pow(clamp(ip,0,1),2.8);   /* computed once; fibres, geometry and the final mask share it */
+  var pr=Math.max(.5, R*(.205 + P.pupil*.10 + breath + beat)*aper*pupilScale);
   var ecc=(wb*.045 + PRESS.front*.03)*R, ox=P.gx*R*.052+Math.cos(PUPIL_ECC)*ecc, oy=P.gy*R*.048+Math.sin(PUPIL_ECC)*ecc;
   var px=-P.gx*R*.013, py=-P.gy*R*.011, pa=MP.pupilAspect;
   PUP.on=1; PUP.x=cx+ox; PUP.y=cy+oy; PUP.r=pr; PUP.pa=pa; PUP.R=R; PUP.cx=cx; PUP.cy=cy;
 
   limbusPath(cx,cy,R); ctx.save(); ctx.clip();
   var g=ctx.createRadialGradient(cx+ox*1.4, cy+oy*1.4, pr*.4, cx+px, cy+py, R);
-  g.addColorStop(0,'rgba('+Math.round(10+wb*6)+',10,'+Math.round(14+ws*3)+','+ipS+')');
-  g.addColorStop(.52,'rgba('+Math.round(33+wb*10+ws*14)+','+Math.round(33-wb*4+ws*14)+','+Math.round(41-wb*4+ws*17)+','+ipS+')');
+  g.addColorStop(0,'rgba('+Math.round(10+bt*6)+',10,'+Math.round(14+ws*3)+','+ipS+')');
+  g.addColorStop(.52,'rgba('+Math.round(33+bt*10+ws*14)+','+Math.round(33-bt*4+ws*14)+','+Math.round(41-bt*4+ws*17)+','+ipS+')');
   g.addColorStop(1,'rgba(8,8,11,'+ipS+')'); ctx.fillStyle=g; ctx.fillRect(cx-R*1.1,cy-R*1.1,R*2.2,R*2.2);
-  if(wb>.01){ var sg2=ctx.createRadialGradient(cx+px,cy+py,pr*.55,cx+px,cy+py,R*.80);
-    sg2.addColorStop(0,'rgba(120,12,30,'+(wb*.14*ipS)+')'); sg2.addColorStop(.55,'rgba(90,10,24,'+(wb*.05*ipS)+')');
+  if(bt>.01){ var sg2=ctx.createRadialGradient(cx+px,cy+py,pr*.55,cx+px,cy+py,R*.80);
+    sg2.addColorStop(0,'rgba(120,12,30,'+(bt*.14*ipS)+')'); sg2.addColorStop(.55,'rgba(90,10,24,'+(bt*.05*ipS)+')');
     sg2.addColorStop(1,'rgba(74,7,16,0)'); ctx.fillStyle=sg2; ctx.fillRect(cx-R,cy-R,R*2,R*2); }
 
   /* SKIN carries the same four planes inside: wedges between the five boundary
@@ -1194,8 +1204,8 @@ function drawIris(t, cx, cy, R, rest, ip){
       ctx.moveTo(cx+ox+Math.cos(a1)*r0, cy+oy+Math.sin(a1)*r0);
       ctx.quadraticCurveTo(cx+px+Math.cos((a1+a2)*.5)*(r0+r1)*.5, cy+py+Math.sin((a1+a2)*.5)*(r0+r1)*.5, cx+px+Math.cos(a2)*r1, cy+py+Math.sin(a2)*r1); }
     var base=(d===0?.062:d===1?.105:.165)*(1+wd*.85)*(1-ws*.82);
-    var col= d===0 ? 'rgba('+Math.round(150+wb*16)+','+Math.round(150-wb*50)+','+Math.round(155-wb*46)+','+(base+wb*.04)+')'
-           : d===1 ? 'rgba('+Math.round(175+wb*6)+','+Math.round(175-wb*18)+','+Math.round(178-wb*18)+','+base+')'
+    var col= d===0 ? 'rgba('+Math.round(150+bt*16)+','+Math.round(150-bt*50)+','+Math.round(155-bt*46)+','+(base+wb*.04)+')'
+           : d===1 ? 'rgba('+Math.round(175+bt*6)+','+Math.round(175-bt*18)+','+Math.round(178-bt*18)+','+base+')'
            : 'rgba(242,242,239,'+base+')';
     ctx.strokeStyle=col; ctx.lineWidth=(wSum/Math.max(1,n))*PX; ctx.stroke(); }
   /* the dominant roots inside, continuous with outside; ruby only in the carrier */
@@ -1220,7 +1230,7 @@ function drawIris(t, cx, cy, R, rest, ip){
     ctx.ellipse(cx+px+Math.cos(cr.a)*R*cr.r, cy+py+Math.sin(cr.a)*R*cr.r, R*cr.s*1.7*(.7+cd*.3), R*cr.s*(.7+cd*.3), cr.rot, 0, 6.2832);
     ctx.fillStyle='rgba(4,4,6,'+(cr.o*cd*still*ipS)+')'; ctx.fill(); }
   ctx.lineWidth=(1.2+ws*1.6)*PX;
-  ctx.strokeStyle='rgba('+Math.round(242-wb*90)+','+Math.round(242-wb*200)+','+Math.round(239-wb*190)+','+((.055+wd*.06+wb*.12+ws*.04)*still*ipS)+')';
+  ctx.strokeStyle='rgba('+Math.round(242-bt*90)+','+Math.round(242-bt*200)+','+Math.round(239-bt*190)+','+((.055+wd*.06+wb*.12+ws*.04)*still*ipS)+')';
   ctx.beginPath(); var pen=false;
   for(var s=0;s<COLLAR.length;s++){ var c=COLLAR[s], sa=s/(COLLAR.length-1)*6.2832;
     var mul=c.bld*rest+c.dna*wd+(c.bld+(RM?0:Math.sin(t*2.2+sa*5))*.03)*wb+c.skn*ws, rr2=pr*1.30*mul, X=cx+ox+Math.cos(sa)*rr2*pa, Y=cy+oy+Math.sin(sa)*rr2;
@@ -1712,7 +1722,8 @@ function placeHit(){
 }
 
 /* ═══ THE SCHEDULER ══ one loop for the whole site ═══════════════════════ */
-var running=false, rafId=null, last=0, boosted=0, lastNav='';
+var running=false, rafId=null, last=0, boosted=0, lastNav='', lastWco='', lastRco='';
+function sstep(a,b,x){ var t=clamp((x-a)/(b-a),0,1); return t*t*(3-2*t); }
 var QA={};  /* diagnostic switches, only ever set from the #qa hook */
 var LAM = { pos:7, geo:5, anat:4.4, gaze:11, pupil:8, op:9 };   /* anat 4.4 → τ ≈ 230ms */
 
@@ -1780,6 +1791,12 @@ function frame(now){
     document.documentElement.style.setProperty('--shadeA', (1-P.photo*.85).toFixed(2));
     /* the SCARS headline withdraws as the photograph takes the frame (gone by .65) */
     document.documentElement.style.setProperty('--hx', (1-clamp((P.photo-.45)/.18,0,1)).toFixed(2)); }
+  /* ONE thought: outgoing WORK copy and incoming REVEAL copy are both functions of
+     iris presence (0 in WORK, 1 in REVEAL) — an anatomy-only interval sits between
+     .46 and .56; reversing the scroll runs the same functions backwards */
+  var wco=(1-sstep(.30,.46,P.ip)).toFixed(2), rco=sstep(.56,.72,P.ip).toFixed(2);
+  if(wco!==lastWco){ lastWco=wco; document.documentElement.style.setProperty('--wco', wco); }
+  if(rco!==lastRco){ lastRco=rco; document.documentElement.style.setProperty('--rco', rco); }
   if(QA.ft){ QA.ft[QA.fi++%QA.ft.length]=dt*1000; }
 
   var here = curName;
@@ -1804,7 +1821,8 @@ function staticFrame(){
   if(portalOpen){ portalT=1; applyPortalOverride(1); } else portalT=0;
   for(var i=0;i<KEYS.length;i++) P[KEYS[i]] = T[KEYS[i]];
   for(var m=0;m<MKEYS.length;m++) MP[MKEYS[m]] = MT[MKEYS[m]];
-  P.pp=T.pp; HERO.u=0; HERO.phase=0;
+  P.pp=T.pp; P.resid=T.resid; HERO.u=0; HERO.phase=0;
+  document.documentElement.style.setProperty('--wco',(1-sstep(.30,.46,P.ip)).toFixed(2)); document.documentElement.style.setProperty('--rco',sstep(.56,.72,P.ip).toFixed(2));
   P.lid=0; P.pupil=T.pupil; P.gx=-.1; P.gy=0;
   LIGHT.x=0; LIGHT.y=0;
   drawWorld(0,0); placeHit();
@@ -2094,7 +2112,7 @@ if(location.search.indexOf('smoke')>=0){ var sm=document.createElement('div'); s
 if(location.hash==='#qa'){
   QA.ft=new Float32Array(600); QA.wt=new Float32Array(600); QA.fi=0;
   window.__BB = { P:P, T:T, QA:QA, draw:function(t){ drawWorld(t||0,0); }, stop:stop, start:start,
-                  ENV:ENV, fib:FIB.length, PULSE:PULSE, PRESS:PRESS, RE:RE, ROOTS:ROOTS, ACTIVE:ACTIVE, ACTIVE_EXPECT:ACTIVE_EXPECT, LIMB:LIMB, CRYPT:CRYPT, PUP:PUP, FIB_N:FIB_N, BND:BND, skinBoundaryCount:5, skinPlaneCount:4, activeBoundaryIndex:2, MEM:{up:MEM_UP,dn:MEM_DN}, MP:MP, MT:MT, HERO:HERO, PT:PT, TOPO:function(){return TOPO;},
+                  ENV:ENV, fib:FIB.length, PULSE:PULSE, PRESS:PRESS, RE:RE, ROOTS:ROOTS, ACTIVE:ACTIVE, ACTIVE_EXPECT:ACTIVE_EXPECT, LIMB:LIMB, CRYPT:CRYPT, PUP:PUP, FIB_N:FIB_N, BND:BND, skinBoundaryCount:5, skinPlaneCount:4, activeBoundaryIndex:2, MEM:{up:MEM_UP,dn:MEM_DN}, TEAR:TEAR, pupilScaleExp:2.8, MP:MP, MT:MT, HERO:HERO, PT:PT, TOPO:function(){return TOPO;},
                   p95:function(w){ var a=[].slice.call((w?QA.wt:QA.ft)||[]).filter(function(v){return v>0;}).sort(function(p,q){return p-q;}); return a.length? a[Math.floor(a.length*.95)] : 0; },
                   dbg:function(){ return { curName:curName, ptrDwell:ptrDwell, ptrMoved:ptrMoved, ptr:!!ptr, portalT:portalT,
                     anchors:ANCH.map(function(a){ return a.name+'@'+Math.round(a.y); }) }; } };

@@ -1,57 +1,55 @@
-# Bad Blood 2026 — V4.2 LIVING MEMBRANE / SURGICAL SIGNATURE PASS
+# Bad Blood 2026 — V4.2.1 FINAL TEMPORAL CLEAN / TRUTH PASS
 
-Build id: `v4.2-living-membrane-2026-08-23` — identical in `<meta name="bb-build">`, `<html data-build>`,
-the console line `[BB] build …` and this README.
-Live draft: https://claude.ai/code/artifact/937579e7-614b-43f7-b108-cd6a816458a8
-`draft-2026.source.html` = the real file with embedded image assets stripped (`ASSET_*_REMOVED`).
-`proof-report.json` = machine-readable output of the Playwright run (coarse-pointer mobile + videos).
+Build id: `v4.2.1-temporal-clean-2026-08-23` — identical in `<meta name="bb-build">`, `<html data-build>`, the
+console line and this README. Live: https://claude.ai/code/artifact/937579e7-614b-43f7-b108-cd6a816458a8
+`draft-2026.source.html` = the real file with image assets stripped. `proof-report.json` = every number below,
+produced by one Playwright run (desktop 1512×805 fine pointer; 390×844 and 430×932 coarse pointer; two screencasts).
 
-## What changed
-1. **SKIN structural truth.** Lamellae no longer come from angle-selected roots. Five boundary curves are derived
-   from the ACTIVE cubic every frame (`BND[0..4]`, offsets `[-.52,-.24,0,+.25,+.55]` × seeded asymmetry, tapered
-   toward the tip); index 2 *is* the active curve; planes 0–1, 1–2, 2–3, 3–4 are always drawn — no conditional skip,
-   outside and inside the iris. QA: `skinBoundaryCount 5 · skinPlaneCount 4 · activeBoundaryIndex 2`;
-   measured boundary angles `[3.42, 3.64, 3.88, 4.11, 4.39]`, `BND[2].a === RE[ACTIVE].a`.
-2. **Living membrane.** The symmetric band is gone. Eight seeded samples (`MEM_UP/MEM_DN`) along the physical
-   line `[0,.335,1,.315]`, Catmull-Rom between them, asymmetric up/down, four nested `destination-out` fills for an
-   18–36 px feather (no blur). photo .25 → irregular 4–18 px slit; .50 → ~40% exposed, no straight frontier
-   (samples every ~14 vw); .70 → frame owned, stroke and edge gone.
-3. **Pupil seals.** Final opaque pass kept; radius = settled × ip^1.4, inside the iris too, so it contracts as the
-   stroma goes and rebuilds in exact reverse. Measured: ip .65 → 35% of settled (≤72%), ip .35 → 12% (≤35%),
-   centre pixel `[0,0,0,255]` at every non-zero presence sampled (desktop and both phones).
-4. **BLOOD cycle.** `heat = max(PRESS.front·.9, MP.scar·ws·.25)`; the scar is warm graphite, not redness.
-   Sampled on the carrier at the same scroll (4126): pp .5 → `rgb(151,31,49)` sat .795; pp 1 → `rgb(34,33,36)`
-   sat .083 — **90% less ruby saturation**.
-5. **Material inertia.** x/y/scale keep the catch-up boost; dna/blood/skin/photo/match/ip/pp/resid and all MORPH keys
-   use `LAM.anat = 4.4` with no boost (τ ≈ 230 ms, 6–8 frames at 30 fps).
-6. **Corneal residue.** `T.resid = sin(raw·π)` only between the WORK and REVEAL anchors; one curved reflection of
-   the sampled palette (`ENV.r/g/b`), max alpha .08, clipped inside the limbus, under the final pupil pass;
-   0 in the Portal (measured `resid 0` after open).
-7. **Behaviour / hot path.** Hero aborts in phase 1 and 2 on any scroll (measured phase 2 → 0, `c 0`, `u 0`, period
-   bone). Cached: `eyestate`, `eyeState`, `workStage.children`, first image, projected line (recomputed on resize
-   and on image load); gaze output object reused; filter/transform strings written only when they change.
+## Fixes
+1. **BLOOD composite drain.** One tint value `bt = blood · clamp(front·1.1 + tension·(1−drain)·.45)` now drives
+   every red layer: stroma base gradient, red stroma radial, fibre colours, collarette, pupil ember
+   (`.04 + front·blood·.10`); the carrier's ruby already followed `heat`. Rendered ROIs at the same scrollY 4125:
+   | ROI | pp 0 | pp .5 | pp 1 |
+   |---|---|---|---|
+   | external root (9 points on the cubic) | rgb(68,68,70) sat .105 | rgb(91,43,51) sat .788 | **rgb(67,65,67) sat .167** |
+   | stroma ring (16 points at .62R) | rgb(36,36,41) sat .216 | rgb(42,30,36) sat .361 | **rgb(35,35,41) sat .219** |
+   | inner clipped root (6 points) | rgb(40,40,44) sat .190 | rgb(55,25,32) sat .803 | **rgb(43,43,47) sat .184** |
+   pp 1 is back to the pp 0 neutral within a few percent in every ROI; pupil centre [0,0,0,255] in all three.
+2. **Tear onset.** The straight procedural stroke is removed entirely. The membrane envelope is two seeded
+   tears (`TEAR`: t .11 width .085 near where the active root meets the edge; t ≈ .48–.74 width ≈ .05–.08) with
+   a low-frequency vertical wander (18–40 px) from the first frame; the envelope opens to the whole edge only
+   with `spread = smoother((photo−.28)/.24)`. Measured at scrollY 9752: photo .15 opening x 0–148 px,
+   .25 x 0–264 px (**not both sides**), .35 reaches both sides, .50 and .70 unchanged from V4.2.
+   (`exposedFraction` in the report counts only fully cleared pixels, alpha < 40 — .23 at .50 — the feathered
+   area reads larger on screen.)
+3. **Typography from iris presence.** `--wco = 1 − smoothstep(.30,.46, ip)` on every `.scar-in` group (opacity +
+   −14 px translate as one block), `--rco = smoothstep(.56,.72, ip)` on `.reveal .hold`. ip is 0 in WORK and 1 in
+   REVEAL, so this is the mirror of the brief's formula with the same .46–.56 anatomy-only gap. Measured across a
+   41-sample WORK→REVEAL sweep: **max simultaneous opacity 0.000**; at ip .48 and .53 both are 0; reverse uses the
+   same functions (CSS vars written only on change; reduced motion sets them in `staticFrame`).
+4. **One pupilScale.** `pupilScale = pow(ip, 2.8)` computed once in `drawIris`; fibres, crypts, collarette and
+   `PUP.r` use it; `drawPupil` draws exactly `PUP.r`. Measured ratios to the settled REVEAL radius (114 px):
+   ip .66 → .225, ip .62 → .174, ip .53 → .097, ip .48 → .033, ip .35 and below → pupil absent (effective
+   presence 0 because photo is still > .65 there). Centre pixel [0,0,0,255] wherever the pupil exists;
+   the ip .40 still reads [0,0,0,187] — that is the ground/membrane with no pupil present, not a leak.
+5. **Truth.** Videos are **1512×804**, VP8, container 25 fps, 690 frames / 27.6 s and 590 frames / 23.6 s
+   (effective 25.0 fps) — measured by decoding with ffmpeg. `skinBoundaryCount/skinPlaneCount/activeBoundaryIndex`
+   are constants; the measured facts are the five ascending boundary angles `[3.420,3.641,3.878,4.113,4.385]` and
+   `BND[2].a === RE[ACTIVE].a`. `pp` deliberately uses `ka·1.4` (λ 6.2) so the pressure front keeps pace with
+   the short BLOOD chapter; every other anatomy key uses `ka = 4.4`. No hot-path refactor in this pass.
+   Hero phase-2 abort measured: phase 2 → 0, `c` 1 → 0, period back to rgb(242,242,239), u → .001 within 700 ms.
+   Corneal residue measured: 0 outside the interval, .96–1.0 through it, .71 at ip .9, 0 in the Portal.
 
-## Proof
-| # | File | Pixels | Evidence |
-|---|---|---|---|
-| 06 | SKIN | 1512×805 | planeCount 4, activeBoundaryIndex 2 |
-| 03/04/05 | BLOOD pp 0 / .5 / 1 | 1512×805 | same scrollY 4126; front 0/1/0; ruby saturation .795 → .083 |
-| 07/08/09 | WORK photo .25 / .50 / .70 | 1512×805 | **same scrollY 9753** (`QA.photo` override); pupil px [0,0,0,255] |
-| 10a/10b | WORK→REVEAL ip .65 / .35 | 1512×805 | pupil 35% / 12% of settled; residue on the stroma |
-| 01 | Hero after abort and return | 1512×805 | |
-| 14/15 | mobile pressure / reveal | **390×844 and 430×932 native, coarse pointer** (Playwright `has_touch`, `(pointer:coarse)` true) | ACTIVE 12, through 0, pupil px [0,0,0,255] in every chapter |
-| 16 | keyboard viewport | **390×450 native** | canvas CSS 390×450, backing 390×450 (dpr 1), input visible & focused; then close → scroll to DNA: raised off, overflow '', curName dna |
-| 20 | DNA→WORK forward + reverse | 1512×805 | WebM/VP8, **25.0 fps** (Playwright screencast rate — not 30), 27.7 s |
-| 21 | SCARS→REVEAL forward + reverse | 1512×805 | WebM/VP8, **25.0 fps**, 23.6 s |
+## Captures
+A. 03/04/05 BLOOD pp 0 / .5 / 1 — scrollY 4125 · B. 07 membrane photo .15 / .25 / .35 / .50 / .70 — scrollY 9752 ·
+C. 10a/10b/10c ip .40 / .51 / .90 (gap frame 10b: both copies 0) + 21-*.webm forward/reverse ·
+D. pupil ratios above, `pupilCentre` per sample in the report · E. 20-*.webm with frame count/timing ·
+06 SKIN · 14/15/16 mobile native coarse (ACTIVE 12, through 0, keyboard viewport 390×450, close → scroll to DNA).
 
-Perf (this machine): draw CPU p95 0.6 ms; frame interval p95 17.4 ms on a clean load and 17.5 ms inside the
-membrane chapter (60 Hz vsync + jitter).
+## Perf
+Chrome clean load, programmatic full-page scroll: draw CPU p95 0.6 ms, frame interval p95 18.6 ms (60 Hz).
+The headless Playwright number (50 ms) is inflated by its own `getImageData` readbacks and is not representative.
 
-## Still not done, stated plainly
-- **Real iOS Safari / Android Chrome testing has not been performed.** The coarse-pointer captures are Chromium
-  with touch emulation. The keyboard proof is the 450 px visual viewport, not a rendered OS keyboard.
-- The motion proof is 25 fps, not 30 — that is what Playwright's screencast produces; dimensions and durations
-  above are read from the container with ffmpeg.
-- Not called Final: the real-device "keyboard → close Portal → continue scroll" pass is still outstanding.
-  On a phone, open `…/draft-2026.html?smoke` — expected `ACTIVE 12 (expect 12)`, `limb0 0.9640`, `crypt0 4.810`,
-  `roots through pupil 0`, `errors 0`.
+## F — NOT PERFORMED
+Physical iOS Safari / Android Chrome smoke (portal open/close, keyboard open/close, continue/reframe, close returns
+to DNA, no horizontal overflow, ACTIVE visible) has not been run; only Chromium touch emulation. Not Final.
