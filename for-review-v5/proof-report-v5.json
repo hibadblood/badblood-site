@@ -1,0 +1,309 @@
+{
+ "desktop": {
+  "info": {
+   "build": "v5-experimental-signature-motion-2026-08-23",
+   "active": 12,
+   "coarse": false,
+   "rm": false,
+   "lobes": 3,
+   "ribbons": 8,
+   "filaments": 14,
+   "inner": [
+    1512,
+    805
+   ]
+  },
+  "fissionMid": {
+   "fis": 1,
+   "gapPx": 26.5,
+   "lobeOffsetsPx": [
+    8.1,
+    6.2,
+    -12.3,
+    1.2,
+    3.4,
+    -12.7
+   ],
+   "irisDiameterPx": 379,
+   "pupil": [
+    0,
+    0,
+    0,
+    255
+   ],
+   "through": []
+  },
+  "fissionSettle": {
+   "forward": [
+    [
+     1478.0584056171433,
+     698.3177373432659
+    ],
+    [
+     1247.7642762515532,
+     632.7166562544837
+    ],
+    [
+     1409.1699993826887,
+     495.4157704329334
+    ]
+   ],
+   "afterReverse": [
+    [
+     1478.0584067333425,
+     698.3177374108852
+    ],
+    [
+     1247.7642774396143,
+     632.7166563425735
+    ],
+    [
+     1409.170000520384,
+     495.4157705638671
+    ]
+   ],
+   "maxDeltaPx": 0.0,
+   "fis": 0
+  },
+  "reconstitution": {
+   "C1": {
+    "ip": 0.02,
+    "pupilR": 1,
+    "pupilOn": 0,
+    "centre": null,
+    "through": [],
+    "work": 1,
+    "reveal": 0
+   },
+   "C2": {
+    "ip": 0.38,
+    "pupilR": 1,
+    "pupilOn": 0,
+    "centre": null,
+    "through": [],
+    "work": 0.46,
+    "reveal": 0
+   },
+   "C3": {
+    "ip": 0.9,
+    "pupilR": 75,
+    "pupilOn": 1,
+    "centre": [
+     0,
+     0,
+     0,
+     255
+    ],
+    "through": [],
+    "work": 0,
+    "reveal": 1
+   },
+   "C4": {
+    "ip": 0.9,
+    "pupilR": 70,
+    "pupilOn": 1,
+    "centre": [
+     0,
+     0,
+     0,
+     255
+    ],
+    "through": [],
+    "work": 0,
+    "reveal": 1
+   },
+   "C5": {
+    "ip": 0.9,
+    "pupilR": 79,
+    "pupilOn": 1,
+    "centre": [
+     0,
+     0,
+     0,
+     255
+    ],
+    "through": [],
+    "work": 0,
+    "reveal": 1
+   },
+   "C6": {
+    "ip": 0.9,
+    "pupilR": 72,
+    "pupilOn": 1,
+    "centre": [
+     0,
+     0,
+     0,
+     255
+    ],
+    "through": [],
+    "work": 0,
+    "reveal": 1
+   },
+   "C7": {
+    "ip": 0.95,
+    "pupilR": 90,
+    "pupilOn": 1,
+    "centre": [
+     0,
+     0,
+     0,
+     255
+    ],
+    "through": [],
+    "work": 0,
+    "reveal": 1
+   }
+  },
+  "perf": {
+   "drawP95ms": 2.2,
+   "frameP95ms": 50
+  },
+  "errors": []
+ },
+ "A_video": {
+  "codec": "vp8",
+  "w": 1512,
+  "h": 804,
+  "container_fps": 25.0,
+  "duration_s": 19.24,
+  "decoded_frames": 481,
+  "effective_fps": 25.0,
+  "bytes": 2147545
+ },
+ "B_video": {
+  "codec": "vp8",
+  "w": 1512,
+  "h": 804,
+  "container_fps": 25.0,
+  "duration_s": 21.24,
+  "decoded_frames": 531,
+  "effective_fps": 25.0,
+  "bytes": 2454294
+ },
+ "C_video": {
+  "codec": "vp8",
+  "w": 1512,
+  "h": 804,
+  "container_fps": 25.0,
+  "duration_s": 21.36,
+  "decoded_frames": 534,
+  "effective_fps": 25.0,
+  "bytes": 2468438
+ },
+ "D_video": {
+  "codec": "vp8",
+  "w": 1512,
+  "h": 804,
+  "container_fps": 25.0,
+  "duration_s": 49.6,
+  "decoded_frames": 1240,
+  "effective_fps": 25.0,
+  "bytes": 5830263
+ },
+ "390x844": {
+  "info": {
+   "build": "v5-experimental-signature-motion-2026-08-23",
+   "active": 12,
+   "coarse": true,
+   "rm": false,
+   "lobes": 3,
+   "ribbons": 6,
+   "filaments": 9,
+   "inner": [
+    390,
+    844
+   ]
+  },
+  "fissionMid": {
+   "fis": 1,
+   "gapPx": 11.1,
+   "irisDiameterPx": 246,
+   "through": []
+  },
+  "perfusion": {
+   "pp": 0.5,
+   "through": [],
+   "px": [
+    0,
+    0,
+    0,
+    255
+   ]
+  },
+  "perf": {
+   "drawP95ms": 1,
+   "frameP95ms": 33.3
+  },
+  "errors": []
+ },
+ "430x932": {
+  "info": {
+   "build": "v5-experimental-signature-motion-2026-08-23",
+   "active": 12,
+   "coarse": true,
+   "rm": false,
+   "lobes": 3,
+   "ribbons": 6,
+   "filaments": 9,
+   "inner": [
+    430,
+    932
+   ]
+  },
+  "fissionMid": {
+   "fis": 1,
+   "gapPx": 12.2,
+   "irisDiameterPx": 271,
+   "through": []
+  },
+  "perfusion": {
+   "pp": 0.5,
+   "through": [],
+   "px": [
+    0,
+    0,
+    0,
+    255
+   ]
+  },
+  "perf": {
+   "drawP95ms": 1,
+   "frameP95ms": 33.4
+  },
+  "errors": []
+ },
+ "E_video": {
+  "codec": "vp8",
+  "w": 390,
+  "h": 844,
+  "container_fps": 25.0,
+  "duration_s": 37.32,
+  "decoded_frames": 933,
+  "effective_fps": 25.0,
+  "bytes": 4254135
+ },
+ "reducedMotion": {
+  "info": {
+   "build": "v5-experimental-signature-motion-2026-08-23",
+   "active": 12,
+   "coarse": false,
+   "rm": true,
+   "lobes": 3,
+   "ribbons": 8,
+   "filaments": 14,
+   "inner": [
+    1512,
+    805
+   ]
+  },
+  "fissionAtMidpoint": {
+   "fis": 0,
+   "gapPx": 0
+  },
+  "midWorkReveal": {
+   "ip": 0,
+   "pupilOn": 0
+  }
+ }
+}

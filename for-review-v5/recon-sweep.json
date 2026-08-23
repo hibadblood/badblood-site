@@ -1,0 +1,132 @@
+{
+ "frac0.08": {
+  "ip": 0,
+  "photo": 1,
+  "pupilR": 1,
+  "pupilOn": 0,
+  "centre": null,
+  "work": 1,
+  "reveal": 0,
+  "activeAlpha": 0
+ },
+ "frac0.22": {
+  "ip": 0.07,
+  "photo": 0.93,
+  "pupilR": 1,
+  "pupilOn": 0,
+  "centre": null,
+  "work": 1,
+  "reveal": 0,
+  "activeAlpha": 0
+ },
+ "frac0.34": {
+  "ip": 0.22,
+  "photo": 0.8,
+  "pupilR": 1,
+  "pupilOn": 0,
+  "centre": null,
+  "work": 1,
+  "reveal": 0,
+  "activeAlpha": 0
+ },
+ "frac0.44": {
+  "ip": 0.39,
+  "photo": 0.65,
+  "pupilR": 1,
+  "pupilOn": 0,
+  "centre": null,
+  "work": 0.42,
+  "reveal": 0,
+  "activeAlpha": 0
+ },
+ "frac0.5": {
+  "ip": 0.5,
+  "photo": 0.55,
+  "pupilR": 6,
+  "pupilOn": 1,
+  "centre": [
+   0,
+   0,
+   0,
+   255
+  ],
+  "work": 0,
+  "reveal": 0,
+  "activeAlpha": 0.11
+ },
+ "frac0.56": {
+  "ip": 0.61,
+  "photo": 0.45,
+  "pupilR": 19,
+  "pupilOn": 1,
+  "centre": [
+   0,
+   0,
+   0,
+   255
+  ],
+  "work": 0,
+  "reveal": 0.23,
+  "activeAlpha": 0.16
+ },
+ "frac0.62": {
+  "ip": 0.72,
+  "photo": 0.35,
+  "pupilR": 35,
+  "pupilOn": 1,
+  "centre": [
+   0,
+   0,
+   0,
+   255
+  ],
+  "work": 0,
+  "reveal": 1,
+  "activeAlpha": 0.16
+ },
+ "frac0.7": {
+  "ip": 0.84,
+  "photo": 0.25,
+  "pupilR": 56,
+  "pupilOn": 1,
+  "centre": [
+   0,
+   0,
+   0,
+   255
+  ],
+  "work": 0,
+  "reveal": 1,
+  "activeAlpha": 0.16
+ },
+ "frac0.8": {
+  "ip": 0.94,
+  "photo": 0.15,
+  "pupilR": 85,
+  "pupilOn": 1,
+  "centre": [
+   0,
+   0,
+   0,
+   255
+  ],
+  "work": 0,
+  "reveal": 1,
+  "activeAlpha": 0.16
+ },
+ "frac0.92": {
+  "ip": 1,
+  "photo": 0.1,
+  "pupilR": 116,
+  "pupilOn": 1,
+  "centre": [
+   0,
+   0,
+   0,
+   255
+  ],
+  "work": 0,
+  "reveal": 1,
+  "activeAlpha": 0.16
+ }
+}
