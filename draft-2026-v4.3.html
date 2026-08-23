@@ -1,5 +1,5 @@
 <meta charset="utf-8">
-<meta name="bb-build" content="v4.3-inner-light-2026-08-23">
+<meta name="bb-build" content="v4.3.1-chrome-2026-08-23">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Bad Blood Organism</title>
 <meta name="description" content="Bad Blood Company — a creative intelligence company. We build things that live.">
@@ -616,7 +616,7 @@ body.onwork .nav::before{background:linear-gradient(to bottom,rgba(5,5,6,.92),rg
 <script>
 (function(){
 "use strict";
-var BUILD="v4.3-inner-light-2026-08-23"; console.info("[BB] build", BUILD);
+var BUILD="v4.3.1-chrome-2026-08-23"; console.info("[BB] build", BUILD);
 if(location.search.indexOf('dbg')>=0){ window.__log=[]; ['scrollTo','scrollBy','scroll'].forEach(function(n){ var o=window[n]; window[n]=function(){ window.__log.push({fn:n,a:[].slice.call(arguments).map(function(x){return typeof x==='object'?JSON.stringify(x):x;}).join(','),st:(new Error().stack||'').split('\n').slice(1,4).join('|')}); return o.apply(window,arguments); }; });
   var oF=HTMLElement.prototype.focus; HTMLElement.prototype.focus=function(){ window.__log.push({fn:'focus',el:(this.id||this.className||this.tagName),st:(new Error().stack||'').split('\n').slice(1,3).join('|')}); return oF.apply(this,arguments); };
   var oS=Element.prototype.scrollIntoView; Element.prototype.scrollIntoView=function(){ window.__log.push({fn:'siv',el:(this.id||this.className)}); return oS.apply(this,arguments); };
@@ -763,6 +763,7 @@ var LIMB=[]; (function(){
     LIMB.push(r); }
 })();
 /* crypts in two uneven clusters, not sprinkled */
+var GRAIN=(function(){ var g=[], r=mulberry32(0x6A1A1); for(var i=0;i<720;i++){ var a=i/720*6.2832+(r()-.5)*.012, r0=.50+r()*.22; g.push({a:a, r0:r0, r1:Math.min(.965,r0+.18+r()*.22), b:(r()-.5)*.02}); } return g; })();
 var FURROW=(function(){ var f=[], r=mulberry32(0xF0770); for(var i=0;i<9;i++){ var a0=r()*6.2832, len=.5+r()*1.3; f.push({r:.66+(i%3)*.085+r()*.03, a0:a0, a1:a0+len}); } return f; })();
 var CRYPT=[]; (function(){
   var c1=RA()*6.2832, c2=c1+2.2+RA()*1.4;
@@ -1174,7 +1175,7 @@ function drawIris(t, cx, cy, R, rest, ip){
      the lit side lifts, the far side sinks, and the mid-zone between collarette
      and limbus carries the luminance a real iris has. Nothing glows; it is shaded. */
   var kl=ctx.createLinearGradient(cx-R*.9,cy-R*.9,cx+R*.9,cy+R*.9);
-  kl.addColorStop(0,'rgba(242,242,239,'+(.085*ipS)+')'); kl.addColorStop(.45,'rgba(242,242,239,0)'); kl.addColorStop(.62,'rgba(5,5,6,0)'); kl.addColorStop(1,'rgba(5,5,6,'+(.34*ipS)+')');
+  kl.addColorStop(0,'rgba(196,206,214,'+(.12*ipS)+')'); kl.addColorStop(.45,'rgba(196,206,214,0)'); kl.addColorStop(.60,'rgba(3,3,4,0)'); kl.addColorStop(1,'rgba(3,3,4,'+(.46*ipS)+')');
   ctx.fillStyle=kl; ctx.fillRect(cx-R*1.1,cy-R*1.1,R*2.2,R*2.2);
   var mz=ctx.createRadialGradient(cx+px,cy+py,pr*1.15,cx+px,cy+py,R);
   mz.addColorStop(0,'rgba(242,242,239,0)'); mz.addColorStop(.30,'rgba(242,242,239,'+(.075*ipS*(1-ws*.5))+')'); mz.addColorStop(.62,'rgba(242,242,239,'+(.035*ipS)+')'); mz.addColorStop(1,'rgba(242,242,239,0)');
@@ -1241,6 +1242,11 @@ function drawIris(t, cx, cy, R, rest, ip){
   for(var q=0;q<CRYPT.length;q++){ var cr=CRYPT[q]; ctx.beginPath();
     ctx.ellipse(cx+px+Math.cos(cr.a)*R*cr.r, cy+py+Math.sin(cr.a)*R*cr.r, R*cr.s*1.7*(.7+cd*.3), R*cr.s*(.7+cd*.3), cr.rot, 0, 6.2832);
     ctx.fillStyle='rgba(4,4,6,'+(cr.o*cd*still*ipS)+')'; ctx.fill(); }
+  /* fine grain: hair-thin radial threads in the ciliary zone, seeded once (GRAIN) */
+  if(still>.02 && !COARSE){ ctx.beginPath();
+    for(var gi=0;gi<GRAIN.length;gi++){ var G=GRAIN[gi], ga=G.a, g0=R*G.r0, g1=R*G.r1;
+      ctx.moveTo(cx+px+Math.cos(ga)*g0, cy+py+Math.sin(ga)*g0); ctx.lineTo(cx+px+Math.cos(ga+G.b)*g1, cy+py+Math.sin(ga+G.b)*g1); }
+    ctx.strokeStyle='rgba(242,242,239,'+(.055*still*ipS*(1-ws*.7))+')'; ctx.lineWidth=.6*PX; ctx.stroke(); }
   /* contraction furrows: three broken concentric arcs in the outer third,
      seeded once (FURROW), the anatomy a real iris folds along */
   if(still>.02){ ctx.lineWidth=1.2*PX; ctx.strokeStyle='rgba(4,4,6,'+(.13*still*ipS*(1-ws*.6))+')';
@@ -1251,6 +1257,8 @@ function drawIris(t, cx, cy, R, rest, ip){
   var cg=ctx.createRadialGradient(cx+ox,cy+oy,pr*1.18,cx+ox,cy+oy,pr*1.95);
   cg.addColorStop(0,'rgba(242,242,239,0)'); cg.addColorStop(.35,'rgba(242,242,239,'+(.11*ipS*still*(1-ws*.6))+')'); cg.addColorStop(1,'rgba(242,242,239,0)');
   ctx.fillStyle=cg; ctx.fillRect(cx-R,cy-R,R*2,R*2);
+  var far=ctx.createRadialGradient(PUP.x,PUP.y,pr*1.0,PUP.x,PUP.y,pr*1.5); far.addColorStop(0,'rgba(196,206,214,'+(.10*ipS*still)+')'); far.addColorStop(1,'rgba(196,206,214,0)');
+  ctx.save(); ctx.beginPath(); ctx.moveTo(PUP.x,PUP.y); ctx.arc(PUP.x,PUP.y,pr*1.6,.2,1.9); ctx.closePath(); ctx.clip(); ctx.fillStyle=far; ctx.fillRect(cx-R,cy-R,R*2,R*2); ctx.restore();   /* bounce at the rim, opposite the key */
   /* pupillary ruff: the one place the accent lives — a hair of blood at the pupil's rim */
   ctx.beginPath(); ctx.ellipse(PUP.x,PUP.y,pr*pa*1.035,pr*1.035,PUPIL_ECC,0,6.2832); ctx.strokeStyle='rgba(200,16,46,'+((.16+bt*.30)*ipS)+')'; ctx.lineWidth=1.6*PX; ctx.stroke();
   ctx.lineWidth=(1.2+ws*1.6)*PX;
@@ -1272,6 +1280,11 @@ function drawIris(t, cx, cy, R, rest, ip){
   var wet=ctx.createRadialGradient(lightX,lightY,R*.04,cx-R*.18,cy-R*.26,R*1.18); wet.addColorStop(0,'rgba(242,242,239,'+((.06+.14*wet0)*ipW+ws*.04*ipW)+')'); wet.addColorStop(.32,'rgba(242,242,239,'+(.035*wet0)+')'); wet.addColorStop(1,'rgba(242,242,239,0)');
   limbusPath(cx,cy,R); ctx.fillStyle=wet; ctx.fill();
   ctx.beginPath(); ctx.arc(cx,cy,R*.995,.5,2.05); ctx.strokeStyle='rgba(242,242,239,'+((.03+.035*wet0)*ipL)+')'; ctx.lineWidth=1.9*PX; ctx.stroke();
+  /* V4.3.1: the cornea is glass — one rim light along the lit edge, one bounce opposite */
+  var rim=ctx.createLinearGradient(cx-R,cy-R*.2,cx+R*.2,cy-R); rim.addColorStop(0,'rgba(242,242,239,0)'); rim.addColorStop(.5,'rgba(242,242,239,'+((.22+.16*wet0)*ipL)+')'); rim.addColorStop(1,'rgba(242,242,239,0)');
+  ctx.beginPath(); ctx.arc(cx,cy,R*.985,3.3,5.5); ctx.strokeStyle=rim; ctx.lineWidth=2.4*PX; ctx.stroke();
+  var bnc=ctx.createLinearGradient(cx+R*.3,cy+R,cx+R,cy); bnc.addColorStop(0,'rgba(196,206,214,0)'); bnc.addColorStop(.5,'rgba(196,206,214,'+(.09*ipL)+')'); bnc.addColorStop(1,'rgba(196,206,214,0)');
+  ctx.beginPath(); ctx.arc(cx,cy,R*.985,.35,1.75); ctx.strokeStyle=bnc; ctx.lineWidth=2.0*PX; ctx.stroke();
   if(ws>.02){ var bw2=ctx.createLinearGradient(cx-R,cy-R*.5,cx+R,cy+R*.2); bw2.addColorStop(0,'rgba(242,242,239,0)'); bw2.addColorStop(.5,'rgba(242,242,239,'+(ws*.07*ipL)+')'); bw2.addColorStop(1,'rgba(242,242,239,0)'); limbusPath(cx,cy,R); ctx.fillStyle=bw2; ctx.fill(); }
   /* corneal residue: one curved reflection of the work's palette on the outer
      stroma, inside the limbus, outside the pupil; scroll-driven, gone in the Portal */
@@ -1282,8 +1295,13 @@ function drawIris(t, cx, cy, R, rest, ip){
     ctx.beginPath(); ctx.arc(cx,cy,R*.98,2.6,5.4); ctx.arc(cx,cy,R*.52,5.4,2.6,true); ctx.closePath(); ctx.fillStyle=rg; ctx.fill(); ctx.restore(); }
   ctx.beginPath(); ctx.ellipse(cx+R*.30,cy+R*.34,R*.026*(.6+wet0*.4),R*.014*(.6+wet0*.4),-.7,0,6.2832); ctx.fillStyle='rgba(242,242,239,'+(.09*ipW*(1-ph))+')'; ctx.fill();   /* V4.3: second, softer reflection */
   var cl=1+ph*7, tint=clamp(ph*2.5,0,1);
-  ctx.beginPath(); ctx.ellipse(lightX,lightY,R*.052*cl*(.6+wet0*.4),R*.030*(1+ph*2.2)*(.6+wet0*.4),-.7,0,6.2832);
-  ctx.fillStyle='rgba('+Math.round(lerp(255,ENV.r+40,tint))+','+Math.round(lerp(255,ENV.g+40,tint))+','+Math.round(lerp(255,ENV.b+40,tint))+','+((.30+.22*wet0)*(1-ph*.45)*ipW)+')'; ctx.fill();
+  var sr=Math.round(lerp(255,ENV.r+40,tint)), sg=Math.round(lerp(255,ENV.g+40,tint)), sb=Math.round(lerp(255,ENV.b+40,tint)), sA=(1-ph*.45)*ipW*(.6+wet0*.4);
+  ctx.save(); ctx.translate(lightX,lightY); ctx.rotate(-.7); ctx.scale(1,.52);
+  var box=ctx.createRadialGradient(0,0,0,0,0,R*.19*cl); box.addColorStop(0,'rgba('+sr+','+sg+','+sb+','+(.16*sA)+')'); box.addColorStop(.55,'rgba('+sr+','+sg+','+sb+','+(.05*sA)+')'); box.addColorStop(1,'rgba('+sr+','+sg+','+sb+',0)');
+  ctx.beginPath(); ctx.arc(0,0,R*.19*cl,0,6.2832); ctx.fillStyle=box; ctx.fill();                       /* softbox */
+  var core=ctx.createRadialGradient(0,0,0,0,0,R*.062*cl); core.addColorStop(0,'rgba('+sr+','+sg+','+sb+','+(.96*sA)+')'); core.addColorStop(.45,'rgba('+sr+','+sg+','+sb+','+(.70*sA)+')'); core.addColorStop(1,'rgba('+sr+','+sg+','+sb+',0)');
+  ctx.beginPath(); ctx.arc(0,0,R*.062*cl,0,6.2832); ctx.fillStyle=core; ctx.fill();                     /* hot core */
+  ctx.restore();
   ctx.restore();
 }
 
