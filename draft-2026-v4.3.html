@@ -1,5 +1,5 @@
 <meta charset="utf-8">
-<meta name="bb-build" content="v4.5-awake-2026-08-23">
+<meta name="bb-build" content="v4.6-attention-2026-08-23">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Bad Blood Organism</title>
 <meta name="description" content="Bad Blood Company — a creative intelligence company. We build things that live.">
@@ -616,7 +616,7 @@ body.onwork .nav::before{background:linear-gradient(to bottom,rgba(5,5,6,.92),rg
 <script>
 (function(){
 "use strict";
-var BUILD="v4.5-awake-2026-08-23"; console.info("[BB] build", BUILD);
+var BUILD="v4.6-attention-2026-08-23"; console.info("[BB] build", BUILD);
 if(location.search.indexOf('dbg')>=0){ window.__log=[]; ['scrollTo','scrollBy','scroll'].forEach(function(n){ var o=window[n]; window[n]=function(){ window.__log.push({fn:n,a:[].slice.call(arguments).map(function(x){return typeof x==='object'?JSON.stringify(x):x;}).join(','),st:(new Error().stack||'').split('\n').slice(1,4).join('|')}); return o.apply(window,arguments); }; });
   var oF=HTMLElement.prototype.focus; HTMLElement.prototype.focus=function(){ window.__log.push({fn:'focus',el:(this.id||this.className||this.tagName),st:(new Error().stack||'').split('\n').slice(1,3).join('|')}); return oF.apply(this,arguments); };
   var oS=Element.prototype.scrollIntoView; Element.prototype.scrollIntoView=function(){ window.__log.push({fn:'siv',el:(this.id||this.className)}); return oS.apply(this,arguments); };
@@ -1126,7 +1126,8 @@ function drawWorld(t, dt){
 
   /* noise sits under the iris surface so the pupil is never textured */
   if(NOISE){ ctx.globalAlpha=.5*(1-ph*.5); ctx.fillStyle=NOISE; ctx.fillRect(0,0,CW,CH); ctx.globalAlpha=1; }
-  drawIris(t, ex, ey, R, rest, ip);
+  var brR = RM ? 1 : 1 + .006*Math.sin(t*.55) + .004*ATT.bored*Math.sin(t*.3);   /* V4.6: she breathes */
+  drawIris(t, ex, ey, R*brR, rest, ip);
   drawPupil(ip);
 }
 
@@ -1322,6 +1323,8 @@ var KEYL = { a:-2.30, ta:-2.30, near:0, tnear:0 };
 /* V4.5 AWAKE: on arrival the eye opens from a point over ~1.4s, her gaze comes
    from the side and settles on the reader; a slow roll, not a cut. */
 var ARR = { t0:-1, u:0, gx:-.95, gy:.45 };
+/* V4.6 ATTENTION: touch, noticing, boredom, breath */
+var ATT = { touch:0, tx:0, ty:0, notice:0, idle:0, bored:0, lastInput:0 };
 var ENV   = { r:200, g:200, b:200, a:0, ta:0, tr:200, tg:200, tb:200 };
 var envCv = document.createElement('canvas'); envCv.width=envCv.height=8;
 var envCtx = envCv.getContext('2d', { willReadFrequently:true });
@@ -1706,6 +1709,10 @@ function pickGaze(t, dt){
   if(!RM && !GZ.portal){ GLANCE.next-=dt;
     if(GLANCE.next<=0){ GLANCE.next=5+RND()*6; GLANCE.until=t+.5+RND()*.4; var side=RND()<.5?-1:1; GLANCE.x=side*(.55+RND()*.35); GLANCE.y=(RND()-.5)*.5; if(RND()<.4) blinkT=Math.min(blinkT,.35); }
     if(t<GLANCE.until){ var gw=smoother(clamp((GLANCE.until-t)/.25,0,1))*smoother(clamp((t-(GLANCE.until-.9))/.18,0,1)); tx=lerp(tx,GLANCE.x,gw*.85); ty=lerp(ty,GLANCE.y,gw*.85); } }
+  /* V4.6: a finger on the glass has her full attention; noticing pulls her to the reader; boredom lets her wander */
+  if(ATT.touch && !RM){ tx=lerp(tx,(ATT.tx-P.x*VW)/(VW*.5),.7); ty=lerp(ty,(ATT.ty-P.y*VH)/(VH*.5),.7); }
+  if(ATT.notice>0){ tx=lerp(tx,0,ATT.notice*.6); ty=lerp(ty,0,ATT.notice*.6); }
+  if(ATT.bored>0 && !RM){ tx+=(Math.sin(t*.23)*.55+Math.sin(t*.11+1)*.3)*ATT.bored; ty+=(Math.sin(t*.19+2)*.35)*ATT.bored; }
   /* arrival: from the side, to the reader */
   if(ARR.u<1 && !RM){ var aw=1-ARR.u; tx=lerp(tx,ARR.gx,aw); ty=lerp(ty,ARR.gy,aw); }
   /* the drift lives in every mode — hero, portal and chapters — so she is never a still image */
@@ -1746,7 +1753,7 @@ function tickBlink(t, dt){
   if(blinkPhase===1){ blink += dt/0.080; if(blink>=(blinkHalf?.45:1)){ blinkPhase=2; blinkT=.025; } }
   else if(blinkPhase===2){ blinkT-=dt; if(blinkT<=0) blinkPhase=3; }
   else if(blinkPhase===3){ blink -= dt/0.160; if(blink<=0){ blink=0; blinkPhase=0;
-    blinkT = 3.4 + RND()*3.6; } }
+    blinkT = (3.4 + RND()*3.6)*(1+ATT.bored*.8); } }
   return clamp(blink,0,1);
 }
 var blinkHalf=false;
@@ -1840,7 +1847,7 @@ function frame(now){
   var gl = (t < saccadeUntil) ? 26 : LAM.gaze;
   P.gx = approach(P.gx, g.x, gl, dt);
   P.gy = approach(P.gy, g.y, gl, dt);
-  P.pupil = approach(P.pupil, T.pupil - KEYL.near*.09, LAM.pupil, dt);   /* a near hand: she constricts a little */
+  P.pupil = approach(P.pupil, T.pupil - KEYL.near*.09 + ATT.notice*.10 + ATT.touch*.14, LAM.pupil, dt);   /* a near hand: she constricts a little */
   P.lid = approach(P.lid, Math.max(T.lid, tickBlink(t,dt)), 24, dt);
 
   /* the room light drifts slower than she does, so the catchlight is a
@@ -1850,6 +1857,11 @@ function frame(now){
   KEYL.a  = approach(KEYL.a, KEYL.ta, 1.6, dt);
   var nearT=0; if(ptr && PUP.on && !RM){ var dn=Math.hypot(ptr.x-PUP.cx/PX, ptr.y-PUP.cy/PX)/(PUP.R/PX); nearT=clamp(1-(dn-.6)/1.6,0,1); }
   KEYL.tnear=nearT; KEYL.near=approach(KEYL.near, KEYL.tnear, 3.0, dt);
+  /* noticing: the moment the visitor stops scrolling she looks up at them and the pupil opens a touch */
+  if(Math.abs(scrollVel)>60) ATT.lastInput=t;
+  var stoppedFor=t-stillSince; ATT.notice = approach(ATT.notice, (stoppedFor>.25 && stoppedFor<1.6 && Math.abs(scrollVel)<40 && stillSince>2)?1:0, 5, dt);
+  /* boredom: no input for 18s → she wanders; any input snaps her back */
+  ATT.idle=t-Math.max(ATT.lastInput, stillSince); ATT.bored=approach(ATT.bored, RM?0:clamp((ATT.idle-18)/12,0,1), .8, dt);
   LIGHT.tx = P.gx*.5; LIGHT.ty = P.gy*.5;
   LIGHT.x = approach(LIGHT.x, LIGHT.tx, 2.2, dt);
   LIGHT.y = approach(LIGHT.y, LIGHT.ty, 2.2, dt);
@@ -1956,6 +1968,11 @@ if('ResizeObserver' in window){
 addEventListener('scroll', function(){ if(RM) staticFrame(); }, {passive:true});
 
 /* ═══ POINTER ════════════════════════════════════════════════════════════ */
+/* V4.6: touch is read on every device — a finger on the glass has her attention */
+addEventListener('pointerdown', function(e){ ATT.touch=1; ATT.tx=e.clientX; ATT.ty=e.clientY; ATT.lastInput=performance.now()/1000; }, {passive:true});
+addEventListener('pointermove', function(e){ if(ATT.touch){ ATT.tx=e.clientX; ATT.ty=e.clientY; } ATT.lastInput=performance.now()/1000; }, {passive:true});
+addEventListener('pointerup', function(){ ATT.touch=0; }, {passive:true}); addEventListener('pointercancel', function(){ ATT.touch=0; }, {passive:true});
+/* ═══ POINTER ════════════════════════════════════════════════════════════ */
 if(!COARSE && !RM){
   var cur=$('cur');
   addEventListener('pointermove', function(e){
@@ -1965,6 +1982,7 @@ if(!COARSE && !RM){
     cur.style.transform='translate('+e.clientX+'px,'+e.clientY+'px)';
   }, {passive:true});
   addEventListener('pointerleave', function(){ ptr=null; cur.classList.remove('on'); });
+
   document.addEventListener('pointerover', function(e){
     var onIris = e.target===hit;
     var el=!onIris && e.target.closest && e.target.closest('a,button.act,.seed,.row,.scar,input');
