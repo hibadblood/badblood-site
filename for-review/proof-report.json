@@ -1,0 +1,246 @@
+{
+ "390x844": {
+  "info": {
+   "build": "v4.2-living-membrane-2026-08-23",
+   "active": 12,
+   "expect": 12,
+   "coarse": true,
+   "fib": 340,
+   "limb0": 0.964,
+   "crypt0": 4.81,
+   "planes": 4,
+   "bnd": 5,
+   "abi": 2
+  },
+  "pressure": {
+   "pp": 0.5,
+   "through": [],
+   "px": [
+    0,
+    0,
+    0,
+    255
+   ],
+   "inner": [
+    390,
+    844
+   ]
+  },
+  "reveal": {
+   "through": [],
+   "px": [
+    0,
+    0,
+    0,
+    255
+   ]
+  },
+  "chapters": {
+   "arrival": {
+    "through": [],
+    "px": [
+     0,
+     0,
+     0,
+     255
+    ]
+   },
+   "dna": {
+    "through": [],
+    "px": [
+     0,
+     0,
+     0,
+     255
+    ]
+   },
+   "pressure": {
+    "through": [],
+    "px": [
+     0,
+     0,
+     0,
+     255
+    ]
+   },
+   "blood": {
+    "through": [],
+    "px": [
+     0,
+     0,
+     0,
+     255
+    ]
+   },
+   "skin": {
+    "through": [],
+    "px": [
+     0,
+     0,
+     0,
+     255
+    ]
+   },
+   "reveal": {
+    "through": [],
+    "px": [
+     0,
+     0,
+     0,
+     255
+    ]
+   },
+   "final": {
+    "through": [],
+    "px": [
+     0,
+     0,
+     0,
+     255
+    ]
+   }
+  },
+  "errors": [],
+  "keyboard": {
+   "inner": [
+    390,
+    450
+   ],
+   "canvasCss": [
+    390,
+    450
+   ],
+   "backing": [
+    390,
+    450
+   ],
+   "inputVisible": true,
+   "focused": "pIn"
+  },
+  "closeThenScroll": {
+   "raised": false,
+   "overflow": "",
+   "cur": "dna",
+   "errors": 0
+  }
+ },
+ "430x932": {
+  "info": {
+   "build": "v4.2-living-membrane-2026-08-23",
+   "active": 12,
+   "expect": 12,
+   "coarse": true,
+   "fib": 340,
+   "limb0": 0.964,
+   "crypt0": 4.81,
+   "planes": 4,
+   "bnd": 5,
+   "abi": 2
+  },
+  "pressure": {
+   "pp": 0.5,
+   "through": [],
+   "px": [
+    0,
+    0,
+    0,
+    255
+   ],
+   "inner": [
+    430,
+    932
+   ]
+  },
+  "reveal": {
+   "through": [],
+   "px": [
+    0,
+    0,
+    0,
+    255
+   ]
+  },
+  "chapters": {
+   "arrival": {
+    "through": [],
+    "px": [
+     0,
+     0,
+     0,
+     255
+    ]
+   },
+   "dna": {
+    "through": [],
+    "px": [
+     0,
+     0,
+     0,
+     255
+    ]
+   },
+   "pressure": {
+    "through": [],
+    "px": [
+     0,
+     0,
+     0,
+     255
+    ]
+   },
+   "blood": {
+    "through": [],
+    "px": [
+     0,
+     0,
+     0,
+     255
+    ]
+   },
+   "skin": {
+    "through": [],
+    "px": [
+     0,
+     0,
+     0,
+     255
+    ]
+   },
+   "reveal": {
+    "through": [],
+    "px": [
+     0,
+     0,
+     0,
+     255
+    ]
+   },
+   "final": {
+    "through": [],
+    "px": [
+     0,
+     0,
+     0,
+     255
+    ]
+   }
+  },
+  "errors": []
+ },
+ "video1": {
+  "w": 1512,
+  "h": 805,
+  "fps": 25.0,
+  "duration_s": 27.52,
+  "codec": "vp8",
+  "bytes": 3260756
+ },
+ "video2": {
+  "w": 1512,
+  "h": 805,
+  "fps": 25.0,
+  "duration_s": 23.56,
+  "codec": "vp8",
+  "bytes": 2663057
+ }
+}
