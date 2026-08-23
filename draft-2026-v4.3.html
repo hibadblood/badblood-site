@@ -754,6 +754,9 @@ var MSTATE={boot:'base',arrival:'base',question:'base',anatomy:'base',dna:'dna',
   media:'media',matter:'matter',skin:'skin',culture:'culture',scarsIntro:'scarsIntro',expose:'expose',work:'work',
   reveal:'reveal',originals:'base',company:'base',final:'base',footer:'base'};
 function morphOf(name){ return MORPH[MSTATE[name]||'base']; }
+/* STILL: ?still=1 holds one anatomy through every chapter — the eye keeps its
+   place, light, pressure and presence, but never changes shape */
+var STILL=/[?&]still=1/.test(location.search), HOLDK=['aperture','pupilAspect','limbusAspect','curl','bundle','cryptDepth','wetness'];
 var MP={}, MT={}; (function(){ for(var i=0;i<MKEYS.length;i++){ MP[MKEYS[i]]=MORPH.base[MKEYS[i]]; MT[MKEYS[i]]=MORPH.base[MKEYS[i]]; } })();
 var LIMB=[]; (function(){
   var h=[ [2,RA()*6.28,.020+RA()*.014],[3,RA()*6.28,.014+RA()*.012],
@@ -1151,7 +1154,7 @@ function drawIris(t, cx, cy, R, rest, ip){
   var wd=P.dna, wb=P.blood, ws=P.skin, ph=P.photo, still=1-MP.dissolve;
   /* BLOOD tint follows the pressure cycle, not the chapter: neutral before the
      front, ruby while it travels, drained to warm graphite after it */
-  var bt=wb*clamp(PRESS.front*1.1 + PRESS.tension*(1-PRESS.drain)*.45, 0, 1);
+  var bt=(STILL?1:wb)*clamp(PRESS.front*1.1 + PRESS.tension*(1-PRESS.drain)*.45, 0, 1);
   /* layer presence: stroma and fibres first, roots next, limbus and wet surface last */
   var ipS=clamp(ip*1.4,0,1), ipR=clamp(ip/.35,0,1), ipL=clamp((ip-.45)/.55,0,1), ipW=clamp((ip-.6)/.4,0,1);
   ctx.save(); ctx.globalAlpha = P.o;
@@ -1593,6 +1596,7 @@ function readScroll(){
   for(var k=0;k<KEYS.length;k++){ var key=KEYS[k]; T[key] = lerp(sa[key], sb[key], t); }
   var ma=morphOf(A.name), mb=morphOf(B.name);
   for(var k2=0;k2<MKEYS.length;k2++){ var mk2=MKEYS[k2]; MT[mk2] = lerp(ma[mk2], mb[mk2], t); }
+  if(STILL){ T.dna=0; T.blood=0; T.skin=0; for(var hk=0;hk<HOLDK.length;hk++) MT[HOLDK[hk]]=MORPH.base[HOLDK[hk]]; }
   /* BLOOD pressure progress: 0 before the chapter, 1 after it, linear inside */
   T.pp = (A.name==='pressure'&&B.name==='blood') ? raw*.5 : (A.name==='blood') ? .5+raw*.5 : (i>=PP_AFTER ? 1 : 0);
   T.resid = (A.name==='work'&&B.name==='reveal') ? Math.sin(raw*3.1416) : 0;
