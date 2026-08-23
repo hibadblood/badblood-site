@@ -1,5 +1,5 @@
 <meta charset="utf-8">
-<meta name="bb-build" content="v4.6-attention-2026-08-23">
+<meta name="bb-build" content="v4.7-presence-2026-08-24">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Bad Blood Organism</title>
 <meta name="description" content="Bad Blood Company — a creative intelligence company. We build things that live.">
@@ -616,7 +616,7 @@ body.onwork .nav::before{background:linear-gradient(to bottom,rgba(5,5,6,.92),rg
 <script>
 (function(){
 "use strict";
-var BUILD="v4.6-attention-2026-08-23"; console.info("[BB] build", BUILD);
+var BUILD="v4.7-presence-2026-08-24"; console.info("[BB] build", BUILD);
 if(location.search.indexOf('dbg')>=0){ window.__log=[]; ['scrollTo','scrollBy','scroll'].forEach(function(n){ var o=window[n]; window[n]=function(){ window.__log.push({fn:n,a:[].slice.call(arguments).map(function(x){return typeof x==='object'?JSON.stringify(x):x;}).join(','),st:(new Error().stack||'').split('\n').slice(1,4).join('|')}); return o.apply(window,arguments); }; });
   var oF=HTMLElement.prototype.focus; HTMLElement.prototype.focus=function(){ window.__log.push({fn:'focus',el:(this.id||this.className||this.tagName),st:(new Error().stack||'').split('\n').slice(1,3).join('|')}); return oF.apply(this,arguments); };
   var oS=Element.prototype.scrollIntoView; Element.prototype.scrollIntoView=function(){ window.__log.push({fn:'siv',el:(this.id||this.className)}); return oS.apply(this,arguments); };
@@ -1322,9 +1322,11 @@ var LIGHT = { x:0, y:0, tx:0, ty:0 };
 var KEYL = { a:-2.30, ta:-2.30, near:0, tnear:0 };
 /* V4.5 AWAKE: on arrival the eye opens from a point over ~1.4s, her gaze comes
    from the side and settles on the reader; a slow roll, not a cut. */
-var ARR = { t0:-1, u:0, gx:-.95, gy:.45 };
+var ARR = { t0:-1, u:0, gx:-.95, gy:.45, ok:false };
+if(document.fonts && document.fonts.ready){ document.fonts.ready.then(function(){ ARR.ok=true; }); setTimeout(function(){ ARR.ok=true; },1200); } else ARR.ok=true;
 /* V4.6 ATTENTION: touch, noticing, boredom, breath */
 var ATT = { touch:0, tx:0, ty:0, notice:0, idle:0, bored:0, lastInput:0 };
+var SLEEP = { u:0 };
 var ENV   = { r:200, g:200, b:200, a:0, ta:0, tr:200, tg:200, tb:200 };
 var envCv = document.createElement('canvas'); envCv.width=envCv.height=8;
 var envCtx = envCv.getContext('2d', { willReadFrequently:true });
@@ -1685,7 +1687,9 @@ var ptr=null, ptrDwell=0, ptrMoved=0, lastScrollT=0, scrollVel=0, lastY=0, refoc
 
 function pickGaze(t, dt){
   var tx=0, ty=0;
-  if(GZ.portal){ tx=(GZ.px-P.x*VW)/(VW*.5); ty=(GZ.py-P.y*VH)/(VH*.5); }
+  if(GZ.portal){ tx=(GZ.px-P.x*VW)/(VW*.5); ty=(GZ.py-P.y*VH)/(VH*.5);
+    if(portalMode==='think' && !RM){ tx=lerp(tx,.34,.75); ty=lerp(ty,-.62,.75); tx+=Math.sin(t*1.3)*.05; }      /* V4.7: she thinks with her eyes up */
+    else if(portalMode==='answer'){ tx*=.25; ty*=.25; } }
   else if(HERO.phase>=1){ tx=(HERO.x-P.x*VW)/(VW*.5); ty=(HERO.y-P.y*VH)/(VH*.5); }
   else {
     /* the headline of the chapter attention is already inside (it leads the geometry) */
@@ -1810,7 +1814,7 @@ function frame(now){
   rafId = requestAnimationFrame(frame);
   var dt = Math.min(.05, (now-last)/1000 || .016); last=now;
   var t = now/1000;
-  if(ARR.t0<0) ARR.t0=t; ARR.u = RM ? 1 : smoother(clamp((t-ARR.t0-.15)/1.4,0,1));
+  if(ARR.t0<0 && ARR.ok) ARR.t0=t; ARR.u = RM ? 1 : (ARR.t0<0 ? 0 : smoother(clamp((t-ARR.t0-.15)/1.4,0,1)));
 
   /* scroll velocity, and a catch-up boost when the visitor jumps a long way */
   var y=scrollY; scrollVel = (y-lastY)/Math.max(dt,.001); lastY=y;
@@ -1842,13 +1846,16 @@ function frame(now){
   P.pp    = approach(P.pp,    T.pp,    ka*1.4, dt);
   for(var mi=0;mi<MKEYS.length;mi++){ var mkk=MKEYS[mi]; MP[mkk]=approach(MP[mkk], MT[mkk], ka, dt); }
   heroTick(t, dt);
+  if(ATT.touch && SND.ctx && SND.on && t>SND.beatAt){ SND.beatAt=t+.92; sndPulse(); }
 
   var g = pickGaze(t, dt);
   var gl = (t < saccadeUntil) ? 26 : LAM.gaze;
   P.gx = approach(P.gx, g.x, gl, dt);
   P.gy = approach(P.gy, g.y, gl, dt);
   P.pupil = approach(P.pupil, T.pupil - KEYL.near*.09 + ATT.notice*.10 + ATT.touch*.14, LAM.pupil, dt);   /* a near hand: she constricts a little */
-  P.lid = approach(P.lid, Math.max(T.lid, tickBlink(t,dt)), 24, dt);
+  var spL=scrollY/Math.max(1,(document.documentElement.scrollHeight||1)-VH);
+  SLEEP.u = approach(SLEEP.u, ((curName==='footer'||spL>.986) && !portalOpen) ? 1 : 0, .55, dt);   /* V4.7: at the end of the page she goes to sleep */
+  P.lid = approach(P.lid, Math.max(T.lid, tickBlink(t,dt), smoother(SLEEP.u)*.88), SLEEP.u>.03?3.2:24, dt);
 
   /* the room light drifts slower than she does, so the catchlight is a
      reflection of the world rather than paint on the iris */
@@ -1968,8 +1975,46 @@ if('ResizeObserver' in window){
 addEventListener('scroll', function(){ if(RM) staticFrame(); }, {passive:true});
 
 /* ═══ POINTER ════════════════════════════════════════════════════════════ */
+/* ═══ SOUND ══ a presence, not a soundtrack: a slow breath under everything and
+   a soft double pulse under a touch. Synthesized (no files), starts only after
+   the first gesture (browser rule), quiet, one obvious switch to kill it. */
+var SND = { ctx:null, on:true, master:null, breathGain:null, started:false, beatAt:0 };
+function sndStart(){
+  if(SND.started || !SND.on) return;
+  try{
+    var C = new (window.AudioContext||window.webkitAudioContext)();
+    SND.ctx=C; SND.started=true;
+    if(C.state==='suspended') C.resume();
+    SND.master=C.createGain(); SND.master.gain.value=0; SND.master.connect(C.destination);
+    SND.master.gain.linearRampToValueAtTime(.045, C.currentTime+2.5);
+    var len=2*C.sampleRate, buf=C.createBuffer(1,len,C.sampleRate), d=buf.getChannelData(0);
+    for(var i=0;i<len;i++) d[i]=Math.random()*2-1;
+    var src=C.createBufferSource(); src.buffer=buf; src.loop=true;
+    var lp=C.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=380; lp.Q.value=.4;
+    SND.breathGain=C.createGain(); SND.breathGain.gain.value=.10;
+    var lfo=C.createOscillator(), lfoG=C.createGain(); lfo.frequency.value=.088; lfoG.gain.value=.07;
+    lfo.connect(lfoG); lfoG.connect(SND.breathGain.gain); lfo.start();
+    src.connect(lp); lp.connect(SND.breathGain); SND.breathGain.connect(SND.master); src.start();
+  }catch(e){ SND.on=false; }
+}
+function sndPulse(){
+  if(!SND.ctx || !SND.on) return; var C=SND.ctx, t0=C.currentTime;
+  [0,.14].forEach(function(off,k){
+    var o=C.createOscillator(), g=C.createGain(); o.type='sine'; o.frequency.value=k?44:52;
+    g.gain.setValueAtTime(0,t0+off); g.gain.linearRampToValueAtTime(k?.5:.8,t0+off+.012); g.gain.exponentialRampToValueAtTime(.001,t0+off+.30);
+    o.connect(g); g.connect(SND.master); o.start(t0+off); o.stop(t0+off+.34); });
+}
+(function(){
+  var b=document.createElement('button'); b.type='button'; b.id='sndT'; b.textContent='SOUND / ON';
+  b.style.cssText='position:fixed;left:24px;bottom:20px;z-index:60;background:none;border:0;color:#5C5C61;font:500 10px/1 "Space Grotesk",sans-serif;letter-spacing:.22em;cursor:pointer;padding:8px 0;';
+  b.setAttribute('aria-pressed','true');
+  b.addEventListener('click',function(){ SND.on=!SND.on; b.textContent=SND.on?'SOUND / ON':'SOUND / OFF'; b.setAttribute('aria-pressed',String(SND.on));
+    if(SND.on){ sndStart(); if(SND.master) SND.master.gain.linearRampToValueAtTime(.045, SND.ctx.currentTime+.6); }
+    else if(SND.master){ SND.master.gain.linearRampToValueAtTime(0, SND.ctx.currentTime+.4); } });
+  document.body.appendChild(b);
+})();
 /* V4.6: touch is read on every device — a finger on the glass has her attention */
-addEventListener('pointerdown', function(e){ ATT.touch=1; ATT.tx=e.clientX; ATT.ty=e.clientY; ATT.lastInput=performance.now()/1000; }, {passive:true});
+addEventListener('pointerdown', function(e){ ATT.touch=1; ATT.tx=e.clientX; ATT.ty=e.clientY; ATT.lastInput=performance.now()/1000; sndStart(); }, {passive:true});
 addEventListener('pointermove', function(e){ if(ATT.touch){ ATT.tx=e.clientX; ATT.ty=e.clientY; } ATT.lastInput=performance.now()/1000; }, {passive:true});
 addEventListener('pointerup', function(){ ATT.touch=0; }, {passive:true}); addEventListener('pointercancel', function(){ ATT.touch=0; }, {passive:true});
 /* ═══ POINTER ════════════════════════════════════════════════════════════ */
