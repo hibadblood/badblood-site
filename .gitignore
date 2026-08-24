@@ -11,3 +11,4 @@
 # Video masters — too large for git. The compressed assets/hero.mp4 is committed instead.
 assets/*.m4v
 assets/*.mov
+*.zip
