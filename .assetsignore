@@ -1,0 +1,5 @@
+v6.2-delivery/
+*.zip
+*.py
+.github/
+node_modules/
