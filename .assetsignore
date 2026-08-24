@@ -7,3 +7,5 @@ assets/*.m4v
 for-review/
 for-review-v5/
 for-review-v6/
+.git/
+.git
