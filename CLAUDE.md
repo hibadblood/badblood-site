@@ -1,5 +1,14 @@
 # CLAUDE.md — BAD BLOOD COMPANY 🩸
 
+> **2026-08-24 — HOMEPAGE REPLACED.** `index.html` is now the 2026 organism
+> (V4.8 LIVE VOICE — the living eye + talking public IRIS portal, backed by the
+> separate `badblood-site-iris` worker). The owner ordered this launch
+> ("เอาขึ้นเว็บหลักเลย"). The previous reel homepage is preserved at git tag
+> `pre-2026-home`; sections 5 and 8 below describe THAT page and stay only as
+> its archive notes. Stable eye-only build without the live portal: tag
+> `v4.2.1-stable`.
+
+
 Read this before touching anything in this repo. These are locked decisions,
 not suggestions. When a request conflicts with something marked **LOCKED**,
 say so and ask before proceeding.
