@@ -1,5 +1,5 @@
 <meta charset="utf-8">
-<meta name="bb-build" content="v4.2.1-temporal-clean-2026-08-23">
+<meta name="bb-build" content="v4.8-live-voice-2026-08-24">
 <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
 <title>Bad Blood Organism</title>
 <meta name="description" content="Bad Blood Company — a creative intelligence company. We build things that live.">
@@ -616,7 +616,7 @@ body.onwork .nav::before{background:linear-gradient(to bottom,rgba(5,5,6,.92),rg
 <script>
 (function(){
 "use strict";
-var BUILD="v4.2.1-temporal-clean-2026-08-23"; console.info("[BB] build", BUILD);
+var BUILD="v4.8-live-voice-2026-08-24"; console.info("[BB] build", BUILD);
 if(location.search.indexOf('dbg')>=0){ window.__log=[]; ['scrollTo','scrollBy','scroll'].forEach(function(n){ var o=window[n]; window[n]=function(){ window.__log.push({fn:n,a:[].slice.call(arguments).map(function(x){return typeof x==='object'?JSON.stringify(x):x;}).join(','),st:(new Error().stack||'').split('\n').slice(1,4).join('|')}); return o.apply(window,arguments); }; });
   var oF=HTMLElement.prototype.focus; HTMLElement.prototype.focus=function(){ window.__log.push({fn:'focus',el:(this.id||this.className||this.tagName),st:(new Error().stack||'').split('\n').slice(1,3).join('|')}); return oF.apply(this,arguments); };
   var oS=Element.prototype.scrollIntoView; Element.prototype.scrollIntoView=function(){ window.__log.push({fn:'siv',el:(this.id||this.className)}); return oS.apply(this,arguments); };
@@ -711,7 +711,7 @@ var ROOTS=[]; (function(){
     for(var c=0;c<3;c++){ var d=Math.abs(((a-centres[c]+9.42)%6.2832)-3.14); if(d<best) best=d; }
     ROOTS.push({ fi:fi, reach:1.45+RR()*1.0, tension:.6+RR()*.8, ph:RR()*6.2832,
       w:1.0+RR()*1.2, score: best + RR()*.55, taper:.35+RR()*.5,
-      gapAt:.30+RR()*.40, gapLen: RR()<.55 ? .05+RR()*.12 : 0,
+      gapAt:.30+RR()*.40, gapLen: 0,   /* V4.4: a vein is continuous or it is not there */
       depth: i%3, nodeK:-1, dom:false, lam:false });
   }
   var order=ROOTS.map(function(r,i){return i;}).sort(function(p,q){return ROOTS[p].score-ROOTS[q].score;});
@@ -754,6 +754,9 @@ var MSTATE={boot:'base',arrival:'base',question:'base',anatomy:'base',dna:'dna',
   media:'media',matter:'matter',skin:'skin',culture:'culture',scarsIntro:'scarsIntro',expose:'expose',work:'work',
   reveal:'reveal',originals:'base',company:'base',final:'base',footer:'base'};
 function morphOf(name){ return MORPH[MSTATE[name]||'base']; }
+/* STILL: ?still=1 holds one anatomy through every chapter — the eye keeps its
+   place, light, pressure and presence, but never changes shape */
+var STILL=!/[?&]morph=1/.test(location.search), HOLDK=['aperture','pupilAspect','limbusAspect','curl','bundle','cryptDepth','wetness'];
 var MP={}, MT={}; (function(){ for(var i=0;i<MKEYS.length;i++){ MP[MKEYS[i]]=MORPH.base[MKEYS[i]]; MT[MKEYS[i]]=MORPH.base[MKEYS[i]]; } })();
 var LIMB=[]; (function(){
   var h=[ [2,RA()*6.28,.020+RA()*.014],[3,RA()*6.28,.014+RA()*.012],
@@ -763,6 +766,8 @@ var LIMB=[]; (function(){
     LIMB.push(r); }
 })();
 /* crypts in two uneven clusters, not sprinkled */
+var GRAIN=(function(){ var g=[], r=mulberry32(0x6A1A1); for(var i=0;i<720;i++){ var a=i/720*6.2832+(r()-.5)*.012, r0=.50+r()*.22; g.push({a:a, r0:r0, r1:Math.min(.965,r0+.18+r()*.22), b:(r()-.5)*.02}); } return g; })();
+var FURROW=(function(){ var f=[], r=mulberry32(0xF0770); for(var i=0;i<9;i++){ var a0=r()*6.2832, len=.5+r()*1.3; f.push({r:.66+(i%3)*.085+r()*.03, a0:a0, a1:a0+len}); } return f; })();
 var CRYPT=[]; (function(){
   var c1=RA()*6.2832, c2=c1+2.2+RA()*1.4;
   for(var c=0;c<12;c++){ var cl = c<7?c1:c2;
@@ -1046,7 +1051,7 @@ function drawWorld(t, dt){
     var depthA = ro.depth===0?1:ro.depth===1?.62:.38;
     var gone = isAct ? (1-clamp((ph-.5)/.15,0,1)) : (1-clamp(ph/.45,0,1));
     e.alpha = lead*depthA*gone*(1-MP.dissolve*(isAct?.0:.9));
-    if(!isAct) e.alpha *= quiet*Math.max(.2,rebuild);
+    if(!isAct) e.alpha *= quiet*Math.max(.2,rebuild)*(VW<820?0:.55);   /* V4.4: a phone shows one thread; desktop keeps the others faint */
     else e.alpha *= clamp(ip/.35,0,1)*(ph>.5?1:1);          /* returns second in REVEAL */
     if(isAct){ if(heroOn) e.alpha=Math.max(e.alpha, (HERO.phase===2?.13:.30)*HERO.u); if(HERO.phase===2 && !portalOpen) e.alpha=Math.max(e.alpha,.13);
       if(portalE>0) e.alpha=lerp(e.alpha, portalMode==='think'?.34:.22, portalE); }
@@ -1121,7 +1126,8 @@ function drawWorld(t, dt){
 
   /* noise sits under the iris surface so the pupil is never textured */
   if(NOISE){ ctx.globalAlpha=.5*(1-ph*.5); ctx.fillStyle=NOISE; ctx.fillRect(0,0,CW,CH); ctx.globalAlpha=1; }
-  drawIris(t, ex, ey, R, rest, ip);
+  var brR = RM ? 1 : 1 + .006*Math.sin(t*.55) + .004*ATT.bored*Math.sin(t*.3);   /* V4.6: she breathes */
+  drawIris(t, ex, ey, R*brR, rest, ip);
   drawPupil(ip);
 }
 
@@ -1135,6 +1141,8 @@ function drawPupil(ip){
   var closure=clamp(P.lid,0,1);
   if(closure>.002){ ctx.beginPath(); ctx.rect(cx-R*1.2, cy-R+closure*2*R*.70, R*2.4, 2*R-closure*2*R); ctx.clip(); }
   var pr=PUP.r;                               /* exactly the stored geometry, scaled once in drawIris */
+  var sh=ctx.createRadialGradient(PUP.x,PUP.y,pr*.9,PUP.x,PUP.y,pr*1.6); sh.addColorStop(0,'rgba(4,4,6,.30)'); sh.addColorStop(1,'rgba(4,4,6,0)');
+  ctx.beginPath(); ctx.ellipse(PUP.x,PUP.y,pr*PUP.pa*1.6,pr*1.6,PUPIL_ECC,0,6.2832); ctx.fillStyle=sh; ctx.fill();   /* V4.3: the pupil sinks into the stroma */
   ctx.beginPath(); ctx.ellipse(PUP.x,PUP.y,pr*PUP.pa,pr,PUPIL_ECC,0,6.2832); ctx.fillStyle='#000'; ctx.fill();
   ctx.beginPath(); ctx.ellipse(PUP.x+pr*.28, PUP.y+pr*.30, pr*.16, pr*.09, .8, 0, 6.2832); ctx.fillStyle='rgba(120,12,30,'+(.04+PRESS.front*P.blood*.10)+')'; ctx.fill();
   ctx.beginPath(); ctx.ellipse(PUP.x,PUP.y,pr*PUP.pa,pr,PUPIL_ECC,0,6.2832); ctx.strokeStyle='rgba(0,0,0,.92)'; ctx.lineWidth=1.4*PX; ctx.stroke();
@@ -1147,15 +1155,17 @@ function drawIris(t, cx, cy, R, rest, ip){
   var wd=P.dna, wb=P.blood, ws=P.skin, ph=P.photo, still=1-MP.dissolve;
   /* BLOOD tint follows the pressure cycle, not the chapter: neutral before the
      front, ruby while it travels, drained to warm graphite after it */
-  var bt=wb*clamp(PRESS.front*1.1 + PRESS.tension*(1-PRESS.drain)*.45, 0, 1);
+  var bt=(STILL?1:wb)*clamp(PRESS.front*1.1 + PRESS.tension*(1-PRESS.drain)*.45, 0, 1);
   /* layer presence: stroma and fibres first, roots next, limbus and wet surface last */
   var ipS=clamp(ip*1.4,0,1), ipR=clamp(ip/.35,0,1), ipL=clamp((ip-.45)/.55,0,1), ipW=clamp((ip-.6)/.4,0,1);
   ctx.save(); ctx.globalAlpha = P.o;
   if(Math.abs(MP.limbusAspect-1)>.001){ ctx.translate(cx,cy); ctx.scale(MP.limbusAspect,1); ctx.translate(-cx,-cy); }
   var closure=clamp(P.lid,0,1);
   if(closure>.002){ ctx.beginPath(); ctx.rect(cx-R*1.2, cy-R+closure*2*R*.70, R*2.4, 2*R-closure*2*R); ctx.clip(); }
-  var breath=RM?0:Math.sin(t*.55)*.014*(rest+wb*.5)*MP.wetness, beat=RM?0:Math.pow(Math.sin(t*1.9)*.5+.5,3)*.035*wb*still;
+  var hippus=RM?0:(Math.sin(t*.9)*.5+Math.sin(t*1.7+1)*.5)*.011;   /* V4.4: the pupil is never still */
+  var breath=(RM?0:Math.sin(t*.55)*.014*(rest+wb*.5)*MP.wetness)+hippus, beat=RM?0:Math.pow(Math.sin(t*1.9)*.5+.5,3)*.035*wb*still;
   var aper=MP.aperture*(1-.04*HERO.u)*(1-.025*PRESS.front);
+  if(ARR.u<1) ip*=ARR.u;                         /* V4.5: arrival gates presence */
   var pupilScale=Math.pow(clamp(ip,0,1),2.8);   /* computed once; fibres, geometry and the final mask share it */
   var pr=Math.max(.5, R*(.205 + P.pupil*.10 + breath + beat)*aper*pupilScale);
   var ecc=(wb*.045 + PRESS.front*.03)*R, ox=P.gx*R*.052+Math.cos(PUPIL_ECC)*ecc, oy=P.gy*R*.048+Math.sin(PUPIL_ECC)*ecc;
@@ -1165,8 +1175,18 @@ function drawIris(t, cx, cy, R, rest, ip){
   limbusPath(cx,cy,R); ctx.save(); ctx.clip();
   var g=ctx.createRadialGradient(cx+ox*1.4, cy+oy*1.4, pr*.4, cx+px, cy+py, R);
   g.addColorStop(0,'rgba('+Math.round(10+bt*6)+',10,'+Math.round(14+ws*3)+','+ipS+')');
-  g.addColorStop(.52,'rgba('+Math.round(33+bt*10+ws*14)+','+Math.round(33-bt*4+ws*14)+','+Math.round(41-bt*4+ws*17)+','+ipS+')');
+  g.addColorStop(.52,'rgba('+Math.round(42+bt*10+ws*14)+','+Math.round(43-bt*4+ws*14)+','+Math.round(51-bt*4+ws*17)+','+ipS+')');
   g.addColorStop(1,'rgba(8,8,11,'+ipS+')'); ctx.fillStyle=g; ctx.fillRect(cx-R*1.1,cy-R*1.1,R*2.2,R*2.2);
+  /* V4.3 INNER LIGHT — one key light from the upper left crosses the stroma:
+     the lit side lifts, the far side sinks, and the mid-zone between collarette
+     and limbus carries the luminance a real iris has. Nothing glows; it is shaded. */
+  var kca=Math.cos(KEYL.a), ksa=Math.sin(KEYL.a);
+  var kl=ctx.createLinearGradient(cx+kca*R*1.27,cy+ksa*R*1.27,cx-kca*R*1.27,cy-ksa*R*1.27);
+  kl.addColorStop(0,'rgba(196,206,214,'+(.12*ipS)+')'); kl.addColorStop(.45,'rgba(196,206,214,0)'); kl.addColorStop(.60,'rgba(3,3,4,0)'); kl.addColorStop(1,'rgba(3,3,4,'+(.46*ipS)+')');
+  ctx.fillStyle=kl; ctx.fillRect(cx-R*1.1,cy-R*1.1,R*2.2,R*2.2);
+  var mz=ctx.createRadialGradient(cx+px,cy+py,pr*1.15,cx+px,cy+py,R);
+  mz.addColorStop(0,'rgba(242,242,239,0)'); mz.addColorStop(.30,'rgba(242,242,239,'+(.105*ipS*(1-ws*.5))+')'); mz.addColorStop(.62,'rgba(242,242,239,'+(.05*ipS)+')'); mz.addColorStop(1,'rgba(242,242,239,0)');
+  ctx.fillStyle=mz; ctx.fillRect(cx-R*1.1,cy-R*1.1,R*2.2,R*2.2);
   if(bt>.01){ var sg2=ctx.createRadialGradient(cx+px,cy+py,pr*.55,cx+px,cy+py,R*.80);
     sg2.addColorStop(0,'rgba(120,12,30,'+(bt*.14*ipS)+')'); sg2.addColorStop(.55,'rgba(90,10,24,'+(bt*.05*ipS)+')');
     sg2.addColorStop(1,'rgba(74,7,16,0)'); ctx.fillStyle=sg2; ctx.fillRect(cx-R,cy-R,R*2,R*2); }
@@ -1203,7 +1223,7 @@ function drawIris(t, cx, cy, R, rest, ip){
       wSum+=FS_W[i]; n++;
       ctx.moveTo(cx+ox+Math.cos(a1)*r0, cy+oy+Math.sin(a1)*r0);
       ctx.quadraticCurveTo(cx+px+Math.cos((a1+a2)*.5)*(r0+r1)*.5, cy+py+Math.sin((a1+a2)*.5)*(r0+r1)*.5, cx+px+Math.cos(a2)*r1, cy+py+Math.sin(a2)*r1); }
-    var base=(d===0?.062:d===1?.105:.165)*(1+wd*.85)*(1-ws*.82);
+    var base=(d===0?.085:d===1?.145:.225)*(1+wd*.85)*(1-ws*.82);
     var col= d===0 ? 'rgba('+Math.round(150+bt*16)+','+Math.round(150-bt*50)+','+Math.round(155-bt*46)+','+(base+wb*.04)+')'
            : d===1 ? 'rgba('+Math.round(175+bt*6)+','+Math.round(175-bt*18)+','+Math.round(178-bt*18)+','+base+')'
            : 'rgba(242,242,239,'+base+')';
@@ -1229,6 +1249,25 @@ function drawIris(t, cx, cy, R, rest, ip){
   for(var q=0;q<CRYPT.length;q++){ var cr=CRYPT[q]; ctx.beginPath();
     ctx.ellipse(cx+px+Math.cos(cr.a)*R*cr.r, cy+py+Math.sin(cr.a)*R*cr.r, R*cr.s*1.7*(.7+cd*.3), R*cr.s*(.7+cd*.3), cr.rot, 0, 6.2832);
     ctx.fillStyle='rgba(4,4,6,'+(cr.o*cd*still*ipS)+')'; ctx.fill(); }
+  /* fine grain: hair-thin radial threads in the ciliary zone, seeded once (GRAIN) */
+  if(still>.02 && !COARSE){ ctx.beginPath();
+    for(var gi=0;gi<GRAIN.length;gi++){ var G=GRAIN[gi], ga=G.a, g0=R*G.r0, g1=R*G.r1;
+      ctx.moveTo(cx+px+Math.cos(ga)*g0, cy+py+Math.sin(ga)*g0); ctx.lineTo(cx+px+Math.cos(ga+G.b)*g1, cy+py+Math.sin(ga+G.b)*g1); }
+    ctx.strokeStyle='rgba(242,242,239,'+(.055*still*ipS*(1-ws*.7))+')'; ctx.lineWidth=.6*PX; ctx.stroke(); }
+  /* contraction furrows: three broken concentric arcs in the outer third,
+     seeded once (FURROW), the anatomy a real iris folds along */
+  if(still>.02){ ctx.lineWidth=1.2*PX; ctx.strokeStyle='rgba(4,4,6,'+(.13*still*ipS*(1-ws*.6))+')';
+    for(var fu=0;fu<FURROW.length;fu++){ var F=FURROW[fu]; ctx.beginPath();
+      for(var k=0;k<=24;k++){ var fa=F.a0+(F.a1-F.a0)*k/24, fr=R*(F.r+Math.sin(fa*3.1+F.a0*7)*.012+Math.sin(fa*7.3)*.006)*(1-Math.pow(Math.abs(k/24-.5)*2,6)*.03);
+        var X=cx+px*.5+Math.cos(fa)*fr, Y=cy+py*.5+Math.sin(fa)*fr; k?ctx.lineTo(X,Y):ctx.moveTo(X,Y); } ctx.stroke(); } }
+  /* collarette light: the ridge between pupillary zone and ciliary zone catches the key light */
+  var cg=ctx.createRadialGradient(cx+ox,cy+oy,pr*1.18,cx+ox,cy+oy,pr*1.95);
+  cg.addColorStop(0,'rgba(242,242,239,0)'); cg.addColorStop(.35,'rgba(242,242,239,'+(.11*ipS*still*(1-ws*.6))+')'); cg.addColorStop(1,'rgba(242,242,239,0)');
+  ctx.fillStyle=cg; ctx.fillRect(cx-R,cy-R,R*2,R*2);
+  var far=ctx.createRadialGradient(PUP.x,PUP.y,pr*1.0,PUP.x,PUP.y,pr*1.5); far.addColorStop(0,'rgba(196,206,214,'+(.10*ipS*still)+')'); far.addColorStop(1,'rgba(196,206,214,0)');
+  ctx.save(); ctx.beginPath(); ctx.moveTo(PUP.x,PUP.y); ctx.arc(PUP.x,PUP.y,pr*1.6,KEYL.a+3.1416-.85,KEYL.a+3.1416+.85); ctx.closePath(); ctx.clip(); ctx.fillStyle=far; ctx.fillRect(cx-R,cy-R,R*2,R*2); ctx.restore();   /* bounce at the rim, opposite the key */
+  /* pupillary ruff: the one place the accent lives — a hair of blood at the pupil's rim */
+  ctx.beginPath(); ctx.ellipse(PUP.x,PUP.y,pr*pa*1.035,pr*1.035,PUPIL_ECC,0,6.2832); ctx.strokeStyle='rgba(200,16,46,'+((.16+bt*.30)*ipS)+')'; ctx.lineWidth=1.6*PX; ctx.stroke();
   ctx.lineWidth=(1.2+ws*1.6)*PX;
   ctx.strokeStyle='rgba('+Math.round(242-bt*90)+','+Math.round(242-bt*200)+','+Math.round(239-bt*190)+','+((.055+wd*.06+wb*.12+ws*.04)*still*ipS)+')';
   ctx.beginPath(); var pen=false;
@@ -1238,16 +1277,22 @@ function drawIris(t, cx, cy, R, rest, ip){
   ctx.stroke();
   ctx.restore();
   /* limbus and surface: the last layers to settle */
-  var lg2=ctx.createRadialGradient(cx,cy,R*.50,cx,cy,R*1.06); lg2.addColorStop(0,'rgba(5,5,6,0)'); lg2.addColorStop(.40,'rgba(5,5,6,'+(.22*ipL)+')'); lg2.addColorStop(.74,'rgba(5,5,6,'+(.74*ipL)+')'); lg2.addColorStop(1,'rgba(5,5,6,'+ipL+')');
+  var lg2=ctx.createRadialGradient(cx,cy,R*.50,cx,cy,R*1.06); lg2.addColorStop(0,'rgba(5,5,6,0)'); lg2.addColorStop(.40,'rgba(5,5,6,'+(.12*ipL)+')'); lg2.addColorStop(.74,'rgba(5,5,6,'+(.56*ipL)+')'); lg2.addColorStop(1,'rgba(5,5,6,'+ipL+')');
   limbusPath(cx,cy,R,1.06); ctx.fillStyle=lg2; ctx.fill();
   var oc=ctx.createLinearGradient(0,cy-R,0,cy-R*.45); oc.addColorStop(0,'rgba(5,5,6,'+(.55*ipL)+')'); oc.addColorStop(1,'rgba(5,5,6,0)'); limbusPath(cx,cy,R); ctx.fillStyle=oc; ctx.fill();
-  var wet0=MP.wetness*ipW, lightX=cx-R*(.34+LIGHT.x*.10), lightY=cy-R*(.40+LIGHT.y*.10), envA=(ENV.a*.10+ph*.12)*ipW;
+  var wet0=MP.wetness*ipW, lightX=cx+Math.cos(KEYL.a)*R*.525+LIGHT.x*R*.10, lightY=cy+Math.sin(KEYL.a)*R*.525+LIGHT.y*R*.10, envA=(ENV.a*.10+ph*.12)*ipW;
   if(envA>.003){ var eg2=ctx.createRadialGradient(cx+ox*2, cy-R*.25+oy*2, R*.05, cx, cy, R*.95);
     eg2.addColorStop(0,'rgba('+ENV.r+','+ENV.g+','+ENV.b+','+envA+')'); eg2.addColorStop(.6,'rgba('+ENV.r+','+ENV.g+','+ENV.b+','+(envA*.3)+')'); eg2.addColorStop(1,'rgba('+ENV.r+','+ENV.g+','+ENV.b+',0)');
     limbusPath(cx,cy,R,.96); ctx.fillStyle=eg2; ctx.fill(); }
-  var wet=ctx.createRadialGradient(lightX,lightY,R*.04,cx-R*.18,cy-R*.26,R*1.18); wet.addColorStop(0,'rgba(242,242,239,'+((.06+.14*wet0)*ipW+ws*.04*ipW)+')'); wet.addColorStop(.32,'rgba(242,242,239,'+(.035*wet0)+')'); wet.addColorStop(1,'rgba(242,242,239,0)');
+  var wet=ctx.createRadialGradient(lightX,lightY,R*.04,cx+Math.cos(KEYL.a)*R*.32,cy+Math.sin(KEYL.a)*R*.32,R*1.18); wet.addColorStop(0,'rgba(242,242,239,'+((.10+.16*wet0)*ipW+ws*.04*ipW)+')'); wet.addColorStop(.32,'rgba(242,242,239,'+(.055*wet0)+')'); wet.addColorStop(1,'rgba(242,242,239,0)');
   limbusPath(cx,cy,R); ctx.fillStyle=wet; ctx.fill();
   ctx.beginPath(); ctx.arc(cx,cy,R*.995,.5,2.05); ctx.strokeStyle='rgba(242,242,239,'+((.03+.035*wet0)*ipL)+')'; ctx.lineWidth=1.9*PX; ctx.stroke();
+  /* V4.3.1: the cornea is glass — one rim light along the lit edge, one bounce opposite */
+  var ka2=KEYL.a, kc2=Math.cos(ka2), ks2=Math.sin(ka2);
+  var rim=ctx.createLinearGradient(cx+Math.cos(ka2-1.1)*R,cy+Math.sin(ka2-1.1)*R,cx+Math.cos(ka2+1.1)*R,cy+Math.sin(ka2+1.1)*R); rim.addColorStop(0,'rgba(242,242,239,0)'); rim.addColorStop(.5,'rgba(242,242,239,'+((.22+.16*wet0)*ipL)+')'); rim.addColorStop(1,'rgba(242,242,239,0)');
+  ctx.beginPath(); ctx.arc(cx,cy,R*.985,ka2-1.1,ka2+1.1); ctx.strokeStyle=rim; ctx.lineWidth=2.4*PX; ctx.stroke();
+  var bnc=ctx.createLinearGradient(cx+Math.cos(ka2+3.1416-.7)*R,cy+Math.sin(ka2+3.1416-.7)*R,cx+Math.cos(ka2+3.1416+.7)*R,cy+Math.sin(ka2+3.1416+.7)*R); bnc.addColorStop(0,'rgba(196,206,214,0)'); bnc.addColorStop(.5,'rgba(196,206,214,'+(.09*ipL)+')'); bnc.addColorStop(1,'rgba(196,206,214,0)');
+  ctx.beginPath(); ctx.arc(cx,cy,R*.985,ka2+3.1416-.7,ka2+3.1416+.7); ctx.strokeStyle=bnc; ctx.lineWidth=2.0*PX; ctx.stroke();
   if(ws>.02){ var bw2=ctx.createLinearGradient(cx-R,cy-R*.5,cx+R,cy+R*.2); bw2.addColorStop(0,'rgba(242,242,239,0)'); bw2.addColorStop(.5,'rgba(242,242,239,'+(ws*.07*ipL)+')'); bw2.addColorStop(1,'rgba(242,242,239,0)'); limbusPath(cx,cy,R); ctx.fillStyle=bw2; ctx.fill(); }
   /* corneal residue: one curved reflection of the work's palette on the outer
      stroma, inside the limbus, outside the pupil; scroll-driven, gone in the Portal */
@@ -1256,9 +1301,15 @@ function drawIris(t, cx, cy, R, rest, ip){
     var rg=ctx.createRadialGradient(cx-R*.1,cy-R*.12,R*.55,cx-R*.1,cy-R*.12,R*.97);
     rg.addColorStop(0,'rgba('+ENV.r+','+ENV.g+','+ENV.b+',0)'); rg.addColorStop(.55,'rgba('+ENV.r+','+ENV.g+','+ENV.b+','+ra2+')'); rg.addColorStop(1,'rgba('+ENV.r+','+ENV.g+','+ENV.b+',0)');
     ctx.beginPath(); ctx.arc(cx,cy,R*.98,2.6,5.4); ctx.arc(cx,cy,R*.52,5.4,2.6,true); ctx.closePath(); ctx.fillStyle=rg; ctx.fill(); ctx.restore(); }
+  ctx.beginPath(); ctx.ellipse(cx+R*.30,cy+R*.34,R*.026*(.6+wet0*.4),R*.014*(.6+wet0*.4),-.7,0,6.2832); ctx.fillStyle='rgba(242,242,239,'+(.09*ipW*(1-ph))+')'; ctx.fill();   /* V4.3: second, softer reflection */
   var cl=1+ph*7, tint=clamp(ph*2.5,0,1);
-  ctx.beginPath(); ctx.ellipse(lightX,lightY,R*.052*cl*(.6+wet0*.4),R*.030*(1+ph*2.2)*(.6+wet0*.4),-.7,0,6.2832);
-  ctx.fillStyle='rgba('+Math.round(lerp(255,ENV.r+40,tint))+','+Math.round(lerp(255,ENV.g+40,tint))+','+Math.round(lerp(255,ENV.b+40,tint))+','+((.30+.22*wet0)*(1-ph*.45)*ipW)+')'; ctx.fill();
+  var sr=Math.round(lerp(255,ENV.r+40,tint)), sg=Math.round(lerp(255,ENV.g+40,tint)), sb=Math.round(lerp(255,ENV.b+40,tint)), sA=(1-ph*.45)*ipW*(.6+wet0*.4);
+  ctx.save(); ctx.translate(lightX,lightY); ctx.rotate(KEYL.a+1.5708); ctx.scale(1,.52);
+  var box=ctx.createRadialGradient(0,0,0,0,0,R*.19*cl); box.addColorStop(0,'rgba('+sr+','+sg+','+sb+','+(.16*sA)+')'); box.addColorStop(.55,'rgba('+sr+','+sg+','+sb+','+(.05*sA)+')'); box.addColorStop(1,'rgba('+sr+','+sg+','+sb+',0)');
+  ctx.beginPath(); ctx.arc(0,0,R*.19*cl,0,6.2832); ctx.fillStyle=box; ctx.fill();                       /* softbox */
+  var core=ctx.createRadialGradient(0,0,0,0,0,R*.062*cl); core.addColorStop(0,'rgba('+sr+','+sg+','+sb+','+(.96*sA)+')'); core.addColorStop(.45,'rgba('+sr+','+sg+','+sb+','+(.70*sA)+')'); core.addColorStop(1,'rgba('+sr+','+sg+','+sb+',0)');
+  ctx.beginPath(); ctx.arc(0,0,R*.062*cl,0,6.2832); ctx.fillStyle=core; ctx.fill();                     /* hot core */
+  ctx.restore();
   ctx.restore();
 }
 
@@ -1266,6 +1317,16 @@ function drawIris(t, cx, cy, R, rest, ip){
    in front of her: its average colour and how strongly it is present. Never
    the picture itself. */
 var LIGHT = { x:0, y:0, tx:0, ty:0 };
+/* V4.3.2 LIVING LIGHT: the key light walks across the eye with the page, and
+   the pupil answers a hand that comes near. Both are eased, never stepped. */
+var KEYL = { a:-2.30, ta:-2.30, near:0, tnear:0 };
+/* V4.5 AWAKE: on arrival the eye opens from a point over ~1.4s, her gaze comes
+   from the side and settles on the reader; a slow roll, not a cut. */
+var ARR = { t0:-1, u:0, gx:-.95, gy:.45, ok:false };
+if(document.fonts && document.fonts.ready){ document.fonts.ready.then(function(){ ARR.ok=true; }); setTimeout(function(){ ARR.ok=true; },1200); } else ARR.ok=true;
+/* V4.6 ATTENTION: touch, noticing, boredom, breath */
+var ATT = { touch:0, tx:0, ty:0, notice:0, idle:0, bored:0, lastInput:0 };
+var SLEEP = { u:0 };
 var ENV   = { r:200, g:200, b:200, a:0, ta:0, tr:200, tg:200, tb:200 };
 var envCv = document.createElement('canvas'); envCv.width=envCv.height=8;
 var envCtx = envCv.getContext('2d', { willReadFrequently:true });
@@ -1372,7 +1433,7 @@ var MOB = {
   expose:    {x:.50,y:.60,d:1.35,o:.36,skin:.12,photo:.62,match:.85},
   work:      {x:.82,y:.20,d:.38,o:.30,photo:1,match:1,ip:0},
   /* the centred mobile reveal composition is deliberate: x .50, eye below the copy */
-  reveal:    {x:.50,y:.66,d:1.38,o:.70,photo:.10,match:0},
+  reveal:    {x:.50,y:.66,d:1.52,o:.70,photo:.10,match:0},   /* V4.5: +10% — the one frame the owner called grand */
   originals: {x:.90,y:.74,d:.68,o:.52},
   company:   {x:.50,y:.48,d:.96,o:.28},
   final:     {x:.96,y:.64,d:.94,o:.84},
@@ -1545,6 +1606,7 @@ function readScroll(){
   for(var k=0;k<KEYS.length;k++){ var key=KEYS[k]; T[key] = lerp(sa[key], sb[key], t); }
   var ma=morphOf(A.name), mb=morphOf(B.name);
   for(var k2=0;k2<MKEYS.length;k2++){ var mk2=MKEYS[k2]; MT[mk2] = lerp(ma[mk2], mb[mk2], t); }
+  if(STILL){ T.dna=0; T.blood=0; T.skin=0; for(var hk=0;hk<HOLDK.length;hk++) MT[HOLDK[hk]]=MORPH.base[HOLDK[hk]]; }
   /* BLOOD pressure progress: 0 before the chapter, 1 after it, linear inside */
   T.pp = (A.name==='pressure'&&B.name==='blood') ? raw*.5 : (A.name==='blood') ? .5+raw*.5 : (i>=PP_AFTER ? 1 : 0);
   T.resid = (A.name==='work'&&B.name==='reveal') ? Math.sin(raw*3.1416) : 0;
@@ -1620,11 +1682,14 @@ var scarNear=false, wasOnWork=false;
    headline, then reading direction, then rest. The cursor is worth at most
    18% of the answer and only after a dwell — she is not a mascot. */
 var GAZE={x:0,y:0}, saccadeUntil=0, nextSaccade=2, blinkT=9, blink=0, blinkPhase=0;
+var GLANCE={ next:4.5, until:0, x:0, y:0 };
 var ptr=null, ptrDwell=0, ptrMoved=0, lastScrollT=0, scrollVel=0, lastY=0, refocusAt=0, stillSince=0;
 
 function pickGaze(t, dt){
   var tx=0, ty=0;
-  if(GZ.portal){ tx=(GZ.px-P.x*VW)/(VW*.5); ty=(GZ.py-P.y*VH)/(VH*.5); }
+  if(GZ.portal){ tx=(GZ.px-P.x*VW)/(VW*.5); ty=(GZ.py-P.y*VH)/(VH*.5);
+    if(portalMode==='think' && !RM){ tx=lerp(tx,.34,.75); ty=lerp(ty,-.62,.75); tx+=Math.sin(t*1.3)*.05; }      /* V4.7: she thinks with her eyes up */
+    else if(portalMode==='answer'){ tx*=.25; ty*=.25; } }
   else if(HERO.phase>=1){ tx=(HERO.x-P.x*VW)/(VW*.5); ty=(HERO.y-P.y*VH)/(VH*.5); }
   else {
     /* the headline of the chapter attention is already inside (it leads the geometry) */
@@ -1632,13 +1697,31 @@ function pickGaze(t, dt){
     if(an){ tx=(an.hx-P.x*VW)/(VW*.5); ty=(an.hy-scrollY-P.y*VH)/(VH*.5); }
     tx -= .12;
     nextSaccade -= dt;
-    if(nextSaccade<=0 && !RM){ nextSaccade = 1.8 + RND()*3.0; saccadeUntil = t + .09 + RND()*.05;
+    if(nextSaccade<=0 && !RM){ nextSaccade = 1.1 + RND()*2.2; saccadeUntil = t + .09 + RND()*.05;
       GAZE.jx = (RND()-.5)*.34; GAZE.jy = (RND()-.5)*.24; }
     if(t > saccadeUntil){ GAZE.jx = 0; GAZE.jy = 0; }
     tx += GAZE.jx||0; ty += GAZE.jy||0;
     if(refocusAt && t > refocusAt){ refocusAt = 0; saccadeUntil = t + .11; }
     ty += clamp(scrollVel/2200, -.22, .22);
+    /* V4.4 ALIVE: she looks at the reader more than at the page, never holds
+       perfectly still (a slow drift under the saccades), and on a desktop a hand
+       that moves draws a quarter of her attention */
+    tx*=.42; ty*=.42;
+    if(ptr && !COARSE && !RM){ tx = lerp(tx, (ptr.x-P.x*VW)/(VW*.5), .25); ty = lerp(ty, (ptr.y-P.y*VH)/(VH*.5), .25); }
   }
+  /* V4.5: the glance — a real eye-roll to one side and back, a few times a minute */
+  if(!RM && !GZ.portal){ GLANCE.next-=dt;
+    if(GLANCE.next<=0){ GLANCE.next=5+RND()*6; GLANCE.until=t+.5+RND()*.4; var side=RND()<.5?-1:1; GLANCE.x=side*(.55+RND()*.35); GLANCE.y=(RND()-.5)*.5; if(RND()<.4) blinkT=Math.min(blinkT,.35); }
+    if(t<GLANCE.until){ var gw=smoother(clamp((GLANCE.until-t)/.25,0,1))*smoother(clamp((t-(GLANCE.until-.9))/.18,0,1)); tx=lerp(tx,GLANCE.x,gw*.85); ty=lerp(ty,GLANCE.y,gw*.85); } }
+  /* V4.6: a finger on the glass has her full attention; noticing pulls her to the reader; boredom lets her wander */
+  if(ATT.touch && !RM){ tx=lerp(tx,(ATT.tx-P.x*VW)/(VW*.5),.7); ty=lerp(ty,(ATT.ty-P.y*VH)/(VH*.5),.7); }
+  if(ATT.notice>0){ tx=lerp(tx,0,ATT.notice*.6); ty=lerp(ty,0,ATT.notice*.6); }
+  if(ATT.bored>0 && !RM){ tx+=(Math.sin(t*.23)*.55+Math.sin(t*.11+1)*.3)*ATT.bored; ty+=(Math.sin(t*.19+2)*.35)*ATT.bored; }
+  /* arrival: from the side, to the reader */
+  if(ARR.u<1 && !RM){ var aw=1-ARR.u; tx=lerp(tx,ARR.gx,aw); ty=lerp(ty,ARR.gy,aw); }
+  /* the drift lives in every mode — hero, portal and chapters — so she is never a still image */
+  if(!RM){ var dk=GZ.portal?.5:1; tx += (Math.sin(t*.37)*.05 + Math.sin(t*.83+2)*.025)*dk; ty += (Math.sin(t*.29+1)*.04 + Math.cos(t*.71)*.02)*dk;
+    if(HERO.phase>=1){ tx*=.7; ty*=.7; } }
   /* the cursor is read for the dwell readout only — she does not follow it */
   if(ptr && !COARSE && !RM){ if(ptrMoved>0){ ptrDwell = 0; ptrMoved -= dt; } else ptrDwell += dt; } else ptrDwell = 0;
   GOUT.x=clamp(tx,-1.15,1.15); GOUT.y=clamp(ty,-1.0,1.0); return GOUT;
@@ -1674,7 +1757,7 @@ function tickBlink(t, dt){
   if(blinkPhase===1){ blink += dt/0.080; if(blink>=(blinkHalf?.45:1)){ blinkPhase=2; blinkT=.025; } }
   else if(blinkPhase===2){ blinkT-=dt; if(blinkT<=0) blinkPhase=3; }
   else if(blinkPhase===3){ blink -= dt/0.160; if(blink<=0){ blink=0; blinkPhase=0;
-    blinkT = 7 + RND()*7; } }
+    blinkT = (3.4 + RND()*3.6)*(1+ATT.bored*.8); } }
   return clamp(blink,0,1);
 }
 var blinkHalf=false;
@@ -1731,6 +1814,7 @@ function frame(now){
   rafId = requestAnimationFrame(frame);
   var dt = Math.min(.05, (now-last)/1000 || .016); last=now;
   var t = now/1000;
+  if(ARR.t0<0 && ARR.ok) ARR.t0=t; ARR.u = RM ? 1 : (ARR.t0<0 ? 0 : smoother(clamp((t-ARR.t0-.15)/1.4,0,1)));
 
   /* scroll velocity, and a catch-up boost when the visitor jumps a long way */
   var y=scrollY; scrollVel = (y-lastY)/Math.max(dt,.001); lastY=y;
@@ -1762,16 +1846,29 @@ function frame(now){
   P.pp    = approach(P.pp,    T.pp,    ka*1.4, dt);
   for(var mi=0;mi<MKEYS.length;mi++){ var mkk=MKEYS[mi]; MP[mkk]=approach(MP[mkk], MT[mkk], ka, dt); }
   heroTick(t, dt);
+  if(ATT.touch && SND.ctx && SND.on && t>SND.beatAt){ SND.beatAt=t+.92; sndPulse(); }
 
   var g = pickGaze(t, dt);
   var gl = (t < saccadeUntil) ? 26 : LAM.gaze;
   P.gx = approach(P.gx, g.x, gl, dt);
   P.gy = approach(P.gy, g.y, gl, dt);
-  P.pupil = approach(P.pupil, T.pupil, LAM.pupil, dt);
-  P.lid = approach(P.lid, Math.max(T.lid, tickBlink(t,dt)), 24, dt);
+  P.pupil = approach(P.pupil, T.pupil - KEYL.near*.09 + ATT.notice*.10 + ATT.touch*.14, LAM.pupil, dt);   /* a near hand: she constricts a little */
+  var spL=scrollY/Math.max(1,(document.documentElement.scrollHeight||1)-VH);
+  SLEEP.u = approach(SLEEP.u, ((curName==='footer'||spL>.986) && !portalOpen) ? 1 : 0, .55, dt);   /* V4.7: at the end of the page she goes to sleep */
+  P.lid = approach(P.lid, Math.max(T.lid, tickBlink(t,dt), smoother(SLEEP.u)*.88), SLEEP.u>.03?3.2:24, dt);
 
   /* the room light drifts slower than she does, so the catchlight is a
      reflection of the world rather than paint on the iris */
+  var docH=Math.max(1,(document.documentElement.scrollHeight||1)-VH), sp=clamp(scrollY/docH,0,1);
+  KEYL.ta = -2.30 + sp*1.35 + P.gx*.12;                  /* upper-left at the top, drifting over the crown toward the right by the foot */
+  KEYL.a  = approach(KEYL.a, KEYL.ta, 1.6, dt);
+  var nearT=0; if(ptr && PUP.on && !RM){ var dn=Math.hypot(ptr.x-PUP.cx/PX, ptr.y-PUP.cy/PX)/(PUP.R/PX); nearT=clamp(1-(dn-.6)/1.6,0,1); }
+  KEYL.tnear=nearT; KEYL.near=approach(KEYL.near, KEYL.tnear, 3.0, dt);
+  /* noticing: the moment the visitor stops scrolling she looks up at them and the pupil opens a touch */
+  if(Math.abs(scrollVel)>60) ATT.lastInput=t;
+  var stoppedFor=t-stillSince; ATT.notice = approach(ATT.notice, (stoppedFor>.25 && stoppedFor<1.6 && Math.abs(scrollVel)<40 && stillSince>2)?1:0, 5, dt);
+  /* boredom: no input for 18s → she wanders; any input snaps her back */
+  ATT.idle=t-Math.max(ATT.lastInput, stillSince); ATT.bored=approach(ATT.bored, RM?0:clamp((ATT.idle-18)/12,0,1), .8, dt);
   LIGHT.tx = P.gx*.5; LIGHT.ty = P.gy*.5;
   LIGHT.x = approach(LIGHT.x, LIGHT.tx, 2.2, dt);
   LIGHT.y = approach(LIGHT.y, LIGHT.ty, 2.2, dt);
@@ -1824,7 +1921,7 @@ function staticFrame(){
   P.pp=T.pp; P.resid=T.resid; HERO.u=0; HERO.phase=0;
   document.documentElement.style.setProperty('--wco',(1-sstep(.30,.46,P.ip)).toFixed(2)); document.documentElement.style.setProperty('--rco',sstep(.56,.72,P.ip).toFixed(2));
   P.lid=0; P.pupil=T.pupil; P.gx=-.1; P.gy=0;
-  LIGHT.x=0; LIGHT.y=0;
+  LIGHT.x=0; LIGHT.y=0; KEYL.a=KEYL.ta; KEYL.near=0;
   drawWorld(0,0); placeHit();
 }
 
@@ -1878,6 +1975,49 @@ if('ResizeObserver' in window){
 addEventListener('scroll', function(){ if(RM) staticFrame(); }, {passive:true});
 
 /* ═══ POINTER ════════════════════════════════════════════════════════════ */
+/* ═══ SOUND ══ a presence, not a soundtrack: a slow breath under everything and
+   a soft double pulse under a touch. Synthesized (no files), starts only after
+   the first gesture (browser rule), quiet, one obvious switch to kill it. */
+var SND = { ctx:null, on:true, master:null, breathGain:null, started:false, beatAt:0 };
+function sndStart(){
+  if(SND.started || !SND.on) return;
+  try{
+    var C = new (window.AudioContext||window.webkitAudioContext)();
+    SND.ctx=C; SND.started=true;
+    if(C.state==='suspended') C.resume();
+    SND.master=C.createGain(); SND.master.gain.value=0; SND.master.connect(C.destination);
+    SND.master.gain.linearRampToValueAtTime(.045, C.currentTime+2.5);
+    var len=2*C.sampleRate, buf=C.createBuffer(1,len,C.sampleRate), d=buf.getChannelData(0);
+    for(var i=0;i<len;i++) d[i]=Math.random()*2-1;
+    var src=C.createBufferSource(); src.buffer=buf; src.loop=true;
+    var lp=C.createBiquadFilter(); lp.type='lowpass'; lp.frequency.value=380; lp.Q.value=.4;
+    SND.breathGain=C.createGain(); SND.breathGain.gain.value=.10;
+    var lfo=C.createOscillator(), lfoG=C.createGain(); lfo.frequency.value=.088; lfoG.gain.value=.07;
+    lfo.connect(lfoG); lfoG.connect(SND.breathGain.gain); lfo.start();
+    src.connect(lp); lp.connect(SND.breathGain); SND.breathGain.connect(SND.master); src.start();
+  }catch(e){ SND.on=false; }
+}
+function sndPulse(){
+  if(!SND.ctx || !SND.on) return; var C=SND.ctx, t0=C.currentTime;
+  [0,.14].forEach(function(off,k){
+    var o=C.createOscillator(), g=C.createGain(); o.type='sine'; o.frequency.value=k?44:52;
+    g.gain.setValueAtTime(0,t0+off); g.gain.linearRampToValueAtTime(k?.5:.8,t0+off+.012); g.gain.exponentialRampToValueAtTime(.001,t0+off+.30);
+    o.connect(g); g.connect(SND.master); o.start(t0+off); o.stop(t0+off+.34); });
+}
+(function(){
+  var b=document.createElement('button'); b.type='button'; b.id='sndT'; b.textContent='SOUND / ON';
+  b.style.cssText='position:fixed;left:24px;bottom:20px;z-index:60;background:none;border:0;color:#5C5C61;font:500 10px/1 "Space Grotesk",sans-serif;letter-spacing:.22em;cursor:pointer;padding:8px 0;';
+  b.setAttribute('aria-pressed','true');
+  b.addEventListener('click',function(){ SND.on=!SND.on; b.textContent=SND.on?'SOUND / ON':'SOUND / OFF'; b.setAttribute('aria-pressed',String(SND.on));
+    if(SND.on){ sndStart(); if(SND.master) SND.master.gain.linearRampToValueAtTime(.045, SND.ctx.currentTime+.6); }
+    else if(SND.master){ SND.master.gain.linearRampToValueAtTime(0, SND.ctx.currentTime+.4); } });
+  document.body.appendChild(b);
+})();
+/* V4.6: touch is read on every device — a finger on the glass has her attention */
+addEventListener('pointerdown', function(e){ ATT.touch=1; ATT.tx=e.clientX; ATT.ty=e.clientY; ATT.lastInput=performance.now()/1000; sndStart(); }, {passive:true});
+addEventListener('pointermove', function(e){ if(ATT.touch){ ATT.tx=e.clientX; ATT.ty=e.clientY; } ATT.lastInput=performance.now()/1000; }, {passive:true});
+addEventListener('pointerup', function(){ ATT.touch=0; }, {passive:true}); addEventListener('pointercancel', function(){ ATT.touch=0; }, {passive:true});
+/* ═══ POINTER ════════════════════════════════════════════════════════════ */
 if(!COARSE && !RM){
   var cur=$('cur');
   addEventListener('pointermove', function(e){
@@ -1887,6 +2027,7 @@ if(!COARSE && !RM){
     cur.style.transform='translate('+e.clientX+'px,'+e.clientY+'px)';
   }, {passive:true});
   addEventListener('pointerleave', function(){ ptr=null; cur.classList.remove('on'); });
+
   document.addEventListener('pointerover', function(e){
     var onIris = e.target===hit;
     var el=!onIris && e.target.closest && e.target.closest('a,button.act,.seed,.row,.scar,input');
@@ -1996,6 +2137,37 @@ var VERDICTS=[
 var FALLBACK={ v:"Nothing here says what should change yet.",
   n:"What should be true afterwards that is not true now?" };
 
+/* ═══ LIVE VOICE ══ the public IRIS door. A separate worker, not the studio's
+   internal system. The canned verdict below is composed first and stays if the
+   door is slow, rate-limited, or down — the beat sequence never waits. */
+var IRIS_DOOR='https://badblood-site-iris.hi-badblood.workers.dev';
+var AIR={ seq:0, v:'', n:'', ready:false, applied:false, hist:[] };
+function askDoor(text){
+  AIR.seq++; var my=AIR.seq; AIR.ready=false; AIR.applied=false; AIR.v=''; AIR.n='';
+  if(!window.fetch || QA.noai) return;
+  var ctl = window.AbortController ? new AbortController() : null;
+  var kill = setTimeout(function(){ if(ctl) ctl.abort(); }, 6500);
+  fetch(IRIS_DOOR+'/ask', { method:'POST', headers:{'content-type':'application/json'},
+    signal: ctl?ctl.signal:undefined,
+    body: JSON.stringify({ q:String(text).slice(0,400), prev:AIR.hist.slice(-2) }) })
+  .then(function(r){ return r.ok ? r.json() : null; })
+  .then(function(j){ clearTimeout(kill); if(!j || !j.ok || my!==AIR.seq) return;
+    AIR.v=String(j.v).slice(0,220); AIR.n=String(j.n).slice(0,180); AIR.ready=true;
+    AIR.hist.push({q:String(text).slice(0,300), a:AIR.v.slice(0,300)}); if(AIR.hist.length>4) AIR.hist=AIR.hist.slice(-4);
+    applyDoor(); })
+  .catch(function(){ clearTimeout(kill); });
+}
+function applyDoor(){
+  /* only from REFRAME onward, only once per exchange, only textContent — never markup */
+  if(!AIR.ready || AIR.applied) return;
+  if(portalMode!=='answer' && portalMode!=='listen') return;
+  AIR.applied=true;
+  var vp=document.querySelector('#verdict p'), np=document.querySelector('#pnext p'), md=$('pMode');
+  [[vp,AIR.v],[np,AIR.n]].forEach(function(pair){ var el=pair[0]; if(!el) return;
+    el.style.transition='opacity .45s var(--lux)'; el.style.opacity='0';
+    setTimeout(function(){ el.textContent=pair[1]; el.style.opacity='1'; }, 460); });
+  if(md) md.textContent='Answered live by public IRIS — no client memory, nothing stored.';
+}
 var beatTimers=[];
 function later(fn,ms){ var id=setTimeout(fn, RM?0:ms*(QA.slow||1)); beatTimers.push(id); return id; }
 function cancelBeats(){ beatTimers.forEach(clearTimeout); beatTimers.length=0; }
@@ -2005,7 +2177,7 @@ function cancelBeats(){ beatTimers.forEach(clearTimeout); beatTimers.length=0; }
    from problem. THINK — the read recedes to 12%, the challenged assumption
    stays, IRIS dims. REFRAME — one verdict, one next input, LISTENING. */
 function analyse(text){
-  cancelBeats();
+  cancelBeats(); askDoor(text);
   var words=String(text).replace(/[.!?,]/g,'').split(/\s+/).filter(Boolean).slice(0,9);
   var toks=words.map(function(w){
     if(MEDIUM.test(w))  return {w:w,tag:'medium — selected too early',strike:true,keep:true};
@@ -2027,7 +2199,7 @@ function analyse(text){
     '<p class="ed" style="color:var(--bone);font-size:clamp(16px,1.9vw,24px)">'+esc(v.n)+'</p>'+
     '<div class="pinput"><span class="mi">You</span>'+
     '<input id="pNext" type="text" autocomplete="off" spellcheck="false" placeholder="Answer her" aria-label="Your answer"></div>'+
-    '<span class="mi" style="margin-top:14px">Draft — written, not generated. Public IRIS holds no client memory.</span></div>';
+    '<span class="mi" id="pMode" style="margin-top:14px">Draft — written, not generated. Public IRIS holds no client memory.</span></div>';
   var parse=$('parse');
   toks.forEach(function(tk){ var d=document.createElement('div');
     d.className='tok'+(tk.strike?' strike':'')+(tk.keep?' keep':''); if(tk.quiet) d.style.opacity='.4';
@@ -2047,13 +2219,13 @@ function analyse(text){
   /* REFRAME */
   later(function(){ portal.classList.add('deep');
     var pb=$('pBody'); if(pb) pb.style.justifyContent='flex-start';
-    $('verdict').classList.add('in'); portalMode='answer';
+    $('verdict').classList.add('in'); portalMode='answer'; applyDoor();
     $('portalState').textContent='IRIS / ANSWERING';
     /* the root withdraws from the rejected medium and settles under the next question */
     later(function(){ var np=document.querySelector('#pnext p'); if(np){ var nr=np.getBoundingClientRect(); PT.x=nr.left+nr.width*.25; PT.y=nr.bottom+6; PT.on=1; } }, 80);
   }, kids.length*step+1350);
   later(function(){ var n=$('pnext'); if(n) n.style.opacity='1';
-    portalMode='listen'; $('portalState').textContent='IRIS / LISTENING';
+    portalMode='listen'; $('portalState').textContent='IRIS / LISTENING'; applyDoor();
     var nx=$('pNext'); if(nx){ nx.focus();
       nx.addEventListener('keydown', function(e){ if(e.key==='Enter' && nx.value.trim()) analyse(nx.value); });
       nx.addEventListener('focus', keyboardUp); nx.addEventListener('blur', keyboardDown); }
@@ -2111,7 +2283,7 @@ if(location.search.indexOf('smoke')>=0){ var sm=document.createElement('div'); s
     sm.textContent=BUILD+'\nACTIVE '+ACTIVE+' (expect '+ACTIVE_EXPECT+')  coarse '+COARSE+'\nfib '+FIB_N+' limb0 '+LIMB[0].toFixed(4)+' crypt0 '+CRYPT[0].a.toFixed(3)+'\nvv '+(window.visualViewport?Math.round(visualViewport.height):'-')+' / inner '+innerHeight+'  canvas '+cv.clientHeight+'\nroots through pupil '+through+'  errors '+errs; }, 500); }
 if(location.hash==='#qa'){
   QA.ft=new Float32Array(600); QA.wt=new Float32Array(600); QA.fi=0;
-  window.__BB = { P:P, T:T, QA:QA, draw:function(t){ drawWorld(t||0,0); }, stop:stop, start:start,
+  window.__BB = { P:P, T:T, QA:QA, KEYL:KEYL, draw:function(t){ drawWorld(t||0,0); }, stop:stop, start:start,
                   ENV:ENV, fib:FIB.length, PULSE:PULSE, PRESS:PRESS, RE:RE, ROOTS:ROOTS, ACTIVE:ACTIVE, ACTIVE_EXPECT:ACTIVE_EXPECT, LIMB:LIMB, CRYPT:CRYPT, PUP:PUP, FIB_N:FIB_N, BND:BND, skinBoundaryCount:5, skinPlaneCount:4, activeBoundaryIndex:2, MEM:{up:MEM_UP,dn:MEM_DN}, TEAR:TEAR, pupilScaleExp:2.8, MP:MP, MT:MT, HERO:HERO, PT:PT, TOPO:function(){return TOPO;},
                   p95:function(w){ var a=[].slice.call((w?QA.wt:QA.ft)||[]).filter(function(v){return v>0;}).sort(function(p,q){return p-q;}); return a.length? a[Math.floor(a.length*.95)] : 0; },
                   dbg:function(){ return { curName:curName, ptrDwell:ptrDwell, ptrMoved:ptrMoved, ptr:!!ptr, portalT:portalT,
