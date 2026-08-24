@@ -3,3 +3,7 @@ v6.2-delivery/
 *.py
 .github/
 node_modules/
+assets/*.m4v
+for-review/
+for-review-v5/
+for-review-v6/
