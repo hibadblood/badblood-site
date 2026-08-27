@@ -1,0 +1,1151 @@
+<!doctype html>
+<html lang="th">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>หอดูดวง — ตำราเดิม สมองใหม่</title>
+<meta name="description" content="หอดูดวง — สำนักโหราศาสตร์ระบบอัจฉริยะ หมอดู ๑๒ สำนัก ครอบคลุม ๑๘ ศาสตร์ เปิดตลอด ๒๔ ชั่วโมง ไม่ต้องรอคิว ราคาชัดเจน ไม่ขู่ ไม่ใบ้หวย ดูดวงใน LINE ได้ทันที">
+<meta property="og:title" content="หอดูดวง — ตำราเดิม สมองใหม่">
+<meta property="og:description" content="หมอดู ๑๒ สำนัก ๑๘ ศาสตร์ เปิดตลอด ๒๔ ชั่วโมง — เราไม่อ้างญาณ เราอ่านตำรา">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#0A0E1E">
+<link rel="icon" href="data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 100 100'%3E%3Cpath fill='%23C9A24B' d='M50 4 58 38 92 30 62 50 92 70 58 62 50 96 42 62 8 70 38 50 8 30 42 38Z'/%3E%3C/svg%3E">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Taviraj:wght@400;500;600&family=Sarabun:wght@300;400;500;600;700&display=swap">
+<style>
+/* ============================================================
+   หอดูดวง — ตำราเดิม สมองใหม่
+   ระบบสี (ล็อกตามบรีฟ): night #0A0E1E · gold #C9A24B ·
+   gold-soft #E8D9A8 · paper #F2EBDC
+   accent ๔ สำนักแรก (ล็อก): ดาต้า gold · ไพ่ลั่น #C96F45 ·
+   อาม่าเฮง #B5443C · ตีสาม #5A6FA8
+   accent ๘ สำนักใหม่: ฉบับร่าง
+   ============================================================ */
+:root{
+  --night:#0A0E1E;
+  --night-2:#0F1428;      /* พื้นยก: การ์ด/แผง */
+  --night-3:#151B33;      /* พื้นยกชั้นสอง */
+  --gold:#C9A24B;
+  --gold-soft:#E8D9A8;
+  --paper:#F2EBDC;
+  --faint:rgba(242,235,220,.62);
+  --dim:rgba(242,235,220,.55);
+  --hairline:rgba(201,162,75,.28);
+  --hairline-soft:rgba(201,162,75,.14);
+  --c-data:#C9A24B;
+  --c-pailan:#C96F45;
+  --c-ama:#B5443C;
+  --c-tisam:#5A6FA8;
+  --c-kao:#4E8098;
+  --c-sen:#A6785B;
+  --c-ming:#5E8C7A;
+  --c-luna:#8B7BB5;
+  --c-nara:#9B6B8F;
+  --c-mu:#D98E2B;
+  --c-prom:#8C7350;
+  --c-suea:#C97189;
+  --disp:"Taviraj",'Noto Serif Thai',Georgia,serif;
+  --body:"Sarabun",'Noto Sans Thai',system-ui,sans-serif;
+  --w:1120px;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+[hidden]{display:none!important}
+html{scroll-behavior:smooth;scroll-padding-top:74px}
+@media (prefers-reduced-motion:reduce){html{scroll-behavior:auto}}
+body{
+  background:var(--night);
+  color:var(--paper);
+  font-family:var(--body);
+  font-weight:300;
+  font-size:17px;
+  line-height:1.75;
+  -webkit-font-smoothing:antialiased;
+  overflow-x:hidden;
+}
+::selection{background:var(--gold);color:var(--night)}
+img,svg,canvas{max-width:100%;display:block}
+a{color:var(--gold-soft)}
+:is(a,button,summary):focus-visible{outline:2px solid var(--gold);outline-offset:3px;border-radius:2px}
+.wrap{max-width:var(--w);margin:0 auto;padding:0 22px}
+
+/* ---------- การเผยตัวเมื่อเลื่อน — เนื้อหามองเห็นได้เสมอ,
+   JS เท่านั้นที่เพิ่มสถานะซ่อนก่อนเล่นแอนิเมชัน ---------- */
+.js .rv{opacity:0;transform:translateY(20px);transition:opacity .8s ease,transform .8s ease}
+.js .rv.in{opacity:1;transform:none}
+@media (prefers-reduced-motion:reduce){
+  .js .rv{opacity:1;transform:none;transition:none}
+}
+
+/* ---------- แถบบน ---------- */
+.top{
+  position:sticky;top:0;z-index:50;
+  background:rgba(10,14,30,.82);
+  backdrop-filter:blur(12px);
+  -webkit-backdrop-filter:blur(12px);
+  border-bottom:1px solid var(--hairline-soft);
+}
+.top-in{max-width:var(--w);margin:0 auto;padding:14px 22px;display:flex;align-items:center;gap:26px}
+.brand{font-family:var(--disp);font-weight:600;font-size:1.22rem;color:var(--gold-soft);text-decoration:none;letter-spacing:.02em;display:flex;align-items:center;gap:9px;white-space:nowrap}
+.brand .star{color:var(--gold);font-size:.85em}
+.top-nav{display:flex;gap:22px;margin-left:auto}
+.top-nav a{color:var(--faint);text-decoration:none;font-size:.92rem;font-weight:400}
+.top-nav a:hover{color:var(--gold-soft)}
+.btn{
+  display:inline-flex;align-items:center;justify-content:center;gap:9px;
+  font-family:var(--body);font-weight:600;font-size:1rem;line-height:1;
+  color:var(--night);background:linear-gradient(160deg,var(--gold-soft),var(--gold));
+  border:none;border-radius:999px;padding:15px 28px;
+  text-decoration:none;cursor:pointer;
+  box-shadow:0 0 0 1px rgba(201,162,75,.5),0 8px 28px rgba(201,162,75,.18);
+  transition:transform .2s ease,box-shadow .2s ease;
+}
+.btn:hover{transform:translateY(-2px);box-shadow:0 0 0 1px rgba(201,162,75,.7),0 12px 34px rgba(201,162,75,.28)}
+.btn.small{padding:11px 20px;font-size:.9rem}
+.btn.ghost{background:none;color:var(--gold-soft);box-shadow:inset 0 0 0 1px var(--hairline)}
+.btn.ghost:hover{box-shadow:inset 0 0 0 1px var(--gold)}
+@media (max-width:760px){.top-nav{display:none}.top-in{justify-content:space-between}}
+
+/* ---------- เปิดหอ ---------- */
+.hero{position:relative;text-align:center;padding:86px 22px 78px;overflow:hidden}
+.hero::before{ /* ม่านฟ้ากลางคืน */
+  content:"";position:absolute;inset:0;
+  background:
+    radial-gradient(1100px 520px at 50% -8%,rgba(201,162,75,.13),transparent 62%),
+    radial-gradient(700px 380px at 82% 28%,rgba(90,111,168,.10),transparent 70%),
+    var(--night);
+}
+#sky{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.hero-in{position:relative;max-width:840px;margin:0 auto}
+.dome{width:min(430px,78vw);margin:0 auto 6px;color:var(--gold);opacity:.9}
+.hero .kicker{
+  font-size:.82rem;font-weight:600;letter-spacing:.34em;color:var(--gold);
+  text-transform:uppercase;margin-bottom:18px;
+}
+h1.title{
+  font-family:var(--disp);font-weight:600;
+  font-size:clamp(3.4rem,11vw,6.4rem);line-height:1.12;
+  background:linear-gradient(178deg,var(--gold-soft) 20%,var(--gold) 82%);
+  -webkit-background-clip:text;background-clip:text;color:transparent;
+  text-wrap:balance;
+}
+.tagline{
+  font-family:var(--disp);font-weight:500;
+  font-size:clamp(1.25rem,3.4vw,1.7rem);color:var(--paper);
+  margin-top:14px;letter-spacing:.08em;
+}
+.tagline .sep{color:var(--gold);padding:0 .45em}
+.hero .thesis{
+  max-width:33em;margin:22px auto 0;color:var(--faint);font-size:1.06rem;
+}
+.hero .thesis strong{color:var(--gold-soft);font-weight:600}
+.hero-cta{display:flex;gap:14px;justify-content:center;flex-wrap:wrap;margin-top:34px}
+.count-row{
+  display:flex;justify-content:center;gap:0;margin-top:52px;
+  border-top:1px solid var(--hairline-soft);border-bottom:1px solid var(--hairline-soft);
+}
+.count{padding:18px 30px;text-align:center}
+.count + .count{border-left:1px solid var(--hairline-soft)}
+.count b{display:block;font-family:var(--disp);font-weight:600;font-size:2rem;color:var(--gold-soft);line-height:1.2}
+.count span{font-size:.85rem;color:var(--dim)}
+@media (max-width:620px){
+  .count-row{flex-wrap:wrap}
+  .count{flex:1 1 45%;padding:14px 8px}
+  .count + .count{border-left:none}
+  .count:nth-child(even){border-left:1px solid var(--hairline-soft)}
+  .count:nth-child(n+3){border-top:1px solid var(--hairline-soft)}
+}
+.trust-strip{display:flex;justify-content:center;flex-wrap:wrap;gap:10px;margin-top:26px}
+.chip{
+  font-size:.84rem;font-weight:500;color:var(--gold-soft);
+  border:1px solid var(--hairline);border-radius:999px;padding:7px 16px;
+  background:rgba(201,162,75,.06);
+}
+
+/* ---------- โครงห้อง ---------- */
+.hall{padding:88px 0 30px}
+.hall-head{display:flex;align-items:baseline;gap:20px;border-bottom:1px solid var(--hairline);padding-bottom:20px;margin-bottom:44px}
+.hall-no{
+  font-family:var(--disp);font-weight:600;font-size:2.4rem;color:var(--gold);
+  line-height:1;min-width:1.4em;
+}
+.hall-head h2{
+  font-family:var(--disp);font-weight:600;font-size:clamp(1.7rem,4.6vw,2.5rem);
+  line-height:1.3;color:var(--paper);text-wrap:balance;
+}
+.hall-head .sub{margin-left:auto;color:var(--dim);font-size:.9rem;max-width:20em;text-align:right}
+@media (max-width:760px){
+  .hall{padding:66px 0 20px}
+  .hall-head{flex-wrap:wrap;gap:12px}
+  .hall-head .sub{margin-left:0;text-align:left;max-width:none}
+}
+.lede{max-width:38em;color:var(--faint);font-size:1.04rem;margin-bottom:36px}
+.lede strong{color:var(--gold-soft);font-weight:600}
+
+/* ---------- ห้อง ๑ · เสี่ยงไพ่ ---------- */
+.draw{position:relative}
+.deck{display:flex;justify-content:center;gap:clamp(8px,2.2vw,20px);margin:10px 0 26px;perspective:1200px}
+.tcard{
+  width:clamp(84px,17vw,132px);min-width:0;aspect-ratio:5/8;border:none;background:none;
+  cursor:pointer;position:relative;transform-style:preserve-3d;
+  transition:transform .25s ease;border-radius:12px;
+}
+.tcard:not(.locked):hover{transform:translateY(-12px)}
+.tcard .face{
+  position:absolute;inset:0;border-radius:12px;backface-visibility:hidden;
+  display:flex;align-items:center;justify-content:center;overflow:hidden;
+}
+@media (max-width:480px){
+  .deck{gap:7px}
+  .tcard .front{font-size:.8rem}
+}
+.tcard .back{
+  background:
+    radial-gradient(120% 90% at 50% 0%,rgba(201,162,75,.16),transparent 70%),
+    var(--night-3);
+  border:1px solid var(--hairline);
+  box-shadow:0 10px 30px rgba(0,0,0,.5);
+  color:var(--gold);font-size:1.7rem;
+}
+.tcard .back::before{content:"";position:absolute;inset:7px;border:1px solid var(--hairline-soft);border-radius:8px}
+.tcard .front{
+  transform:rotateY(180deg);
+  background:linear-gradient(170deg,#F6F0E0,#E8D9A8);
+  border:1px solid var(--gold);color:var(--night);
+  font-family:var(--disp);font-weight:600;font-size:.95rem;text-align:center;padding:8px;
+}
+.tcard.flip{transform:rotateY(180deg)}
+.tcard.dimmed{opacity:.35;pointer-events:none}
+@media (prefers-reduced-motion:reduce){
+  .tcard,.tcard.flip{transition:none}
+}
+.draw-result{
+  max-width:620px;margin:0 auto;text-align:center;
+  border:1px solid var(--hairline);border-radius:16px;
+  background:linear-gradient(180deg,var(--night-3),var(--night-2));
+  padding:34px 28px;
+}
+.draw-result .cname{font-family:var(--disp);font-weight:600;font-size:1.7rem;color:var(--gold-soft)}
+.draw-result .cmsg{color:var(--paper);margin:12px auto 6px;max-width:30em}
+.draw-result .ccolor{color:var(--dim);font-size:.9rem;margin-bottom:20px}
+.draw-hint{text-align:center;color:var(--dim);font-size:.92rem;margin-bottom:18px}
+.redraw{background:none;border:none;color:var(--faint);font-family:var(--body);font-size:.9rem;cursor:pointer;text-decoration:underline;text-underline-offset:4px;margin-top:16px}
+.redraw:hover{color:var(--gold-soft)}
+
+/* ---------- ห้อง ๒ · ทำเนียบหมอดู ---------- */
+.filters{display:flex;flex-wrap:wrap;gap:10px;margin-bottom:34px}
+.fbtn{
+  font-family:var(--body);font-size:.88rem;font-weight:500;cursor:pointer;
+  color:var(--faint);background:none;border:1px solid var(--hairline-soft);
+  border-radius:999px;padding:9px 18px;transition:color .2s,border-color .2s;
+}
+.fbtn:hover{color:var(--gold-soft)}
+.fbtn[aria-pressed="true"]{color:var(--night);background:var(--gold);border-color:var(--gold);font-weight:600}
+.hall-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:18px}
+@media (max-width:980px){.hall-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:620px){.hall-grid{grid-template-columns:1fr}}
+.seer{
+  --ac:var(--gold);
+  position:relative;border:1px solid var(--hairline-soft);border-radius:18px;
+  background:linear-gradient(180deg,var(--night-2),rgba(15,20,40,.4));
+  padding:28px 24px 24px;display:flex;flex-direction:column;gap:13px;
+  transition:border-color .25s ease,transform .25s ease;
+}
+.seer:hover{border-color:color-mix(in srgb,var(--ac) 55%,transparent);transform:translateY(-4px)}
+.seer.hide{display:none}
+.seer-top{display:flex;align-items:center;gap:15px}
+.seal{
+  width:56px;height:56px;flex:none;border-radius:50%;
+  border:1px solid var(--ac);color:var(--ac);
+  display:flex;align-items:center;justify-content:center;
+  font-family:var(--disp);font-weight:600;font-size:1.15rem;
+  background:radial-gradient(circle at 50% 30%,color-mix(in srgb,var(--ac) 16%,transparent),transparent 75%);
+}
+.seer h3{font-family:var(--disp);font-weight:600;font-size:1.4rem;line-height:1.25;color:var(--paper)}
+/* ตัวอักษรสี accent ถูกผสมให้สว่างขึ้นเพื่อผ่าน WCAG AA บนพื้นมิดไนท์ —
+   ค่า accent แท้ยังใช้กับตรา เส้นขอบ และเส้นคั่น (ของตกแต่ง) ตามเดิม */
+.seer .craft{font-size:.82rem;font-weight:600;letter-spacing:.06em;color:var(--ac);color:color-mix(in srgb,var(--ac) 58%,#F2EBDC)}
+.seer .voice{font-family:var(--disp);font-weight:400;font-style:italic;color:var(--faint);font-size:1.02rem;line-height:1.55;border-left:2px solid var(--ac);padding-left:14px}
+.seer .fit{color:var(--dim);font-size:.88rem}
+.seer .fit b{color:var(--faint);font-weight:600}
+.seer .go{
+  margin-top:auto;align-self:flex-start;
+  font-size:.9rem;font-weight:600;color:var(--ac);color:color-mix(in srgb,var(--ac) 58%,#F2EBDC);
+  text-decoration:none;
+  border-bottom:1px solid color-mix(in srgb,var(--ac) 45%,transparent);
+  padding-bottom:2px;
+}
+.seer .go:hover{border-bottom-color:var(--ac)}
+
+/* ---------- ห้อง ๓ · คลังตำรา ---------- */
+.lore-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:1px;background:var(--hairline-soft);border:1px solid var(--hairline-soft)}
+@media (max-width:980px){.lore-grid{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.lore-grid{grid-template-columns:1fr}}
+.lore{background:var(--night);padding:22px 22px 20px}
+.lore:hover{background:var(--night-2)}
+.lore b{display:block;font-family:var(--disp);font-weight:500;font-size:1.06rem;color:var(--gold-soft);margin-bottom:5px}
+.lore span{font-size:.9rem;color:var(--dim);line-height:1.6}
+
+/* ---------- ห้อง ๔ · วิธีเข้าหอ ---------- */
+.steps{display:grid;grid-template-columns:repeat(3,1fr);gap:18px;counter-reset:step}
+@media (max-width:820px){.steps{grid-template-columns:1fr}}
+.step{border:1px solid var(--hairline-soft);border-radius:18px;background:var(--night-2);padding:30px 26px}
+.step .no{font-family:var(--disp);font-weight:600;font-size:2rem;color:var(--gold);line-height:1;margin-bottom:14px}
+.step h3{font-family:var(--disp);font-weight:600;font-size:1.25rem;margin-bottom:8px}
+.step p{color:var(--faint);font-size:.96rem}
+.paynote{
+  margin-top:26px;border:1px solid var(--hairline);border-radius:14px;
+  background:rgba(201,162,75,.05);padding:22px 26px;color:var(--faint);font-size:.94rem;
+}
+.paynote b{color:var(--gold-soft);font-weight:600}
+
+/* ---------- ห้อง ๕ · ราคา ---------- */
+.prices{display:grid;grid-template-columns:repeat(4,1fr);gap:18px;align-items:stretch}
+@media (max-width:980px){.prices{grid-template-columns:repeat(2,1fr)}}
+@media (max-width:560px){.prices{grid-template-columns:1fr}}
+.price{
+  position:relative;border:1px solid var(--hairline-soft);border-radius:18px;
+  background:var(--night-2);padding:30px 26px;display:flex;flex-direction:column;gap:10px;
+}
+.price.best{border-color:var(--gold);background:linear-gradient(180deg,rgba(201,162,75,.10),var(--night-2))}
+.price .flag{
+  position:absolute;top:-13px;left:24px;font-size:.75rem;font-weight:700;letter-spacing:.1em;
+  background:var(--gold);color:var(--night);border-radius:999px;padding:4px 14px;
+}
+.price h3{font-family:var(--disp);font-weight:600;font-size:1.2rem}
+.price .amt{font-family:var(--disp);font-weight:600;font-size:2.5rem;color:var(--gold-soft);line-height:1;font-variant-numeric:tabular-nums}
+.price .amt small{font-size:1.05rem;color:var(--dim);font-weight:400}
+.price ul{list-style:none;color:var(--faint);font-size:.92rem;display:flex;flex-direction:column;gap:7px;margin:6px 0 14px}
+.price li::before{content:"✦";color:var(--gold);font-size:.7em;margin-right:9px;vertical-align:1px}
+.price .btn{margin-top:auto}
+.soon{
+  margin-top:30px;border:1px dashed var(--hairline);border-radius:14px;padding:20px 26px;
+  display:flex;flex-wrap:wrap;align-items:center;gap:10px 14px;
+}
+.soon .lbl{font-size:.8rem;font-weight:700;letter-spacing:.16em;color:var(--gold);margin-right:6px}
+.soon span{font-size:.9rem;color:var(--dim);border:1px solid var(--hairline-soft);border-radius:999px;padding:5px 14px}
+.disclose{margin-top:22px;color:var(--dim);font-size:.88rem;max-width:44em}
+.disclose b{color:var(--faint);font-weight:600}
+
+/* ---------- ห้อง ๖ · สีมงคล ---------- */
+.taksa{display:grid;grid-template-columns:1fr 1fr;gap:40px;align-items:start}
+@media (max-width:880px){.taksa{grid-template-columns:1fr}}
+.daypick{display:grid;grid-template-columns:repeat(4,1fr);gap:10px}
+@media (max-width:560px){.daypick{grid-template-columns:repeat(2,1fr)}}
+.dbtn{
+  font-family:var(--body);font-size:.94rem;font-weight:500;cursor:pointer;
+  color:var(--faint);background:var(--night-2);border:1px solid var(--hairline-soft);
+  border-radius:12px;padding:14px 8px;transition:all .2s ease;
+}
+.dbtn:hover{color:var(--gold-soft);border-color:var(--hairline)}
+.dbtn[aria-pressed="true"]{color:var(--night);background:var(--gold-soft);border-color:var(--gold);font-weight:700}
+.taksa-out{
+  border:1px solid var(--hairline);border-radius:18px;
+  background:linear-gradient(180deg,var(--night-3),var(--night-2));padding:32px 30px;
+}
+.taksa-out .deity{font-family:var(--disp);font-weight:600;font-size:1.6rem;color:var(--gold-soft);margin-bottom:16px}
+.taksa-rows{display:flex;flex-direction:column;gap:12px}
+.taksa-row{display:flex;justify-content:space-between;gap:16px;border-bottom:1px solid var(--hairline-soft);padding-bottom:11px;font-size:.96rem}
+.taksa-row span{color:var(--dim)}
+.taksa-row b{color:var(--paper);font-weight:600;text-align:right}
+.taksa-row b.lucky{color:var(--gold-soft)}
+.taksa-note{color:var(--dim);font-size:.85rem;margin-top:16px}
+.taksa-cta{margin-top:22px}
+/* ตารางสำรอง (แสดงเมื่อไม่มี JS — JS จะซ่อนแล้วเปิดตัวเลือกแทน) */
+.taksa-table{width:100%;border-collapse:collapse;font-size:.9rem;margin-top:8px}
+.taksa-table caption{text-align:left;color:var(--dim);font-size:.85rem;padding-bottom:12px}
+.taksa-table th,.taksa-table td{border:1px solid var(--hairline-soft);padding:10px 12px;text-align:left;color:var(--faint)}
+.taksa-table th{color:var(--gold-soft);font-weight:600;background:var(--night-2)}
+.taksa-scroll{overflow-x:auto}
+/* สองโหมด: ซ่อนอย่างเดียว ไม่บังคับ display — flex/grid ของแต่ละตัวคงเดิม */
+html:not(.js) .js-only{display:none!important}
+.js .no-js-only{display:none!important}
+
+/* ---------- ห้อง ๗ · คำสัตย์ ---------- */
+.oath-wrap{
+  border:1px solid var(--hairline);border-radius:22px;
+  background:
+    radial-gradient(900px 400px at 50% -10%,rgba(201,162,75,.09),transparent 65%),
+    var(--night-2);
+  padding:clamp(30px,6vw,64px);
+}
+.oath-wrap .lede{margin-bottom:30px}
+.oaths{list-style:none;display:grid;grid-template-columns:1fr 1fr;gap:0 56px}
+@media (max-width:880px){.oaths{grid-template-columns:1fr}}
+.oaths li{display:flex;gap:18px;padding:20px 0;border-bottom:1px solid var(--hairline-soft)}
+.oaths .n{font-family:var(--disp);font-weight:600;font-size:1.5rem;color:var(--gold);line-height:1.25;min-width:1.2em}
+.oaths b{display:block;color:var(--gold-soft);font-weight:600;margin-bottom:3px}
+.oaths p{color:var(--faint);font-size:.94rem}
+.oaths .care{color:var(--gold-soft)}
+
+/* ---------- ห้อง ๘ · คำถาม ---------- */
+.faq{max-width:780px}
+.faq details{border-bottom:1px solid var(--hairline-soft)}
+.faq summary{
+  cursor:pointer;list-style:none;display:flex;justify-content:space-between;align-items:center;gap:20px;
+  font-family:var(--disp);font-weight:500;font-size:1.13rem;color:var(--paper);padding:22px 4px;
+}
+.faq summary::-webkit-details-marker{display:none}
+.faq summary::after{content:"+";font-family:var(--body);color:var(--gold);font-size:1.4rem;font-weight:300;flex:none}
+.faq details[open] summary::after{content:"−"}
+.faq details[open] summary{color:var(--gold-soft)}
+.faq .a{color:var(--faint);font-size:.97rem;padding:0 4px 24px;max-width:40em}
+.faq .a b{color:var(--gold-soft);font-weight:600}
+
+/* ---------- ห้อง ๙ · ประตู ---------- */
+.gate{text-align:center;padding:110px 22px 120px;position:relative;overflow:hidden}
+.gate::before{content:"";position:absolute;inset:0;background:radial-gradient(800px 420px at 50% 108%,rgba(201,162,75,.14),transparent 70%)}
+.gate-in{position:relative}
+.gate .star{color:var(--gold);font-size:1.5rem;letter-spacing:1.2em;padding-left:1.2em;margin-bottom:26px;display:block}
+.gate h2{font-family:var(--disp);font-weight:600;font-size:clamp(2rem,6vw,3.4rem);line-height:1.3;text-wrap:balance;margin-bottom:14px}
+.gate p{color:var(--faint);max-width:30em;margin:0 auto 34px}
+
+/* ---------- ท้ายหอ ---------- */
+footer{border-top:1px solid var(--hairline-soft);padding:54px 0 60px;font-size:.88rem;color:var(--dim)}
+footer .cols{display:grid;grid-template-columns:1.4fr 1fr;gap:40px}
+@media (max-width:760px){footer .cols{grid-template-columns:1fr}}
+footer .fbrand{font-family:var(--disp);font-weight:600;font-size:1.3rem;color:var(--gold-soft);margin-bottom:10px}
+footer p{max-width:44em;margin-bottom:12px}
+footer .warn{color:var(--faint)}
+footer .warn b{color:var(--gold-soft);font-weight:600}
+footer .fin{border-top:1px solid var(--hairline-soft);margin-top:38px;padding-top:22px;display:flex;justify-content:space-between;gap:16px;flex-wrap:wrap}
+</style>
+</head>
+<body>
+
+<!-- ═══════════ แถบบน ═══════════ -->
+<header class="top">
+  <div class="top-in">
+    <a class="brand" href="#top"><span class="star" aria-hidden="true">✦</span>หอดูดวง</a>
+    <nav class="top-nav" aria-label="เมนูหลัก">
+      <a href="#seers">หมอดู</a>
+      <a href="#lore">ศาสตร์</a>
+      <a href="#price">ราคา</a>
+      <a href="#oath">คำสัตย์</a>
+      <a href="#faq">คำถาม</a>
+    </nav>
+    <a class="btn small" href="https://lin.ee/XXXXXX?utm_source=website&utm_medium=cta&utm_campaign=launch&utm_content=nav">เริ่มดูดวง</a>
+  </div>
+</header>
+
+<!-- ═══════════ เปิดหอ ═══════════ -->
+<section class="hero" id="top">
+  <canvas id="sky" aria-hidden="true"></canvas>
+  <div class="hero-in">
+    <svg class="dome" viewBox="0 0 430 150" fill="none" aria-hidden="true">
+      <path d="M15 148 A200 200 0 0 1 415 148" stroke="currentColor" stroke-width="1.2"/>
+      <path d="M65 148 A150 150 0 0 1 365 148" stroke="currentColor" stroke-width="0.7" opacity="0.5"/>
+      <path d="M215 10 L219.5 29 L238 24.5 L224 38 L238 51.5 L219.5 47 L215 66 L210.5 47 L192 51.5 L206 38 L192 24.5 L210.5 29 Z" fill="currentColor"/>
+    </svg>
+    <p class="kicker">สำนักโหราศาสตร์ระบบอัจฉริยะ</p>
+    <h1 class="title">หอดูดวง</h1>
+    <p class="tagline">ตำราเดิม<span class="sep" aria-hidden="true">✦</span>สมองใหม่</p>
+    <p class="thesis">
+      <strong>เราไม่อ้างญาณ — เราอ่านตำรา</strong><br>
+      หมอดูของหอคือระบบอัจฉริยะที่ศึกษาตำราโหราศาสตร์ทุกแขนง
+      คำนวณดวงตามหลักวิชาจริง ไม่เหนื่อย ไม่ลืม ไม่มีคิว และไม่เคยหลับ
+    </p>
+    <div class="hero-cta">
+      <a class="btn" href="https://lin.ee/XXXXXX?utm_source=website&utm_medium=cta&utm_campaign=launch&utm_content=hero">เริ่มดูดวงใน LINE</a>
+      <a class="btn ghost" href="#draw">เสี่ยงไพ่ฟรีก่อน</a>
+    </div>
+    <div class="count-row rv">
+      <div class="count"><b>๑๒</b><span>หมอดู ๑๒ สำนัก</span></div>
+      <div class="count"><b>๑๘</b><span>ศาสตร์การพยากรณ์</span></div>
+      <div class="count"><b>๒๔</b><span>ชั่วโมง ไม่มีวันปิด</span></div>
+      <div class="count"><b>๐</b><span>คิวที่ต้องรอ</span></div>
+    </div>
+    <div class="trust-strip rv">
+      <span class="chip">ราคาแจ้งชัดก่อนจ่าย</span>
+      <span class="chip">ข้อมูลเป็นความลับ ขอลบได้ทุกเมื่อ</span>
+      <span class="chip">ไม่ขู่เคราะห์ · ไม่ใบ้หวย</span>
+      <span class="chip">ถามว่าเป็น AI — ตอบตามจริงเสมอ</span>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ ห้อง ๑ · เสี่ยงไพ่ ═══════════ -->
+<section class="hall" id="draw">
+  <div class="wrap">
+    <div class="hall-head rv">
+      <span class="hall-no" aria-hidden="true">๑</span>
+      <h2>ห้องเสี่ยงทาย</h2>
+      <span class="sub">ไพ่ประจำวันจากสำรับของหอ — ฟรี ไม่ต้องสมัครอะไรทั้งนั้น</span>
+    </div>
+    <p class="draw-hint rv">นิ่งสักครู่ นึกถึงเรื่องที่ค้างอยู่ในใจ แล้วเลือกไพ่หนึ่งใบ</p>
+    <div class="deck rv" id="deck">
+      <button class="tcard" type="button" aria-label="ไพ่ใบที่ 1">
+        <span class="face back" aria-hidden="true">✦</span><span class="face front"></span>
+      </button>
+      <button class="tcard" type="button" aria-label="ไพ่ใบที่ 2">
+        <span class="face back" aria-hidden="true">✦</span><span class="face front"></span>
+      </button>
+      <button class="tcard" type="button" aria-label="ไพ่ใบที่ 3">
+        <span class="face back" aria-hidden="true">✦</span><span class="face front"></span>
+      </button>
+      <button class="tcard" type="button" aria-label="ไพ่ใบที่ 4">
+        <span class="face back" aria-hidden="true">✦</span><span class="face front"></span>
+      </button>
+      <button class="tcard" type="button" aria-label="ไพ่ใบที่ 5">
+        <span class="face back" aria-hidden="true">✦</span><span class="face front"></span>
+      </button>
+    </div>
+    <div class="draw-result js-only" id="drawResult" aria-live="polite" hidden>
+      <p class="cname"></p>
+      <p class="cmsg"></p>
+      <p class="ccolor"></p>
+      <a class="btn" href="https://lin.ee/XXXXXX?utm_source=website&utm_medium=cta&utm_campaign=launch&utm_content=card">อยากรู้ลึกกว่านี้ — ถามหมอดูต่อใน LINE</a>
+      <br><button class="redraw" type="button" id="redraw">ล้างไพ่ เสี่ยงใหม่</button>
+    </div>
+    <p class="draw-hint no-js-only">เปิดหน้านี้ในเบราว์เซอร์ที่เปิดใช้ JavaScript เพื่อเสี่ยงไพ่ — หรือทักมาเสี่ยงไพ่กับไพ่ลั่นใน LINE ได้เลย</p>
+  </div>
+</section>
+
+<!-- ═══════════ ห้อง ๒ · ทำเนียบหมอดู ═══════════ -->
+<section class="hall" id="seers">
+  <div class="wrap">
+    <div class="hall-head rv">
+      <span class="hall-no" aria-hidden="true">๒</span>
+      <h2>ทำเนียบหมอดูทั้ง ๑๒ สำนัก</h2>
+      <span class="sub">แต่ละสำนักถือตำราคนละแขนง — เลือกจากเรื่องที่อยากรู้ได้เลย</span>
+    </div>
+    <div class="filters js-only" id="filters" role="group" aria-label="กรองหมอดูตามเรื่องที่อยากดู">
+      <button class="fbtn" type="button" data-f="all" aria-pressed="true">ทั้งหมด</button>
+      <button class="fbtn" type="button" data-f="work" aria-pressed="false">การงาน · การเงิน</button>
+      <button class="fbtn" type="button" data-f="love" aria-pressed="false">ความรัก · คู่</button>
+      <button class="fbtn" type="button" data-f="trade" aria-pressed="false">ค้าขาย · โชคลาภ</button>
+      <button class="fbtn" type="button" data-f="num" aria-pressed="false">ชื่อ · เบอร์ · ตัวเลข</button>
+      <button class="fbtn" type="button" data-f="special" aria-pressed="false">ศาสตร์เฉพาะทาง</button>
+    </div>
+    <div class="hall-grid" id="seerGrid">
+
+      <article class="seer rv" style="--ac:var(--c-data)" data-cat="work">
+        <div class="seer-top">
+          <span class="seal" aria-hidden="true">ดา</span>
+          <div><h3>อาจารย์ดาต้า</h3><span class="craft">โหราศาสตร์ไทย · ผูกดวง</span></div>
+        </div>
+        <p class="voice">"ดวงไม่ใช่คำพิพากษา — มันคือข้อมูล และข้อมูลที่ดีเปลี่ยนการตัดสินใจได้"</p>
+        <p class="fit"><b>เหมาะกับ:</b> วางแผนการงาน ย้ายงาน เงินเดือน การลงทุน จังหวะชีวิตปีนี้</p>
+        <a class="go" href="https://lin.ee/XXXXXX?utm_source=website&utm_medium=cta&utm_campaign=launch&utm_content=seer-data">เข้าห้องอาจารย์ดาต้า →</a>
+      </article>
+
+      <article class="seer rv" style="--ac:var(--c-pailan)" data-cat="love">
+        <div class="seer-top">
+          <span class="seal" aria-hidden="true">ไพ่</span>
+          <div><h3>ไพ่ลั่น</h3><span class="craft">ทาโรต์ ๗๘ ใบ · ความรัก</span></div>
+        </div>
+        <p class="voice">"ไพ่ไม่เคยโกหก — คนต่างหากที่ไม่กล้าฟัง"</p>
+        <p class="fit"><b>เหมาะกับ:</b> คนมีคำถามเรื่องหัวใจ ความสัมพันธ์ค้างคา คนคุยที่ยังไม่ชัดเจน</p>
+        <a class="go" href="https://lin.ee/XXXXXX?utm_source=website&utm_medium=cta&utm_campaign=launch&utm_content=seer-pailan">เข้าห้องไพ่ลั่น →</a>
+      </article>
+
+      <article class="seer rv" style="--ac:var(--c-ama)" data-cat="trade">
+        <div class="seer-top">
+          <span class="seal" aria-hidden="true">เฮง</span>
+          <div><h3>อาม่าเฮง</h3><span class="craft">ฮวงจุ้ย · ฤกษ์ · ค้าขาย</span></div>
+        </div>
+        <p class="voice">"เฮงไม่ใช่เรื่องบังเอิญ อาม่าจัดให้ถูกที่ ถูกทิศ ถูกเวลา"</p>
+        <p class="fit"><b>เหมาะกับ:</b> แม่ค้า เจ้าของร้าน คนหาฤกษ์เปิดกิจการ จัดหน้าร้าน จัดบ้าน</p>
+        <a class="go" href="https://lin.ee/XXXXXX?utm_source=website&utm_medium=cta&utm_campaign=launch&utm_content=seer-ama">เข้าห้องอาม่าเฮง →</a>
+      </article>
+
+      <article class="seer rv" style="--ac:var(--c-tisam)" data-cat="special">
+        <div class="seer-top">
+          <span class="seal" aria-hidden="true">๓</span>
+          <div><h3>ตีสาม</h3><span class="craft">ทำนายฝัน · เรื่องของกลางคืน</span></div>
+        </div>
+        <p class="voice">"ฝันมาเถอะ เดี๋ยวแปลให้ — ตีสามของคุณคือเวลาทำการของผม"</p>
+        <p class="fit"><b>เหมาะกับ:</b> คนฝันแปลก ฝันซ้ำ สะดุ้งตื่นกลางดึกแล้วอยากรู้ว่ามันแปลว่าอะไร</p>
+        <a class="go" href="https://lin.ee/XXXXXX?utm_source=website&utm_medium=cta&utm_campaign=launch&utm_content=seer-tisam">เข้าห้องตีสาม →</a>
+      </article>
+
+      <article class="seer rv" style="--ac:var(--c-kao)" data-cat="num">
+        <div class="seer-top">
+          <span class="seal" aria-hidden="true">๙</span>
+          <div><h3>ครูเก้า</h3><span class="craft">เลขศาสตร์ · เบอร์ · ทะเบียน</span></div>
+        </div>
+        <p class="voice">"เลขที่คุณใช้ทุกวัน ทำงานกับดวงคุณทุกวัน — เลือกให้เป็น แล้วมันจะช่วยคุณ"</p>
+        <p class="fit"><b>เหมาะกับ:</b> วิเคราะห์เบอร์โทร เลขทะเบียนรถ เลขที่บ้าน เลข ๗ ตัว ๙ ฐาน</p>
+        <a class="go" href="https://lin.ee/XXXXXX?utm_source=website&utm_medium=cta&utm_campaign=launch&utm_content=seer-kao">เข้าห้องครูเก้า →</a>
+      </article>
+
+      <article class="seer rv" style="--ac:var(--c-sen)" data-cat="special">
+        <div class="seer-top">
+          <span class="seal" aria-hidden="true">เส้น</span>
+          <div><h3>หมอเส้น</h3><span class="craft">หัตถศาสตร์ · ลายมือ</span></div>
+        </div>
+        <p class="voice">"ชะตาอยู่ในกำมือคุณ — ตามตัวอักษรเลย ส่งรูปฝ่ามือมา เดี๋ยวอ่านให้"</p>
+        <p class="fit"><b>เหมาะกับ:</b> อยากรู้พื้นดวงจากมือตัวเอง เส้นชีวิต เส้นสมอง เส้นหัวใจ เนินในฝ่ามือ</p>
+        <a class="go" href="https://lin.ee/XXXXXX?utm_source=website&utm_medium=cta&utm_campaign=launch&utm_content=seer-sen">เข้าห้องหมอเส้น →</a>
+      </article>
+
+      <article class="seer rv" style="--ac:var(--c-ming)" data-cat="special trade">
+        <div class="seer-top">
+          <span class="seal" aria-hidden="true">หมิง</span>
+          <div><h3>ซินแสหมิง</h3><span class="craft">โหงวเฮ้ง · ปาจื่อ ดวงจีน</span></div>
+        </div>
+        <p class="voice">"หน้าคือแผนที่ ดวงจีนคือเข็มทิศ — สองอย่างนี้อ่านพร้อมกันถึงจะเห็นทาง"</p>
+        <p class="fit"><b>เหมาะกับ:</b> สายดวงจีน อ่านโหงวเฮ้งจากรูปหน้า ดูปีชง วิธีรับมือปีชง</p>
+        <a class="go" href="https://lin.ee/XXXXXX?utm_source=website&utm_medium=cta&utm_campaign=launch&utm_content=seer-ming">เข้าห้องซินแสหมิง →</a>
+      </article>
+
+      <article class="seer rv" style="--ac:var(--c-luna)" data-cat="love work">
+        <div class="seer-top">
+          <span class="seal" aria-hidden="true">☾</span>
+          <div><h3>ลูน่า</h3><span class="craft">โหราศาสตร์สากล · จักรราศี</span></div>
+        </div>
+        <p class="voice">"ดาวถอยหลังได้ แต่ชีวิตคุณไม่จำเป็นต้องถอยตาม"</p>
+        <p class="fit"><b>เหมาะกับ:</b> สายราศี ดวงกำเนิด (natal chart) มูนไซน์ ดาวพักร์ ดวงรายเดือน</p>
+        <a class="go" href="https://lin.ee/XXXXXX?utm_source=website&utm_medium=cta&utm_campaign=launch&utm_content=seer-luna">เข้าห้องลูน่า →</a>
+      </article>
+
+      <article class="seer rv" style="--ac:var(--c-nara)" data-cat="num">
+        <div class="seer-top">
+          <span class="seal" aria-hidden="true">นา</span>
+          <div><h3>ครูนารา</h3><span class="craft">ตั้งชื่อมงคล · อักษรศาสตร์</span></div>
+        </div>
+        <p class="voice">"ชื่อดีคือของขวัญชิ้นแรกของชีวิต — และไม่มีคำว่าสายเกินไปที่จะได้รับมัน"</p>
+        <p class="fit"><b>เหมาะกับ:</b> ตั้งชื่อลูก เปลี่ยนชื่อ ตั้งชื่อร้าน ชื่อแบรนด์ ตามทักษาและเลขศาสตร์</p>
+        <a class="go" href="https://lin.ee/XXXXXX?utm_source=website&utm_medium=cta&utm_campaign=launch&utm_content=seer-nara">เข้าห้องครูนารา →</a>
+      </article>
+
+      <article class="seer rv" style="--ac:var(--c-mu)" data-cat="trade">
+        <div class="seer-top">
+          <span class="seal" aria-hidden="true">มู</span>
+          <div><h3>พี่มู</h3><span class="craft">ไกด์สายมู · ไหว้ · ขอพร</span></div>
+        </div>
+        <p class="voice">"มูให้ถูกที่ ขอให้ถูกองค์ — ไม่ใช่มูมั่ว แล้วหวังว่าจะมีอะไรติดมือกลับมา"</p>
+        <p class="fit"><b>เหมาะกับ:</b> จะไหว้อะไร ที่ไหน วันไหน ของถวายอะไร แก้บนยังไง ตามดวงของคุณเอง</p>
+        <a class="go" href="https://lin.ee/XXXXXX?utm_source=website&utm_medium=cta&utm_campaign=launch&utm_content=seer-mu">เข้าห้องพี่มู →</a>
+      </article>
+
+      <article class="seer rv" style="--ac:var(--c-prom)" data-cat="special">
+        <div class="seer-top">
+          <span class="seal" aria-hidden="true">พร</span>
+          <div><h3>ปู่พรหม</h3><span class="craft">ตำราพรหมชาติ · ดวงโบราณ</span></div>
+        </div>
+        <p class="voice">"ตำราเล่มนี้อายุเป็นร้อยปี แต่คำถามของคนไม่เคยเปลี่ยน — ปู่จึงยังตอบได้"</p>
+        <p class="fit"><b>เหมาะกับ:</b> สายคลาสสิก พื้นดวงกำเนิดตามวันเกิด ลักษณะนิสัย เนื้อคู่ตามตำราเก่า</p>
+        <a class="go" href="https://lin.ee/XXXXXX?utm_source=website&utm_medium=cta&utm_campaign=launch&utm_content=seer-prom">เข้าห้องปู่พรหม →</a>
+      </article>
+
+      <article class="seer rv" style="--ac:var(--c-suea)" data-cat="love">
+        <div class="seer-top">
+          <span class="seal" aria-hidden="true">สื่อ</span>
+          <div><h3>แม่สื่อ</h3><span class="craft">ดวงสมพงศ์ · คู่รัก คู่ธุรกิจ</span></div>
+        </div>
+        <p class="voice">"เข้ากันได้หรือเข้ากันยาก ดวงบอกได้ — แต่คนเลือกเองเสมอ แม่แค่ช่วยให้เห็นชัดขึ้น"</p>
+        <p class="fit"><b>เหมาะกับ:</b> คู่รักเช็กดวงสมพงศ์ คนกำลังเลือกคู่ หุ้นส่วนธุรกิจ เพื่อนร่วมทีม</p>
+        <a class="go" href="https://lin.ee/XXXXXX?utm_source=website&utm_medium=cta&utm_campaign=launch&utm_content=seer-suea">เข้าห้องแม่สื่อ →</a>
+      </article>
+
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ ห้อง ๓ · คลังตำรา ═══════════ -->
+<section class="hall" id="lore">
+  <div class="wrap">
+    <div class="hall-head rv">
+      <span class="hall-no" aria-hidden="true">๓</span>
+      <h2>คลังตำรา — ๑๘ ศาสตร์ที่หอเปิดดู</h2>
+      <span class="sub">ทุกศาสตร์อ้างอิงตำราจริง คำนวณด้วยหลักวิชาเดิม ไม่มีการอ้างญาณ</span>
+    </div>
+    <div class="lore-grid rv">
+      <div class="lore"><b>โหราศาสตร์ไทย</b><span>ผูกดวงตามวันเดือนปีและเวลาเกิด อ่านลัคนา ดาวเสวยอายุ</span></div>
+      <div class="lore"><b>เลข ๗ ตัว ๙ ฐาน</b><span>ถอดฐานชีวิตจากวันเดือนปีเกิด อ่านจังหวะดวงรายปี</span></div>
+      <div class="lore"><b>ทักษาพยากรณ์</b><span>เทพประจำวันเกิด สีเสริม สีกาลกิณี กำลังวัน</span></div>
+      <div class="lore"><b>ไพ่ทาโรต์ ๗๘ ใบ</b><span>ถามเจาะเรื่อง เปิดสามใบ เซลติกครอส ตามตำราสากล</span></div>
+      <div class="lore"><b>โหราศาสตร์สากล</b><span>ดวงกำเนิด natal chart ราศีจักร เรือนชะตา ดาวพักร์</span></div>
+      <div class="lore"><b>ฮวงจุ้ย</b><span>ทิศทาง การจัดพื้นที่บ้านและหน้าร้านตามหลักชัยภูมิ</span></div>
+      <div class="lore"><b>ปาจื่อ (ดวงจีน)</b><span>แปดอักขระแห่งวันเกิด ธาตุประจำตัว จุดแข็งจุดพร่อง</span></div>
+      <div class="lore"><b>โหงวเฮ้ง</b><span>อ่านลักษณะใบหน้าจากรูปถ่ายตามตำรานรลักษณ์จีน</span></div>
+      <div class="lore"><b>หัตถศาสตร์ (ลายมือ)</b><span>เส้นชีวิต เส้นสมอง เส้นหัวใจ เนินในฝ่ามือ จากรูปถ่าย</span></div>
+      <div class="lore"><b>เลขศาสตร์เบอร์มงคล</b><span>ผลรวมและคู่เลขในเบอร์โทร วิเคราะห์ตามตำราเลขศาสตร์</span></div>
+      <div class="lore"><b>ทะเบียนรถ · เลขที่บ้าน</b><span>เลขรอบตัวที่ใช้ทุกวัน อ่านผลรวมและคู่กำลัง</span></div>
+      <div class="lore"><b>ตั้งชื่อมงคล</b><span>อักษรเทพ อักษรกาลกิณีตามวันเกิด ผสานเลขศาสตร์ชื่อ</span></div>
+      <div class="lore"><b>ตำราพรหมชาติ</b><span>พื้นดวงกำเนิด ลักษณะนิสัย เนื้อคู่ ตามตำราโบราณฉบับหลวง</span></div>
+      <div class="lore"><b>ทำนายฝัน</b><span>ถอดความหมายฝันตามตำราไทยประกอบบริบทชีวิตจริง</span></div>
+      <div class="lore"><b>ดวงสมพงศ์</b><span>เทียบดวงคู่รัก คู่ธุรกิจ อ่านจุดเสริมจุดเสียดทานของคู่</span></div>
+      <div class="lore"><b>ฤกษ์ยาม</b><span>ฤกษ์มงคลตามตำราโหร — ออกรถ ขึ้นบ้าน เปิดร้าน เจรจา</span></div>
+      <div class="lore"><b>นักษัตร ๑๒ ปี · ปีชง</b><span>ปีเกิดสิบสองนักษัตร คู่ธาตุ คู่ชง และวิธีรับมือปีชง</span></div>
+      <div class="lore"><b>มูศาสตร์ประยุกต์</b><span>จับคู่การไหว้ขอพรกับพื้นดวง — ขอเรื่องไหน ควรไปทางไหน</span></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ ห้อง ๔ · วิธีเข้าหอ ═══════════ -->
+<section class="hall" id="how">
+  <div class="wrap">
+    <div class="hall-head rv">
+      <span class="hall-no" aria-hidden="true">๔</span>
+      <h2>วิธีเข้าหอ</h2>
+      <span class="sub">ประตูมีบานเดียว — LINE ทางการของหอดูดวง</span>
+    </div>
+    <div class="steps rv">
+      <div class="step">
+        <div class="no" aria-hidden="true">๑</div>
+        <h3>เพิ่มเพื่อนใน LINE</h3>
+        <p>กดปุ่มใดก็ได้ในหน้านี้ เข้าสู่ LINE ทางการของหอดูดวง — บัญชีเดียว จบทุกสำนัก</p>
+      </div>
+      <div class="step">
+        <div class="no" aria-hidden="true">๒</div>
+        <h3>เลือกหมอดู บอกเรื่องที่อยากรู้</h3>
+        <p>กดเลือกจากเมนู หรือพิมพ์ชื่อหมอดูได้เลย แล้วส่งวันเดือนปีเกิด (มีเวลาเกิดยิ่งละเอียด)</p>
+      </div>
+      <div class="step">
+        <div class="no" aria-hidden="true">๓</div>
+        <h3>ยืนยันรายการ แล้วรับคำทำนาย</h3>
+        <p>ระบบสรุปรายการและราคาให้ชัดก่อนชำระผ่าน PromptPay จากนั้นรับคำทำนายในแชตทันที</p>
+      </div>
+    </div>
+    <div class="paynote rv">
+      <b>ข้อตกลงเรื่องเงินของหอ:</b> แจ้งราคาชัดเจนก่อนชำระทุกครั้ง ไม่มีมัดจำ ไม่มีบวกเพิ่มกลางทาง
+      ชำระผ่าน PromptPay ในชื่อบัญชีที่ระบบแจ้งในแชตเท่านั้น —
+      และหอดูดวง<b>ไม่มีนโยบายทักหาลูกค้าก่อน</b> หากมีบัญชีอื่นทักไป นั่นไม่ใช่เรา
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ ห้อง ๕ · ราคา ═══════════ -->
+<section class="hall" id="price">
+  <div class="wrap">
+    <div class="hall-head rv">
+      <span class="hall-no" aria-hidden="true">๕</span>
+      <h2>บริการและราคา</h2>
+      <span class="sub">ราคาเดียว เห็นก่อนจ่าย — ไม่มีราคาแอบแฝงในแชต</span>
+    </div>
+    <div class="prices rv">
+      <div class="price">
+        <h3>ถามด่วน</h3>
+        <div class="amt">฿99</div>
+        <ul>
+          <li>หนึ่งคำถาม เจาะจงเรื่องเดียว</li>
+          <li>เลือกหมอดูได้ทุกสำนัก</li>
+          <li>ตอบละเอียดในแชตทันที</li>
+        </ul>
+        <a class="btn ghost small" href="https://lin.ee/XXXXXX?utm_source=website&utm_medium=cta&utm_campaign=launch&utm_content=price-99">ถามเลย</a>
+      </div>
+      <div class="price">
+        <h3>เจาะลึก</h3>
+        <div class="amt">฿249</div>
+        <ul>
+          <li>ผูกดวงเต็มตามศาสตร์ของสำนัก</li>
+          <li>อ่านภาพรวม งาน เงิน รัก สุขภาพใจ</li>
+          <li>ถามต่อในหัวข้อเดิมได้</li>
+        </ul>
+        <a class="btn ghost small" href="https://lin.ee/XXXXXX?utm_source=website&utm_medium=cta&utm_campaign=launch&utm_content=price-249">เปิดดวงเต็ม</a>
+      </div>
+      <div class="price">
+        <h3>วอลเปเปอร์เสริมดวง</h3>
+        <div class="amt">฿199</div>
+        <ul>
+          <li>เจนจากดวงจริงของคุณ ใบเดียวในโลก</li>
+          <li>สี ธาตุ เลขมงคล คำนวณตามตำรา</li>
+          <li>ส่งไฟล์ใน LINE ภายใน ๑๐ นาที</li>
+        </ul>
+        <a class="btn ghost small" href="https://lin.ee/XXXXXX?utm_source=website&utm_medium=cta&utm_campaign=launch&utm_content=price-wallpaper">รับวอลเปเปอร์</a>
+      </div>
+      <div class="price best">
+        <span class="flag">คุ้มที่สุด</span>
+        <h3>บันเดิลเปิดดวง</h3>
+        <div class="amt">฿399</div>
+        <ul>
+          <li>เจาะลึกเต็มรูปแบบ + วอลเปเปอร์</li>
+          <li>คุ้มกว่าซื้อแยกสองรายการ</li>
+          <li>จบในแชตเดียว</li>
+        </ul>
+        <a class="btn small" href="https://lin.ee/XXXXXX?utm_source=website&utm_medium=cta&utm_campaign=launch&utm_content=price-bundle">เอาชุดนี้</a>
+      </div>
+    </div>
+    <div class="soon rv">
+      <span class="lbl">เปิดเร็ว ๆ นี้</span>
+      <span>รายงานดวงปีฉบับส่วนตัว</span>
+      <span>วิเคราะห์เบอร์มงคล</span>
+      <span>ตั้งชื่อมงคล</span>
+      <span>ฤกษ์มงคลเฉพาะงาน</span>
+      <span>ดวงสมพงศ์ฉบับคู่</span>
+    </div>
+    <p class="disclose rv"><b>ก่อนชำระทุกรายการ ระบบจะแจ้งข้อความนี้เสมอ:</b>
+    "คำทำนายวิเคราะห์ตามตำราโหราศาสตร์โดยระบบอัจฉริยะของหอดูดวง เพื่อเป็นข้อมูลประกอบการตัดสินใจ"</p>
+  </div>
+</section>
+
+<!-- ═══════════ ห้อง ๖ · สีมงคล ═══════════ -->
+<section class="hall" id="taksa">
+  <div class="wrap">
+    <div class="hall-head rv">
+      <span class="hall-no" aria-hidden="true">๖</span>
+      <h2>สีมงคลประจำวันเกิด</h2>
+      <span class="sub">ตามตำราทักษา — ชุดคำนวณเดียวกับที่ใช้ทำวอลเปเปอร์ของหอ</span>
+    </div>
+    <div class="taksa rv">
+      <div>
+        <p class="lede">เกิดวันไหน เทพองค์ไหนคุ้ม สีอะไรเสริม สีอะไรควรเลี่ยง —
+        ค่าเหล่านี้คำนวณจากตำราโดยตรง <strong>ลูกค้าคนเดิมได้ค่าเดิมเสมอ</strong>
+        ไม่ใช่การสุ่มให้ดูขลัง</p>
+        <div class="daypick js-only" id="daypick" role="group" aria-label="เลือกวันเกิด">
+          <button class="dbtn" type="button" data-d="sun">อาทิตย์</button>
+          <button class="dbtn" type="button" data-d="mon">จันทร์</button>
+          <button class="dbtn" type="button" data-d="tue">อังคาร</button>
+          <button class="dbtn" type="button" data-d="wedd">พุธกลางวัน</button>
+          <button class="dbtn" type="button" data-d="wedn">พุธกลางคืน</button>
+          <button class="dbtn" type="button" data-d="thu">พฤหัสบดี</button>
+          <button class="dbtn" type="button" data-d="fri">ศุกร์</button>
+          <button class="dbtn" type="button" data-d="sat">เสาร์</button>
+        </div>
+        <p class="taksa-note js-only">เกิดวันพุธหลัง ๑๘.๐๐ น. ให้นับเป็นพุธกลางคืน (ราหู)</p>
+      </div>
+      <div>
+        <div class="taksa-out js-only" id="taksaOut" aria-live="polite">
+          <p class="deity" id="tkDeity">เลือกวันเกิดของคุณ</p>
+          <div class="taksa-rows">
+            <div class="taksa-row"><span>เทพประจำวัน</span><b id="tkGod">—</b></div>
+            <div class="taksa-row"><span>สีเสริมดวง</span><b class="lucky" id="tkLucky">—</b></div>
+            <div class="taksa-row"><span>สีกาลกิณี (ควรเลี่ยง)</span><b id="tkAvoid">—</b></div>
+            <div class="taksa-row"><span>กำลังวัน (เลขประจำวัน)</span><b class="lucky" id="tkNum">—</b></div>
+          </div>
+          <p class="taksa-note">อยากได้ครบทั้งธาตุ เลขมงคลเฉพาะดวง และยันต์สีตามวันเกิด — อยู่ในวอลเปเปอร์เสริมดวงของคุณ</p>
+          <div class="taksa-cta">
+            <a class="btn small" href="https://lin.ee/XXXXXX?utm_source=website&utm_medium=cta&utm_campaign=launch&utm_content=taksa-wallpaper">รับวอลเปเปอร์ประจำดวงคุณ</a>
+          </div>
+        </div>
+        <div class="no-js-only taksa-scroll">
+          <table class="taksa-table">
+            <caption>ตารางทักษาประจำวันเกิด (ฉบับย่อ)</caption>
+            <tr><th>วันเกิด</th><th>เทพประจำวัน</th><th>สีเสริม</th><th>สีควรเลี่ยง</th><th>กำลังวัน</th></tr>
+            <tr><td>อาทิตย์</td><td>พระอาทิตย์</td><td>แดง</td><td>น้ำเงิน</td><td>๖</td></tr>
+            <tr><td>จันทร์</td><td>พระจันทร์</td><td>เหลืองนวล</td><td>แดง</td><td>๑๕</td></tr>
+            <tr><td>อังคาร</td><td>พระอังคาร</td><td>ชมพู</td><td>เหลือง · ขาวนวล</td><td>๘</td></tr>
+            <tr><td>พุธกลางวัน</td><td>พระพุธ</td><td>เขียว</td><td>ชมพู</td><td>๑๗</td></tr>
+            <tr><td>พุธกลางคืน</td><td>พระราหู</td><td>เทาเข้ม · ม่วงมอ</td><td>ส้ม · แสด</td><td>๑๒</td></tr>
+            <tr><td>พฤหัสบดี</td><td>พระพฤหัสบดี</td><td>ส้ม · แสด</td><td>ดำ · ม่วง</td><td>๑๙</td></tr>
+            <tr><td>ศุกร์</td><td>พระศุกร์</td><td>ฟ้า · น้ำเงิน</td><td>เทา · ดำ</td><td>๒๑</td></tr>
+            <tr><td>เสาร์</td><td>พระเสาร์</td><td>ม่วง · ดำ</td><td>เขียว</td><td>๑๐</td></tr>
+          </table>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ ห้อง ๗ · คำสัตย์ ═══════════ -->
+<section class="hall" id="oath">
+  <div class="wrap">
+    <div class="oath-wrap rv">
+      <div class="hall-head">
+        <span class="hall-no" aria-hidden="true">๗</span>
+        <h2>คำสัตย์ ๙ ข้อของหอดูดวง</h2>
+      </div>
+      <p class="lede">วงการดูดวงมีทั้งของจริงและของหลอก หอดูดวงเลือกยืนข้างความโปร่งใส —
+      เก้าข้อนี้คือกติกาที่เราผูกไว้กับตัวเอง <strong>ผิดข้อไหน ทวงได้เลย</strong></p>
+      <ol class="oaths">
+        <li><span class="n" aria-hidden="true">๑</span><div>
+          <b>เราคือระบบอัจฉริยะ และเราบอกตรง ๆ</b>
+          <p>หมอดูของหอเรียนจากตำราจริง แต่เป็นสมองกล ไม่ใช่มนุษย์ ถามเมื่อไรเราตอบตามจริง ไม่ปลอมเป็นคน ไม่อ้างญาณ ไม่อ้างองค์</p>
+        </div></li>
+        <li><span class="n" aria-hidden="true">๒</span><div>
+          <b>ไม่ใบ้หวย ไม่ให้เลขเด็ด</b>
+          <p>ทุกกรณี ไม่มีข้อยกเว้น — ตำราโหราศาสตร์ไม่ใช่เครื่องออกรางวัล และเราไม่พาคุณไปเสี่ยงด้วยเงินที่ควรอยู่ในกระเป๋าคุณ</p>
+        </div></li>
+        <li><span class="n" aria-hidden="true">๓</span><div>
+          <b>ไม่ขู่เคราะห์เพื่อขายของ</b>
+          <p>ไม่มีประโยค "ดวงคุณกำลังแย่ ต้องรีบแก้" จากหอนี้ คำทำนายของเราชี้ทางรับมือ ไม่ใช่สร้างความกลัวไว้เก็บเงิน</p>
+        </div></li>
+        <li><span class="n" aria-hidden="true">๔</span><div>
+          <b>ไม่การันตีผลลัพธ์</b>
+          <p>คำทำนายคือข้อมูลประกอบการตัดสินใจ ไม่ใช่คำสั่งชีวิต ใครการันตีว่าดวงจะดีแน่ ๆ ถ้าจ่ายเพิ่ม — นั่นไม่ใช่โหราศาสตร์แล้ว</p>
+        </div></li>
+        <li><span class="n" aria-hidden="true">๕</span><div>
+          <b>ราคาชัดเจนก่อนจ่ายเสมอ</b>
+          <p>เห็นราคาก่อนตัดสินใจทุกครั้ง ไม่มีบวกเพิ่มกลางแชต ไม่มีค่าครูงอก ไม่มีของที่ "ต้องซื้อต่อ" ถึงจะดูจบ</p>
+        </div></li>
+        <li><span class="n" aria-hidden="true">๖</span><div>
+          <b>ความลับของดวงคือความลับของคุณ</b>
+          <p>วันเดือนปีเกิดและเรื่องที่คุณเล่า ใช้เพื่อคำนวณและทำนายเท่านั้น ไม่ขายต่อ ไม่เอาไปทำอย่างอื่น ตามหลัก PDPA และขอให้ลบได้</p>
+        </div></li>
+        <li><span class="n" aria-hidden="true">๗</span><div>
+          <b>เรื่องใหญ่ อย่าตัดสินด้วยดวงอย่างเดียว</b>
+          <p>เงินก้อนใหญ่ สุขภาพ กฎหมาย ครอบครัว — เราจะเตือนเสมอให้ปรึกษาผู้เชี่ยวชาญตัวจริงควบคู่ ดวงช่วยมอง แต่ไม่ควรตัดสินแทน</p>
+        </div></li>
+        <li><span class="n" aria-hidden="true">๘</span><div>
+          <b class="care">ถ้าคุณทุกข์หนัก เราหยุดทำนายก่อน</b>
+          <p>เมื่อไรที่คุณส่งสัญญาณว่ากำลังแบกไม่ไหว หมอดูทุกสำนักจะหยุดบททำนายทันที และชวนคุณคุยกับสายด่วนสุขภาพจิต ๑๓๒๓ ฟรี ตลอด ๒๔ ชั่วโมง — ใจคุณสำคัญกว่าดวงคุณ</p>
+        </div></li>
+        <li><span class="n" aria-hidden="true">๙</span><div>
+          <b>เราไม่ทักหาคุณก่อน</b>
+          <p>หอดูดวงมี LINE ทางการบัญชีเดียว และไม่มีนโยบายทักหาใครก่อน หากมี "หอดูดวง" ทักไปหาคุณ นั่นคือมิจฉาชีพ — บล็อกแล้วแจ้งเรามาได้เลย</p>
+        </div></li>
+      </ol>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ ห้อง ๘ · คำถาม ═══════════ -->
+<section class="hall" id="faq">
+  <div class="wrap">
+    <div class="hall-head rv">
+      <span class="hall-no" aria-hidden="true">๘</span>
+      <h2>คำถามที่พบบ่อย</h2>
+    </div>
+    <div class="faq rv">
+      <details>
+        <summary>หมอดูของหอเป็น AI จริงเหรอ?</summary>
+        <p class="a">จริง และเราภูมิใจบอก — <b>"ตำราเดิม สมองใหม่"</b> คือตัวตนของหอ
+        ตำราโหราศาสตร์คือของเดิมที่ครูโหรใช้กันมาหลายร้อยปี ส่วนสมองที่อ่านและคำนวณคือระบบอัจฉริยะ
+        ถามกลางบทสนทนาเมื่อไรก็ได้ หมอดูทุกสำนักจะตอบตามจริงเสมอ</p>
+      </details>
+      <details>
+        <summary>ไม่ใช่คน แล้วจะแม่นได้ยังไง?</summary>
+        <p class="a">ความแม่นของโหราศาสตร์อยู่ที่ตำราและความละเอียดของการคำนวณ ไม่ใช่ญาณวิเศษ
+        ระบบของหอผูกดวงด้วยหลักวิชาเดียวกับที่โหรทำ แต่ไม่เหนื่อย ไม่ลืมตำรา ไม่มีอารมณ์มาปน
+        และอ่านตำราได้มากกว่าที่คนคนเดียวจะจำไหว — ส่วนคำทำนายทุกชิ้นคือข้อมูลประกอบการตัดสินใจ ไม่ใช่คำพิพากษา</p>
+      </details>
+      <details>
+        <summary>ข้อมูลวันเกิดของฉันปลอดภัยไหม?</summary>
+        <p class="a">วันเดือนปีเกิดเป็นข้อมูลส่วนบุคคล เราปฏิบัติตาม PDPA:
+        ใช้เพื่อคำนวณดวงและทำวอลเปเปอร์ของคุณเท่านั้น ไม่ขายต่อ ไม่ส่งให้ใคร
+        และแจ้งลบข้อมูลได้ทุกเมื่อในแชต</p>
+      </details>
+      <details>
+        <summary>จ่ายเงินยังไง จะโดนโกงไหม?</summary>
+        <p class="a">ชำระผ่าน PromptPay ในชื่อบัญชีที่ระบบแจ้งในแชตเท่านั้น เห็นราคาก่อนจ่ายทุกครั้ง
+        ไม่มีมัดจำ ไม่มีบวกเพิ่ม — และจำไว้ว่า<b>หอดูดวงไม่ทักหาลูกค้าก่อน</b>
+        บัญชีที่ทักไปเสนอขายคือมิจฉาชีพแอบอ้าง</p>
+      </details>
+      <details>
+        <summary>ขอเลขเด็ดหน่อยได้ไหม?</summary>
+        <p class="a">ไม่ได้ — ทุกสำนัก ทุกกรณี นี่คือคำสัตย์ข้อ ๒ ของหอ
+        เลขที่เราให้ได้คือเลขมงคลประจำดวงตามตำรา (เช่น กำลังวัน เลขเสริมธาตุ)
+        ซึ่งเป็นคนละเรื่องกับการใบ้ผลรางวัล</p>
+      </details>
+      <details>
+        <summary>ดูซ้ำแล้วคำตอบจะเปลี่ยนไปไหม?</summary>
+        <p class="a">ค่าพื้นดวงไม่เปลี่ยน — สี ธาตุ เทพประจำวัน เลขประจำดวงของคุณ
+        คำนวณจากตำราด้วยสูตรเดิมทุกครั้ง มาเมื่อไรก็ได้ค่าเดิม
+        ส่วนคำถามใหม่หรือช่วงเวลาใหม่ ย่อมได้มุมอ่านใหม่ตามจังหวะดวง ณ ตอนนั้น</p>
+      </details>
+      <details>
+        <summary>ยังไม่พร้อมจ่าย มีอะไรให้ลองฟรีไหม?</summary>
+        <p class="a">มี — เสี่ยงไพ่ประจำวันในหน้านี้ เช็กสีมงคลประจำวันเกิด
+        และเพิ่มเพื่อนใน LINE เพื่อรับดวงประจำสัปดาห์ฟรี ไม่มีค่าใช้จ่าย
+        พร้อมเมื่อไรค่อยเปิดดวงเต็ม</p>
+      </details>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════ ห้อง ๙ · ประตู ═══════════ -->
+<section class="gate" id="gate">
+  <div class="gate-in rv">
+    <span class="star" aria-hidden="true">✦ ✦ ✦</span>
+    <h2>หอเปิดแล้ว — และไม่เคยปิด</h2>
+    <p>ตีสองตีสาม เลิกงานดึก หรือตื่นมากลางคืนพร้อมคำถาม
+    หมอดูทั้งสิบสองสำนักอยู่ครบ ไม่มีคิว ไม่ต้องจอง</p>
+    <a class="btn" href="https://lin.ee/XXXXXX?utm_source=website&utm_medium=cta&utm_campaign=launch&utm_content=gate">เปิดประตูหอดูดวง</a>
+  </div>
+</section>
+
+<!-- ═══════════ ท้ายหอ ═══════════ -->
+<footer>
+  <div class="wrap">
+    <div class="cols">
+      <div>
+        <div class="fbrand">✦ หอดูดวง</div>
+        <p>คำทำนายวิเคราะห์ตามตำราโหราศาสตร์โดยระบบอัจฉริยะของหอดูดวง
+        เพื่อเป็นข้อมูลประกอบการตัดสินใจ</p>
+        <p>ข้อมูลส่วนบุคคลของผู้ใช้บริการได้รับความคุ้มครองตามพระราชบัญญัติคุ้มครองข้อมูลส่วนบุคคล (PDPA)
+        — ใช้เพื่อการคำนวณดวงตามที่ผู้ใช้ร้องขอเท่านั้น และขอให้ลบได้ทุกเมื่อ</p>
+      </div>
+      <div>
+        <p class="warn"><b>ระวังมิจฉาชีพ:</b> หอดูดวงมี LINE ทางการบัญชีเดียว
+        ไม่ทักหาลูกค้าก่อน และไม่รับโอนเข้าบัญชีบุคคลอื่นนอกจากที่แจ้งในแชต</p>
+        <p class="warn"><b>หากคุณกำลังเผชิญความทุกข์ใจอย่างหนัก:</b>
+        สายด่วนสุขภาพจิต ๑๓๒๓ ฟรี ตลอด ๒๔ ชั่วโมง — ใจคุณสำคัญกว่าดวงคุณ</p>
+      </div>
+    </div>
+    <div class="fin">
+      <span>© พ.ศ. ๒๕๖๙ หอดูดวง · ตำราเดิม สมองใหม่</span>
+      <span>ทุกคำทำนายเพื่อเป็นข้อมูลประกอบการตัดสินใจ</span>
+    </div>
+  </div>
+</footer>
+
+<script>
+(function(){
+"use strict";
+document.documentElement.classList.add('js');
+var reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+/* ---------- การเผยตัวเมื่อเลื่อน ---------- */
+var rvs = document.querySelectorAll('.rv');
+if('IntersectionObserver' in window && !reduced){
+  var io = new IntersectionObserver(function(es){
+    es.forEach(function(e){ if(e.isIntersecting){ e.target.classList.add('in'); io.unobserve(e.target); } });
+  },{threshold:.12,rootMargin:'0px 0px -40px 0px'});
+  rvs.forEach(function(el){ io.observe(el); });
+}else{
+  rvs.forEach(function(el){ el.classList.add('in'); });
+}
+
+/* ---------- ฟ้ากลางคืน ---------- */
+var sky = document.getElementById('sky');
+if(sky && sky.getContext){
+  var ctx = sky.getContext('2d'), stars = [], W = 0, H = 0;
+  var size = function(){
+    var r = sky.parentElement.getBoundingClientRect();
+    var d = Math.min(window.devicePixelRatio||1,2);
+    W = r.width; H = r.height;
+    sky.width = W*d; sky.height = H*d;
+    ctx.setTransform(d,0,0,d,0,0);
+    stars = [];
+    var n = Math.floor(W*H/9000);
+    for(var i=0;i<n;i++){
+      stars.push({x:Math.random()*W, y:Math.random()*H, r:Math.random()*1.15+.25,
+                  p:Math.random()*Math.PI*2, s:.4+Math.random()*1.1});
+    }
+  };
+  var paint = function(t){
+    ctx.clearRect(0,0,W,H);
+    for(var i=0;i<stars.length;i++){
+      var st = stars[i];
+      var a = reduced ? .55 : .3 + .45*(0.5+0.5*Math.sin(st.p + t*0.001*st.s));
+      ctx.globalAlpha = a * Math.max(0, 1 - st.y/H*.9);
+      ctx.fillStyle = '#E8D9A8';
+      ctx.beginPath(); ctx.arc(st.x, st.y, st.r, 0, 6.2832); ctx.fill();
+    }
+    ctx.globalAlpha = 1;
+  };
+  size(); paint(0);
+  if(!reduced){
+    /* วาดเฉพาะตอนที่ท้องฟ้าอยู่ในจอ — พ้นจอเมื่อไรหยุดทันที ประหยัดแบตมือถือ */
+    var running = false;
+    var loop = function(t){ if(!running) return; paint(t); requestAnimationFrame(loop); };
+    var start = function(){ if(!running){ running = true; requestAnimationFrame(loop); } };
+    var stop  = function(){ running = false; };
+    if('IntersectionObserver' in window){
+      new IntersectionObserver(function(es){ es[0].isIntersecting ? start() : stop(); })
+        .observe(sky.parentElement);
+    }else{
+      start();
+    }
+  }
+  window.addEventListener('resize', function(){
+    /* มือถือยิง resize ตอนแถบ URL ยุบ (สูงเปลี่ยน กว้างเท่าเดิม) — ไม่ต้องสุ่มดาวใหม่ */
+    var w = sky.parentElement.getBoundingClientRect().width;
+    if(Math.abs(w - W) < 1) return;
+    size(); paint(0);
+  }, {passive:true});
+}
+
+/* ---------- ห้อง ๑ · สำรับไพ่ของหอ ---------- */
+var DECK = [
+  {n:'ดาวรุ่ง',   m:'ของที่ลงแรงไว้กำลังเริ่มส่องแสง อย่าเพิ่งเลิกตอนที่ฟ้าใกล้สาง — เดินต่ออีกนิดด้วยจังหวะเดิม', c:'สีเสริมวันนี้: ทอง'},
+  {n:'เมฆเปิด',   m:'เรื่องที่มัวมาตลอดกำลังจะเห็นชัดขึ้น คำตอบที่รออยู่ใกล้กว่าที่คิด — วันนี้เหมาะกับการถามตรง ๆ', c:'สีเสริมวันนี้: ฟ้า'},
+  {n:'น้ำขึ้น',    m:'จังหวะกำลังไหลเข้าหาคุณ งานที่ค้างให้รีบสาง ของที่อยากขอให้รีบเอ่ย — น้ำขึ้นให้รีบตัก', c:'สีเสริมวันนี้: เขียว'},
+  {n:'ลมเปลี่ยนทิศ', m:'สิ่งที่เคยฝืนอาจกลับลื่นไหล และทางที่เคยชินอาจต้องปรับ — ยืดหยุ่นไว้ แล้วลมจะช่วยพัดไปข้างหน้า', c:'สีเสริมวันนี้: ขาวนวล'},
+  {n:'ตะเกียงต้นลม', m:'ไฟของคุณยังไม่ดับ แค่เจอลมแรง บังเปลวไว้ก่อนด้วยความใจเย็น — พายุผ่านแล้วไฟจะนิ่งเอง', c:'สีเสริมวันนี้: แสด'},
+  {n:'สะพานทอง',  m:'จะมีคนหรือโอกาสมาเป็นทางเชื่อมให้ อย่าปิดประตูใส่ผู้หวังดี — คำแนะนำวันนี้มีค่ากว่าที่คิด', c:'สีเสริมวันนี้: ทอง'},
+  {n:'ประตูแง้ม',  m:'โอกาสเปิดอยู่ แต่เปิดไว้เพียงแง้มเดียว ต้องเป็นฝ่ายผลักเข้าไปเอง — ความกล้าเล็ก ๆ วันนี้พาไปได้ไกล', c:'สีเสริมวันนี้: แดง'},
+  {n:'เงาจันทร์',  m:'อย่าเพิ่งตัดสินอะไรจากที่เห็นตอนนี้ แสงยังไม่เต็มดวง — ให้เวลาอีกหน่อย ความจริงจะค่อย ๆ สว่างเอง', c:'สีเสริมวันนี้: ม่วง'},
+  {n:'ฝนต้นฤดู',  m:'สิ่งที่หว่านไว้เริ่มได้น้ำ ช่วงนี้เหมาะกับการเริ่มต้นเล็ก ๆ ที่ตั้งใจจริง — เมล็ดวันนี้คือร่มเงาวันหน้า', c:'สีเสริมวันนี้: เขียว'},
+  {n:'เข็มทิศ',    m:'ใจของคุณรู้ทิศอยู่แล้ว แค่เสียงรอบข้างดังเกิน — วันนี้ลองเงียบสักพัก แล้วฟังเข็มในใจตัวเอง', c:'สีเสริมวันนี้: น้ำเงิน'},
+  {n:'กระจกใส',   m:'มีเรื่องที่ต้องมองตัวเองตรง ๆ ไม่ใช่โทษฟ้าโทษดวง — เห็นชัดเมื่อไร แก้ได้เมื่อนั้น และมันแก้ได้', c:'สีเสริมวันนี้: เงิน'},
+  {n:'รากไม้',     m:'ช่วงนี้โตช้าแต่โตลึก อย่าเทียบความเร็วกับใคร — รากที่แน่นวันนี้คือลำต้นที่ล้มยากในวันหน้า', c:'สีเสริมวันนี้: น้ำตาล'},
+  {n:'ธงชัย',      m:'เรื่องที่สู้มานานใกล้ได้ข้อสรุปที่ดี เก็บแรงไว้ให้พอถึงเส้นชัย — และอย่าลืมขอบคุณคนที่อยู่ข้างคุณ', c:'สีเสริมวันนี้: แดงชาด'},
+  {n:'บัวพ้นน้ำ',  m:'ความพยายามที่จมอยู่ใต้ผิวน้ำมานานกำลังโผล่พ้น — ใครยังไม่เห็นค่าตอนนี้ อีกไม่นานจะได้เห็นพร้อมกัน', c:'สีเสริมวันนี้: ชมพู'},
+  {n:'ดาวเหนือ',   m:'อย่าสับสนกับทางเลือกที่เยอะ ให้กลับไปหาเป้าที่ตั้งไว้แต่แรก — ของที่ไม่พาไปทางนั้น ตัดได้เลย', c:'สีเสริมวันนี้: ขาว'},
+];
+var deck = document.getElementById('deck');
+var out  = document.getElementById('drawResult');
+if(deck && out){
+  var cards = deck.querySelectorAll('.tcard');
+  var drawn = false;
+  var reset = function(){
+    drawn = false;
+    out.hidden = true;
+    out.querySelector('.cname').textContent = '';
+    out.querySelector('.cmsg').textContent = '';
+    out.querySelector('.ccolor').textContent = '';
+    cards.forEach(function(c,i){
+      c.classList.remove('flip','dimmed','locked');
+      c.querySelector('.front').textContent = '';
+      c.setAttribute('aria-label','ไพ่ใบที่ ' + (i+1));
+    });
+  };
+  cards.forEach(function(card){
+    card.addEventListener('click', function(){
+      if(drawn) return;
+      drawn = true;
+      var pick = DECK[Math.floor(Math.random()*DECK.length)];
+      card.querySelector('.front').textContent = pick.n;
+      card.setAttribute('aria-label','ไพ่ที่เปิดได้: ' + pick.n);
+      card.classList.add('flip','locked');
+      cards.forEach(function(c){ if(c!==card){ c.classList.add('dimmed','locked'); } });
+      /* เปิดกรอบผลก่อน แล้วค่อยเติมข้อความ — aria-live จะประกาศได้ก็ต่อเมื่อ
+         ข้อความถูกเขียนตอนที่กรอบมองเห็นแล้ว */
+      window.setTimeout(function(){
+        out.hidden = false;
+        requestAnimationFrame(function(){
+          out.querySelector('.cname').textContent = 'ไพ่ ' + pick.n;
+          out.querySelector('.cmsg').textContent = pick.m;
+          out.querySelector('.ccolor').textContent = pick.c;
+        });
+      }, reduced ? 0 : 420);
+    });
+  });
+  var re = document.getElementById('redraw');
+  if(re){ re.addEventListener('click', reset); }
+}
+
+/* ---------- ห้อง ๒ · กรองหมอดู ---------- */
+var filters = document.getElementById('filters');
+if(filters){
+  var fbtns = filters.querySelectorAll('.fbtn');
+  var seers = document.querySelectorAll('#seerGrid .seer');
+  fbtns.forEach(function(btn){
+    btn.addEventListener('click', function(){
+      fbtns.forEach(function(b){ b.setAttribute('aria-pressed', b===btn ? 'true':'false'); });
+      var f = btn.getAttribute('data-f');
+      seers.forEach(function(s){
+        var cats = (s.getAttribute('data-cat')||'').split(' ');
+        s.classList.toggle('hide', f!=='all' && cats.indexOf(f)===-1);
+      });
+    });
+  });
+}
+
+/* ---------- ห้อง ๖ · ตารางทักษา ----------
+   ค่าชุดนี้ต้อง sync กับตาราง lookup ของระบบวอลเปเปอร์ (เฟส ๓)
+   — แหล่งความจริงเดียวกัน ห้ามให้สองที่ขัดกัน ---------- */
+var TAKSA = {
+  sun:  {day:'วันอาทิตย์',   god:'พระอาทิตย์',   lucky:'แดง',              avoid:'น้ำเงิน',        num:'๖'},
+  mon:  {day:'วันจันทร์',    god:'พระจันทร์',    lucky:'เหลืองนวล',        avoid:'แดง',           num:'๑๕'},
+  tue:  {day:'วันอังคาร',    god:'พระอังคาร',    lucky:'ชมพู',             avoid:'เหลือง · ขาวนวล', num:'๘'},
+  wedd: {day:'วันพุธกลางวัน', god:'พระพุธ',       lucky:'เขียว',            avoid:'ชมพู',           num:'๑๗'},
+  wedn: {day:'วันพุธกลางคืน', god:'พระราหู',      lucky:'เทาเข้ม · ม่วงมอ',  avoid:'ส้ม · แสด',      num:'๑๒'},
+  thu:  {day:'วันพฤหัสบดี',  god:'พระพฤหัสบดี',  lucky:'ส้ม · แสด',        avoid:'ดำ · ม่วง',      num:'๑๙'},
+  fri:  {day:'วันศุกร์',     god:'พระศุกร์',     lucky:'ฟ้า · น้ำเงิน',     avoid:'เทา · ดำ',       num:'๒๑'},
+  sat:  {day:'วันเสาร์',     god:'พระเสาร์',     lucky:'ม่วง · ดำ',        avoid:'เขียว',          num:'๑๐'}
+};
+var daypick = document.getElementById('daypick');
+if(daypick){
+  var dbtns = daypick.querySelectorAll('.dbtn');
+  dbtns.forEach(function(btn){
+    btn.setAttribute('aria-pressed','false');
+    btn.addEventListener('click', function(){
+      dbtns.forEach(function(b){ b.setAttribute('aria-pressed', b===btn ? 'true':'false'); });
+      var t = TAKSA[btn.getAttribute('data-d')];
+      if(!t) return;
+      document.getElementById('tkDeity').textContent = t.day;
+      document.getElementById('tkGod').textContent   = t.god;
+      document.getElementById('tkLucky').textContent = t.lucky;
+      document.getElementById('tkAvoid').textContent = t.avoid;
+      document.getElementById('tkNum').textContent   = t.num;
+    });
+  });
+}
+})();
+</script>
+</body>
+</html>
