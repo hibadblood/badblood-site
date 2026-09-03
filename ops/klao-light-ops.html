@@ -1,0 +1,645 @@
+<title>ร้านเกล้า Light Ops</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@500;600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Thai:wght@400;500;600&display=swap">
+
+<style>
+  :root{
+    --ground:#0A0E19;
+    --panel:#121829;
+    --panel-2:#1A2137;
+    --edge:#2A3450;
+    --bone:#E9E7E1;
+    --dim:#8A93AC;
+    --faint:#4E5772;
+    --amber:#E8A33D;
+    --go:#4FBF7B;
+    --sig:#D8323C;
+    --cyan:#3FB3C4;
+    --mag:#B060C8;
+
+    --step--1:.78rem;
+    --step-0:1rem;
+    --step-1:1.22rem;
+    --step-2:1.6rem;
+    --step-3:2.3rem;
+    --step-4:3.4rem;
+
+    --sans:"IBM Plex Sans Thai","IBM Plex Sans",system-ui,-apple-system,sans-serif;
+    --disp:"Chakra Petch","IBM Plex Sans Thai",system-ui,sans-serif;
+    --mono:"IBM Plex Mono",ui-monospace,"SF Mono",Menlo,monospace;
+  }
+
+  *{box-sizing:border-box}
+  body{
+    margin:0;
+    background:var(--ground);
+    color:var(--bone);
+    font-family:var(--sans);
+    font-size:var(--step-0);
+    line-height:1.62;
+    -webkit-font-smoothing:antialiased;
+  }
+
+  .wrap{max-width:820px;margin:0 auto;padding:0 22px 96px}
+
+  /* ── masthead ─────────────────────────────── */
+  .top{
+    border-bottom:1px solid var(--edge);
+    background:
+      linear-gradient(180deg,rgba(232,163,61,.07),transparent 70%),
+      var(--ground);
+  }
+  .top-in{max-width:820px;margin:0 auto;padding:34px 22px 26px}
+  .eyebrow{
+    font-family:var(--mono);
+    font-size:var(--step--1);
+    letter-spacing:.16em;
+    text-transform:uppercase;
+    color:var(--amber);
+    margin:0 0 14px;
+  }
+  h1{
+    font-family:var(--disp);
+    font-weight:700;
+    font-size:var(--step-4);
+    line-height:1.02;
+    letter-spacing:-.015em;
+    margin:0 0 12px;
+    text-wrap:balance;
+  }
+  .lede{
+    max-width:60ch;
+    color:var(--dim);
+    margin:0 0 22px;
+  }
+  .rig{
+    display:flex;flex-wrap:wrap;gap:8px;
+    font-family:var(--mono);
+    font-size:var(--step--1);
+  }
+  .rig span{
+    border:1px solid var(--edge);
+    padding:4px 10px;
+    color:var(--dim);
+  }
+
+  /* ── sections ─────────────────────────────── */
+  section{padding-top:52px}
+  .sec-head{
+    display:flex;align-items:baseline;gap:14px;
+    border-bottom:1px solid var(--edge);
+    padding-bottom:10px;margin-bottom:26px;
+  }
+  .sec-n{
+    font-family:var(--mono);font-size:var(--step--1);
+    color:var(--amber);letter-spacing:.1em;
+    flex:0 0 auto;
+  }
+  h2{
+    font-family:var(--disp);font-weight:600;
+    font-size:var(--step-2);line-height:1.15;
+    margin:0;letter-spacing:-.01em;
+  }
+  .sec-note{margin-left:auto;font-size:var(--step--1);color:var(--faint);font-family:var(--mono)}
+  h3{
+    font-family:var(--disp);font-weight:600;
+    font-size:var(--step-1);margin:34px 0 10px;
+  }
+  p{margin:0 0 14px;max-width:66ch}
+  .muted{color:var(--dim)}
+  code{
+    font-family:var(--mono);font-size:.88em;
+    background:var(--panel-2);border:1px solid var(--edge);
+    padding:1px 5px;color:var(--amber);
+  }
+
+  /* ── state tiles ──────────────────────────── */
+  .states{display:grid;grid-template-columns:repeat(auto-fit,minmax(178px,1fr));gap:1px;background:var(--edge);border:1px solid var(--edge)}
+  .state{background:var(--panel);padding:18px 16px 20px;display:flex;flex-direction:column;gap:8px}
+  .state-key{
+    font-family:var(--mono);font-size:var(--step--1);
+    letter-spacing:.12em;color:var(--faint);
+  }
+  .state-name{
+    font-family:var(--disp);font-weight:700;font-size:var(--step-1);
+    letter-spacing:.02em;line-height:1;
+  }
+  .state p{font-size:var(--step--1);color:var(--dim);margin:0;line-height:1.5}
+  .swatch{height:4px;width:44px}
+  .s-closed .state-name{color:var(--dim)}     .s-closed .swatch{background:var(--dim)}
+  .s-open   .state-name{color:var(--amber)}   .s-open   .swatch{background:var(--amber)}
+  .s-show   .state-name{color:var(--mag)}     .s-show   .swatch{background:var(--mag)}
+  .s-after  .state-name{color:var(--cyan)}    .s-after  .swatch{background:var(--cyan)}
+  .s-panic{background:var(--panel-2)}
+  .s-panic .state-name{color:var(--sig)}      .s-panic .swatch{background:var(--sig)}
+
+  /* ── run order ────────────────────────────── */
+  ol.run{list-style:none;margin:0;padding:0;counter-reset:step}
+  ol.run > li{
+    counter-increment:step;
+    display:grid;grid-template-columns:44px 1fr;gap:0 18px;
+    padding:16px 0;border-top:1px solid var(--edge);
+  }
+  ol.run > li:last-child{border-bottom:1px solid var(--edge)}
+  ol.run > li::before{
+    content:counter(step,decimal-leading-zero);
+    font-family:var(--mono);font-size:var(--step-0);font-weight:600;
+    color:var(--amber);line-height:1.6;
+    font-variant-numeric:tabular-nums;
+  }
+  .run-t{font-family:var(--disp);font-weight:600;font-size:var(--step-1);line-height:1.3}
+  .run-w{font-size:var(--step--1);color:var(--dim);margin-top:4px;max-width:58ch}
+  .run-w strong{color:var(--bone);font-weight:600}
+  .hard{
+    display:inline-block;font-family:var(--mono);font-size:.7rem;
+    letter-spacing:.1em;color:var(--sig);border:1px solid var(--sig);
+    padding:1px 6px;margin-left:8px;vertical-align:2px;
+  }
+
+  /* ── fader wing map ───────────────────────── */
+  .wing{
+    border:1px solid var(--edge);background:var(--panel);
+    padding:22px 18px 18px;overflow-x:auto;
+  }
+  .wing-lab{
+    font-family:var(--mono);font-size:var(--step--1);
+    color:var(--faint);letter-spacing:.1em;margin-bottom:16px;
+  }
+  .strips{display:flex;gap:10px;min-width:560px}
+  .strip{flex:1;display:flex;flex-direction:column;gap:8px;min-width:98px}
+  .btn{
+    border:1px solid var(--edge);background:var(--panel-2);
+    padding:7px 8px;text-align:center;
+    font-family:var(--mono);font-size:.72rem;letter-spacing:.06em;
+    color:var(--dim);
+  }
+  .btn.on{border-color:var(--go);color:var(--go)}
+  .track{
+    position:relative;height:132px;
+    border:1px solid var(--edge);background:var(--ground);
+  }
+  .cap{
+    position:absolute;left:6px;right:6px;height:12px;
+    background:var(--dim);
+  }
+  .fill{position:absolute;left:0;right:0;bottom:0;opacity:.16}
+  .strip-name{
+    font-family:var(--disp);font-weight:700;font-size:.9rem;
+    letter-spacing:.03em;text-align:center;line-height:1.2;
+  }
+  .strip-ex{
+    font-family:var(--mono);font-size:.7rem;color:var(--faint);
+    text-align:center;letter-spacing:.08em;
+  }
+  .f1 .cap{background:var(--amber)} .f1 .fill{background:var(--amber)} .f1 .strip-name{color:var(--amber)}
+  .f2 .cap{background:var(--bone)}  .f2 .fill{background:var(--bone)}  .f2 .strip-name{color:var(--bone)}
+  .f3 .cap{background:var(--mag)}   .f3 .fill{background:var(--mag)}   .f3 .strip-name{color:var(--mag)}
+  .f4 .cap{background:var(--cyan)}  .f4 .fill{background:var(--cyan)}  .f4 .strip-name{color:var(--cyan)}
+  .f5 .cap{background:var(--go)}    .f5 .fill{background:var(--go)}    .f5 .strip-name{color:var(--go)}
+
+  .btnrow{
+    display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+    gap:8px;margin-top:18px;min-width:560px;
+  }
+  .hard-btn{
+    border:1px solid var(--edge);background:var(--panel-2);
+    padding:12px 10px;
+  }
+  .hard-btn .k{font-family:var(--disp);font-weight:700;font-size:.92rem;letter-spacing:.03em}
+  .hard-btn .v{font-family:var(--mono);font-size:.68rem;color:var(--faint);letter-spacing:.08em;margin-top:3px}
+  .hb-panic{border-color:var(--sig)} .hb-panic .k{color:var(--sig)}
+  .hb-black{border-color:var(--dim)} .hb-black .k{color:var(--dim)}
+  .hb-haze .k{color:var(--cyan)}
+  .hb-slow .k{color:var(--amber)}
+
+  /* ── the desk card ────────────────────────── */
+  .card{
+    border:2px solid var(--amber);background:var(--panel);
+    padding:26px 24px 24px;
+  }
+  .card-h{
+    font-family:var(--disp);font-weight:700;font-size:var(--step-2);
+    color:var(--amber);margin:0 0 4px;letter-spacing:.01em;
+  }
+  .card-s{font-family:var(--mono);font-size:var(--step--1);color:var(--faint);letter-spacing:.1em;margin:0 0 22px}
+  ol.card-steps{list-style:none;margin:0;padding:0;counter-reset:c;display:flex;flex-direction:column;gap:0}
+  ol.card-steps li{
+    counter-increment:c;display:grid;grid-template-columns:30px 1fr;gap:14px;
+    padding:12px 0;border-top:1px dashed var(--edge);align-items:baseline;
+  }
+  ol.card-steps li:first-child{border-top:none;padding-top:0}
+  ol.card-steps li::before{
+    content:counter(c);font-family:var(--mono);font-weight:600;
+    color:var(--amber);font-size:1.05rem;
+  }
+  .cs-main{font-family:var(--disp);font-weight:600;font-size:var(--step-1);line-height:1.25}
+  .cs-sub{font-size:var(--step--1);color:var(--dim);margin-top:2px}
+
+  /* ── ladder ───────────────────────────────── */
+  .ladder{display:flex;flex-direction:column;gap:1px;background:var(--edge);border:1px solid var(--edge)}
+  .rung{background:var(--panel);padding:16px 18px;display:grid;grid-template-columns:76px 1fr;gap:18px}
+  .rung-k{font-family:var(--mono);font-size:var(--step--1);letter-spacing:.1em;color:var(--faint);padding-top:3px}
+  .rung-t{font-family:var(--disp);font-weight:600;font-size:var(--step-1);line-height:1.3}
+  .rung-b{font-size:var(--step--1);color:var(--dim);margin-top:4px;max-width:56ch}
+  .r4{background:var(--panel-2)} .r4 .rung-k{color:var(--sig)} .r4 .rung-t{color:var(--sig)}
+
+  /* ── command block ────────────────────────── */
+  pre{
+    font-family:var(--mono);font-size:.82rem;line-height:1.85;
+    background:var(--panel);border:1px solid var(--edge);
+    border-left:2px solid var(--amber);
+    padding:18px 20px;margin:0 0 18px;
+    overflow-x:auto;color:var(--bone);
+  }
+  pre .c{color:var(--faint)}
+  pre .k{color:var(--amber)}
+
+  /* ── plain lists ──────────────────────────── */
+  ul.plain{list-style:none;margin:0 0 18px;padding:0;display:flex;flex-direction:column;gap:10px}
+  ul.plain li{
+    display:grid;grid-template-columns:14px 1fr;gap:12px;
+    color:var(--dim);font-size:var(--step-0);max-width:64ch;
+  }
+  ul.plain li::before{content:"";height:1px;background:var(--edge);margin-top:.82em}
+  ul.plain li strong{color:var(--bone);font-weight:600}
+
+  .warn{
+    border:1px solid var(--sig);background:rgba(216,50,60,.07);
+    padding:16px 18px;margin:22px 0;
+  }
+  .warn-k{font-family:var(--mono);font-size:var(--step--1);letter-spacing:.12em;color:var(--sig);margin-bottom:6px}
+  .warn p{margin:0;color:var(--bone);font-size:var(--step--1);line-height:1.6}
+
+  .unknown{border:1px dashed var(--edge);padding:20px 20px 14px}
+  .unknown h3{margin-top:0}
+
+  footer{
+    margin-top:64px;padding-top:20px;border-top:1px solid var(--edge);
+    font-family:var(--mono);font-size:var(--step--1);color:var(--faint);
+    display:flex;flex-wrap:wrap;gap:6px 20px;
+  }
+
+  @media (max-width:560px){
+    :root{--step-4:2.5rem;--step-3:1.8rem;--step-2:1.4rem}
+    .rung{grid-template-columns:1fr;gap:6px}
+    .sec-note{display:none}
+  }
+
+  @media print{
+    body{background:#fff;color:#111}
+    .top{background:#fff;border-color:#bbb}
+    section{page-break-inside:avoid;padding-top:26px}
+    .state,.wing,.card,.rung,pre{background:#fff;border-color:#bbb;color:#111}
+    .strip-name,.state-name,.card-h,.sec-n,ol.run>li::before,ol.card-steps li::before{color:#111 !important}
+    .muted,.run-w,.rung-b,ul.plain li,.lede{color:#444}
+  }
+  @media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}}
+</style>
+
+<header class="top">
+  <div class="top-in">
+    <p class="eyebrow">Venue Light Ops · v1 · ฉบับเสนอ</p>
+    <h1>ระบบเปิดร้านเกล้า</h1>
+    <p class="lede">ชั้นควบคุมบางๆ ทับ show file เดิม ให้คนที่ไม่ใช่คนคุมไฟ เปิดร้านได้เองใน 5 ปุ่ม และซ่อมตัวเองได้เมื่อพัง โดยไม่ต้องแตะอะไรที่โปรแกรมไว้แล้ว</p>
+    <div class="rig">
+      <span>grandMA2 onPC</span>
+      <span>Fader Wing 1</span>
+      <span>CMD Wing</span>
+      <span>Windows</span>
+    </div>
+  </div>
+</header>
+
+<div class="wrap">
+
+  <!-- 1 -->
+  <section>
+    <div class="sec-head">
+      <span class="sec-n">01</span>
+      <h2>ห้องนี้มีแค่ 4 สถานะ</h2>
+      <span class="sec-note">ไม่มีสถานะที่ห้า</span>
+    </div>
+    <p class="muted">ปัญหาไม่ใช่ไฟไม่สวย ปัญหาคือทุกคืนห้องหน้าไม่เหมือนกัน เพราะแต่ละคนไล่กดคนละปุ่ม ตัดตัวเลือกทิ้งก่อน แล้วค่อยพูดเรื่องปุ่ม</p>
+    <div class="states">
+      <div class="state s-closed">
+        <div class="swatch"></div>
+        <div class="state-key">STATE 0</div>
+        <div class="state-name">CLOSED</div>
+        <p>ไฟทำงาน ขาวสว่าง เห็นพื้นชัด ใช้ตอนทำความสะอาด เช็คสต็อก ซ้อม ไม่ต้องสวย ต้องเห็น</p>
+      </div>
+      <div class="state s-open">
+        <div class="swatch"></div>
+        <div class="state-key">STATE 1</div>
+        <div class="state-name">OPEN</div>
+        <p>ร้านเปิด ยังไม่มีโชว์ ไฟนิ่ง ไม่กระพริบ อ่านเมนูออก เห็นหน้าคนคุยกัน นี่คือสถานะที่ร้านอยู่นานที่สุดในหนึ่งคืน</p>
+      </div>
+      <div class="state s-show">
+        <div class="swatch"></div>
+        <div class="state-key">STATE 2</div>
+        <div class="state-name">SHOW</div>
+        <p>ดีเจ/วงขึ้น ไฟลงมืด เอฟเฟกต์วิ่งตาม BPM ของเดิมทั้งหมดใน show file ทำงานอยู่ชั้นนี้</p>
+      </div>
+      <div class="state s-after">
+        <div class="swatch"></div>
+        <div class="state-key">STATE 3</div>
+        <div class="state-name">AFTER</div>
+        <p>เพลงจบ ไล่แขก ไฟค่อยๆ ขึ้นอุ่นแต่สว่างกว่า OPEN ห้ามกระโดดไปขาว 100 ทันที มันไล่แขกแบบเสียมารยาท</p>
+      </div>
+      <div class="state s-panic">
+        <div class="swatch"></div>
+        <div class="state-key">OVERRIDE</div>
+        <div class="state-name">PANIC</div>
+        <p>ขาว 100 ทุกดวง ทับทุกอย่าง ใช้ตอนมีเรื่อง มีคนล้ม ไฟไหม้ ตำรวจเข้า ปุ่มเดียว ไม่ต้องคิด</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- 2 -->
+  <section>
+    <div class="sec-head">
+      <span class="sec-n">02</span>
+      <h2>ลำดับเปิด — ห้ามสลับ</h2>
+      <span class="sec-note">~15 นาทีก่อนเปิดประตู</span>
+    </div>
+    <p class="muted">ลำดับนี้ไม่ได้ตั้งเพื่อความเป๊ะ แต่ละข้อกันความพังคนละแบบ ถ้าสลับข้อ 2 กับ 4 ดวงไฟจะรับคำสั่งตอนกำลัง reset ตัวเอง แล้วค้างสีมั่วทั้งคืนโดยไม่มีใครรู้ว่าทำไม</p>
+    <ol class="run">
+      <li>
+        <div>
+          <div class="run-t">เบรกเกอร์เมน + วงจรไฟเวที</div>
+          <div class="run-w">เปิดตู้ไฟก่อนทุกอย่าง เช็คว่าไม่มีเบรกเกอร์ตัวไหนทริปค้างจากคืนก่อน <strong>ถ้ามีตัวทริป ห้ามดันขึ้นแล้วเปิดร้านต่อ</strong> — หาเหตุก่อน</div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="run-t">ไฟเลี้ยงดวงไฟ / ดิมเมอร์<span class="hard">ก่อนคอนโซล</span></div>
+          <div class="run-w">มูฟวิ่งเฮดต้องได้ home ตัวเองจนจบก่อนที่คอนโซลจะเริ่มยิง DMX รอจนหยุดนิ่งหมดทุกดวง ประมาณ 40–60 วินาที</div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="run-t">เฮเซอร์ — เติมน้ำยา แล้วเปิดวอร์ม</div>
+          <div class="run-w">วอร์มใช้เวลา ทำเป็นข้อแรกๆ จะได้มีควันพอดีตอนเปิดประตู <strong>เช็คระดับน้ำยาทุกคืน</strong> ไม่ใช่ตอนที่มันเตือน</div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="run-t">เปิดคอนโซล (เครื่อง onPC) → โหลด show file</div>
+          <div class="run-w">รอให้ Windows ขึ้นจนนิ่ง ปิดหน้าต่างที่เด้งขึ้นมาให้หมด แล้วค่อยเปิด onPC โหลดไฟล์ล่าสุด <strong>เช็คชื่อไฟล์ทุกครั้ง</strong> ว่าตรงกับที่บันทึกไว้ครั้งสุดท้าย</div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="run-t">เช็ค DMX ออกจริง</div>
+          <div class="run-w">ดันแฟเดอร์ <code>HOUSE</code> ขึ้นเล็กน้อย ต้องเห็นดวงไฟขยับ ถ้าไม่ขยับ = สายหลุด/โหนดไม่ติด อย่าเพิ่งไปยุ่งกับคอนโซล ไปดูสายก่อน</div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="run-t">Grand Master ขึ้น 100 แล้วล็อกไว้ตรงนั้น<span class="hard">ห้ามใช้หรี่ไฟ</span></div>
+          <div class="run-w">Grand Master คือสวิตช์ฉุกเฉิน ไม่ใช่เครื่องมือปรับบรรยากาศ ถ้าใครหรี่มันไว้ 60% แล้วลืม ทั้งคืนจะรู้สึกว่า "ไฟไม่สว่างเหมือนเดิม" โดยหาสาเหตุไม่เจอ <strong>อยากหรี่ ใช้แฟเดอร์ HOUSE</strong></div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="run-t">กด OPEN</div>
+          <div class="run-w">ห้องเข้าสถานะ OPEN ยืนดูสัก 20 วินาที ให้ทุกดวงเข้าที่ก่อนจะเดินไปทำอย่างอื่น</div>
+        </div>
+      </li>
+      <li>
+        <div>
+          <div class="run-t">เพาเวอร์แอมป์ / ลำโพง — ท้ายสุดเสมอ</div>
+          <div class="run-w">เปิดท้ายสุด ปิดก่อนเพื่อน กัน pop ที่กินดอกลำโพง นี่เป็นกฎเสียง ไม่ใช่กฎไฟ แต่มันอยู่ในลำดับเดียวกันเพราะคนกดคือคนเดียวกัน</div>
+        </div>
+      </li>
+    </ol>
+  </section>
+
+  <!-- 3 -->
+  <section>
+    <div class="sec-head">
+      <span class="sec-n">03</span>
+      <h2>แผงร้าน — จองไว้ตายตัว</h2>
+      <span class="sec-note">Page 1 · Fixed</span>
+    </div>
+    <p class="muted">Show file ตอนนี้มี executor กระจายอยู่ตั้งแต่ 131 ถึง 190 ซึ่งดีสำหรับคนคุมไฟ แต่ใช้ไม่ได้กับคนเปิดร้าน สิ่งที่ต้องทำคือ <strong style="color:var(--bone)">จองแค่ 5 แฟเดอร์แรก + ปุ่มอีก 4 ปุ่ม ตั้งเป็น Fixed</strong> ให้ติดอยู่ทุกเพจ ของเดิมอยู่ครบ ไม่ต้องรื้ออะไรเลย</p>
+
+    <div class="wing">
+      <div class="wing-lab">FADER WING 1 — PAGE 1 (FIXED)</div>
+      <div class="strips">
+        <div class="strip f1">
+          <div class="btn on">GO</div>
+          <div class="track"><div class="fill" style="height:100%"></div><div class="cap" style="bottom:6px"></div></div>
+          <div class="strip-name">HOUSE</div>
+          <div class="strip-ex">EXEC 1</div>
+        </div>
+        <div class="strip f2">
+          <div class="btn on">GO</div>
+          <div class="track"><div class="fill" style="height:62%"></div><div class="cap" style="bottom:58px"></div></div>
+          <div class="strip-name">OPEN</div>
+          <div class="strip-ex">EXEC 2</div>
+        </div>
+        <div class="strip f3">
+          <div class="btn">GO</div>
+          <div class="track"><div class="fill" style="height:0%"></div><div class="cap" style="bottom:6px"></div></div>
+          <div class="strip-name">SHOW</div>
+          <div class="strip-ex">EXEC 3</div>
+        </div>
+        <div class="strip f4">
+          <div class="btn">GO</div>
+          <div class="track"><div class="fill" style="height:0%"></div><div class="cap" style="bottom:6px"></div></div>
+          <div class="strip-name">AFTER</div>
+          <div class="strip-ex">EXEC 4</div>
+        </div>
+        <div class="strip f5">
+          <div class="btn">GO</div>
+          <div class="track"><div class="fill" style="height:0%"></div><div class="cap" style="bottom:6px"></div></div>
+          <div class="strip-name">FX</div>
+          <div class="strip-ex">EXEC 5</div>
+        </div>
+      </div>
+      <div class="btnrow">
+        <div class="hard-btn hb-panic"><div class="k">PANIC WHITE</div><div class="v">EXEC 6 · FIXED</div></div>
+        <div class="hard-btn hb-black"><div class="k">BLACKOUT</div><div class="v">EXEC 7 · FIXED</div></div>
+        <div class="hard-btn hb-haze"><div class="k">HAZE</div><div class="v">EXEC 8 · FIXED</div></div>
+        <div class="hard-btn hb-slow"><div class="k">SPEED</div><div class="v">EXEC 9 · FIXED</div></div>
+      </div>
+    </div>
+
+    <h3>อ่านแผงนี้ยังไง</h3>
+    <ul class="plain">
+      <li><strong>HOUSE</strong> — แฟเดอร์ความสว่างรวมของร้าน อยู่ 100 เกือบตลอด นี่คือตัวที่ให้คนหรี่ ไม่ใช่ Grand Master</li>
+      <li><strong>OPEN / SHOW / AFTER</strong> — สามสถานะหลัก กดปุ่ม GO ตัวใดตัวหนึ่ง อีกสองตัวลงเอง ไม่ต้องปิดเอง</li>
+      <li><strong>FX</strong> — ชั้นเอฟเฟกต์ที่ทับข้างบน ดันขึ้นเมื่อดีเจขึ้น ลงเมื่อพูดไมค์ คนไม่คุมไฟไม่ต้องแตะ</li>
+      <li><strong>PANIC WHITE</strong> — ทับทุกอย่าง ขาวเต็ม ไม่มีเงื่อนไข ควรเป็นปุ่มที่กดถูกได้ในความมืดโดยไม่ต้องมอง — ติดเทปนูนหรือทำเครื่องหมายไว้ที่ปุ่มจริง</li>
+      <li><strong>SPEED</strong> — ตัวคุมความเร็วเอฟเฟกต์ ให้ผูกกับ BPM เดียวกับที่ตั้งไว้แล้วในไฟล์ ไม่ต้องมีหลายตัว</li>
+    </ul>
+
+    <div class="warn">
+      <div class="warn-k">กฎเหล็ก</div>
+      <p>Executor 1–9 บนเพจ 1 เป็นพื้นที่ของ "ร้าน" ห้ามเอาไปเก็บคิวโชว์ ห้ามทับ ห้ามยืมชั่วคราว งานโปรแกรมทั้งหมดไปอยู่ตั้งแต่ 10 ขึ้นไปเหมือนเดิม ถ้าวันไหนมีคนยืมช่องพวกนี้ ระบบทั้งหมดนี้ตายทันที</p>
+    </div>
+  </section>
+
+  <!-- 4 -->
+  <section>
+    <div class="sec-head">
+      <span class="sec-n">04</span>
+      <h2>การ์ดติดโต๊ะ</h2>
+      <span class="sec-note">พิมพ์ · ติดข้างคอนโซล</span>
+    </div>
+    <p class="muted">อันนี้คือสิ่งเดียวที่คนเปิดร้านต้องอ่าน ทุกอย่างข้างบนคือเหตุผลเบื้องหลังมัน</p>
+    <div class="card">
+      <p class="card-h">เปิดร้าน</p>
+      <p class="card-s">5 ขั้น · ประมาณหนึ่งนาที</p>
+      <ol class="card-steps">
+        <li><div><div class="cs-main">เปิดเบรกเกอร์ → รอไฟทุกดวงหยุดนิ่ง</div><div class="cs-sub">ประมาณหนึ่งนาที อย่ารีบ</div></div></li>
+        <li><div><div class="cs-main">เปิดเฮเซอร์</div><div class="cs-sub">เช็คน้ำยาก่อน</div></div></li>
+        <li><div><div class="cs-main">เปิดคอมพิวเตอร์ → เปิดโปรแกรมไฟ → โหลดไฟล์ล่าสุด</div><div class="cs-sub">ปิดหน้าต่างที่เด้งขึ้นมาให้หมดก่อน</div></div></li>
+        <li><div><div class="cs-main">ดัน HOUSE ขึ้นสุด → กด GO ที่ OPEN</div><div class="cs-sub">แฟเดอร์ที่หนึ่งกับที่สอง</div></div></li>
+        <li><div><div class="cs-main">เปิดเครื่องเสียงเป็นอันสุดท้าย</div><div class="cs-sub">ตอนปิดร้าน ปิดตัวนี้ก่อนเพื่อน</div></div></li>
+      </ol>
+    </div>
+
+    <h3>ปิดร้าน — ย้อนกลับทางเดิม</h3>
+    <ul class="plain">
+      <li><strong>1.</strong> ปิดเครื่องเสียงก่อน</li>
+      <li><strong>2.</strong> กด GO ที่ AFTER ปล่อยไว้จนแขกออกหมด</li>
+      <li><strong>3.</strong> กด CLOSED ทำความสะอาดด้วยไฟขาว</li>
+      <li><strong>4.</strong> ปิดเฮเซอร์ ปิด onPC ให้ Windows shut down จริง ไม่ใช่ปิดฝา</li>
+      <li><strong>5.</strong> ปิดไฟเลี้ยงดวงไฟ แล้วค่อยลงเบรกเกอร์เมน</li>
+    </ul>
+  </section>
+
+  <!-- 5 -->
+  <section>
+    <div class="sec-head">
+      <span class="sec-n">05</span>
+      <h2>เมื่อพัง — ไล่ทีละขั้น</h2>
+      <span class="sec-note">อย่าข้ามขั้น</span>
+    </div>
+    <p class="muted">คนส่วนใหญ่พอไฟพังจะเริ่มกดมั่ว แล้วทำให้พังหนักกว่าเดิม บันไดสี่ขั้นนี้ไล่จากสาเหตุที่เจอบ่อยที่สุดลงไป</p>
+    <div class="ladder">
+      <div class="rung">
+        <div class="rung-k">ขั้น 1</div>
+        <div>
+          <div class="rung-t">เช็คสามอย่างนี้ก่อนแตะอย่างอื่น</div>
+          <div class="rung-b">Grand Master อยู่ 100 ไหม · แฟเดอร์ HOUSE ขึ้นสุดไหม · คอนโซลอยู่โหมด Blind หรือเปล่า สามข้อนี้คือสาเหตุของ "ไฟดับ" ส่วนใหญ่</div>
+        </div>
+      </div>
+      <div class="rung">
+        <div class="rung-k">ขั้น 2</div>
+        <div>
+          <div class="rung-t">ล้างของค้าง แล้วเข้าสถานะใหม่</div>
+          <div class="rung-b">ปิด executor ที่ค้างอยู่ทั้งหมด (ดูคำสั่งในหัวข้อ 06) แล้วกด GO ที่ OPEN ใหม่ ใช้กับอาการ "ไฟค้างสีมั่ว" หรือ "เอฟเฟกต์วิ่งไม่หยุด"</div>
+        </div>
+      </div>
+      <div class="rung">
+        <div class="rung-k">ขั้น 3</div>
+        <div>
+          <div class="rung-t">ดวงไฟไม่ตอบเลย — ไปดูสาย ไม่ใช่ดูจอ</div>
+          <div class="rung-b">ถ้าคอนโซลแสดงว่าส่งค่าอยู่แต่ไฟนิ่งสนิท ปัญหาอยู่ที่ DMX node / สาย / ไฟเลี้ยงดวง ไม่ได้อยู่ในคอมพิวเตอร์ การรีสตาร์ท onPC จะไม่ช่วยและกินเวลาไปอีกห้านาที</div>
+        </div>
+      </div>
+      <div class="rung r4">
+        <div class="rung-k">ขั้นสุดท้าย</div>
+        <div>
+          <div class="rung-t">ต้องมีไฟที่ไม่ผ่านคอนโซลเลย</div>
+          <div class="rung-b">อย่างน้อยหนึ่งวงจร — ไฟทางเดิน ไฟบาร์ ไฟทางออก — ต้องต่อกับสวิตช์ผนังตรงๆ ไม่ผ่าน DMX ไม่ผ่าน onPC ถ้าตอนนี้ยังไม่มี นี่คือความเสี่ยงระดับต้องแก้ก่อนเรื่องอื่นทั้งหมด ไม่ใช่เรื่องความสวย เป็นเรื่องความปลอดภัยและใบอนุญาต</div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- 6 -->
+  <section>
+    <div class="sec-head">
+      <span class="sec-n">06</span>
+      <h2>วิธีสร้าง — สำหรับคนคุมไฟ</h2>
+      <span class="sec-note">grandMA2 · หนึ่งรอบงาน</span>
+    </div>
+    <p class="muted">โครงคำสั่งสำหรับสร้างชั้นร้านทับ show file เดิม ทำครั้งเดียวจบ ทุกบรรทัดพิมพ์ที่ command line <strong style="color:var(--bone)">ให้ลองในไฟล์สำเนาก่อน อย่าทำกับไฟล์ที่ใช้งานจริงคืนนั้น</strong></p>
+
+<pre><span class="c"># สำรองก่อนเสมอ — Backup menu → Save show as → KLAO_YYMMDD_v1</span>
+
+<span class="c"># 1. ไปเพจ 1 แล้วเคลียร์โปรแกรมเมอร์</span>
+<span class="k">Page</span> 1
+<span class="k">ClearAll</span>
+
+<span class="c"># 2. เลือกดวงไฟทั้งหมด จัดหน้าตาสถานะ CLOSED (ขาว 100)</span>
+<span class="c">#    แล้วเก็บลงแฟเดอร์ที่ 1 เป็นตัวคุมความสว่างรวม</span>
+<span class="k">Store</span> <span class="k">Executor</span> 1
+<span class="k">Label</span> <span class="k">Executor</span> 1 <span class="c">"HOUSE"</span>
+
+<span class="c"># 3. จัดหน้าตา OPEN / SHOW / AFTER แล้วเก็บทีละตัว</span>
+<span class="k">ClearAll</span>
+<span class="c">…จัด look OPEN…</span>
+<span class="k">Store</span> <span class="k">Executor</span> 2   → <span class="k">Label</span> <span class="k">Executor</span> 2 <span class="c">"OPEN"</span>
+<span class="c">…จัด look SHOW…</span>
+<span class="k">Store</span> <span class="k">Executor</span> 3   → <span class="k">Label</span> <span class="k">Executor</span> 3 <span class="c">"SHOW"</span>
+<span class="c">…จัด look AFTER…</span>
+<span class="k">Store</span> <span class="k">Executor</span> 4   → <span class="k">Label</span> <span class="k">Executor</span> 4 <span class="c">"AFTER"</span>
+
+<span class="c"># 4. PANIC — ขาว 100 ทุกดวง ไม่มี fade</span>
+<span class="k">ClearAll</span>
+<span class="c">…dimmer full, สีขาว, ไม่มี gobo, ตำแหน่งเปิดพื้นที่…</span>
+<span class="k">Store</span> <span class="k">Executor</span> 6   → <span class="k">Label</span> <span class="k">Executor</span> 6 <span class="c">"PANIC WHITE"</span>
+
+<span class="c"># 5. ตรึงไว้ให้ติดทุกเพจ — นี่คือหัวใจของทั้งระบบ</span>
+<span class="k">Fix</span> <span class="k">Executor</span> 1 <span class="k">Thru</span> 9
+
+<span class="c"># 6. คำสั่งล้างของค้าง (ขั้น 2 ในบันไดกู้ระบบ) — เขียนใส่การ์ดติดโต๊ะด้วย</span>
+<span class="k">Off</span> <span class="k">Executor</span> 10 <span class="k">Thru</span>
+
+<span class="c"># 7. เซฟใหม่เป็นเวอร์ชันถัดไป แล้วก๊อปลง USB</span></pre>
+
+    <div class="warn">
+      <div class="warn-k">ต้องยืนยันหน้าคอนโซล</div>
+      <p>ผมเห็นแค่ภาพถ่ายหน้าจอ ไม่เห็นรายการดวงไฟ ไม่เห็นว่า executor 1–9 ว่างจริงหรือมีของอยู่ และไม่รู้เวอร์ชันซอฟต์แวร์ ตัวเลข executor ทั้งหมดข้างบนคือ<strong>ข้อเสนอมาตรฐาน ไม่ใช่การอ่านค่าจากไฟล์จริง</strong> ให้คนคุมไฟเช็คว่าช่องพวกนี้ว่างก่อน ถ้าไม่ว่าง เลื่อนไปใช้บล็อกอื่นที่ว่างติดกัน 9 ช่อง แล้วแก้ตัวเลขในเอกสารนี้ให้ตรง</p>
+    </div>
+  </section>
+
+  <!-- 7 -->
+  <section>
+    <div class="sec-head">
+      <span class="sec-n">07</span>
+      <h2>กฎของเครื่องคอมพิวเตอร์</h2>
+      <span class="sec-note">จากภาพหน้าจอ</span>
+    </div>
+    <p class="muted">ในภาพมีหน้าต่าง OneDrive เด้งทับหน้าจอคอนโซลอยู่ นี่ไม่ใช่เรื่องน่ารำคาญเฉยๆ — หน้าต่างแบบนี้ขโมยโฟกัสคีย์บอร์ดได้ แปลว่าตอนกดคำสั่งกลางโชว์ ตัวอักษรอาจไปลงในหน้าต่างนั้นแทน เครื่องที่ใช้คุมไฟต้องถูกทำให้เงียบสนิท</p>
+    <ul class="plain">
+      <li><strong>ถอด OneDrive ออก</strong> หรืออย่างน้อย sign out และปิดไม่ให้เริ่มพร้อมเครื่อง</li>
+      <li><strong>เปิด Focus assist / Do not disturb ถาวร</strong> ไม่ให้มี notification ใดๆ เด้ง</li>
+      <li><strong>Windows Update</strong> — ตั้ง active hours ครอบเวลาเปิดร้าน และ pause update ไว้ อย่าให้มันรีสตาร์ทเองตอนตีสอง</li>
+      <li><strong>ปิด sleep และ screen saver ทั้งหมด</strong> รวมถึงตอนปิดฝาโน้ตบุ๊ก</li>
+      <li><strong>ไม่ต่ออินเทอร์เน็ตในเครื่องคุมโชว์</strong> ถ้าจำเป็นต้องต่อ ให้ต่อเฉพาะตอนอัปเดตไฟล์แล้วตัดออก</li>
+      <li><strong>เซฟไฟล์แบบมีเวอร์ชัน</strong> ตั้งชื่อ <code>KLAO_YYMMDD_v1</code> ไม่ทับไฟล์เดิม และก๊อปลง USB ที่เสียบคาไว้ทุกครั้งที่แก้</li>
+      <li><strong>UPS สำหรับคอนโซล</strong> ไฟกระพริบวินาทีเดียวแล้วเครื่องดับกลางคืนวันศุกร์ คือต้นทุนที่แพงกว่า UPS หลายเท่า</li>
+    </ul>
+  </section>
+
+  <!-- 8 -->
+  <section>
+    <div class="sec-head">
+      <span class="sec-n">08</span>
+      <h2>ที่ยังไม่รู้</h2>
+      <span class="sec-note">ตอบแล้วผมเติมให้ครบ</span>
+    </div>
+    <div class="unknown">
+      <h3>ห้าข้อที่ทำให้เอกสารนี้เป็นของจริงแทนที่จะเป็นแบบ</h3>
+      <ul class="plain">
+        <li><strong>รายการดวงไฟ</strong> — มีอะไรบ้าง กี่ดวง มูฟวิ่งกี่ตัว พาร์กี่ตัว ถ่ายรูป patch list มาก็ได้</li>
+        <li><strong>มีไฟวงจรแยกที่ไม่ผ่าน DMX ไหม</strong> — ข้อนี้สำคัญที่สุด ถ้าไม่มีต้องเพิ่ม</li>
+        <li><strong>ใครเป็นคนเปิดร้านจริง</strong> — บาร์เทนเดอร์ ดีเจ หรือคนคุมไฟ คำตอบเปลี่ยนว่าการ์ดต้องละเอียดแค่ไหน</li>
+        <li><strong>ชื่อ show file ปัจจุบัน</strong> และ executor 1–9 ว่างจริงหรือเปล่า</li>
+        <li><strong>ตารางคืนหนึ่ง</strong> — เปิดกี่โมง ดีเจขึ้นกี่โมง ปิดกี่โมง จะได้ใส่เวลาลงในสถานะแต่ละอัน</li>
+      </ul>
+    </div>
+  </section>
+
+  <footer>
+    <span>ร้านเกล้า · LIGHT OPS v1</span>
+    <span>ฉบับเสนอ — ยังไม่ยืนยันกับคอนโซลจริง</span>
+  </footer>
+
+</div>

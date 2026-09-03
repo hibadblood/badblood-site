@@ -1,0 +1,411 @@
+<title>ห้องควบคุมร้านเกล้า</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Chakra+Petch:wght@600;700&family=IBM+Plex+Mono:wght@400;500;600&family=IBM+Plex+Sans+Thai:wght@400;500;600&display=swap">
+
+<style>
+  :root{
+    --ground:#080B14;
+    --panel:#111726;
+    --panel-2:#192033;
+    --edge:#2A3450;
+    --edge-hot:#3D4A6E;
+    --bone:#EDEBE5;
+    --dim:#8A93AC;
+    --faint:#525C79;
+    --amber:#E8A33D;
+    --go:#4FBF7B;
+    --sig:#E03A44;
+    --cyan:#3FB3C4;
+    --mag:#B060C8;
+    --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+    --sans:"IBM Plex Sans Thai","IBM Plex Sans",system-ui,-apple-system,sans-serif;
+    --disp:"Chakra Petch","IBM Plex Sans Thai",system-ui,sans-serif;
+  }
+  *{box-sizing:border-box}
+  html{-webkit-text-size-adjust:100%}
+  body{
+    margin:0;background:var(--ground);color:var(--bone);
+    font-family:var(--sans);font-size:17px;line-height:1.5;
+    -webkit-font-smoothing:antialiased;
+    -webkit-tap-highlight-color:transparent;
+  }
+  .app{max-width:640px;margin:0 auto;padding:0 14px 120px}
+
+  :focus-visible{outline:2px solid var(--amber);outline-offset:2px}
+  @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+
+  /* ── status head ───────────────────────────── */
+  .head{
+    position:sticky;top:0;z-index:20;
+    background:var(--ground);
+    border-bottom:1px solid var(--edge);
+    padding:12px 0 10px;
+  }
+  .head-row{display:flex;align-items:center;gap:12px}
+  .now{
+    font-family:var(--mono);font-size:.72rem;letter-spacing:.14em;
+    color:var(--faint);margin-left:auto;font-variant-numeric:tabular-nums;
+  }
+  .statebox{
+    display:flex;align-items:center;gap:10px;
+    border:1px solid var(--edge);background:var(--panel);
+    padding:7px 14px 7px 11px;
+  }
+  .dot{width:10px;height:10px;flex:0 0 auto}
+  .state-lbl{font-family:var(--mono);font-size:.66rem;letter-spacing:.14em;color:var(--faint)}
+  .state-val{font-family:var(--disp);font-weight:700;font-size:1.05rem;letter-spacing:.03em;line-height:1}
+
+  .disclaim{
+    font-family:var(--mono);font-size:.66rem;letter-spacing:.06em;
+    color:var(--faint);padding:8px 0 0;line-height:1.5;
+  }
+
+  /* ── state selector ────────────────────────── */
+  h2.sec{
+    font-family:var(--mono);font-size:.7rem;letter-spacing:.16em;
+    color:var(--faint);text-transform:uppercase;
+    margin:30px 0 10px;font-weight:500;
+  }
+  .grid5{display:grid;grid-template-columns:repeat(4,1fr);gap:7px}
+  .sbtn{
+    appearance:none;border:1px solid var(--edge);background:var(--panel);
+    color:var(--dim);font-family:var(--disp);font-weight:700;
+    font-size:.92rem;letter-spacing:.03em;
+    padding:16px 4px 14px;cursor:pointer;
+    display:flex;flex-direction:column;align-items:center;gap:7px;
+    transition:border-color .12s,background .12s;
+  }
+  .sbtn .bar{width:26px;height:3px;background:currentColor;opacity:.5}
+  .sbtn:hover{border-color:var(--edge-hot)}
+  .sbtn[aria-pressed="true"]{background:var(--panel-2)}
+  .sbtn[aria-pressed="true"] .bar{opacity:1}
+  .sb-closed[aria-pressed="true"]{color:var(--bone);border-color:var(--bone)}
+  .sb-open[aria-pressed="true"]{color:var(--amber);border-color:var(--amber)}
+  .sb-show[aria-pressed="true"]{color:var(--mag);border-color:var(--mag)}
+  .sb-after[aria-pressed="true"]{color:var(--cyan);border-color:var(--cyan)}
+
+  .panic{
+    appearance:none;width:100%;margin-top:7px;cursor:pointer;
+    border:2px solid var(--sig);background:rgba(224,58,68,.09);
+    color:var(--sig);font-family:var(--disp);font-weight:700;
+    font-size:1.15rem;letter-spacing:.06em;padding:16px 10px;
+    display:flex;align-items:center;justify-content:center;gap:12px;
+  }
+  .panic:hover{background:rgba(224,58,68,.16)}
+  .panic[aria-pressed="true"]{background:var(--sig);color:#0B0206}
+  .panic small{font-family:var(--mono);font-size:.62rem;letter-spacing:.12em;opacity:.75;font-weight:400}
+
+  /* ── tabs ──────────────────────────────────── */
+  .tabs{display:flex;gap:0;border-bottom:1px solid var(--edge);margin:34px 0 0}
+  .tab{
+    appearance:none;background:none;border:none;cursor:pointer;
+    font-family:var(--disp);font-weight:600;font-size:1rem;
+    color:var(--faint);padding:12px 16px;
+    border-bottom:2px solid transparent;margin-bottom:-1px;
+  }
+  .tab[aria-selected="true"]{color:var(--amber);border-bottom-color:var(--amber)}
+  .tab:hover{color:var(--dim)}
+
+  /* ── checklist ─────────────────────────────── */
+  .prog{
+    display:flex;align-items:center;gap:12px;
+    padding:14px 0 12px;
+    font-family:var(--mono);font-size:.72rem;letter-spacing:.1em;color:var(--faint);
+  }
+  .prog-bar{flex:1;height:2px;background:var(--edge);position:relative}
+  .prog-fill{position:absolute;left:0;top:0;bottom:0;background:var(--amber);transition:width .2s}
+  .prog-n{font-variant-numeric:tabular-nums;color:var(--dim)}
+
+  ol.list{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:7px}
+  li.step{display:block}
+  .step-btn{
+    appearance:none;width:100%;text-align:left;cursor:pointer;
+    display:grid;grid-template-columns:30px 1fr;gap:0 14px;align-items:start;
+    border:1px solid var(--edge);background:var(--panel);
+    color:inherit;font:inherit;padding:15px 14px;
+    transition:border-color .12s,background .12s;
+  }
+  .step-btn:hover{border-color:var(--edge-hot)}
+  .box{
+    width:22px;height:22px;border:1px solid var(--faint);
+    display:flex;align-items:center;justify-content:center;
+    margin-top:1px;
+  }
+  .box svg{width:14px;height:14px;display:none}
+  .step-t{font-family:var(--disp);font-weight:600;font-size:1.02rem;line-height:1.35}
+  .step-w{font-size:.82rem;color:var(--dim);margin-top:5px;line-height:1.5}
+  .step-w strong{color:var(--bone);font-weight:600}
+  .step-btn[aria-pressed="true"]{background:transparent;border-color:var(--edge)}
+  .step-btn[aria-pressed="true"] .box{border-color:var(--go);background:rgba(79,191,123,.12)}
+  .step-btn[aria-pressed="true"] .box svg{display:block}
+  .step-btn[aria-pressed="true"] .step-t{color:var(--faint);text-decoration:line-through;text-decoration-color:var(--edge-hot)}
+  .step-btn[aria-pressed="true"] .step-w{color:var(--faint)}
+
+  .flag{
+    display:inline-block;font-family:var(--mono);font-size:.6rem;
+    letter-spacing:.1em;color:var(--sig);border:1px solid var(--sig);
+    padding:2px 6px;margin-left:8px;vertical-align:2px;font-weight:400;
+  }
+  .flag.warn{color:var(--amber);border-color:var(--amber)}
+
+  .reset{
+    appearance:none;cursor:pointer;margin-top:18px;
+    border:1px solid var(--edge);background:none;color:var(--faint);
+    font-family:var(--mono);font-size:.72rem;letter-spacing:.12em;
+    padding:11px 18px;
+  }
+  .reset:hover{color:var(--bone);border-color:var(--edge-hot)}
+
+  /* ── fault ladder ──────────────────────────── */
+  .rung{border:1px solid var(--edge);background:var(--panel);padding:16px 16px;margin-bottom:7px}
+  .rung-k{font-family:var(--mono);font-size:.66rem;letter-spacing:.14em;color:var(--faint);margin-bottom:6px}
+  .rung-t{font-family:var(--disp);font-weight:600;font-size:1.05rem;line-height:1.3}
+  .rung-b{font-size:.84rem;color:var(--dim);margin-top:6px;line-height:1.55}
+  .rung-b code{
+    font-family:var(--mono);font-size:.82em;background:var(--panel-2);
+    border:1px solid var(--edge);padding:2px 6px;color:var(--amber);
+  }
+  .rung.last{border-color:var(--sig);background:rgba(224,58,68,.06)}
+  .rung.last .rung-k,.rung.last .rung-t{color:var(--sig)}
+
+  .three{display:grid;grid-template-columns:1fr;gap:1px;background:var(--edge);border:1px solid var(--edge);margin-top:10px}
+  .three div{background:var(--panel-2);padding:11px 14px;font-size:.86rem;color:var(--bone)}
+  .three span{font-family:var(--mono);font-size:.68rem;color:var(--amber);letter-spacing:.1em;margin-right:10px}
+
+  footer{
+    margin-top:44px;padding-top:16px;border-top:1px solid var(--edge);
+    font-family:var(--mono);font-size:.66rem;letter-spacing:.08em;
+    color:var(--faint);line-height:1.7;
+  }
+  footer a{color:var(--dim)}
+</style>
+
+<div class="app">
+
+  <div class="head">
+    <div class="head-row">
+      <div class="statebox">
+        <div class="dot" id="dot" style="background:var(--bone)"></div>
+        <div>
+          <div class="state-lbl">ห้องอยู่สถานะ</div>
+          <div class="state-val" id="stateVal">CLOSED</div>
+        </div>
+      </div>
+      <div class="now" id="clock">--:--</div>
+    </div>
+  </div>
+
+  <p class="disclaim">หน้านี้ไม่ได้ต่อกับคอนโซล — เป็นเช็คลิสต์กับกระดานสถานะ ไม่ใช่รีโมท การกดที่นี่ไม่ทำให้ไฟเปลี่ยน ต้องไปกดที่แผงจริง</p>
+
+  <h2 class="sec">ตั้งสถานะ · แล้วไปกด GO ที่แผง</h2>
+  <div class="grid5">
+    <button class="sbtn sb-closed" data-state="CLOSED" data-color="--bone" aria-pressed="true"><span class="bar"></span>CLOSED</button>
+    <button class="sbtn sb-open" data-state="OPEN" data-color="--amber" aria-pressed="false"><span class="bar"></span>OPEN</button>
+    <button class="sbtn sb-show" data-state="SHOW" data-color="--mag" aria-pressed="false"><span class="bar"></span>SHOW</button>
+    <button class="sbtn sb-after" data-state="AFTER" data-color="--cyan" aria-pressed="false"><span class="bar"></span>AFTER</button>
+  </div>
+  <button class="panic" id="panicBtn" data-state="PANIC" data-color="--sig" aria-pressed="false">PANIC WHITE <small>EXEC 6</small></button>
+
+  <div class="tabs" role="tablist">
+    <button class="tab" role="tab" id="t-open" aria-selected="true" aria-controls="p-open">เปิดร้าน</button>
+    <button class="tab" role="tab" id="t-close" aria-selected="false" aria-controls="p-close">ปิดร้าน</button>
+    <button class="tab" role="tab" id="t-fault" aria-selected="false" aria-controls="p-fault">เมื่อพัง</button>
+  </div>
+
+  <!-- OPEN -->
+  <div id="p-open" role="tabpanel" aria-labelledby="t-open">
+    <div class="prog">
+      <span>ลำดับเปิด</span>
+      <span class="prog-bar"><span class="prog-fill" id="fillOpen" style="width:0%"></span></span>
+      <span class="prog-n" id="nOpen">0 / 8</span>
+    </div>
+    <ol class="list" id="listOpen"></ol>
+    <button class="reset" data-reset="open">ล้างเช็คลิสต์เปิดร้าน</button>
+  </div>
+
+  <!-- CLOSE -->
+  <div id="p-close" role="tabpanel" aria-labelledby="t-close" hidden>
+    <div class="prog">
+      <span>ลำดับปิด</span>
+      <span class="prog-bar"><span class="prog-fill" id="fillClose" style="width:0%"></span></span>
+      <span class="prog-n" id="nClose">0 / 6</span>
+    </div>
+    <ol class="list" id="listClose"></ol>
+    <button class="reset" data-reset="close">ล้างเช็คลิสต์ปิดร้าน</button>
+  </div>
+
+  <!-- FAULT -->
+  <div id="p-fault" role="tabpanel" aria-labelledby="t-fault" hidden>
+    <div class="prog"><span>ไล่จากบนลงล่าง ห้ามข้ามขั้น</span></div>
+
+    <div class="rung">
+      <div class="rung-k">ขั้น 1 · ไฟดับ / ไฟไม่มา</div>
+      <div class="rung-t">เช็คสามอย่างนี้ก่อนแตะอย่างอื่น</div>
+      <div class="three">
+        <div><span>1</span>Grand Master อยู่ 100 หรือเปล่า</div>
+        <div><span>2</span>แฟเดอร์ HOUSE ขึ้นสุดไหม</div>
+        <div><span>3</span>คอนโซลติดโหมด Blind อยู่หรือเปล่า</div>
+      </div>
+      <div class="rung-b">สามข้อนี้คือสาเหตุของ “ไฟดับ” เกือบทุกครั้ง ใช้เวลาสิบวินาที</div>
+    </div>
+
+    <div class="rung">
+      <div class="rung-k">ขั้น 2 · ไฟค้างสีมั่ว / เอฟเฟกต์วิ่งไม่หยุด</div>
+      <div class="rung-t">ล้างของค้าง แล้วเข้าสถานะใหม่</div>
+      <div class="rung-b">พิมพ์ที่ command line: <code>Off Executor 10 Thru</code> แล้วกด GO ที่ OPEN ใหม่ คำสั่งนี้ไม่แตะ executor 1–9 ที่เป็นชั้นร้าน</div>
+    </div>
+
+    <div class="rung">
+      <div class="rung-k">ขั้น 3 · ดวงไฟไม่ตอบเลย</div>
+      <div class="rung-t">ไปดูสาย ไม่ใช่ดูจอ</div>
+      <div class="rung-b">ถ้าคอนโซลบอกว่าส่งค่าอยู่แต่ไฟนิ่งสนิท ปัญหาอยู่ที่ DMX node / สาย / ไฟเลี้ยงดวง <strong>การรีสตาร์ทคอมไม่ช่วย</strong> และกินเวลาไปอีกห้านาที</div>
+    </div>
+
+    <div class="rung last">
+      <div class="rung-k">ขั้นสุดท้าย · กู้ไม่ได้แล้ว</div>
+      <div class="rung-t">กด PANIC WHITE — ถ้ายังมืด ใช้สวิตช์ผนัง</div>
+      <div class="rung-b">ต้องมีอย่างน้อยหนึ่งวงจร (ทางเดิน บาร์ ทางออก) ที่ไม่ผ่าน DMX เลย ถ้าตอนนี้ยังไม่มี นี่คือเรื่องความปลอดภัย ไม่ใช่เรื่องไฟสวย</div>
+    </div>
+  </div>
+
+  <footer>
+    ร้านเกล้า · CONTROL ROOM v1<br>
+    เช็คลิสต์เก็บไว้ในเครื่องนี้เท่านั้น ไม่ได้ส่งไปไหน · กด “ล้าง” ทุกเช้าก่อนเริ่มรอบใหม่
+  </footer>
+</div>
+
+<script>
+(function(){
+  "use strict";
+
+  var OPEN = [
+    {t:"เบรกเกอร์เมน + วงจรไฟเวที", w:"เช็คว่าไม่มีตัวไหนทริปค้างจากคืนก่อน <strong>ถ้ามีตัวทริป ห้ามดันขึ้นแล้วเปิดร้านต่อ</strong> — หาเหตุก่อน"},
+    {t:"ไฟเลี้ยงดวงไฟ / ดิมเมอร์", f:"ก่อนคอนโซล", w:"รอมูฟวิ่งเฮด home ตัวเองจนหยุดนิ่งหมดทุกดวง ประมาณ 40–60 วินาที อย่าเปิดคอนโซลตัดหน้า"},
+    {t:"เฮเซอร์ — เช็คน้ำยา แล้วเปิดวอร์ม", w:"วอร์มใช้เวลา ทำเป็นข้อแรกๆ จะได้มีควันพอดีตอนเปิดประตู"},
+    {t:"เปิดคอมพิวเตอร์ → เปิด onPC → โหลดไฟล์ล่าสุด", w:"ปิดหน้าต่างที่เด้งขึ้นมาให้หมดก่อน แล้ว<strong>เช็คชื่อไฟล์</strong>ว่าตรงกับที่เซฟไว้ครั้งสุดท้าย"},
+    {t:"เช็ค DMX ออกจริง", w:"ดัน HOUSE ขึ้นนิดเดียว ต้องเห็นดวงไฟขยับ ถ้าไม่ขยับ = สายหลุด ไปดูสายก่อน อย่าไปยุ่งกับคอนโซล"},
+    {t:"Grand Master ขึ้น 100 แล้วปล่อยไว้ตรงนั้น", f:"ห้ามใช้หรี่ไฟ", w:"อยากหรี่ให้ใช้แฟเดอร์ HOUSE ถ้าใครหรี่ Grand Master ไว้แล้วลืม ทั้งคืนจะหาสาเหตุไม่เจอ"},
+    {t:"กด GO ที่ OPEN", w:"ยืนดูสัก 20 วินาที ให้ทุกดวงเข้าที่ก่อนเดินไปทำอย่างอื่น"},
+    {t:"เปิดเพาเวอร์แอมป์ / ลำโพง", f:"ท้ายสุดเสมอ", fw:1, w:"เปิดท้ายสุด ปิดก่อนเพื่อน กัน pop ที่กินดอกลำโพง"}
+  ];
+
+  var CLOSE = [
+    {t:"ปิดเพาเวอร์แอมป์ / ลำโพงก่อน", f:"ก่อนเพื่อน", fw:1, w:"ตรงข้ามกับตอนเปิด เหตุผลเดียวกัน"},
+    {t:"กด GO ที่ AFTER", w:"ปล่อยไว้จนแขกออกหมด อย่ากระโดดไปขาว 100 ทันที มันไล่แขกแบบเสียมารยาท"},
+    {t:"กด CLOSED แล้วทำความสะอาด", w:"ไฟขาวสว่าง เห็นพื้นชัด"},
+    {t:"เซฟ show file ถ้าวันนี้มีแก้อะไร", w:"ตั้งชื่อเป็นเวอร์ชันใหม่ <strong>KLAO_YYMMDD_v1</strong> ไม่ทับไฟล์เดิม แล้วก๊อปลง USB"},
+    {t:"ปิดเฮเซอร์ · ปิดคอมพิวเตอร์ให้ shut down จริง", w:"ไม่ใช่ปิดฝาโน้ตบุ๊ก"},
+    {t:"ปิดไฟเลี้ยงดวงไฟ แล้วค่อยลงเบรกเกอร์เมน", w:"ย้อนลำดับตอนเปิดทั้งหมด"}
+  ];
+
+  var TICK = '<svg viewBox="0 0 16 16" aria-hidden="true"><path d="M2.5 8.6l3.4 3.4L13.5 4.4" fill="none" stroke="#4FBF7B" stroke-width="2.2" stroke-linecap="square"/></svg>';
+
+  /* storage — never let a blocked accessor break the page */
+  function load(k,d){ try{ var v=localStorage.getItem(k); return v?JSON.parse(v):d; }catch(e){ return d; } }
+  function save(k,v){ try{ localStorage.setItem(k,JSON.stringify(v)); }catch(e){} }
+
+  var doneOpen  = load("klao.open",  []);
+  var doneClose = load("klao.close", []);
+  var curState  = load("klao.state", "CLOSED");
+
+  /* ── build a checklist ─────────────────────── */
+  function build(items, mount, done, key, fillEl, nEl){
+    mount.innerHTML = "";
+    items.forEach(function(it, i){
+      var li = document.createElement("li");
+      li.className = "step";
+      var b = document.createElement("button");
+      b.className = "step-btn";
+      b.type = "button";
+      b.setAttribute("aria-pressed", done[i] ? "true" : "false");
+      b.innerHTML =
+        '<span class="box">' + TICK + '</span>' +
+        '<span><span class="step-t">' + (i+1) + '. ' + it.t +
+        (it.f ? '<span class="flag' + (it.fw ? ' warn' : '') + '">' + it.f + '</span>' : '') +
+        '</span><span class="step-w">' + it.w + '</span></span>';
+      b.addEventListener("click", function(){
+        done[i] = !done[i];
+        b.setAttribute("aria-pressed", done[i] ? "true" : "false");
+        save(key, done);
+        meter(items, done, fillEl, nEl);
+      });
+      li.appendChild(b);
+      mount.appendChild(li);
+    });
+    meter(items, done, fillEl, nEl);
+  }
+
+  function meter(items, done, fillEl, nEl){
+    var c = 0, i;
+    for(i=0;i<items.length;i++){ if(done[i]) c++; }
+    fillEl.style.width = (c / items.length * 100) + "%";
+    nEl.textContent = c + " / " + items.length;
+  }
+
+  build(OPEN,  document.getElementById("listOpen"),  doneOpen,  "klao.open",
+        document.getElementById("fillOpen"),  document.getElementById("nOpen"));
+  build(CLOSE, document.getElementById("listClose"), doneClose, "klao.close",
+        document.getElementById("fillClose"), document.getElementById("nClose"));
+
+  /* ── reset ─────────────────────────────────── */
+  Array.prototype.forEach.call(document.querySelectorAll("[data-reset]"), function(btn){
+    btn.addEventListener("click", function(){
+      if(btn.dataset.reset === "open"){
+        doneOpen.length = 0; save("klao.open", doneOpen);
+        build(OPEN, document.getElementById("listOpen"), doneOpen, "klao.open",
+              document.getElementById("fillOpen"), document.getElementById("nOpen"));
+      } else {
+        doneClose.length = 0; save("klao.close", doneClose);
+        build(CLOSE, document.getElementById("listClose"), doneClose, "klao.close",
+              document.getElementById("fillClose"), document.getElementById("nClose"));
+      }
+    });
+  });
+
+  /* ── state ─────────────────────────────────── */
+  var stateBtns = Array.prototype.slice.call(document.querySelectorAll("[data-state]"));
+  var valEl = document.getElementById("stateVal");
+  var dotEl = document.getElementById("dot");
+
+  function setState(name){
+    curState = name;
+    save("klao.state", name);
+    stateBtns.forEach(function(b){
+      b.setAttribute("aria-pressed", b.dataset.state === name ? "true" : "false");
+    });
+    var hit = stateBtns.filter(function(b){ return b.dataset.state === name; })[0];
+    var c = hit ? hit.dataset.color : "--bone";
+    valEl.textContent = name;
+    valEl.style.color = "var(" + c + ")";
+    dotEl.style.background = "var(" + c + ")";
+  }
+  stateBtns.forEach(function(b){
+    b.addEventListener("click", function(){
+      setState(b.getAttribute("aria-pressed") === "true" && b.dataset.state === "PANIC" ? "OPEN" : b.dataset.state);
+    });
+  });
+  setState(curState);
+
+  /* ── tabs ──────────────────────────────────── */
+  var tabs = Array.prototype.slice.call(document.querySelectorAll(".tab"));
+  tabs.forEach(function(t){
+    t.addEventListener("click", function(){
+      tabs.forEach(function(o){
+        var on = o === t;
+        o.setAttribute("aria-selected", on ? "true" : "false");
+        document.getElementById(o.getAttribute("aria-controls")).hidden = !on;
+      });
+    });
+  });
+
+  /* ── clock ─────────────────────────────────── */
+  var clock = document.getElementById("clock");
+  function tick(){
+    var d = new Date();
+    clock.textContent = ("0"+d.getHours()).slice(-2) + ":" + ("0"+d.getMinutes()).slice(-2);
+  }
+  tick();
+  setInterval(tick, 20000);
+})();
+</script>
