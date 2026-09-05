@@ -243,6 +243,30 @@ body.onwork .nav::before{background:linear-gradient(to bottom,rgba(5,5,6,.92),rg
   max-width:52ch;transition:color var(--t-mid)}
 .row:hover p{color:var(--chrome)}
 
+/* ══ VENTURES ══ the companies inside the Ventures row ═══════════════ */
+.ventures{grid-column:1/-1;display:grid;grid-template-columns:1fr;margin-top:clamp(14px,2.4vw,30px);border-top:1px solid var(--line)}
+@media (min-width:560px){.ventures{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media (min-width:1024px){.ventures{grid-template-columns:repeat(4,minmax(0,1fr))}}
+.venture{display:grid;grid-template-rows:auto 1fr auto;gap:14px;padding:clamp(18px,2.4vw,30px) clamp(14px,1.8vw,26px) clamp(18px,2.4vw,30px) 0;
+  border-bottom:1px solid var(--line);color:var(--bone);text-decoration:none}
+@media (min-width:560px){.venture{border-right:1px solid var(--line);padding-left:clamp(14px,1.8vw,26px)}
+  .venture:nth-child(odd){padding-left:0}.venture:nth-child(even){border-right:0}}
+@media (min-width:1024px){.venture{border-bottom:0}
+  .venture:nth-child(even){border-right:1px solid var(--line);padding-left:clamp(14px,1.8vw,26px)}
+  .venture:first-child{padding-left:0}.venture:last-child{border-right:0}}
+.venture .logo{height:clamp(26px,3vw,38px);display:flex;align-items:center}
+.venture .logo img{height:100%;width:auto;max-width:100%;opacity:.62;transition:opacity var(--t-mid) var(--lux)}
+.venture .logo img.blend{mix-blend-mode:screen}
+.venture p{margin:0;font-family:var(--micro);font-size:clamp(12.5px,1.05vw,14px);line-height:1.6;color:var(--smoke);max-width:30ch;transition:color var(--t-mid)}
+.venture .foot{display:flex;justify-content:space-between;gap:12px;align-items:baseline}
+.venture .foot i{font-style:normal;color:var(--blood);display:inline-block;margin-left:.5em;transition:transform var(--t-mid) var(--lux)}
+a.venture:hover .logo img,a.venture:focus-visible .logo img{opacity:1}
+a.venture:hover p,a.venture:focus-visible p{color:var(--chrome)}
+a.venture:hover .foot i{transform:translateX(4px)}
+a.venture:focus-visible{outline:1px solid var(--bone);outline-offset:6px}
+.venture.soon .logo img{opacity:.28}
+.venture.soon p{opacity:.7}
+
 /* ══ PORTAL ══ same eye, raised stage ═════════════════════════════════ */
 .portal{position:fixed;inset:0;z-index:95;display:none;flex-direction:column;
   padding:var(--edge);overflow:hidden;height:100dvh;
@@ -538,6 +562,30 @@ body.onwork .nav::before{background:linear-gradient(to bottom,rgba(5,5,6,.92),rg
     <span class="mi rv">04 / Bad Blood Originals</span>
     <h2 class="disp lg rv" style="max-width:15ch">Clients are not the only source of ideas.</h2>
     <div class="rows rv" id="rows"></div>
+    <template id="venturesStrip">
+      <div class="ventures">
+        <a class="venture" href="https://tobtan.chat" target="_blank" rel="noopener">
+          <span class="logo"><img src="assets/ventures/tobtan.webp" alt="ตอบแทน" loading="lazy" decoding="async"></span>
+          <p>A LINE assistant that answers a business's customers in the owner's own voice.</p>
+          <span class="foot"><span class="mi lit">tobtan.chat<i>→</i></span><span class="mi">Live</span></span>
+        </a>
+        <a class="venture" href="https://hordooduang.com" target="_blank" rel="noopener">
+          <span class="logo"><img src="assets/ventures/hordooduang.webp" alt="หอดูดวง" loading="lazy" decoding="async"></span>
+          <p>A free birth-chart reading, and a wallpaper drawn from it that exists only once.</p>
+          <span class="foot"><span class="mi lit">hordooduang.com<i>→</i></span><span class="mi">Live</span></span>
+        </a>
+        <a class="venture" href="https://badblood-pitch.pages.dev/p/iris-protocol-badblood-ckyc/" target="_blank" rel="noopener">
+          <span class="logo"><img class="blend" src="assets/ventures/iris-protocol.webp" alt="IRIS Protocol" loading="lazy" decoding="async"></span>
+          <p>Bad Blood's intelligence, commanded from a partner's own LINE. A private black box.</p>
+          <span class="foot"><span class="mi lit">IRIS Protocol<i>→</i></span><span class="mi">Partners first</span></span>
+        </a>
+        <div class="venture soon">
+          <span class="logo"><img src="assets/ventures/type-o.webp" alt="TYPE O" loading="lazy" decoding="async"></span>
+          <p>The back office for every kind of business, sold as a template each company adapts.</p>
+          <span class="foot"><span class="mi">Not yet public</span><span class="mi">In build</span></span>
+        </div>
+      </div>
+    </template>
   </div>
 </section>
 
@@ -1389,7 +1437,7 @@ var STRIP = ["data:image/webp;base64,UklGRmJ3AABXRUJQVlA4IFZ3AAAQXwSdASp4BRQDPm0
 var ROWS = [
   ["IRIS","Operating","The intelligence interface of the company. She keeps what has been learned, argues with a brief before accepting it, and is the reason the claim does not have to be believed."],
   ["Rule Maker","In production","An owned world and its production line. Each episode is also a research instrument — it observes a behaviour, breaks one assumption, and what it learns returns as company DNA."],
-  ["Bad Blood Ventures","Architecture only","When an organism becomes a product, a platform or a business capable of generating its own value, Bad Blood can be its builder and its owner rather than its agency."],
+  ["Bad Blood Ventures","Operating","When an organism becomes a product, a platform or a business capable of generating its own value, Bad Blood is its builder and its owner rather than its agency."],
   ["The Chapters","Ongoing","Self-initiated films made to find out what a medium can carry before a client asks for it. Where technique is developed, and where it fails cheaply."],
 ];
 
@@ -1499,6 +1547,7 @@ function stateOf(name, el){
 (function(){ var r=$('rows'); ROWS.forEach(function(o){
   var d=document.createElement('div'); d.className='row';
   d.innerHTML='<h3>'+esc(o[0])+'</h3><p>'+esc(o[2])+'</p><span class="mi">'+esc(o[1])+'</span>';
+  if(o[0]==='Bad Blood Ventures'){ var vt=$('venturesStrip'); if(vt&&vt.content) d.appendChild(vt.content.cloneNode(true)); }
   r.appendChild(d); }); })();
 
 ESTATE=$('eyestate'); ESTATE_T=$('eyeState'); IMGS=$('workStage').children; IM0=IMGS[0]||null;
