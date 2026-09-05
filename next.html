@@ -223,19 +223,10 @@ body.onwork .nav::before{background:linear-gradient(to bottom,rgba(5,5,6,.92),rg
 .scar.near .scar-note{opacity:1;transform:none}
 
 
-/* ══ ANATOMY ══ one pinned screen; the words change, the eye changes behind ══ */
-.anat-wrap{position:relative;height:auto}
-.anat-wrap.live{height:280svh}
-.anat-stage{position:relative;display:flex;flex-direction:column;justify-content:center;gap:clamp(40px,8vh,90px);padding:calc(var(--edge)*2.4) var(--edge)}
-.anat-wrap.live .anat-stage{position:sticky;top:0;height:100svh;display:block;padding:0}
-.organ-card{display:grid;gap:clamp(14px,2vw,26px);max-width:1560px;margin:0 auto;z-index:2;position:relative}
-.anat-wrap.live .organ-card{position:absolute;left:var(--edge);right:var(--edge);top:50%;transform:translateY(calc(-50% + 18px));
-  opacity:0;pointer-events:none;transition:opacity .55s var(--focus),transform .7s var(--lux)}
-.anat-wrap.live .organ-card.on{opacity:1;transform:translateY(-50%);pointer-events:auto}
-.anat-anchor{position:absolute;left:0;width:100%;height:0}
-.organ-card .keywords span{transition:color .35s var(--focus),font-variation-settings .35s var(--focus)}
-.organ-card .keywords span.past{color:var(--bone)}
-.organ-card .keywords span.now{color:var(--blood);font-variation-settings:'wdth' 88,'wght' 700}
+/* ══ ANATOMY ══ keywords light one by one as each organ rises ══════════ */
+.organ .keywords span{transition:color .35s var(--focus),font-variation-settings .35s var(--focus)}
+.organ .keywords span.past{color:var(--bone)}
+.organ .keywords span.now{color:var(--blood);font-variation-settings:'wdth' 88,'wght' 700}
 /* ══ RAIL CAPTION ══ the one line over the frames, in its own pool of shade ══ */
 .rail-cap{position:absolute;left:var(--edge);bottom:calc(var(--edge)*1.2);z-index:3;max-width:12ch;pointer-events:none}
 .rail-cap::before{content:'';position:absolute;inset:-40px -60px -40px -60px;z-index:-1;
@@ -435,27 +426,40 @@ a.venture:focus-visible{outline:1px solid var(--bone);outline-offset:6px}
   </div>
 </header>
 
-<section class="anat-wrap" id="anatomy" aria-label="Anatomy">
-  <div class="anat-stage">
-    <div class="organ-card" data-i="0">
+<section class="organ" id="anatomy" data-mode="dna" data-world-state="dna" data-mark="Anatomy / 01">
+  <div class="hold">
+    <div class="organ-head">
       <span class="mi">DNA — It knows</span>
-      <h2 class="disp xl">The intelligence<br>inside the thing.</h2>
-      <div class="keywords"><span>Strategy</span><span>Systems</span><span>Intelligence</span><span>Business</span><span>Technology</span><span>AI</span></div>
+      <h2 class="disp xl rv">The intelligence<br>inside the thing.</h2>
     </div>
-    <div class="organ-card" data-i="1">
-      <span class="mi hot">BLOOD — It moves</span>
-      <h2 class="disp xl">The force that<br>makes people care.</h2>
-      <div class="keywords"><span>Ideas</span><span>Film</span><span>Story</span><span>Characters</span><span>Music</span><span>Worlds</span></div>
-    </div>
-    <div class="organ-card" data-i="2">
-      <span class="mi">SKIN — It meets the world</span>
-      <h2 class="disp xl">Where the idea<br>touches reality.</h2>
-      <div class="keywords"><span>Surface</span><span>Material</span><span>Interface</span><span>Space</span><span>Product</span><span>Contact</span></div>
+    <div class="organ-body">
+      <div class="keywords rv"><span>Strategy</span><span>Systems</span><span>Intelligence</span><span>Business</span><span>Technology</span><span>AI</span></div>
     </div>
   </div>
-  <div class="anat-anchor" style="top:16.6%" data-world-state="dna" data-mark="Anatomy / 01" aria-hidden="true"></div>
-  <div class="anat-anchor" style="top:49.9%" data-world-state="blood" data-mark="Anatomy / 02" aria-hidden="true"></div>
-  <div class="anat-anchor" style="top:83.2%" data-world-state="skin" data-mark="Anatomy / 03" aria-hidden="true"></div>
+</section>
+
+<section class="organ" data-mode="blood" data-world-state="blood" data-mark="Anatomy / 02">
+  <div class="hold">
+    <div class="organ-head">
+      <span class="mi hot">BLOOD — It moves</span>
+      <h2 class="disp xl rv">The force that<br>makes people care.</h2>
+    </div>
+    <div class="organ-body">
+      <div class="keywords rv"><span>Ideas</span><span>Film</span><span>Story</span><span>Characters</span><span>Music</span><span>Worlds</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="organ" data-mode="skin" data-world-state="skin" data-mark="Anatomy / 03">
+  <div class="hold">
+    <div class="organ-head">
+      <span class="mi">SKIN — It meets the world</span>
+      <h2 class="disp xl rv">Where the idea<br>touches reality.</h2>
+    </div>
+    <div class="organ-body">
+      <div class="keywords rv"><span>Surface</span><span>Material</span><span>Interface</span><span>Space</span><span>Product</span><span>Contact</span></div>
+    </div>
+  </div>
 </section>
 
 <section class="rail-wrap scene bleed" data-world-state="media" data-mark="Frames"
@@ -2220,22 +2224,19 @@ if(SAVE){ [].slice.call(document.querySelectorAll('img[loading="eager"]'))
 
 })();
 
-/* ═══ ANATOMY SCRUB ══ which organ is speaking, and which word ═══════════ */
+/* ═══ ANATOMY LIGHT ══ each organ lights its words as it rises into view ═══ */
 (function(){
-  var wrap=document.querySelector('.anat-wrap'); if(!wrap) return;
-  var cards=[].slice.call(wrap.querySelectorAll('.organ-card')); if(cards.length<2) return;
-  if(matchMedia('(prefers-reduced-motion: reduce)').matches){ return; } /* reduced motion: the three organs simply stack, all visible */
-  wrap.classList.add('live');
-  var cur=-1, raf=0, kw=cards.map(function(c){ return [].slice.call(c.querySelectorAll('.keywords span')); });
-  function paint(){ raf=0;
-    var r=wrap.getBoundingClientRect(), vh=innerHeight, run=r.height-vh; if(run<=0) return;
-    var p=Math.min(1,Math.max(0,(-r.top)/run)), n=cards.length, seg=Math.min(n-1,Math.floor(p*n)), loc=p*n-seg;
-    if(seg!==cur){ cur=seg; cards.forEach(function(c,i){ c.classList.toggle('on',i===seg); }); }
-    var ks=kw[seg], m=ks.length, now=Math.min(m-1,Math.floor(loc*(m+1))-0);
-    for(var i=0;i<m;i++){ ks[i].classList.toggle('past',i<now); ks[i].classList.toggle('now',i===now); }
+  var organs=[].slice.call(document.querySelectorAll('.organ')); if(!organs.length) return;
+  if(matchMedia('(prefers-reduced-motion: reduce)').matches){ organs.forEach(function(o){ [].forEach.call(o.querySelectorAll('.keywords span'),function(s){ s.classList.add('past'); }); }); return; }
+  var kw=organs.map(function(o){ return [].slice.call(o.querySelectorAll('.keywords span')); }), raf=0;
+  function paint(){ raf=0; var vh=innerHeight;
+    organs.forEach(function(o,j){ var r=o.querySelector('.keywords').getBoundingClientRect();
+      var p=Math.min(1,Math.max(0,(vh*.88 - r.top)/(vh*.5))), ks=kw[j], m=ks.length;
+      var now = p>=1 ? m : Math.floor(p*(m+1));
+      for(var i=0;i<m;i++){ ks[i].classList.toggle('past',i<now); ks[i].classList.toggle('now',i===now); } });
   }
   addEventListener('scroll',function(){ if(!raf) raf=requestAnimationFrame(paint); },{passive:true});
   addEventListener('resize',function(){ if(!raf) raf=requestAnimationFrame(paint); },{passive:true});
-  paint(); if(typeof measure==='function') measure();
+  paint();
 })();
 </script>
