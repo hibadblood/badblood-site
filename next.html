@@ -194,13 +194,11 @@ body.onwork .nav::before{background:linear-gradient(to bottom,rgba(5,5,6,.92),rg
 .seam .lg{max-width:16ch}
 
 /* ══ MEMORY RAIL ══ vertical scroll drives horizontal movement ═════════ */
-.rail-wrap{position:relative;height:210svh}
-.rail-stage{position:sticky;top:0;height:100svh;overflow:hidden;display:flex;flex-direction:column;justify-content:center;gap:2px;
+.rail-wrap{position:relative;height:150svh}
+.rail-stage{position:sticky;top:0;height:100svh;overflow:hidden;display:flex;
   align-items:center}
 .rail-track{display:flex;gap:2px;will-change:transform;padding-left:var(--edge)}
-#rail2{padding-left:0;padding-right:var(--edge)}
-#rail2 figure img{--b:.72}
-.rail-track figure{flex:0 0 auto;width:clamp(150px,21vw,360px);overflow:hidden;
+.rail-track figure{flex:0 0 auto;width:clamp(190px,26vw,430px);overflow:hidden;
   background:var(--carbon);position:relative}
 .rail-track figure img{width:100%;height:100%;object-fit:cover;
   filter:saturate(.92) contrast(1.05) brightness(var(--b,.62));
@@ -468,7 +466,6 @@ a.venture:focus-visible{outline:1px solid var(--bone);outline-offset:6px}
          style="min-height:auto;padding:0">
   <div class="rail-stage">
     <div class="rail-track" id="rail" role="list" aria-label="Frames"></div>
-    <div class="rail-track" id="rail2" role="list" aria-label="Frames"></div>
   </div>
 </section>
 
@@ -1313,7 +1310,7 @@ function sampleEnv(img){
 
 /* ═══ DATA ═══ unchanged from the previous draft ═════════════════════════ */
 var SCARS = [];
-var STRIP = ["assets/posters/g-shock-impact-leaves-a-signature.webp","assets/posters/rimowa-baggage-has-memory.webp","assets/posters/starbucks-your-name-is-part-of-it.webp","assets/posters/under-armour-pressure-makes-no-sound.webp","assets/posters/cartier-time.webp","assets/posters/heineken-0-0-h-0.webp","assets/posters/coca-cola-wild.webp","assets/posters/leica-leica-through-our-eyes.webp","assets/posters/the-north-face-weather-has-no-schedule.webp","assets/posters/ader-error-fashion-film.webp","assets/posters/mcdonalds-th-concept-film.webp","assets/posters/gopro-every-impact-is-a-beat.webp","assets/posters/kitkat-break.webp","assets/posters/saint-laurent-fashion-film.webp","assets/posters/red-bull-up-only-30s-spec.webp","assets/posters/the-first-chapter.webp","assets/posters/joe-wings-crunch-changes-the-room.webp","assets/posters/the-dream-chapter.webp","assets/posters/oh-juice-fresh-hits-different.webp","assets/posters/dyson-the-air-is-editing.webp","assets/posters/loewe-perfumes-you-cannot-film-a-scent.webp","assets/posters/the-eclipse-chapter.webp","assets/posters/mastercard-the-price-is-never-the-point.webp","assets/posters/herm-egrave-s-objects-remember-hands.webp","assets/posters/burning-city-main-cut.webp","assets/posters/marshall-sound-is-physical.webp","assets/posters/th-future-thai-future-fantasy.webp","assets/posters/bmw-motorrad-the-road-moves.webp","assets/posters/adidas-originals-miss-the-beat.webp","assets/posters/uniqlo-clothes-learn-your-body.webp","assets/posters/ikea-a-room-changes-before-you.webp","assets/posters/grab-th-every-city-has-a-shortcut.webp","assets/posters/nike-0-01.webp"];
+var STRIP = ["assets/posters/nike-0-01.webp","assets/posters/the-eclipse-chapter.webp","assets/posters/saint-laurent-fashion-film.webp","assets/posters/grab-th-every-city-has-a-shortcut.webp","assets/posters/ader-error-fashion-film-ii.webp","assets/posters/leica-leica-through-our-eyes.webp","assets/posters/the-dream-chapter.webp","assets/posters/bmw-motorrad-the-road-moves.webp","assets/posters/studio-dance-music-video-study.webp","assets/posters/kitkat-break.webp","assets/posters/the-first-chapter.webp","assets/posters/th-future-thai-future-fantasy.webp"];
 var ROWS = [
   ["IRIS","Operating","The intelligence interface of the company. She keeps what has been learned, argues with a brief before accepting it, and is the reason the claim does not have to be believed."],
   ["Rule Maker","In production","An owned world and its production line. Each episode is also a research instrument — it observes a behaviour, breaks one assumption, and what it learns returns as company DNA."],
