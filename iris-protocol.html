@@ -5,72 +5,87 @@
 <meta name="viewport" content="width=device-width,initial-scale=1">
 <meta name="robots" content="noindex">
 <title>IRIS Protocol — Bad Blood Company</title>
-<meta name="description" content="IRIS Protocol is Bad Blood's intelligence, kept as a private black box and opened to partners first. One line. One brain. Every medium.">
+<meta name="description" content="The last brief you will ever write. IRIS Protocol: Bad Blood's intelligence, opened to partners first.">
 <meta name="theme-color" content="#08080A">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Space+Grotesk:wght@400;500&display=swap">
 <style>
 :root{
-  --ink:#08080A; --carbon:#0E0E11; --bone:#F2F2EF; --chrome:#9EA2A6; --smoke:#5C5C61; --line:#232326;
-  --blood:#C8102E;
+  --ink:#08080A; --bone:#F2F2EF; --chrome:#9EA2A6; --smoke:#5C5C61; --line:#232326;
+  --blood:#C8102E; --blood-deep:#4A0710;
   --display:'Archivo',Impact,'Arial Narrow',sans-serif;
   --micro:'Space Grotesk',ui-monospace,monospace;
   --edge:clamp(18px,4.2vw,72px);
   --micro-size:clamp(8px,.72vw,9.5px);
+  --lux:cubic-bezier(.2,.7,.2,1);
 }
 *{box-sizing:border-box}
-html{background:var(--ink);color-scheme:dark}
-body{margin:0;background:var(--ink);color:var(--bone);font-family:var(--micro);-webkit-font-smoothing:antialiased}
+html{background:var(--ink);color-scheme:dark;scroll-behavior:smooth}
+body{margin:0;background:var(--ink);color:var(--bone);font-family:var(--micro);-webkit-font-smoothing:antialiased;overflow-x:hidden}
 a{color:inherit;text-decoration:none}
 .mi{font-family:var(--micro);font-size:var(--micro-size);letter-spacing:.34em;text-transform:uppercase;color:var(--smoke);font-weight:400;line-height:1.6}
 .mi.lit{color:var(--chrome)} .mi.hot{color:var(--blood)}
-.disp{font-family:var(--display);font-weight:800;font-variation-settings:'wdth' 78,'wght' 800;line-height:.92;letter-spacing:-.02em;text-transform:uppercase;margin:0;text-wrap:balance}
-.disp.xl{font-size:clamp(44px,9vw,132px)} .disp.lg{font-size:clamp(30px,5vw,72px)} .disp.md{font-size:clamp(22px,2.8vw,38px)}
-.ed{font-family:var(--display);font-variation-settings:'wdth' 100,'wght' 300;font-weight:300;font-size:clamp(17px,1.6vw,22px);line-height:1.45;color:var(--chrome);max-width:34ch;margin:0}
+.disp{font-family:var(--display);font-weight:800;font-variation-settings:'wdth' 72,'wght' 850;line-height:.88;letter-spacing:-.025em;text-transform:uppercase;margin:0;text-wrap:balance}
+.disp.xxl{font-size:clamp(58px,11vw,172px)}
+.disp.xl{font-size:clamp(46px,8.6vw,136px)}
+.disp.lg{font-size:clamp(34px,6.4vw,100px)}
+.ed{font-family:var(--display);font-variation-settings:'wdth' 100,'wght' 300;font-weight:300;font-size:clamp(17px,1.7vw,24px);line-height:1.4;color:var(--chrome);max-width:30ch;margin:0}
+.ed b{font-weight:400;color:var(--bone)}
 .red{color:var(--blood)}
 
-.nav{display:flex;justify-content:space-between;align-items:center;padding:calc(var(--edge)*.6) var(--edge);border-bottom:1px solid var(--line)}
-.nav img{height:16px;width:auto;display:block}
-.nav a.back{display:inline-flex;gap:.6em;align-items:baseline}
+/* pressure line — the page fills with blood as you read */
+.pressure{position:fixed;top:0;left:0;height:2px;width:100%;transform-origin:0 50%;transform:scaleX(0);background:var(--blood);z-index:9;pointer-events:none}
+
+.nav{position:sticky;top:0;z-index:5;display:flex;justify-content:space-between;align-items:center;padding:calc(var(--edge)*.55) var(--edge);
+  background:linear-gradient(to bottom,rgba(8,8,10,.92),rgba(8,8,10,0))}
+.nav img{height:15px;width:auto;display:block}
+.nav a.back{display:inline-flex;gap:.6em;align-items:center}
 .nav a.back:hover i{transform:translateX(-4px)}
-.nav i{font-style:normal;color:var(--blood);display:inline-block;transition:transform .42s cubic-bezier(.2,.7,.2,1)}
+.nav i{font-style:normal;color:var(--blood);display:inline-block;transition:transform .42s var(--lux)}
 
-main{display:grid}
-.scene{padding:clamp(56px,12vh,150px) var(--edge);border-bottom:1px solid var(--line);display:grid;gap:clamp(22px,4vh,54px)}
-.hero .mark{height:clamp(64px,9vw,128px);width:auto;max-width:100%;mix-blend-mode:screen;display:block}
-.status{display:grid;grid-template-columns:repeat(3,auto);justify-content:start;gap:22px clamp(28px,4vw,56px);border-top:1px solid var(--line);padding-top:22px;max-width:640px}
-@media (max-width:600px){.status{grid-template-columns:1fr;gap:16px}}
-.scene>*,main,.three,.loop{min-width:0}
-.status div{display:grid;gap:8px}
-.status b{font-family:var(--micro);font-weight:500;font-size:clamp(13px,1.1vw,15px);letter-spacing:.06em;text-transform:uppercase;color:var(--bone)}
+.scene{min-height:92svh;display:grid;align-content:center;padding:calc(var(--edge)*1.6) var(--edge);gap:clamp(22px,4vh,54px);position:relative}
+.scene+.scene{border-top:1px solid var(--line)}
+.scene .hold{display:grid;gap:clamp(22px,4vh,54px);max-width:1400px;width:100%}
+.scene .mark-line{display:flex;justify-content:space-between;gap:20px;flex-wrap:wrap}
+.right{justify-self:end;text-align:right}
+.right .ed{margin-left:auto}
 
-.three{display:grid;grid-template-columns:1fr;gap:0;border-top:1px solid var(--line)}
-@media (min-width:820px){.three{grid-template-columns:repeat(3,minmax(0,1fr))}}
-.third{display:grid;align-content:start;gap:16px;padding:clamp(26px,3.4vw,44px) 0;border-bottom:1px solid var(--line)}
-@media (min-width:820px){.third{border-bottom:0;border-right:1px solid var(--line);padding-right:clamp(20px,2.6vw,40px)}
-  .third+.third{padding-left:clamp(20px,2.6vw,40px)} .third:last-child{border-right:0}}
-.third p{margin:0;font-size:clamp(13.5px,1.15vw,15.5px);line-height:1.65;color:var(--smoke);max-width:38ch}
+/* hero */
+.hero{min-height:100svh;padding-top:calc(var(--edge)*.5)}
+.hero .mark{height:clamp(86px,11vw,150px);width:auto;max-width:100%;mix-blend-mode:screen;display:block;animation:breathe 5.2s ease-in-out infinite}
+@keyframes breathe{0%,100%{opacity:.86;filter:saturate(.9)}50%{opacity:1;filter:saturate(1.35)}}
 
-.loop{display:grid;grid-template-columns:1fr;border-top:1px solid var(--line)}
-@media (min-width:640px){.loop{grid-template-columns:repeat(3,minmax(0,1fr))}}
-@media (min-width:1100px){.loop{grid-template-columns:repeat(6,minmax(0,1fr))}}
-.step{display:grid;gap:10px;padding:clamp(18px,2.4vw,30px) clamp(14px,1.6vw,24px) clamp(18px,2.4vw,30px) 0;border-bottom:1px solid var(--line)}
-.step h3{margin:0;font-family:var(--display);font-variation-settings:'wdth' 84,'wght' 600;font-weight:600;font-size:clamp(18px,1.7vw,24px);text-transform:uppercase;letter-spacing:-.01em;line-height:1}
-.step p{margin:0;font-size:clamp(12.5px,1.05vw,14px);line-height:1.6;color:var(--smoke);max-width:26ch}
-.step.gate h3{color:var(--blood)}
+/* the gate — the one red moment of the page */
+.gate{display:grid;gap:14px;border-left:2px solid var(--blood);padding-left:clamp(16px,2vw,30px);max-width:42ch}
+.gate .disp{font-size:clamp(24px,3.4vw,52px)}
 
-.act{display:inline-flex;align-items:baseline;gap:.6em;font-family:var(--micro);font-size:clamp(11px,1.3vw,14px);letter-spacing:.24em;text-transform:uppercase;color:var(--bone);border:1px solid var(--line);padding:16px 22px;justify-self:start;transition:border-color .42s}
-.act i{font-style:normal;color:var(--blood);display:inline-block;transition:transform .42s cubic-bezier(.2,.7,.2,1)}
-.act:hover{border-color:var(--bone)} .act:hover i{transform:translateX(4px)}
+/* the threat — full-bleed, type as wall */
+.threat{background:var(--bone);color:var(--ink);border-top:0!important}
+.threat .mi{color:var(--smoke)} .threat .red{color:var(--blood)}
+
+/* access */
+.status{display:flex;flex-wrap:wrap;gap:14px 40px}
+.status span{font-family:var(--micro);font-size:clamp(11px,1vw,13px);letter-spacing:.24em;text-transform:uppercase;color:var(--bone)}
+.status span::before{content:'';display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--blood);margin-right:12px;vertical-align:middle}
+.act{display:inline-flex;align-items:baseline;gap:.6em;font-family:var(--micro);font-size:clamp(11px,1.3vw,14px);letter-spacing:.24em;text-transform:uppercase;color:var(--bone);border:1px solid var(--bone);padding:18px 26px;justify-self:start;transition:background .42s,color .42s}
+.act i{font-style:normal;color:var(--blood);display:inline-block;transition:transform .42s var(--lux)}
+.act:hover{background:var(--bone);color:var(--ink)} .act:hover i{transform:translateX(4px)}
 .act:focus-visible,.back:focus-visible{outline:1px solid var(--bone);outline-offset:6px}
+
+/* ticker */
+.ticker{overflow:hidden;border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:14px 0;white-space:nowrap}
+.ticker span{display:inline-block;padding-right:3em;font-family:var(--micro);font-size:var(--micro-size);letter-spacing:.34em;text-transform:uppercase;color:var(--smoke);animation:slide 42s linear infinite}
+@keyframes slide{from{transform:translateX(0)}to{transform:translateX(-50%)}}
 
 footer{display:flex;flex-wrap:wrap;gap:22px;justify-content:space-between;align-items:flex-end;padding:calc(var(--edge)*.9) var(--edge)}
 footer img{height:17px;width:auto}
-@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+
+@media (prefers-reduced-motion:reduce){*{animation:none!important;transition:none!important}.ticker{white-space:normal}.ticker span{display:block;padding:0}}
 </style>
 </head>
 <body>
+<div class="pressure" id="pressure" aria-hidden="true"></div>
 
 <nav class="nav">
   <a href="/" class="back" aria-label="Back to Bad Blood Company"><i>←</i><img src="assets/bb-logo-horizontal.png" alt="Bad Blood Company"></a>
@@ -80,64 +95,80 @@ footer img{height:17px;width:auto}
 <main>
 
 <section class="scene hero">
-  <img class="mark" src="assets/ventures/iris-protocol.webp" alt="IRIS Protocol">
-  <h1 class="disp xl" style="max-width:11ch">The company, as a protocol.</h1>
-  <p class="ed">IRIS is the intelligence Bad Blood built to live. IRIS Protocol is how a partner brand gets to use her: one line in, a whole company's work out, on a memory of the brand that never leaves.</p>
-  <div class="status">
-    <div><span class="mi">Status</span><b>In development</b></div>
-    <div><span class="mi">Access</span><b>Partners first</b></div>
-    <div><span class="mi">Disclosure</span><b>Shape, not recipe</b></div>
-  </div>
-</section>
-
-<section class="scene">
-  <span class="mi">What we believe</span>
-  <h2 class="disp lg" style="max-width:14ch">Whoever holds the brand's memory holds the brand's work.</h2>
-  <div class="three">
-    <div class="third">
-      <span class="mi lit">I · Memory</span>
-      <h3 class="disp md">One memory per brand.</h3>
-      <p>Voice, colour, products, prices, the customers who come back and what has worked on them. Kept as one memory per brand, never mixed, never sold. It updates itself from every conversation and every approved job.</p>
-    </div>
-    <div class="third">
-      <span class="mi lit">II · Loop</span>
-      <h3 class="disp md">Closed in one conversation.</h3>
-      <p>The ask, the price, the confirmation, the delivery and the approval happen in one thread. No form, no email, no middleman. Every finished job becomes new memory, so the next one is faster and more the brand.</p>
-    </div>
-    <div class="third">
-      <span class="mi lit">III · Watch</span>
-      <h3 class="disp md">She never sleeps.</h3>
-      <p>A sales dip, a review that turns, a competitor that moves. IRIS reads it in the background and proposes a move before it is needed. The owner decides. She is the one who stays awake.</p>
+  <div class="hold">
+    <img class="mark" src="assets/ventures/iris-protocol.webp" alt="IRIS Protocol">
+    <h1 class="disp xxl" style="max-width:9ch">The last brief you will ever write.</h1>
+    <div class="mark-line">
+      <p class="ed">Bad Blood built an intelligence to run its own company. <b>IRIS Protocol opens her to a few partners.</b> Then to no one.</p>
+      <span class="mi">2026 / Partners first</span>
     </div>
   </div>
 </section>
 
 <section class="scene">
-  <span class="mi">The protocol</span>
-  <h2 class="disp lg" style="max-width:14ch">Six steps. One thread.</h2>
-  <div class="loop">
-    <div class="step"><span class="mi">01 · You</span><h3>Ask</h3><p>One line, in plain language, from anywhere.</p></div>
-    <div class="step"><span class="mi">02 · IRIS</span><h3>Interpret</h3><p>Pulls the real brand, products and audience from memory. No re-brief.</p></div>
-    <div class="step"><span class="mi">03 · IRIS</span><h3>Quote</h3><p>Price before work, on our published rates.</p></div>
-    <div class="step"><span class="mi">04 · You</span><h3>Confirm</h3><p>Confirm in the same thread. Work starts the moment you do.</p></div>
-    <div class="step gate"><span class="mi hot">05 · Hard gate</span><h3>Approve</h3><p>Nothing is posted or delivered until the owner approves it.</p></div>
-    <div class="step"><span class="mi">06 · System</span><h3>Learn</h3><p>Every approved job compounds into the brand's memory.</p></div>
+  <div class="hold">
+    <span class="mi">01 / Memory</span>
+    <h2 class="disp xl" style="max-width:10ch">Tools are everywhere. Memory is not.</h2>
+    <p class="ed">Every agency forgets you the day the invoice clears. <b>She never will.</b> Your voice, your prices, your customers, what worked and what didn't. One memory. One brand. Never mixed. Never sold.</p>
   </div>
 </section>
 
 <section class="scene">
-  <span class="mi">The black box</span>
-  <h2 class="disp lg" style="max-width:14ch">You see the shape. We keep the recipe.</h2>
-  <p class="ed">Every medium Bad Blood works in runs from the same brain: film, photography, content, brand and systems. The internals stay founder-locked and are opened only in the room.</p>
-  <a class="act" href="mailto:hi.badblood@gmail.com?subject=IRIS%20Protocol">Ask for the room <i>→</i></a>
+  <div class="hold right">
+    <span class="mi">02 / One line</span>
+    <h2 class="disp xl" style="max-width:10ch">One line in. A company out.</h2>
+    <p class="ed">No brief. No deck. No middleman. You type what needs to happen. <b>She interprets it, prices it and produces it, in every medium at once.</b> The next one is faster, because she remembers this one.</p>
+  </div>
+</section>
+
+<section class="scene">
+  <div class="hold">
+    <span class="mi">03 / The watch</span>
+    <h2 class="disp xxl" style="max-width:8ch">She never sleeps.</h2>
+    <p class="ed">A sales dip. A review that turns. A competitor that moves. <b>She reads it at 3 a.m. and drafts the answer before you wake.</b></p>
+    <div class="gate">
+      <span class="mi hot">The only gate</span>
+      <p class="disp">Nothing goes live without you.</p>
+      <p class="ed" style="font-size:clamp(14px,1.2vw,17px)">She proposes. You decide. Every time.</p>
+    </div>
+  </div>
+</section>
+
+<section class="scene threat">
+  <div class="hold">
+    <span class="mi">What happens next</span>
+    <h2 class="disp xxl" style="max-width:11ch">The brands that remember will eat the brands that brief.</h2>
+    <p class="ed" style="color:var(--smoke)">This is not a service. It is a head start, and it closes.</p>
+  </div>
+</section>
+
+<section class="scene">
+  <div class="hold">
+    <span class="mi">Access</span>
+    <h2 class="disp lg" style="max-width:12ch">You see the shape. We keep the recipe.</h2>
+    <div class="status"><span>In development</span><span>Partners first</span><span>Founder locked</span></div>
+    <a class="act" href="mailto:hi.badblood@gmail.com?subject=IRIS%20Protocol">Ask for the room <i>→</i></a>
+  </div>
 </section>
 
 </main>
 
+<div class="ticker" aria-hidden="true"><span>IRIS Core · Founder locked · Internals withheld by design · One brief · One brain · Every medium · IRIS Core · Founder locked · Internals withheld by design · One brief · One brain · Every medium ·</span></div>
+
 <footer>
   <img src="assets/bb-logo-horizontal.png" alt="Bad Blood Company">
-  <span class="mi">One brief. One brain. Every medium.</span>
+  <span class="mi">IRIS — Bad Blood intelligence · One of the things we built to live</span>
 </footer>
 
+<script>
+(function(){
+  var bar=document.getElementById('pressure'); if(!bar) return;
+  var raf=0;
+  function paint(){ raf=0; var d=document.documentElement; var max=d.scrollHeight-d.clientHeight;
+    bar.style.transform='scaleX('+(max>0?Math.min(1,d.scrollTop/max):0)+')'; }
+  addEventListener('scroll',function(){ if(!raf) raf=requestAnimationFrame(paint); },{passive:true});
+  paint();
+})();
+</script>
 </body>
 </html>
