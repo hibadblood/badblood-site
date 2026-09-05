@@ -9,6 +9,13 @@
 > `v4.2.1-stable`.
 
 
+> **2026-09-05 — Ventures strip.** The Originals row "Bad Blood Ventures" is now
+> "Operating" and carries the company's own ventures: ตอบแทน (tobtan.chat),
+> หอดูดวง (hordooduang.com), IRIS Protocol (pitch page) and TYPE O (dimmed,
+> no link until its site is public). Markup lives in `<template id="venturesStrip">`
+> next to `#rows` and is appended to that row by the rows loop; logos are the real
+> brand files in `assets/ventures/*.webp` — never redraw them. Copy stays English.
+
 Read this before touching anything in this repo. These are locked decisions,
 not suggestions. When a request conflicts with something marked **LOCKED**,
 say so and ask before proceeding.
