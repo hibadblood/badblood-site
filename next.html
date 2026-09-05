@@ -195,9 +195,9 @@ body.onwork .nav::before{background:linear-gradient(to bottom,rgba(5,5,6,.92),rg
 
 /* ══ MEMORY RAIL ══ vertical scroll drives horizontal movement ═════════ */
 .rail-wrap{position:relative;height:260svh}
-.rail-stage{position:sticky;top:0;height:100svh;overflow:hidden;display:flex;flex-direction:column;justify-content:center;
+.rail-stage{position:sticky;top:0;height:100svh;overflow:hidden;display:flex;flex-direction:column;justify-content:center;align-items:flex-start;
   align-items:center}
-.rail-track{display:flex;gap:2px;will-change:transform;padding-left:var(--edge)}
+.rail-track{display:flex;gap:2px;will-change:transform;padding-left:var(--edge);width:max-content}
 .rail-track figure{flex:0 0 auto;width:clamp(170px,22vw,360px);overflow:hidden;
   background:var(--carbon);position:relative}
 .rail-track figure img{width:100%;height:100%;object-fit:cover;
@@ -227,6 +227,18 @@ body.onwork .nav::before{background:linear-gradient(to bottom,rgba(5,5,6,.92),rg
 .organ .keywords span{transition:color .35s var(--focus),font-variation-settings .35s var(--focus)}
 .organ .keywords span.past{color:var(--bone)}
 .organ .keywords span.now{color:var(--blood);font-variation-settings:'wdth' 88,'wght' 700}
+
+/* ══ PHONE ══ tight organs with alternating alignment; the eye keeps its states ══ */
+@media (max-width:820px){
+  .organ{min-height:auto;padding:calc(var(--edge)*2.6) var(--edge)}
+  .organ+.organ{padding-top:calc(var(--edge)*1.2)}
+  .organ[data-mode="blood"] .hold{text-align:right}
+  .organ[data-mode="blood"] .keywords{justify-content:flex-end;margin-left:auto}
+  .organ .keywords{gap:0 clamp(12px,3.6vw,22px)}
+  .rail-wrap{height:190svh}
+  .rail-cap{font-size:clamp(2rem,9.4vw,3.2rem);max-width:9ch}
+  .marks .bl{bottom:calc(var(--edge) + 24px)}
+}
 /* ══ RAIL CAPTION ══ the one line over the frames, in its own pool of shade ══ */
 .rail-cap{align-self:flex-start;margin:0 0 clamp(18px,3vh,34px) 0;padding:0 var(--edge);max-width:13ch;font-size:clamp(1.9rem,4.4vw,3.8rem)}
 /* ══ ORIGINALS ══ ruled rows ══════════════════════════════════════════ */
