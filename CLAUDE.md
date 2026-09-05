@@ -1,5 +1,17 @@
 # CLAUDE.md — BAD BLOOD COMPANY 🩸
 
+> **2026-09-06 — HOMEPAGE REPLACED AGAIN (v5.0 short).** The owner's direction:
+> Bad Blood is *not an agency*; it builds its own companies. `index.html` is now
+> the short organism: Arrival → DNA / BLOOD / SKIN (one line + lit keywords each)
+> → frame rail with "We collect chaos and call it beauty." → IRIS reveal →
+> Originals = the four ventures (ตอบแทน, หอดูดวง, IRIS Protocol, TYPE O) →
+> "Not an agency. A company that builds companies." (Enter IRIS + a small
+> Partners mailto) → footer with the logo only. Cut on purpose: The shift,
+> Anatomy intro, seams, Culture, the Scars work stack, Company slogans, the
+> "Bring us a problem" CTA. Type scale matches `iris-protocol.html`. The previous
+> long homepage is at git tag `pre-short-home`. Concept-film disclaimer lives on
+> `work.html` (Archive), not the homepage.
+
 > **2026-08-24 — HOMEPAGE REPLACED.** `index.html` is now the 2026 organism
 > (V4.8 LIVE VOICE — the living eye + talking public IRIS portal, backed by the
 > separate `badblood-site-iris` worker). The owner ordered this launch
