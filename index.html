@@ -254,18 +254,15 @@ body.onwork .nav::before{background:linear-gradient(to bottom,rgba(5,5,6,.92),rg
 @media (min-width:1024px){.venture{border-bottom:0}
   .venture:nth-child(even){border-right:1px solid var(--line);padding-left:clamp(14px,1.8vw,26px)}
   .venture:first-child{padding-left:0}.venture:last-child{border-right:0}}
-.venture .logo{height:clamp(26px,3vw,38px);display:flex;align-items:center}
-.venture .logo img{height:100%;width:auto;max-width:100%;opacity:.62;transition:opacity var(--t-mid) var(--lux)}
+.venture .logo{height:clamp(44px,4.6vw,64px);display:flex;align-items:center}
+.venture .logo img{height:100%;width:auto;max-width:100%;object-fit:contain}
 .venture .logo img.blend{mix-blend-mode:screen}
 .venture p{margin:0;font-family:var(--micro);font-size:clamp(12.5px,1.05vw,14px);line-height:1.6;color:var(--smoke);max-width:30ch;transition:color var(--t-mid)}
 .venture .foot{display:flex;justify-content:space-between;gap:12px;align-items:baseline}
 .venture .foot i{font-style:normal;color:var(--blood);display:inline-block;margin-left:.5em;transition:transform var(--t-mid) var(--lux)}
-a.venture:hover .logo img,a.venture:focus-visible .logo img{opacity:1}
 a.venture:hover p,a.venture:focus-visible p{color:var(--chrome)}
 a.venture:hover .foot i{transform:translateX(4px)}
 a.venture:focus-visible{outline:1px solid var(--bone);outline-offset:6px}
-.venture.soon .logo img{opacity:.28}
-.venture.soon p{opacity:.7}
 
 /* ══ PORTAL ══ same eye, raised stage ═════════════════════════════════ */
 .portal{position:fixed;inset:0;z-index:95;display:none;flex-direction:column;
@@ -574,11 +571,11 @@ a.venture:focus-visible{outline:1px solid var(--bone);outline-offset:6px}
           <p>A free birth-chart reading, and a wallpaper drawn from it that exists only once.</p>
           <span class="foot"><span class="mi lit">hordooduang.com<i>→</i></span><span class="mi">Live</span></span>
         </a>
-        <a class="venture" href="https://badblood-pitch.pages.dev/p/iris-protocol-badblood-ckyc/" target="_blank" rel="noopener">
+        <div class="venture">
           <span class="logo"><img class="blend" src="assets/ventures/iris-protocol.webp" alt="IRIS Protocol" loading="lazy" decoding="async"></span>
-          <p>Bad Blood's intelligence, commanded from a partner's own LINE. A private black box.</p>
-          <span class="foot"><span class="mi lit">IRIS Protocol<i>→</i></span><span class="mi">Partners first</span></span>
-        </a>
+          <p>Bad Blood's intelligence, kept as a private black box and opened to partners first.</p>
+          <span class="foot"><span class="mi">In development</span><span class="mi">Partners first</span></span>
+        </div>
         <div class="venture soon">
           <span class="logo"><img src="assets/ventures/type-o.webp" alt="TYPE O" loading="lazy" decoding="async"></span>
           <p>The back office for every kind of business, sold as a template each company adapts.</p>
