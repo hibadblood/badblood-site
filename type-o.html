@@ -169,6 +169,21 @@ tr:last-child td{border-bottom:0}
 .trade b{display:block;font-family:var(--disp);font-size:13px;font-weight:700;color:var(--cream);letter-spacing:-.01em}
 .trade span{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.08em;color:var(--grey);margin-top:3px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 @media(max-width:640px){.trades{display:block;background:none;border:0;border-radius:0;margin-top:18px;font-family:var(--disp);font-size:15px;line-height:1.75;color:var(--cream)}.trade{display:inline;background:none;padding:0}.trade b{display:inline;font-size:15px;font-weight:600;letter-spacing:0}.trade span{display:none}.trade::after{content:'  ·  ';color:var(--red2);white-space:pre}.trade:last-child::after{content:''}}
+/* real screens */
+.shots{display:grid;grid-template-columns:minmax(0,.66fr) minmax(0,1.7fr) minmax(0,.66fr);gap:22px;align-items:start}
+@media(max-width:900px){.shots{grid-template-columns:1fr 1fr}.shots .desk{grid-column:1/-1}}
+@media(max-width:560px){.shots{grid-template-columns:1fr}.shots .phone{max-width:340px;margin:0 auto;width:100%}}
+.shot{margin:0;display:flex;flex-direction:column;gap:12px;min-width:0}
+.shot .bez{background:#0E0E0E;border:1px solid var(--line2);border-radius:26px;padding:8px;box-shadow:0 30px 70px rgba(0,0,0,.55)}
+.shot .bez img{width:100%;height:auto;border-radius:19px;display:block}
+.shot .win{background:#0E0E0E;border:1px solid var(--line2);border-radius:10px;overflow:hidden;box-shadow:0 30px 70px rgba(0,0,0,.55)}
+.shot .win .tb{display:flex;gap:6px;padding:9px 12px;border-bottom:1px solid var(--line)}
+.shot .win .tb i{display:block;width:8px;height:8px;border-radius:50%;background:#2A2A2A}
+.shot .win .tb i:first-child{background:var(--red)}
+.shot .win img{width:100%;height:auto;display:block}
+.shot figcaption{font-size:13px;line-height:1.55;color:var(--cream2)}
+.shot figcaption b{color:var(--cream);font-weight:600}
+.shot figcaption .t{display:block;font-family:var(--mono);font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:var(--grey);margin-bottom:5px}
 /* facts */
 .facts{display:grid;grid-template-columns:1fr 1fr;gap:0 36px}
 @media(max-width:700px){.facts{grid-template-columns:1fr}}
@@ -300,53 +315,23 @@ tr:last-child td{border-bottom:0}
     <div class="sec-h rv">
       <span class="snum"><svg class="d" viewBox="0 0 120 120" aria-hidden="true"><circle cx="60" cy="60" r="56" fill="#C8202E"></circle><rect x="76" y="32" width="20" height="7" fill="#050505"></rect></svg><span class="label"><b>03</b> · What it looks like</span></span>
       <h2 class="disp">Three screens.<br>That is the <span class="rd">whole</span> thing.</h2>
-      <p class="lede">No dashboard to learn. One message every morning, one list of work, one page of settings. The pack chooses the words; a clinic and a garage see the same three screens with different nouns on them.</p>
+      <p class="lede">No dashboard to learn. One overview, one board, one page of settings, and a message every morning. Photographed from the running system, not drawn.</p>
     </div>
-    <div class="screens">
-      <div class="scr rv">
-        <div class="bar"><span><i></i>&nbsp;LINE · 08:00</span><span>Dental clinic</span></div>
-        <div class="chat">
-          <div class="bub">
-            <h5>Today, Tuesday</h5>
-            <div class="kv">
-              <span>Yesterday</span><span>฿41,200</span>
-              <span>Chair slots today</span><span>22 · 3 open</span>
-              <span>Owed to you</span><span class="w">฿18,500 · 4 people</span>
-              <span>Stock</span><span class="g">nothing low</span>
-              <span>Staff in</span><span>5 of 6</span>
-            </div>
-            <div class="need">3 things need you: a refund over ฿2,000 · a new supplier · a patient who asked for the owner.</div>
-          </div>
-          <div class="time">SENT 08:00 · READS ITSELF IN 20 SECONDS</div>
-        </div>
-        <div class="cap"><b>The morning message.</b> The owner never opens a report. The report comes to the owner, and it stops at what needs a decision.</div>
-      </div>
-      <div class="scr rv d1">
-        <div class="bar"><span><i></i>&nbsp;Board · live</span><span>Garage · 14 open</span></div>
-        <div class="board">
-          <div class="hd"><span>№</span><span>Job</span><span>State</span><span>Who</span></div>
-          <div class="row"><span class="id">0412</span><span class="wh">Brake pads · Civic 2019<small>quoted ฿4,800 · accepted 09:12</small></span><span class="st g">In the bay</span><span class="who">Nok</span></div>
-          <div class="row"><span class="id">0413</span><span class="wh">Timing belt · Vios<small>parts arrived · waiting for bay</small></span><span class="st">Queued</span><span class="who">—</span></div>
-          <div class="row"><span class="id">0414</span><span class="wh">Full service · D-Max<small>tested 11:40 · owner messaged</small></span><span class="st w">Ready</span><span class="who">Bank</span></div>
-          <div class="row"><span class="id">0415</span><span class="wh">Aircon regas · Fortuner<small>no answer for 15 min</small></span><span class="st r">Taken back</span><span class="who">—</span></div>
-          <div class="row"><span class="id">0410</span><span class="wh">Clutch · Hilux<small>paid by transfer · receipt sent</small></span><span class="st g">Collected</span><span class="who">Nok</span></div>
-        </div>
-        <div class="cap"><b>The board.</b> Every unit of work has a number, a state and a name on it. A job nobody accepts comes back to the top by itself — the short timer behind that is the one piece still marked “not built” below.</div>
-      </div>
-      <div class="scr rv d2">
-        <div class="bar"><span><i></i>&nbsp;Settings · owner</span><span>Courier · 9 dials</span></div>
-        <div class="dials">
-          <div class="dial"><span class="k">Words<b>Call it a…</b></span><span class="v">Parcel</span></div>
-          <div class="dial"><span class="k">Assign by<b>Who gets the next one</b></span><span class="v">Nearest free</span></div>
-          <div class="dial"><span class="k">Timer<b>Take it back after</b></span><span class="v">10 min</span></div>
-          <div class="dial"><span class="k">Money<b>Deposit before pickup</b></span><span class="v">0%</span></div>
-          <div class="dial"><span class="k">Receipt<b>Send when paid</b></span><span class="v on">On</span></div>
-          <div class="dial"><span class="k">Morning message<b>Arrives at</b></span><span class="v">07:30</span></div>
-          <div class="refused">Asked for: <s>add a column for “fragile”</s> — refused, logged. Fragile is a tag on the parcel, not a new table.</div>
-        </div>
-        <div class="cap"><b>The dials.</b> Nine things the owner can change from a phone without calling anyone. Everything else is refused on purpose, so a typo can never rewrite a workflow.</div>
-      </div>
+    <div class="shots">
+      <figure class="shot phone rv">
+        <div class="bez"><img src="assets/type-o/home.jpg" alt="TYPE O overview screen on a phone: today's to-do list and four key numbers" loading="lazy"></div>
+        <figcaption><span class="t">Phone · /app</span><b>The overview.</b> What needs the owner today (stock running low, one overdue account), then four numbers: jobs closed this month, margin per job, money owed, cars in the bays.</figcaption>
+      </figure>
+      <figure class="shot desk rv d1">
+        <div class="win"><div class="tb"><i></i><i></i><i></i></div><img src="assets/type-o/board.jpg" alt="TYPE O work board on a desktop: repair jobs in columns by state" loading="lazy"></div>
+        <figcaption><span class="t">Desktop · /app/work</span><b>The board.</b> Every job has a number, a state, a mechanic and a price. Columns are the pack's states in the pack's words; a job nobody accepts comes back to the top on a timer.</figcaption>
+      </figure>
+      <figure class="shot phone rv d2">
+        <div class="bez"><img src="assets/type-o/settings.jpg" alt="TYPE O settings screen on a phone: shop name, pack, slip ceiling, sign-off, daily summary time" loading="lazy"></div>
+        <figcaption><span class="t">Phone · /app/settings</span><b>The dials.</b> The pack, the auto-approve ceiling for transfer slips, the sign-off word, the hour the daily summary arrives. Change them from a phone; nothing else can be broken from here.</figcaption>
+      </figure>
     </div>
+    <p class="label rv d2" style="margin-top:18px;letter-spacing:.12em;line-height:1.9">Real screens from the running system, unedited. The tenant is a demo vehicle-repair workshop on the second pack; the shop floor reads Thai because its people do. A clinic on its own pack sees the same three screens with different nouns.</p>
   </div>
 </section>
 
@@ -389,21 +374,21 @@ tr:last-child td{border-bottom:0}
       <div>
         <h4 class="on">Built and tested</h4>
         <ul>
-          <li><b>One engine, one abstraction.</b> No jobs table, no bookings table, no orders table.</li>
-          <li><b>The ledger.</b> Lots, FIFO, FEFO, weighted average, recipes, landed cost — the database itself refuses stock below zero.</li>
-          <li><b>Costing proven to the satang</b>, against the numbers of a real working app.</li>
-          <li><b>Money.</b> QR payment, transfer slips, refunds, receivables, tax fields, monthly P&amp;L.</li>
-          <li><b>Isolation with teeth.</b> Every route replayed as a second company to prove nothing leaks.</li>
+          <li><b>One engine, one abstraction.</b> No jobs table, no bookings table, no orders table. Two packs run on it today — a roastery and a vehicle-repair workshop — through one validator.</li>
+          <li><b>The ledger.</b> Lots, FIFO, FEFO, weighted average, recipes, landed cost — the database itself refuses stock below zero. Costing proven to the satang.</li>
+          <li><b>Money.</b> QR payment, transfer slips read from the slip's own QR and checked with a vendor, duplicate slips refused, refunds, receivables, tax fields, monthly P&amp;L. Anything unsure goes to a human, never to "paid".</li>
+          <li><b>In and out.</b> CSV import with a preview before anything is written, idempotent on re-upload; eleven CSV exports including the monthly P&amp;L.</li>
+          <li><b>Timers, roles, numbers.</b> Sub-minute offer timers on Durable Object alarms; job titles as data per company, gates by capability; utilisation and no-shows computed from real bookings. Every route replayed as a second company to prove nothing leaks. 521 tests.</li>
         </ul>
       </div>
       <div>
         <h4 class="off">Not built yet</h4>
         <ul>
-          <li><b>No importer, no export.</b> The largest gap between the story and the software.</li>
-          <li><b>Slip checking is unwired.</b> Every transfer goes to a human today.</li>
-          <li><b>Short assignment timers</b> need a mechanism that is still a stub.</li>
-          <li><b>Some numbers cannot be computed yet</b> — nothing reads resources and bookings.</li>
-          <li><b>Staff roles are compiled into the core</b>, so a new job title means a release for everyone.</li>
+          <li><b>Slip vendors are tested against fixtures</b>, not a live key yet; the first thirty real slips are the proof. The second vendor slot is wired but idle.</li>
+          <li><b>Customer slip photos from LINE</b> do not reach the checker yet; today a slip is uploaded on the web.</li>
+          <li><b>Receivable reminders</b> have a schedule but no LINE push or button.</li>
+          <li><b>A finished booking leaves the utilisation count</b> the moment its work completes — the fix is one primitive change, proposed and not yet made.</li>
+          <li><b>Not started:</b> cached KPI snapshots, rich menus per role, public token pages, a bank-statement importer.</li>
         </ul>
       </div>
     </div>
