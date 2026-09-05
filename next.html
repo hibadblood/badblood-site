@@ -236,7 +236,8 @@ body.onwork .nav::before{background:linear-gradient(to bottom,rgba(5,5,6,.92),rg
   .organ[data-mode="blood"] .hold{text-align:right}
   .organ[data-mode="blood"] .keywords{justify-content:flex-end;margin-left:auto}
   .organ .keywords{gap:0 clamp(12px,3.6vw,22px)}
-  .rail-wrap{height:190svh}
+  .rail-wrap{height:160svh}
+  .rail-stage{height:auto;top:10svh;padding-bottom:calc(var(--edge)*1.5)}
   .rail-cap{font-size:clamp(2rem,9.4vw,3.2rem);max-width:9ch}
   .marks,#sndT{display:none!important}
 }
@@ -1559,10 +1560,11 @@ function readScroll(){
 
   /* the memory rail: vertical scroll drives horizontal travel */
   if(railWrap && RAILW){
-    var rrTop=RAILW.top-scrollY, rrBot=rrTop+RAILW.h;
-    var rp = clamp((-rrTop)/(RAILW.h-VH||1), 0, 1);
+    /* measured live: cached tops went stale on phones once fonts and images settled */
+    var _rr=railWrap.getBoundingClientRect(), rrTop=_rr.top, rrBot=_rr.bottom;
+    var rp = clamp((-rrTop)/(_rr.height-VH||1), 0, 1);
     var track=$('rail');
-    var over = RAILOVER, shift=RM?0:-rp*over;
+    var over = Math.max(0, track.scrollWidth - VW + 40), shift=RM?0:-rp*over;
     if(!RM) track.style.transform='translate3d('+shift+'px,0,0)';
     var track2=$('rail2'); if(track2&&!RM) track2.style.transform='translate3d('+(-RAILOVER2+rp*RAILOVER2)+'px,0,0)';
     /* the frame closest to IRIS brightens, and is what she is holding */
