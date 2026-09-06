@@ -9,3 +9,16 @@ for-review-v5/
 for-review-v6/
 .git/
 .git
+
+# internal — never serve these publicly (added 6 Sep 2026)
+CLAUDE.md
+*.md
+wrangler.jsonc
+.assetsignore
+.DS_Store
+**/.DS_Store
+.wrangler/
+draft-2026.html
+draft-2026.source.html
+draft-2026-v4.3.html
+draft-2026-v4.2.1-restored.html
