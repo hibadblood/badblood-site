@@ -277,14 +277,14 @@ body.onwork .nav::before{background:linear-gradient(to bottom,rgba(5,5,6,.92),rg
 /* ══ VENTURES ══ the companies inside the Ventures row ═══════════════ */
 .ventures{grid-column:1/-1;display:grid;grid-template-columns:1fr;margin-top:clamp(14px,2.4vw,30px);border-top:1px solid var(--line)}
 @media (min-width:560px){.ventures{grid-template-columns:repeat(2,minmax(0,1fr))}}
-@media (min-width:1024px){.ventures{grid-template-columns:repeat(5,minmax(0,1fr))}}
+@media (min-width:1024px){.ventures{grid-template-columns:repeat(3,minmax(0,1fr))}}
 .venture{display:grid;grid-template-rows:auto 1fr auto;gap:14px;padding:clamp(18px,2.4vw,30px) clamp(14px,1.8vw,26px) clamp(18px,2.4vw,30px) 0;
   border-bottom:1px solid var(--line);color:var(--bone);text-decoration:none}
 @media (min-width:560px){.venture{border-right:1px solid var(--line);padding-left:clamp(14px,1.8vw,26px)}
   .venture:nth-child(odd){padding-left:0}.venture:nth-child(even){border-right:0}}
-@media (min-width:1024px){.venture{border-bottom:0}
-  .venture:nth-child(even){border-right:1px solid var(--line);padding-left:clamp(14px,1.8vw,26px)}
-  .venture:first-child{padding-left:0}.venture:last-child{border-right:0}}
+@media (min-width:1024px){.venture{border-bottom:1px solid var(--line);border-right:1px solid var(--line);padding-left:clamp(14px,1.8vw,26px)}
+  .venture:nth-child(3n+1){padding-left:0}.venture:nth-child(3n){border-right:0}
+  .venture:nth-last-child(-n+3){border-bottom:0}}
 .venture .logo{height:clamp(44px,4.6vw,64px);display:flex;align-items:center}
 .venture .logo img{height:100%;width:auto;max-width:100%;object-fit:contain}
 .venture .logo img.blend{mix-blend-mode:screen}
@@ -539,6 +539,11 @@ a.venture:focus-visible{outline:1px solid var(--bone);outline-offset:6px}
           <p>One heart, every channel. The publishing artery that carries Bad Blood's own brands out into the world.</p>
           <span class="foot"><span class="mi lit">See the demo<i>→</i></span><span class="mi">Internal</span></span>
         </a>
+        <div class="venture soon">
+          <span class="logo"><img class="tight" src="assets/ventures/plasma.webp" alt="PLASMA" loading="lazy" decoding="async"></span>
+          <p>One picture factory for every Bad Blood brand: prompts kept as packs, every image model behind one door.</p>
+          <span class="foot"><span class="mi">Not yet public</span><span class="mi">In build</span></span>
+        </div>
       </div>
   </div>
 </section>
