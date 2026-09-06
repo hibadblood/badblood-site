@@ -31,6 +31,8 @@
 
   /* ── state ── */
   let S = null, brandFilter = 'all', posts = [], cur = null, month = null, inboxStatus = 'open', pulseDays = 7;
+  let view = null, libUsed = '', selected = new Set(), openDayN = null;
+  const store = { get(k, d) { try { return localStorage.getItem('artery.' + k) ?? d; } catch { return d; } }, set(k, v) { try { localStorage.setItem('artery.' + k, v); } catch {} } };
   const off = () => (S && S.tz_offset_min) || 420;
   const localNow = () => { const d = new Date(Date.now() + off() * 60000); return { y: d.getUTCFullYear(), m: d.getUTCMonth() + 1, d: d.getUTCDate() }; };
   const localParts = u => { const d = new Date((u + off() * 60) * 1000); return { y: d.getUTCFullYear(), m: d.getUTCMonth() + 1, d: d.getUTCDate(), h: d.getUTCHours(), min: d.getUTCMinutes() }; };
@@ -39,7 +41,8 @@
   const monthName = m => ['January', 'February', 'March', 'April', 'May', 'June', 'July', 'August', 'September', 'October', 'November', 'December'][m - 1];
   function thumbHtml(p, cls) {
     const b = brandOf(p.brand_id);
-    if (p.asset_thumb) return `<div class="thumb ${cls || ''}" style="background-image:url('${esc(p.asset_thumb)}')"></div>`;
+    const layers = [p.thumb, p.asset_thumb].filter(Boolean).map(u => `url('${esc(u)}')`).join(',');
+    if (layers) return `<div class="thumb ${cls || ''}" style="background-image:${layers}"></div>`;
     return `<div class="thumb brand ${p.brand_id} ${cls || ''}"><span class="disp">${esc((p.title || b.name).slice(0, 12))}</span></div>`;
   }
 
@@ -47,7 +50,10 @@
   async function boot() {
     S = await api('/api/state');
     const t = localNow(); month = month || { y: t.y, m: t.m };
-    renderPills(); renderCrew(); renderSettings();
+    view = store.get('view', innerWidth < 820 ? 'list' : 'month');
+    renderPills(); renderCrew(); renderChecklist(); renderSettings();
+    $('dropBrand').innerHTML = S.brands.map(b => `<option value="${b.id}">${esc(b.name)}</option>`).join('');
+    [].forEach.call($('viewSeg').children, x => x.setAttribute('aria-pressed', String(x.dataset.v === view)));
     $('auto').setAttribute('aria-pressed', String(S.settings.autonomous)); $('auto').querySelector('span').textContent = 'Autonomous · ' + (S.settings.autonomous ? 'on' : 'off');
     $('nWait').textContent = S.counts.waiting; $('nWait').hidden = !S.counts.waiting; $('nOpen').textContent = S.counts.open; $('nOpen').hidden = !S.counts.open;
     $('sDrafts').textContent = S.counts.drafts; $('sWait').textContent = S.counts.waiting;
@@ -56,57 +62,263 @@
   function renderPills() {
     $('brandPills').innerHTML = `<button aria-pressed="${brandFilter === 'all'}" data-b="all"><i style="background:var(--blood)"></i>All</button>` + S.brands.map(b => `<button aria-pressed="${brandFilter === b.id}" data-b="${b.id}"><i style="background:${b.color}"></i>${esc(b.name)}</button>`).join('');
     $('legend').innerHTML = S.brands.map(b => `<span class="tag" style="--dot:${b.color}">${esc(b.name)}</span>`).join('') + '<span class="mi" style="margin-left:auto">Tap a day to open it</span>';
-    [].forEach.call($('brandPills').querySelectorAll('button'), btn => btn.addEventListener('click', () => { brandFilter = btn.dataset.b; renderPills(); renderCal(); if (!$('inbox').hidden) loadInbox(); }));
+    [].forEach.call($('brandPills').querySelectorAll('button'), btn => btn.addEventListener('click', () => { brandFilter = btn.dataset.b; renderPills(); renderView(); if (!$('library').hidden) loadLibrary(); if (!$('inbox').hidden) loadInbox(); }));
   }
   function renderCrew() {
     const e = S.env, c = S.connections;
     const CREW = [['fetch', 'Fetch', c.google ? 'Watching Drive' : 'Drive not connected', !!c.google], ['draft', 'Draft', e.anthropic ? 'Writes in each voice' : 'No API key', e.anthropic], ['cut', 'Cut', 'Every ratio · soon', false], ['schedule', 'Schedule', S.settings.autonomous ? 'Best hour, on its own' : 'Waits for you', true], ['post', 'Post', (c.meta ? 'IG · FB' : '') + (c.google && c.google.youtube ? ' · YT' : '') + (c.tiktok ? ' · TT' : '') || 'Nothing connected', !!(c.meta || c.tiktok || (c.google && c.google.youtube))], ['tobtan', 'Answer', e.anthropic ? (S.settings.auto_reply ? 'Replies on its own' : 'Drafts, you send') : 'No API key', e.anthropic], ['iris', 'Count', 'Numbers for IRIS', true]];
-    $('crew').innerHTML = CREW.map((w, i) => `<div class="worker${w[3] ? '' : ' off'}${i === 4 && S.counts.waiting ? ' busy' : ''}">${sprite(w[0])}<b>${w[1]}</b><span>${esc(w[2])}</span></div>`).join('');
+    const GO = ['fetch', 'draft', 'cut', 'schedule', 'post', 'answer', 'count'];
+    $('crew').innerHTML = CREW.map((w, i) => `<button class="worker${w[3] ? '' : ' off'}${i === 4 && S.counts.waiting ? ' busy' : ''}" data-go="${GO[i]}" title="${esc(w[2])}">${sprite(w[0])}<b>${w[1]}</b><span>${esc(w[2])}</span></button>`).join('');
   }
+  $('crew').addEventListener('click', async e => {
+    const b = e.target.closest('[data-go]'); if (!b) return; const job = b.dataset.go;
+    if (job === 'fetch') { b.disabled = true; toast('Looking in Drive…'); try { const r = await api('/api/cron/run?job=ingest', { method: 'POST' }); toast(r.drafted ? `${r.drafted} new draft${r.drafted === 1 ? '' : 's'}` : 'Nothing new in Drive'); await refresh(); } finally { b.disabled = false; } }
+    else if (job === 'draft') { const d = posts.filter(p => p.status === 'draft').pop(); if (d) location.hash = '#compose/' + d.id; else toast('No drafts waiting'); }
+    else if (job === 'cut') toast('Ratio cuts are not built yet. The 9:16 master goes to every channel.');
+    else if (job === 'schedule') $('auto').click();
+    else if (job === 'post') { const n = posts.filter(p => p.status === 'sched' || p.status === 'wait').sort((x, y) => (x.publish_at || 0) - (y.publish_at || 0))[0]; if (n) location.hash = '#compose/' + n.id; else toast('Nothing waiting to go out'); }
+    else if (job === 'answer') location.hash = '#inbox';
+    else if (job === 'count') location.hash = '#pulse';
+  });
+
+  /* ── upload straight from this device ── */
+  function human(n) { return n >= 1048576 ? (n / 1048576).toFixed(1) + ' MB' : Math.round(n / 1024) + ' KB'; }
+  function upload(file, brandId, progId) {
+    return new Promise((resolve, reject) => {
+      if (!file) return reject(new Error('no file'));
+      if (file.size > 95 * 1024 * 1024) return reject(new Error(`That is ${human(file.size)}. Anything over 95 MB goes into the Drive folder from the desktop.`));
+      const box = $(progId), bar = box.querySelector('i'), lab = box.querySelector('span');
+      box.hidden = false; bar.style.width = '0%'; lab.textContent = 'Sending ' + human(file.size);
+      const q = `?brand=${encodeURIComponent(brandId)}&name=${encodeURIComponent(file.name)}&mime=${encodeURIComponent(file.type || 'application/octet-stream')}&size=${file.size}`;
+      const x = new XMLHttpRequest();
+      x.open('POST', '/api/upload' + q, true);
+      x.setRequestHeader('content-type', file.type || 'application/octet-stream');
+      x.upload.onprogress = ev => { if (!ev.lengthComputable) return; const pc = Math.round(ev.loaded / ev.total * 100); bar.style.width = pc + '%'; lab.textContent = pc < 100 ? pc + '%' : 'Filing it in Drive and writing the captions…'; };
+      x.onload = () => { box.hidden = true; let j = {}; try { j = JSON.parse(x.responseText); } catch {} if (x.status >= 200 && x.status < 300 && j.id) resolve(j); else reject(new Error(j.error || ('Upload failed (' + x.status + ')'))); };
+      x.onerror = () => { box.hidden = true; reject(new Error('The connection dropped.')); };
+      x.send(file);
+    });
+  }
+  async function handleFile(file, brandId, progId) {
+    try { const r = await upload(file, brandId, progId); toast(r.reused ? 'Already in Drive, opening it' : 'In Drive. Captions written.'); await refresh(); location.hash = '#compose/' + r.id; }
+    catch (e) { toast(String(e.message || e).slice(0, 120)); }
+  }
+  $('dropInput').addEventListener('change', e => { const f = e.target.files[0]; e.target.value = ''; if (f) handleFile(f, $('dropBrand').value, 'dropProg'); });
+  $('dropBrand').addEventListener('click', e => e.preventDefault());
+  ;['dragenter', 'dragover'].forEach(k => $('drop').addEventListener(k, e => { e.preventDefault(); $('drop').classList.add('over'); }));
+  ;['dragleave', 'drop'].forEach(k => $('drop').addEventListener(k, e => { e.preventDefault(); $('drop').classList.remove('over'); }));
+  $('drop').addEventListener('drop', e => { const f = e.dataTransfer && e.dataTransfer.files[0]; if (f) handleFile(f, $('dropBrand').value, 'dropProg'); });
+  $('pickInput').addEventListener('change', e => { const f = e.target.files[0]; e.target.value = ''; if (f) { $('pick').hidden = true; $('pickBack').hidden = true; handleFile(f, $('pickBrand').value, 'pickProg'); } });
+
+  /* ── many at once ── */
+  async function bulk(ids, action, confirmText) {
+    if (!ids.length) return;
+    if (confirmText && !confirm(confirmText)) return;
+    const r = await api('/api/posts/bulk', { method: 'POST', body: { ids, action } });
+    const bad = (r.results || []).filter(x => x.error).length;
+    toast(bad ? `${r.results.length - bad} done, ${bad} failed` : `${r.results.length} done`);
+    selected.clear(); await refresh(); if (openDayN) openDay(openDayN);
+  }
+  $('approveAll').onclick = async () => {
+    const w = posts.filter(p => p.status === 'wait');
+    const chs = [...new Set(w.flatMap(p => p.channels))].map(c => CHN[c]).join(', ');
+    await bulk(w.map(p => p.id), 'approve', `Approve ${w.length} post${w.length === 1 ? '' : 's'} and schedule them on ${chs}?`);
+  };
+  $('queueAll').onclick = async () => {
+    const d = posts.filter(p => p.status === 'draft');
+    await bulk(d.map(p => p.id), 'queue', `Put ${d.length} draft${d.length === 1 ? '' : 's'} into the next free slots and send them to your LINE?`);
+  };
 
   /* ── queue ── */
   async function loadMonth() {
     const from = Date.UTC(month.y, month.m - 1, 1) / 1000 - 8 * 86400, to = Date.UTC(month.y, month.m, 1) / 1000 + 8 * 86400;
     posts = (await api(`/api/posts?from=${from}&to=${to}`)).posts || [];
-    renderCal();
+    renderView();
+  }
+  function visible() { return posts.filter(p => brandFilter === 'all' || p.brand_id === brandFilter); }
+  function renderView() {
+    $('calWrap').hidden = view !== 'month'; $('listv').hidden = view === 'month';
+    if (view === 'month') renderCal(); else renderList();
+    countHeader();
+  }
+  function countHeader() {
+    const vis = visible(); let sched = 0; const chCount = {};
+    for (const p of vis) { if (!p.publish_at) continue; const l = localParts(p.publish_at); if (l.y === month.y && l.m === month.m && (p.status === 'sched' || p.status === 'live')) { sched++; p.channels.forEach(c => chCount[c] = (chCount[c] || 0) + 1); } }
+    $('sSched').textContent = sched;
+    $('sSchedD').textContent = Object.keys(chCount).map(c => `${CHN[c]} ${chCount[c]}`).join(' · ') || 'Nothing yet this month.';
+    $('qMi').textContent = `${monthName(month.m)} ${month.y} · Bangkok`;
+  }
+  function miniHtml(p) {
+    const l = localParts(p.publish_at);
+    return `<div class="mini ${p.status}" data-id="${p.id}" draggable="true">${thumbHtml(p)}<div class="t"><b>${esc(p.title)}</b><span>${pad(l.h)}:${pad(l.min)} · ${p.channels.map(c => c.toUpperCase()).join(' · ')}</span></div></div>`;
+  }
+  // standing slots that have nothing in them yet, so the rhythm is visible
+  function ghosts(y, m, d, dayPosts) {
+    const dow = new Date(Date.UTC(y, m - 1, d)).getUTCDay(), out = [];
+    for (const b of S.brands) {
+      if (brandFilter !== 'all' && b.id !== brandFilter) continue;
+      for (const s of (b.slots || [])) {
+        if (+s.dow !== dow || !s.time) continue;
+        const [hh, mm] = String(s.time).split(':').map(Number);
+        const at = Date.UTC(y, m - 1, d, hh, mm) / 1000 - off() * 60;
+        if (dayPosts.some(p => Math.abs(p.publish_at - at) < 1800)) continue;
+        out.push(`<button class="ghost" data-slot="${y}-${pad(m)}-${pad(d)}T${pad(hh)}:${pad(mm)}" data-brand="${b.id}" style="--dot:${b.color}"><i></i>${pad(hh)}:${pad(mm)} free</button>`);
+      }
+    }
+    return out.join('');
   }
   function renderCal() {
-    $('qMi').textContent = `${monthName(month.m)} ${month.y} · Bangkok`;
     const first = new Date(Date.UTC(month.y, month.m - 1, 1)).getUTCDay(), days = new Date(Date.UTC(month.y, month.m, 0)).getUTCDate();
-    const t = localNow(); const vis = posts.filter(p => brandFilter === 'all' || p.brand_id === brandFilter);
-    const byDay = {}; let sched = 0; const chCount = {};
-    for (const p of vis) { if (!p.publish_at) continue; const l = localParts(p.publish_at); if (l.y === month.y && l.m === month.m) { (byDay[l.d] = byDay[l.d] || []).push(p); if (p.status === 'sched' || p.status === 'live') { sched++; p.channels.forEach(c => chCount[c] = (chCount[c] || 0) + 1); } } }
-    $('sSched').textContent = sched; $('sSchedD').textContent = Object.keys(chCount).map(c => `${CHN[c]} ${chCount[c]}`).join(' · ') || 'Nothing yet this month.';
+    const t = localNow(); const vis = visible();
+    const byDay = {};
+    for (const p of vis) { if (!p.publish_at) continue; const l = localParts(p.publish_at); if (l.y === month.y && l.m === month.m) (byDay[l.d] = byDay[l.d] || []).push(p); }
     let cells = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'].map(d => `<div class="dow">${d}</div>`).join('');
     const prevDays = new Date(Date.UTC(month.y, month.m - 1, 0)).getUTCDate();
     for (let i = first - 1; i >= 0; i--) cells += `<div class="cell out"><div class="d"><b>${prevDays - i}</b></div></div>`;
     for (let d = 1; d <= days; d++) {
       const ps = (byDay[d] || []).sort((a, b) => a.publish_at - b.publish_at);
-      let inner = ps.slice(0, 2).map(p => { const l = localParts(p.publish_at); return `<div class="mini ${p.status}" data-id="${p.id}">${thumbHtml(p)}<div class="t"><b>${esc(p.title)}</b><span>${pad(l.h)}:${pad(l.min)} · ${p.channels.map(c => c.toUpperCase()).join(' · ')}</span></div></div>`; }).join('');
+      let inner = ps.slice(0, 2).map(miniHtml).join('');
       if (ps.length > 2) inner += `<div class="more">+${ps.length - 2} more</div>`;
+      inner += ghosts(month.y, month.m, d, ps);
       const today = t.y === month.y && t.m === month.m && t.d === d;
       cells += `<button class="cell${today ? ' today' : ''}" data-d="${d}"><div class="d"><b>${d}</b>${d === 1 ? `<small>${monthName(month.m).slice(0, 3)}</small>` : ''}</div><div class="posts">${inner}</div></button>`;
     }
     const tail = (7 - ((first + days) % 7)) % 7; for (let j = 1; j <= tail; j++) cells += `<div class="cell out"><div class="d"><b>${j}</b></div></div>`;
     $('cal').innerHTML = cells;
   }
+  function renderList() {
+    const vis = visible().filter(p => p.publish_at).sort((a, b) => a.publish_at - b.publish_at);
+    const inMonth = vis.filter(p => { const l = localParts(p.publish_at); return l.y === month.y && l.m === month.m; });
+    const groups = {};
+    for (const p of inMonth) { const l = localParts(p.publish_at); (groups[l.d] = groups[l.d] || []).push(p); }
+    const t = localNow();
+    const keys = Object.keys(groups).map(Number).sort((a, b) => a - b);
+    $('listv').innerHTML = keys.length ? keys.map(d => {
+      const dow = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][new Date(Date.UTC(month.y, month.m - 1, d)).getUTCDay()];
+      const today = t.y === month.y && t.m === month.m && t.d === d;
+      return `<div class="lday${today ? ' today' : ''}"><div class="lhead"><b>${dow} ${d}</b><span class="mi">${monthName(month.m)}</span></div>${groups[d].map(p => {
+        const l = localParts(p.publish_at); const b = brandOf(p.brand_id);
+        return `<a class="lrow" href="#compose/${p.id}">${thumbHtml(p)}<div class="lt"><b>${esc(p.title)}</b><span class="mi">${pad(l.h)}:${pad(l.min)} · ${esc(b.name)}</span><div class="lch">${p.channels.map(chip).join('')}</div></div><span class="st ${p.status}">${STN[p.status] || p.status}</span></a>`;
+      }).join('')}</div>`;
+    }).join('') : '<div class="card"><div class="empty">Nothing this month. Drop a file in Drive, or press New post.</div></div>';
+  }
+
+  /* ── drag a post to another day ── */
+  let dragId = null, ghostEl = null;
+  function canMove(p) {
+    if (!p) return 'That post is gone.';
+    if (p.status === 'live' || p.status === 'publishing') return 'That one is already out. Duplicate it instead.';
+    return null;
+  }
+  async function moveTo(id, day) {
+    const p = posts.find(x => x.id === id); const why = canMove(p); if (why) { toast(why); return; }
+    const l = localParts(p.publish_at || (Math.floor(Date.now() / 1000) + 3600));
+    const when = `${month.y}-${pad(month.m)}-${pad(day)}T${pad(l.h)}:${pad(l.min)}`;
+    if (Date.UTC(month.y, month.m - 1, day, l.h, l.min) / 1000 - off() * 60 < Math.floor(Date.now() / 1000)) { toast('That is in the past.'); return; }
+    const before = p.publish_at;
+    p.publish_at = Date.UTC(month.y, month.m - 1, day, l.h, l.min) / 1000 - off() * 60; p.local = when.replace('T', ' ');
+    renderView();
+    try { await api('/api/posts/' + id, { method: 'PUT', body: { publish_local: when } }); toast('Moved to ' + monthName(month.m) + ' ' + day); }
+    catch { p.publish_at = before; renderView(); }
+  }
+  $('cal').addEventListener('dragstart', e => { const m = e.target.closest('.mini'); if (!m) return; dragId = m.dataset.id; m.classList.add('dragging'); if (e.dataTransfer) { e.dataTransfer.effectAllowed = 'move'; e.dataTransfer.setData('text/plain', dragId); } });
+  $('cal').addEventListener('dragend', () => { dragId = null; [].forEach.call($('cal').querySelectorAll('.dragging,.over'), x => x.classList.remove('dragging', 'over')); });
+  $('cal').addEventListener('dragover', e => { const c = e.target.closest('.cell[data-d]'); if (!c || !dragId) return; e.preventDefault(); [].forEach.call($('cal').querySelectorAll('.cell.over'), x => x.classList.remove('over')); c.classList.add('over'); });
+  $('cal').addEventListener('drop', e => { const c = e.target.closest('.cell[data-d]'); if (!c || !dragId) return; e.preventDefault(); const id = dragId; dragId = null; c.classList.remove('over'); moveTo(id, +c.dataset.d); });
+  // touch: press and hold, then drag
+  let holdT = null, held = null;
+  $('cal').addEventListener('pointerdown', e => {
+    if (e.pointerType === 'mouse') return; const m = e.target.closest('.mini'); if (!m) return;
+    holdT = setTimeout(() => {
+      held = m.dataset.id; m.classList.add('dragging');
+      ghostEl = document.createElement('div'); ghostEl.className = 'dragghost'; ghostEl.textContent = m.querySelector('b').textContent;
+      document.body.appendChild(ghostEl); ghostEl.style.left = e.clientX + 'px'; ghostEl.style.top = e.clientY + 'px';
+      document.body.style.overflow = 'hidden';
+      if (navigator.vibrate) navigator.vibrate(8);
+    }, 350);
+  });
+  $('cal').addEventListener('pointermove', e => {
+    if (!held) { if (holdT) { clearTimeout(holdT); holdT = null; } return; }
+    e.preventDefault();
+    ghostEl.style.left = e.clientX + 'px'; ghostEl.style.top = e.clientY + 'px';
+    const el = document.elementFromPoint(e.clientX, e.clientY); const c = el && el.closest && el.closest('.cell[data-d]');
+    [].forEach.call($('cal').querySelectorAll('.cell.over'), x => x.classList.remove('over'));
+    if (c) c.classList.add('over');
+  });
+  function endHold(e) {
+    if (holdT) { clearTimeout(holdT); holdT = null; }
+    if (!held) return;
+    const el = document.elementFromPoint(e.clientX, e.clientY); const c = el && el.closest && el.closest('.cell[data-d]');
+    const id = held; held = null;
+    if (ghostEl) { ghostEl.remove(); ghostEl = null; }
+    document.body.style.overflow = '';
+    [].forEach.call($('cal').querySelectorAll('.dragging,.over'), x => x.classList.remove('dragging', 'over'));
+    if (c) moveTo(id, +c.dataset.d);
+  }
+  $('cal').addEventListener('pointerup', endHold);
+  $('cal').addEventListener('pointercancel', endHold);
+  $('viewSeg').addEventListener('click', e => { const b = e.target.closest('button[data-v]'); if (!b) return; view = b.dataset.v; store.set('view', view); [].forEach.call($('viewSeg').children, x => x.setAttribute('aria-pressed', String(x === b))); renderView(); });
+
+  function selBar() {
+    const n = selected.size;
+    $('sheetSelN').hidden = !n; $('sheetSelN').textContent = n + ' selected';
+    ['selApprove', 'selHold', 'selDelete'].forEach(k => $(k).hidden = !n);
+    $('sheetNew').hidden = !!n;
+  }
   function openDay(d) {
-    const vis = posts.filter(p => brandFilter === 'all' || p.brand_id === brandFilter).filter(p => { if (!p.publish_at) return false; const l = localParts(p.publish_at); return l.y === month.y && l.m === month.m && l.d === d; }).sort((a, b) => a.publish_at - b.publish_at);
+    openDayN = d; selected.clear();
+    const vis = visible().filter(p => { if (!p.publish_at) return false; const l = localParts(p.publish_at); return l.y === month.y && l.m === month.m && l.d === d; }).sort((a, b) => a.publish_at - b.publish_at);
     const dow = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'][new Date(Date.UTC(month.y, month.m - 1, d)).getUTCDay()];
-    $('sheetMi').textContent = `${dow.slice(0, 3)} · ${d} ${monthName(month.m).slice(0, 3)} ${month.y} · ${vis.length} post${vis.length === 1 ? '' : 's'}`; $('sheetTitle').textContent = `${dow} ${d}`;
-    $('sheetBody').innerHTML = vis.length ? vis.map(p => { const l = localParts(p.publish_at); const b = brandOf(p.brand_id); return `<div class="sp">${thumbHtml(p)}<div class="in"><div class="meta"><span class="tag" style="--dot:${b.color}">${esc(b.name)}</span><span class="st ${p.status}">${STN[p.status] || p.status}</span></div><h4>${esc(p.title)}</h4><div class="meta"><span class="mi ink">${pad(l.h)}:${pad(l.min)}</span>${p.channels.map(chip).join('')}</div><div class="row">${p.status === 'wait' ? `<button class="act small" data-approve="${p.id}">Approve →</button>` : ''}<a class="act small quiet" href="#compose/${p.id}">Open</a>${p.status === 'live' ? '<a class="act small quiet" href="#pulse">Numbers</a>' : ''}</div></div></div>`; }).join('') : '<div class="empty">Nothing planned. Drop a file into Drive or add a post.</div>';
+    $('sheetMi').textContent = `${dow.slice(0, 3)} · ${d} ${monthName(month.m).slice(0, 3)} ${month.y} · ${vis.length} post${vis.length === 1 ? '' : 's'}`;
+    $('sheetTitle').textContent = `${dow} ${d}`;
+    $('sheetBody').innerHTML = vis.length ? vis.map(p => { const l = localParts(p.publish_at); const b = brandOf(p.brand_id);
+      return `<div class="sp" data-id="${p.id}"><label class="pick"><input type="checkbox" data-sel="${p.id}"></label>${thumbHtml(p)}<div class="in"><div class="meta"><span class="tag" style="--dot:${b.color}">${esc(b.name)}</span><span class="st ${p.status}">${STN[p.status] || p.status}</span></div><h4>${esc(p.title)}</h4><div class="meta"><span class="mi ink">${pad(l.h)}:${pad(l.min)}</span>${p.channels.map(chip).join('')}</div><div class="row">${p.status === 'wait' ? `<button class="act small" data-approve="${p.id}">Approve →</button>` : ''}<a class="act small quiet" href="#compose/${p.id}">Open</a>${p.status === 'live' ? '<a class="act small quiet" href="#pulse">Numbers</a>' : ''}</div></div></div>`;
+    }).join('') : '<div class="empty">Nothing planned. Drop a file into Drive or add a post.</div>';
+    selBar();
     $('sheetNew').onclick = () => { closeSheet(); openPick(`${month.y}-${pad(month.m)}-${pad(d)}T19:00`); };
     $('sheet').hidden = false; $('sheetBack').hidden = false;
   }
+  $('sheetBody').addEventListener('change', e => { const c = e.target.closest('[data-sel]'); if (!c) return; c.checked ? selected.add(c.dataset.sel) : selected.delete(c.dataset.sel); c.closest('.sp').classList.toggle('on', c.checked); selBar(); });
+  $('selApprove').onclick = () => bulk([...selected], 'approve', `Approve ${selected.size} post${selected.size === 1 ? '' : 's'} and schedule them?`);
+  $('selHold').onclick = () => bulk([...selected], 'hold', null);
+  $('selDelete').onclick = () => bulk([...selected], 'delete', `Delete ${selected.size} post${selected.size === 1 ? '' : 's'} for good?`);
   function closeSheet() { $('sheet').hidden = true; $('sheetBack').hidden = true; }
-  $('cal').addEventListener('click', e => { const c = e.target.closest('.cell[data-d]'); if (c) openDay(+c.dataset.d); });
+  $('cal').addEventListener('click', e => { const g = e.target.closest('[data-slot]'); if (g) { e.stopPropagation(); brandFilter = g.dataset.brand; renderPills(); openPick(g.dataset.slot); return; } const c = e.target.closest('.cell[data-d]'); if (c) openDay(+c.dataset.d); });
   $('sheetBack').onclick = closeSheet; $('sheetX').onclick = closeSheet;
   $('sheetBody').addEventListener('click', async e => { const a = e.target.closest('[data-approve]'); if (a) { await api(`/api/posts/${a.dataset.approve}/approve`, { method: 'POST' }); toast('Approved'); closeSheet(); await refresh(); } });
   $('prevM').onclick = () => { month.m--; if (month.m < 1) { month.m = 12; month.y--; } loadMonth(); };
   $('nextM').onclick = () => { month.m++; if (month.m > 12) { month.m = 1; month.y++; } loadMonth(); };
   $('todayM').onclick = () => { const t = localNow(); month = { y: t.y, m: t.m }; loadMonth(); };
   $('auto').onclick = async () => { const on = $('auto').getAttribute('aria-pressed') !== 'true'; await api('/api/settings', { method: 'PUT', body: { autonomous: on } }); S.settings.autonomous = on; $('auto').setAttribute('aria-pressed', String(on)); $('auto').querySelector('span').textContent = 'Autonomous · ' + (on ? 'on' : 'off'); renderCrew(); $('sAuto').checked = on; };
-  async function refresh() { S = await api('/api/state'); $('nWait').textContent = S.counts.waiting; $('nWait').hidden = !S.counts.waiting; $('nOpen').textContent = S.counts.open; $('nOpen').hidden = !S.counts.open; $('sDrafts').textContent = S.counts.drafts; $('sWait').textContent = S.counts.waiting; renderCrew(); await loadMonth(); }
+  function badges() {
+    $('nWait').textContent = S.counts.waiting; $('nWait').hidden = !S.counts.waiting;
+    $('nOpen').textContent = S.counts.open; $('nOpen').hidden = !S.counts.open;
+    $('nUnused').textContent = S.counts.unused || 0; $('nUnused').hidden = !S.counts.unused;
+    $('sDrafts').textContent = S.counts.drafts; $('sWait').textContent = S.counts.waiting;
+    $('approveAll').hidden = !S.counts.waiting; $('approveAll').textContent = `Approve all waiting (${S.counts.waiting})`;
+    $('queueAll').hidden = !S.counts.drafts; $('queueAll').textContent = `Put ${S.counts.drafts} draft${S.counts.drafts === 1 ? '' : 's'} in the queue`;
+  }
+  async function refresh() { S = await api('/api/state'); badges(); renderCrew(); renderChecklist(); await loadMonth(); }
+
+  /* ── first run: the five things that have to be true ── */
+  function renderChecklist() {
+    const c = S.connections, e = S.env, out = [];
+    const need = (done, label, hint, go) => out.push({ done, label, hint, go });
+    need(e.anthropic, 'Give the crew its brain', 'Set ANTHROPIC_API_KEY so captions and replies can be written.', null);
+    need(!!c.google, 'Connect Google', 'Drive is where every post starts. The same consent covers YouTube.', '/connect/google');
+    const noFolder = S.brands.filter(b => !b.drive_folder_id);
+    need(!noFolder.length, 'Point each brand at a Drive folder', noFolder.length ? noFolder.map(b => b.name).join(', ') + ' still has none.' : 'All three brands have a folder.', '#settings');
+    need(!!c.meta, 'Connect Meta', 'Your Facebook Pages and the Instagram accounts linked to them.', '/connect/meta');
+    const noMap = S.brands.filter(b => !(b.channels && (b.channels.fb || b.channels.ig)));
+    need(!!c.meta && !noMap.length, 'Map every brand to a Page and an Instagram account', noMap.length ? noMap.map(b => b.name).join(', ') + ' is not mapped.' : 'All mapped.', '#settings');
+    need(e.line && e.line_boss, 'Connect LINE', 'Approvals land on your phone. Add the bot, say the word artery, it replies with your id.', '#settings');
+    const left = out.filter(x => !x.done).length;
+    const box = $('checklist');
+    if (!left && store.get('checklistDone') === '1') { box.innerHTML = ''; return; }
+    if (!left) store.set('checklistDone', '1');
+    box.innerHTML = `<div class="card check"><div class="ch-head"><span class="mi${left ? ' hot' : ' ok'}">${left ? left + ' thing' + (left === 1 ? '' : 's') + ' left before the crew can work' : 'Everything is connected'}</span>${left ? '' : '<button class="act quiet small" id="chDismiss">Hide this</button>'}</div>${out.map(x => `<div class="ch-row${x.done ? ' done' : ''}"><i></i><div><b>${esc(x.label)}</b><span>${esc(x.hint)}</span></div>${x.done || !x.go ? '' : `<a class="act quiet small" href="${x.go}">Fix</a>`}</div>`).join('')}</div>`;
+    const d = $('chDismiss'); if (d) d.onclick = () => { store.set('checklistDone', '1'); $('checklist').innerHTML = ''; };
+  }
 
   /* ── new post picker ── */
   let pickWhen = null;
@@ -116,7 +328,7 @@
   }
   async function loadPickFiles() {
     const b = $('pickBrand').value; $('pickFiles').innerHTML = '<div class="empty">Looking in Drive…</div>';
-    try { const { files } = await api(`/api/drive/files?brand=${b}`); $('pickFiles').innerHTML = files.length ? files.map(f => `<button class="sp" style="text-align:left" data-file="${f.id}"><div class="thumb" style="background-image:url('${esc(f.thumb || '')}')"></div><div class="in"><h4>${esc(f.name)}</h4><span class="mi">${esc(f.mime)} · ${(f.size / 1048576).toFixed(0)} MB</span></div></button>`).join('') : '<div class="empty">No files in this brand\'s folder yet (or no folder set in Settings).</div>'; }
+    try { const { files } = await api(`/api/drive/files?brand=${b}`); $('pickFiles').innerHTML = files.length ? files.map(f => `<button class="sp" style="text-align:left" data-file="${f.id}"><div class="thumb brand"></div><div class="in"><h4>${esc(f.name)}</h4><span class="mi">${esc(f.mime)} · ${(f.size / 1048576).toFixed(0)} MB</span></div></button>`).join('') : '<div class="empty">No files in this brand\'s folder yet (or no folder set in Settings).</div>'; }
     catch (e) { $('pickFiles').innerHTML = '<div class="empty">Drive is not connected. Connect it in Settings, or start without a file.</div>'; }
   }
   $('pickBrand').onchange = loadPickFiles; $('pickBack').onclick = $('pickX').onclick = () => { $('pick').hidden = true; $('pickBack').hidden = true; };
@@ -143,6 +355,7 @@
     $('bLine').disabled = live; $('bApprove').disabled = live; $('bNow').disabled = live; $('bHold').disabled = live;
     $('cHint').innerHTML = live ? Object.keys(cur.results).map(c => `${CHN[c]}: ${cur.results[c].error ? '<span class="mi hot">' + esc(cur.results[c].error) + '</span>' : (cur.results[c].url ? `<a href="${esc(cur.results[c].url)}" target="_blank" rel="noopener" style="text-decoration:underline">open</a>` : 'ok')}`).join(' · ') + (cur.status === 'failed' ? ' <button class="act small quiet" id="bRetry">Retry</button>' : '') : 'Approval goes to your LINE with all previews. Nothing goes live without you.';
     const rt = $('bRetry'); if (rt) rt.onclick = async () => { await api(`/api/posts/${cur.id}/retry`, { method: 'POST' }); toast('Retried'); loadCompose(cur.id); };
+    const fc = $('bFirstComment'); if (fc) fc.onclick = async () => { await save(true); await api(`/api/posts/${cur.id}/first-comment`, { method: 'POST', body: { text: (capsFromForm().ig || {}).first_comment || '' } }); toast('Posted'); loadCompose(cur.id); };
   }
   function capsFromForm() {
     const caps = JSON.parse(JSON.stringify(cur.captions || {}));
@@ -155,7 +368,7 @@
     const isVideo = /^video/.test(cur.asset_mime || ''); const mu = cur.media_url || '';
     const media = () => isVideo ? `<video src="${esc(mu)}" muted playsinline preload="metadata"></video>` : `<div class="img" style="background-image:url('${esc(cur.asset_thumb || '')}')"></div>`;
     const block = {
-      ig: () => `<div class="stage"><div class="phone"><div class="scr">${media()}<div class="topbar"><span>Reels</span><span>●</span></div><div class="rail"><i></i><i></i><i></i></div><div class="ov"><b>${esc(b.name.toLowerCase())}</b>${esc((caps.ig && caps.ig.text) || cur.master_caption || '')}</div></div></div></div><div class="edit"><div class="field"><label>Instagram caption</label><textarea rows="4" data-cap="ig.text">${esc((caps.ig && caps.ig.text) || '')}</textarea></div></div>`,
+      ig: () => `<div class="stage"><div class="phone"><div class="scr">${media()}<div class="topbar"><span>Reels</span><span>●</span></div><div class="rail"><i></i><i></i><i></i></div><div class="ov"><b>${esc(b.name.toLowerCase())}</b>${esc((caps.ig && caps.ig.text) || cur.master_caption || '')}${(caps.ig && caps.ig.first_comment) ? `<em>${esc(caps.ig.first_comment)}</em>` : ''}</div></div></div></div><div class="edit"><div class="field"><label>Instagram caption</label><textarea rows="4" data-cap="ig.text">${esc((caps.ig && caps.ig.text) || '')}</textarea></div><div class="field"><label>First comment · where the hashtags go</label><textarea rows="2" data-cap="ig.first_comment" placeholder="#RuleMaker #BadBlood">${esc((caps.ig && caps.ig.first_comment) || '')}</textarea></div>${/^video/.test(cur.asset_mime || '') ? '<span class="mi">Alt text cannot be set on Reels, only on photos.</span>' : `<div class="field"><label>Alt text · for people who cannot see it</label><input data-cap="ig.alt_text" value="${esc((caps.ig && caps.ig.alt_text) || '')}"></div>`}${(cur.results.ig && cur.results.ig.first_comment_error) ? '<button class="act small quiet" id="bFirstComment">The first comment failed. Try again</button>' : ''}</div>`,
       fb: () => `<div class="stage"><div class="fb"><div class="h"><div class="av"></div><div><b>${esc(b.name)}</b><span>${cur.local ? esc(cur.local) : 'Unscheduled'} · Public</span></div></div><p>${esc((caps.fb && caps.fb.text) || cur.master_caption || '')}</p>${cur.asset_thumb ? `<div class="v" style="background-image:url('${esc(cur.asset_thumb)}')"></div>` : ''}<div class="r"><span>Like</span><span>Comment</span><span>Share</span></div></div></div><div class="edit"><div class="field"><label>Facebook text</label><textarea rows="4" data-cap="fb.text">${esc((caps.fb && caps.fb.text) || '')}</textarea></div></div>`,
       yt: () => `<div class="stage"><div class="yt"><div class="v" style="background-image:url('${esc(cur.asset_thumb || '')}')"><div class="play"></div></div><div class="m"><div class="av"></div><div><b>${esc((caps.yt && caps.yt.title) || cur.title || '')}</b><span>${esc(b.name)} · ${cur.local ? esc(cur.local.slice(11)) : ''}</span></div></div></div></div><div class="edit"><div class="field"><label>YouTube title</label><input data-cap="yt.title" value="${esc((caps.yt && caps.yt.title) || '')}"></div><div class="field"><label>Description</label><textarea rows="4" data-cap="yt.description">${esc((caps.yt && caps.yt.description) || '')}</textarea></div></div>`,
       tt: () => `<div class="stage"><div class="phone"><div class="scr">${media()}<div class="topbar"><span>Following</span><span>For You</span></div><div class="rail"><i></i><i></i><i></i></div><div class="ov"><b>@${esc(b.name.toLowerCase())}</b>${esc((caps.tt && caps.tt.text) || '')}</div></div></div></div><div class="edit"><div class="field"><label>TikTok caption</label><textarea rows="3" data-cap="tt.text">${esc((caps.tt && caps.tt.text) || '')}</textarea></div><span class="mi hot">One-tap share from LINE until TikTok's audit clears</span></div>`
@@ -172,7 +385,31 @@
   $('bApprove').onclick = async () => { await save(true); await api(`/api/posts/${cur.id}/approve`, { method: 'POST' }); toast('Scheduled'); await refresh(); loadCompose(cur.id); };
   $('bHold').onclick = async () => { await save(true); await api(`/api/posts/${cur.id}/hold`, { method: 'POST' }); toast('Held'); await refresh(); loadCompose(cur.id); };
   $('bNow').onclick = async () => { if (!confirm('Publish to the selected channels now?')) return; await save(true); $('bNow').disabled = true; const r = await api(`/api/posts/${cur.id}/publish-now`, { method: 'POST' }); toast(r.status === 'live' ? 'Out' : 'Some channels failed'); await refresh(); loadCompose(cur.id); };
+  $('bDuplicate').onclick = async () => { await save(true); const { id } = await api(`/api/posts/${cur.id}/duplicate`, { method: 'POST' }); toast('Copied'); await refresh(); location.hash = '#compose/' + id; };
   $('bDelete').onclick = async () => { if (!confirm('Delete this post?')) return; await api('/api/posts/' + cur.id, { method: 'DELETE' }); cur = null; await refresh(); location.hash = '#queue'; };
+
+  /* ── library ── */
+  async function loadLibrary() {
+    const q = `/api/library?${brandFilter === 'all' ? '' : 'brand=' + brandFilter + '&'}${libUsed === '' ? '' : 'used=' + libUsed}`;
+    const { items } = await api(q);
+    $('libMi').textContent = `${items.length} file${items.length === 1 ? '' : 's'}${brandFilter === 'all' ? ' in every folder' : ' · ' + brandOf(brandFilter).name}`;
+    $('libGrid').innerHTML = items.length ? items.map(a => {
+      const b = brandOf(a.brand_id); const vid = /^video/.test(a.mime || '');
+      const dur = a.duration_ms ? `${Math.floor(a.duration_ms / 60000)}:${pad(Math.round(a.duration_ms % 60000 / 1000))}` : '';
+      const layers = [a.thumb, a.thumb_url].filter(Boolean).map(u => `url('${esc(u)}')`).join(','); const src = layers; const thumb = layers ? `style="background-image:${layers}"` : '';
+      return `<button class="lib${a.post_id ? '' : ' unused'}" data-asset="${a.id}" data-brand="${a.brand_id}" data-post="${a.post_id || ''}">
+        <span class="libthumb ${src ? '' : 'brand ' + a.brand_id}" ${thumb}>${src ? '' : `<span class="disp">${esc(b.name.slice(0, 10))}</span>`}${dur ? `<span class="dur">${dur}</span>` : ''}${vid ? '<span class="vid"></span>' : ''}</span>
+        <span class="libt"><b>${esc(a.name)}</b><span class="mi">${esc(b.name)} · ${a.size ? (a.size / 1048576).toFixed(1) + ' MB' : ''}</span>
+        ${a.post_id ? `<span class="st ${a.post_status}">${STN[a.post_status] || a.post_status}</span>` : '<span class="st hot">Never used</span>'}</span></button>`;
+    }).join('') : '<div class="card"><div class="empty">Nothing here yet. Connect Google and give each brand a Drive folder.</div></div>';
+  }
+  $('libGrid').addEventListener('click', async e => {
+    const b = e.target.closest('[data-asset]'); if (!b) return;
+    if (b.dataset.post) return void (location.hash = '#compose/' + b.dataset.post);
+    const { id } = await api('/api/posts', { method: 'POST', body: { brand_id: b.dataset.brand, asset_id: b.dataset.asset, title: b.querySelector('b').textContent.replace(/\.[^.]+$/, ''), channels: ['ig', 'fb'] } });
+    toast('New draft'); await refresh(); location.hash = '#compose/' + id;
+  });
+  $('libSeg').addEventListener('click', e => { const b = e.target.closest('button[data-u]'); if (!b) return; libUsed = b.dataset.u; [].forEach.call($('libSeg').children, x => x.setAttribute('aria-pressed', String(x === b))); loadLibrary(); });
 
   /* ── inbox ── */
   async function loadInbox() {
@@ -198,6 +435,10 @@
   $('pulseSeg').addEventListener('click', e => { const b = e.target.closest('button[data-d]'); if (!b) return; pulseDays = +b.dataset.d; [].forEach.call($('pulseSeg').children, x => x.setAttribute('aria-pressed', String(x === b))); loadPulse(); });
 
   /* ── settings ── */
+  const DOWS = ['Sunday', 'Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday'];
+  function slotRow(s) {
+    return `<div class="slot"><select data-s="dow">${DOWS.map((d, i) => `<option value="${i}" ${+((s && s.dow) || 0) === i ? 'selected' : ''}>${d}</option>`).join('')}</select><input data-s="time" type="time" value="${esc((s && s.time) || '19:00')}"><button class="x" data-delslot aria-label="Remove this slot">×</button></div>`;
+  }
   function renderSettings() {
     const c = S.connections, e = S.env;
     const ok = v => v ? '<span class="st sched">Connected</span>' : '<span class="st draft">Not yet</span>';
@@ -220,25 +461,43 @@
       <div class="field"><label>Voice · how this brand speaks</label><textarea data-f="voice" rows="3">${esc(b.voice)}</textarea></div>
       <div class="kv"><div class="field"><label>Facebook Page</label><select data-f="fb"><option value="">—</option>${pages.map(p => `<option value="${p.id}" ${b.channels.fb === p.id ? 'selected' : ''}>${esc(p.name)}</option>`).join('')}</select></div><div class="field"><label>Instagram account</label><select data-f="ig"><option value="">—</option>${pages.filter(p => p.ig).map(p => `<option value="${p.ig.id}" ${b.channels.ig === p.ig.id ? 'selected' : ''}>@${esc(p.ig.username)}</option>`).join('')}</select></div></div>
       <div class="kv" style="grid-template-columns:repeat(4,minmax(0,1fr))">${['ig', 'fb', 'yt', 'tt'].map(ch => `<div class="field"><label>${CHN[ch]} hour</label><input data-h="${ch}" value="${esc((b.default_hours || {})[ch] || '')}" placeholder="19:00"></div>`).join('')}</div>
-      <div class="field"><label>Language</label><select data-f="language"><option value="th" ${b.language === 'th' ? 'selected' : ''}>Thai</option><option value="en" ${b.language === 'en' ? 'selected' : ''}>English</option></select></div></div>`).join('');
-    $('brandsEdit').addEventListener('click', async e => { const btn = e.target.closest('[data-save]'); if (!btn) return; const card = btn.closest('[data-brand]'); const g = k => card.querySelector(`[data-f="${k}"]`).value; const hours = {}; [].forEach.call(card.querySelectorAll('[data-h]'), i => { if (i.value) hours[i.dataset.h] = i.value; });
-      const b = S.brands.find(x => x.id === card.dataset.brand); const channels = { ...b.channels, fb: g('fb') || undefined, ig: g('ig') || undefined };
-      await api('/api/brands/' + card.dataset.brand, { method: 'PUT', body: { drive_folder_id: g('drive_folder_id'), hashtags: g('hashtags'), voice: g('voice'), language: g('language'), default_hours: hours, channels } }); toast('Saved'); S = await api('/api/state'); renderCrew(); });
+      <div class="field"><label>Language</label><select data-f="language"><option value="th" ${b.language === 'th' ? 'selected' : ''}>Thai</option><option value="en" ${b.language === 'en' ? 'selected' : ''}>English</option></select></div>
+      <div class="field"><label>Standing slots · the rhythm this brand keeps</label>
+        <div class="slots" data-slots>${(b.slots || []).map(s => slotRow(s)).join('')}</div>
+        <button class="act quiet small" data-addslot>Add a slot</button>
+        <span style="font-size:13px;color:var(--ink2)">A queued post drops into the next free slot on its own. Empty slots show on the calendar so the gaps are visible.</span>
+      </div></div>`).join('');
+    if (!$('brandsEdit')._wired) {
+      $('brandsEdit')._wired = 1;
+      $('brandsEdit').addEventListener('click', async e => {
+        const add = e.target.closest('[data-addslot]');
+        if (add) { add.closest('[data-brand]').querySelector('[data-slots]').insertAdjacentHTML('beforeend', slotRow({ dow: 0, time: '19:00' })); return; }
+        const del = e.target.closest('[data-delslot]'); if (del) { del.closest('.slot').remove(); return; }
+        const btn = e.target.closest('[data-save]'); if (!btn) return;
+        const card = btn.closest('[data-brand]'); const g = k => card.querySelector(`[data-f="${k}"]`).value;
+        const hours = {}; [].forEach.call(card.querySelectorAll('[data-h]'), i => { if (i.value) hours[i.dataset.h] = i.value; });
+        const slots = [].map.call(card.querySelectorAll('.slot'), s => ({ dow: +s.querySelector('[data-s="dow"]').value, time: s.querySelector('[data-s="time"]').value })).filter(s => s.time);
+        const b = S.brands.find(x => x.id === card.dataset.brand); const channels = { ...b.channels, fb: g('fb') || undefined, ig: g('ig') || undefined };
+        await api('/api/brands/' + card.dataset.brand, { method: 'PUT', body: { drive_folder_id: g('drive_folder_id'), hashtags: g('hashtags'), voice: g('voice'), language: g('language'), default_hours: hours, channels, slots } });
+        toast('Saved'); S = await api('/api/state'); renderCrew(); renderChecklist(); renderView();
+      });
+    }
     loadLog();
   }
   async function loadLog() { const { log } = await api('/api/log'); $('logBox').textContent = log.map(l => `${new Date(l.at * 1000).toISOString().slice(5, 16).replace('T', ' ')} ${l.level === 'error' ? '✕' : l.level === 'warn' ? '!' : '·'} ${l.area}: ${l.msg}${l.data ? ' ' + l.data.slice(0, 160) : ''}`).join('\n') || 'Quiet.'; }
   $('bRun').onclick = async () => { $('bRun').disabled = true; try { const r = await api('/api/cron/run', { method: 'POST' }); toast('Ran'); await refresh(); loadLog(); console.log(r); } finally { $('bRun').disabled = false; } };
+  $('bChecklist').onclick = () => { store.set('checklistDone', '0'); renderChecklist(); location.hash = '#queue'; };
   $('bLineTest').onclick = async () => { const r = await api('/api/line/test', { method: 'POST' }); toast(r.ok ? 'Sent to LINE' : 'LINE not configured'); };
 
   /* ── routing ── */
   const tabs = [].slice.call(document.querySelectorAll('.tabs [role=tab]'));
-  function show(id) { tabs.forEach(t => t.setAttribute('aria-selected', String(t.dataset.t === id))); ['queue', 'compose', 'inbox', 'pulse', 'settings'].forEach(k => $(k).hidden = k !== id); }
+  function show(id) { tabs.forEach(t => t.setAttribute('aria-selected', String(t.dataset.t === id))); ['queue', 'compose', 'library', 'inbox', 'pulse', 'settings'].forEach(k => $(k).hidden = k !== id); }
   function route() {
     const h = (location.hash || '#queue').slice(1); const [tab, arg] = h.split('/');
-    if (!['queue', 'compose', 'inbox', 'pulse', 'settings'].includes(tab)) return show('queue');
+    if (!['queue', 'compose', 'library', 'inbox', 'pulse', 'settings'].includes(tab)) return show('queue');
     show(tab);
     if (tab === 'compose' && arg) loadCompose(arg); else if (tab === 'compose' && !cur) { $('cEmpty').hidden = false; $('cForm').hidden = true; }
-    if (tab === 'inbox') loadInbox(); if (tab === 'pulse') loadPulse(); if (tab === 'settings') { renderSettings(); }
+    if (tab === 'library') loadLibrary(); if (tab === 'inbox') loadInbox(); if (tab === 'pulse') loadPulse(); if (tab === 'settings') { renderSettings(); }
     if (tab === 'queue') refresh();
   }
   tabs.forEach(t => t.addEventListener('click', () => { location.hash = '#' + t.dataset.t + (t.dataset.t === 'compose' && cur ? '/' + cur.id : ''); }));

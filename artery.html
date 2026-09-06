@@ -1,5 +1,12 @@
-<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1"><title>ARTERY — Demo</title>
-<meta name="description" content="A look inside ARTERY, the private publishing hub Bad Blood built for its own brands. Sample data, read only.">
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="theme-color" content="#F5F5F2">
+
+
+
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="Artery">
+<meta name="apple-mobile-web-app-status-bar-style" content="default"><title>ARTERY — Demo</title>
+<meta name="description" content="A look inside ARTERY, the private publishing hub Bad Blood built for its own brands. Sample data, read only."><meta name="robots" content="noindex">
 <link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Space+Grotesk:wght@400;500&display=swap"><link rel="stylesheet" href="/assets/artery/app.css">
 <style>
 .demo-strip{display:flex;align-items:center;gap:clamp(14px,3vw,32px);flex-wrap:wrap;padding:14px var(--edge);background:var(--ink);color:#fff}
@@ -24,6 +31,7 @@
   <nav class="tabs" role="tablist">
     <button role="tab" data-t="queue" aria-selected="true">Queue<span class="n" id="nWait" hidden></span></button>
     <button role="tab" data-t="compose" aria-selected="false">Compose</button>
+    <button role="tab" data-t="library" aria-selected="false">Library<span class="n" id="nUnused" hidden></span></button>
     <button role="tab" data-t="inbox" aria-selected="false">Inbox<span class="n" id="nOpen" hidden></span></button>
     <button role="tab" data-t="pulse" aria-selected="false">Pulse</button>
     <button role="tab" data-t="settings" aria-selected="false">Settings</button>
@@ -35,18 +43,30 @@
   <div class="head">
     <div><span class="mi" id="qMi">—</span><h2 class="disp">One heart.<br>Every channel.</h2></div>
     <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center">
+      <div class="seg" id="viewSeg"><button data-v="month" aria-pressed="true">Month</button><button data-v="list" aria-pressed="false">List</button></div>
       <div class="seg"><button id="prevM" aria-label="Previous month">←</button><button id="todayM">Today</button><button id="nextM" aria-label="Next month">→</button></div>
       <button class="auto" id="auto" aria-pressed="true"><i></i><span>Autonomous · on</span></button>
       <button class="act" id="newPost">New post →</button>
     </div>
   </div>
+  <div id="checklist"></div>
   <div class="stats">
     <div class="card stat"><span class="mi">Drafts from Drive</span><div class="n" id="sDrafts">0</div><div class="d">Picked up from your folders, captions written, waiting to be placed.</div></div>
     <div class="card stat"><span class="mi hot">Waiting for you on LINE</span><div class="n hot" id="sWait">0</div><div class="d">Approve on LINE or here. Nothing goes live without you.</div></div>
     <div class="card stat"><span class="mi ok">Scheduled this month</span><div class="n" id="sSched">0</div><div class="d" id="sSchedD">—</div></div>
   </div>
+  <div class="rowbar"><button class="act small" id="approveAll" hidden>Approve all waiting</button><button class="act quiet small" id="queueAll" hidden>Put drafts in the queue</button></div>
   <div class="card crew" id="crew" aria-label="The crew"></div>
-  <div class="card calwrap"><div class="cal" id="cal" role="grid"></div></div>
+  <label class="card drop" id="drop">
+    <input type="file" id="dropInput" accept="image/*,video/*" hidden>
+    <span class="mi">Straight from this device</span>
+    <b>Drop a photo or video here, or tap to choose</b>
+    <span class="dsub">It goes into the brand's Drive folder, the crew writes the captions, and it lands here as a draft. Up to 95 MB.</span>
+    <select id="dropBrand" aria-label="Brand for the upload"></select>
+    <div class="bar-progress" id="dropProg" hidden><i></i><span></span></div>
+  </label>
+  <div class="card calwrap" id="calWrap"><div class="cal" id="cal" role="grid"></div></div>
+  <div class="listv" id="listv" hidden></div>
   <div class="legend" id="legend"></div>
 </section>
 
@@ -67,9 +87,15 @@
   </div>
   <div class="bar">
     <span id="cHint">Approval goes to your LINE with all previews. Nothing goes live without you.</span>
-    <div style="display:flex;gap:10px;flex-wrap:wrap"><button class="act quiet small danger" id="bDelete">Delete</button><button class="act quiet small" id="bHold">Hold as draft</button><button class="act quiet small" id="bNow">Publish now</button><button class="act quiet small" id="bApprove">Approve &amp; schedule</button><button class="act" id="bLine">Send to LINE for approval →</button></div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap"><button class="act quiet small danger" id="bDelete">Delete</button><button class="act quiet small" id="bDuplicate">Duplicate</button><button class="act quiet small" id="bHold">Hold as draft</button><button class="act quiet small" id="bNow">Publish now</button><button class="act quiet small" id="bApprove">Approve &amp; schedule</button><button class="act" id="bLine">Send to LINE for approval →</button></div>
   </div>
   </div>
+</section>
+
+<section class="screen" id="library" hidden>
+  <div class="head"><div><span class="mi" id="libMi">Everything in the folders</span><h2 class="disp">What we have.<br>What we used.</h2></div>
+    <div class="seg" id="libSeg"><button data-u="" aria-pressed="true">All</button><button data-u="0" aria-pressed="false">Unused</button><button data-u="1" aria-pressed="false">Used</button></div></div>
+  <div class="libgrid" id="libGrid"></div>
 </section>
 
 <section class="screen" id="inbox" hidden>
@@ -88,7 +114,7 @@
 </section>
 
 <section class="screen" id="settings" hidden>
-  <div class="head"><div><span class="mi">Connections · brands · rules</span><h2 class="disp">Plumbing.</h2></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="act quiet small" id="bRun">Run the crew now</button><button class="act quiet small" id="bLineTest">Test LINE</button><a class="act quiet small" href="/auth/logout">Sign out</a></div></div>
+  <div class="head"><div><span class="mi">Connections · brands · rules</span><h2 class="disp">Plumbing.</h2></div><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="act quiet small" id="bRun">Run the crew now</button><button class="act quiet small" id="bLineTest">Test LINE</button><button class="act quiet small" id="bChecklist">Show the checklist</button><a class="act quiet small" href="/auth/logout">Sign out</a></div></div>
   <div class="grid2" id="conns"></div>
   <div class="card" style="padding:16px 18px;display:grid;gap:12px"><span class="mi">Rules</span>
     <div class="checks"><label><input type="checkbox" id="sAuto"> Autonomous · Drive drops are placed on the calendar automatically</label><label><input type="checkbox" id="sReply"> Auto-reply · send the crew's drafts without asking (offers still go to you)</label><label><input type="checkbox" id="sYtPrivate"> YouTube uploads as private (until the API audit passes)</label></div>
@@ -99,11 +125,12 @@
 </main>
 
 <div class="sheet-back" id="sheetBack" hidden></div>
-<aside class="sheet" id="sheet" hidden aria-label="Day"><header><div><span class="mi" id="sheetMi"></span><h3 class="disp" id="sheetTitle"></h3></div><button class="x" id="sheetX" aria-label="Close">×</button></header><div class="sheet-body" id="sheetBody"></div><footer><button class="act quiet small" id="sheetNew">Add a post this day</button></footer></aside>
+<aside class="sheet" id="sheet" hidden aria-label="Day"><header><div><span class="mi" id="sheetMi"></span><h3 class="disp" id="sheetTitle"></h3></div><button class="x" id="sheetX" aria-label="Close">×</button></header><div class="sheet-body" id="sheetBody"></div><footer><span class="mi" id="sheetSelN" hidden></span><button class="act quiet small danger" id="selDelete" hidden>Delete</button><button class="act quiet small" id="selHold" hidden>Hold</button><button class="act small" id="selApprove" hidden>Approve</button><button class="act quiet small" id="sheetNew">Add a post this day</button></footer></aside>
 
 <div class="sheet-back" id="pickBack" hidden></div>
 <aside class="sheet" id="pick" hidden aria-label="New post"><header><div><span class="mi">New post</span><h3 class="disp">From Drive</h3></div><button class="x" id="pickX" aria-label="Close">×</button></header>
-  <div class="sheet-body"><div class="field"><label>Brand</label><select id="pickBrand"></select></div><div class="field"><label>Or no file · text post</label><button class="act quiet small" id="pickNoFile">Start without a file</button></div><div id="pickFiles" style="display:grid;gap:8px"></div></div><footer></footer></aside>
+  <div class="sheet-body"><div class="field"><label>Brand</label><select id="pickBrand"></select></div><label class="card drop small" id="pickDrop"><input type="file" id="pickInput" accept="image/*,video/*" hidden><b>Upload from this device</b><span class="dsub">Photo or video, up to 95 MB</span><div class="bar-progress" id="pickProg" hidden><i></i><span></span></div></label>
+    <div class="field"><label>Or no file · text post</label><button class="act quiet small" id="pickNoFile">Start without a file</button></div><div id="pickFiles" style="display:grid;gap:8px"></div></div><footer></footer></aside>
 
 <div class="toast" id="toast"></div>
 <script src="/assets/artery/demo.js"></script>

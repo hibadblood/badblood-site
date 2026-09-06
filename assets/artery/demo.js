@@ -11,9 +11,9 @@
   const P = '/assets/posters/';
 
   const BRANDS = [
-    { id: 'hor', name: 'Hordooduang', color: '#C99A5B', voice: 'Warm, calm, slightly mystical Thai. Always say วอลเปเปอร์ alongside any brand term. Never promise outcomes; speak of พร and ดวง as guidance. Short lines, one ✦ at most.', language: 'th', hashtags: '#หอดูดวง #วอลเปเปอร์ดวง #ดูดวง', drive_folder_id: '1HorDemoFolderIdXXXXXXXX', default_hours: { ig: '08:00', fb: '08:30', yt: '19:00', tt: '19:00' }, channels: { fb: '1001', ig: '2001' }, sort: 1 },
-    { id: 'tob', name: 'Tobtan', color: '#3FB36A', voice: 'Plain, confident Thai for shop owners. Concrete benefit first. No hype words, no emoji. Mention tobtan.chat once at most.', language: 'th', hashtags: '#ตอบแทน #LINEOA #ร้านค้า', drive_folder_id: '1TobDemoFolderIdXXXXXXXX', default_hours: { ig: '12:00', fb: '12:00', yt: '19:00', tt: '19:00' }, channels: { fb: '1002', ig: '2002' }, sort: 2 },
-    { id: 'rm', name: 'Rule Maker', color: '#0B0B0D', voice: 'English first, cinematic, restrained. No emoji. No hashtags on YouTube. Never call it a series; call it a world.', language: 'en', hashtags: '#RuleMaker #BadBlood #ShortFilm', drive_folder_id: '1RmDemoFolderIdXXXXXXXXX', default_hours: { ig: '19:00', fb: '19:00', yt: '19:00', tt: '19:30' }, channels: { fb: '1003', ig: '2003' }, sort: 3 }
+    { id: 'hor', name: 'Hordooduang', color: '#C99A5B', voice: 'Warm, calm, slightly mystical Thai. Always say วอลเปเปอร์ alongside any brand term. Never promise outcomes; speak of พร and ดวง as guidance. Short lines, one ✦ at most.', language: 'th', hashtags: '#หอดูดวง #วอลเปเปอร์ดวง #ดูดวง', drive_folder_id: '1HorDemoFolderIdXXXXXXXX', default_hours: { ig: '08:00', fb: '08:30', yt: '19:00', tt: '19:00' }, channels: { fb: '1001', ig: '2001' }, slots: [{ dow: 0, time: '07:30' }, { dow: 3, time: '08:00' }], sort: 1 },
+    { id: 'tob', name: 'Tobtan', color: '#3FB36A', voice: 'Plain, confident Thai for shop owners. Concrete benefit first. No hype words, no emoji. Mention tobtan.chat once at most.', language: 'th', hashtags: '#ตอบแทน #LINEOA #ร้านค้า', drive_folder_id: '1TobDemoFolderIdXXXXXXXX', default_hours: { ig: '12:00', fb: '12:00', yt: '19:00', tt: '19:00' }, channels: { fb: '1002', ig: '2002' }, slots: [{ dow: 5, time: '12:00' }], sort: 2 },
+    { id: 'rm', name: 'Rule Maker', color: '#0B0B0D', voice: 'English first, cinematic, restrained. No emoji. No hashtags on YouTube. Never call it a series; call it a world.', language: 'en', hashtags: '#RuleMaker #BadBlood #ShortFilm', drive_folder_id: '1RmDemoFolderIdXXXXXXXXX', default_hours: { ig: '19:00', fb: '19:00', yt: '19:00', tt: '19:30' }, channels: { fb: '1003', ig: '2003' }, slots: [{ dow: 2, time: '19:00' }], sort: 3 }
   ];
 
   // day of month → a post. Past days are published, future days are waiting, scheduled or drafts.
@@ -38,9 +38,9 @@
     [30, 'tob', 'Month in numbers', '12:00', ['fb'], null]
   ];
   const CAPS = {
-    rm: { ig: 'A doorman who decides who gets in. Nobody asked what he decides for himself.\nEpisode 04 · Rule Maker\n\n#RuleMaker #BadBlood #ShortFilm', fb: 'Episode 04 — The Doorman. A doorman who decides who gets in. Nobody asked what he decides for himself. Full episode on YouTube tonight.', yt: { title: 'Rule Maker — Ep.04 The Doorman', description: 'A doorman who decides who gets in. Nobody asked what he decides for himself.\n\nRule Maker is a world built by Bad Blood Company.\n\n00:00 Cold open\n00:41 The rule\n02:10 The door' }, tt: 'A doorman who decides who gets in. Ep.04 Rule Maker #rulemaker #shortfilm' },
-    hor: { ig: 'วอลเปเปอร์ประจำสัปดาห์ วาดจากดวงของคุณเอง มีใบเดียวในโลก\nผูกดวงแรกพบฟรีที่ hordooduang.com ✦\n\n#หอดูดวง #วอลเปเปอร์ดวง', fb: 'วอลเปเปอร์ประจำสัปดาห์ วาดขึ้นจากดวงและพรของคุณ ผูกดวงแรกพบฟรีก่อน แล้วค่อยเลือกแบบที่ใช่', yt: { title: 'หอดูดวง · วอลเปเปอร์ประจำสัปดาห์', description: 'วอลเปเปอร์ที่วาดจากดวงของคุณ' }, tt: 'วอลเปเปอร์จากดวงคุณเอง #หอดูดวง' },
-    tob: { ig: 'ลูกค้าทักตอนตีสอง ร้านปิดแล้ว แต่มีคนตอบ\nตอบแทนคุยแทนคุณใน LINE ของร้าน เริ่มฟรีที่ tobtan.chat', fb: 'ลูกค้าทักตอนตีสอง ร้านปิดแล้ว แต่มีคนตอบ ตอบแทนคุยกับลูกค้าใน LINE OA ของร้านแทนคุณ เหมือนคุณตอบเอง เริ่มฟรีที่ tobtan.chat', yt: { title: 'ตอบแทน · ตอบลูกค้าตอนคุณหลับ', description: 'ตอบแทนคุยกับลูกค้าใน LINE OA แทนคุณ' }, tt: 'ร้านปิดแล้วแต่มีคนตอบ #ตอบแทน' }
+    rm: { igFirst: '#RuleMaker #BadBlood #ShortFilm', igAlt: '', ig: 'A doorman who decides who gets in. Nobody asked what he decides for himself.\nEpisode 04 · Rule Maker', fb: 'Episode 04 — The Doorman. A doorman who decides who gets in. Nobody asked what he decides for himself. Full episode on YouTube tonight.', yt: { title: 'Rule Maker — Ep.04 The Doorman', description: 'A doorman who decides who gets in. Nobody asked what he decides for himself.\n\nRule Maker is a world built by Bad Blood Company.\n\n00:00 Cold open\n00:41 The rule\n02:10 The door' }, tt: 'A doorman who decides who gets in. Ep.04 Rule Maker #rulemaker #shortfilm' },
+    hor: { igFirst: '#หอดูดวง #วอลเปเปอร์ดวง #ดูดวง', igAlt: 'A wallpaper drawn from one person\'s birth chart, gold on deep brown.', ig: 'วอลเปเปอร์ประจำสัปดาห์ วาดจากดวงของคุณเอง มีใบเดียวในโลก\nผูกดวงแรกพบฟรีที่ hordooduang.com ✦', fb: 'วอลเปเปอร์ประจำสัปดาห์ วาดขึ้นจากดวงและพรของคุณ ผูกดวงแรกพบฟรีก่อน แล้วค่อยเลือกแบบที่ใช่', yt: { title: 'หอดูดวง · วอลเปเปอร์ประจำสัปดาห์', description: 'วอลเปเปอร์ที่วาดจากดวงของคุณ' }, tt: 'วอลเปเปอร์จากดวงคุณเอง #หอดูดวง' },
+    tob: { igFirst: '#ตอบแทน #LINEOA #ร้านค้า', igAlt: 'A shop owner reading a phone late at night.', ig: 'ลูกค้าทักตอนตีสอง ร้านปิดแล้ว แต่มีคนตอบ\nตอบแทนคุยแทนคุณใน LINE ของร้าน เริ่มฟรีที่ tobtan.chat', fb: 'ลูกค้าทักตอนตีสอง ร้านปิดแล้ว แต่มีคนตอบ ตอบแทนคุยกับลูกค้าใน LINE OA ของร้านแทนคุณ เหมือนคุณตอบเอง เริ่มฟรีที่ tobtan.chat', yt: { title: 'ตอบแทน · ตอบลูกค้าตอนคุณหลับ', description: 'ตอบแทนคุยกับลูกค้าใน LINE OA แทนคุณ' }, tt: 'ร้านปิดแล้วแต่มีคนตอบ #ตอบแทน' }
   };
 
   const posts = PLAN.map((row, i) => {
@@ -50,7 +50,7 @@
     const past = d < TODAY || (d === TODAY && when < nowS);
     const status = past ? 'live' : (i % 5 === 0 ? 'wait' : i % 5 === 2 ? 'draft' : 'sched');
     const c = CAPS[b];
-    const captions = { ig: { text: c.ig }, fb: { text: c.fb }, yt: c.yt, tt: { text: c.tt } };
+    const captions = { ig: { text: c.ig, first_comment: c.igFirst, alt_text: poster ? '' : c.igAlt }, fb: { text: c.fb }, yt: c.yt, tt: { text: c.tt } };
     const results = {};
     if (past) for (const ch of channels) results[ch] = { id: 'demo', url: ch === 'yt' ? 'https://youtu.be/' : ch === 'ig' ? 'https://instagram.com/' : 'https://facebook.com/', at: when + 60 };
     const metrics = {};
@@ -111,7 +111,7 @@
       tiktok: { label: '@badblood.company' }
     },
     env: { anthropic: true, google: true, meta: true, tiktok: true, line: true, line_boss: true, session: true },
-    counts: { waiting: posts.filter(p => p.status === 'wait').length, open: INBOX.filter(m => m.status === 'open').length, routed: INBOX.filter(m => m.status === 'routed').length, drafts: posts.filter(p => p.status === 'draft').length }
+    counts: { waiting: posts.filter(p => p.status === 'wait').length, open: INBOX.filter(m => m.status === 'open').length, routed: INBOX.filter(m => m.status === 'routed').length, drafts: posts.filter(p => p.status === 'draft').length, unused: 2 }
   };
   const LOG = [
     { id: 5, at: nowS - 300, area: 'ingest', level: 'info', msg: 'done', data: '{"found":1,"drafted":1}' },
@@ -144,6 +144,18 @@
     if (path === '/api/metrics') return ok(metricsFor(+qs.get('days') || 7));
     if (path === '/api/log') return ok({ log: LOG });
     if (path === '/api/drive/files') return ok({ files: FILES });
+    if (path === '/api/library') {
+      const used = qs.get('used') || '', bId = qs.get('brand') || '';
+      let items = posts.filter(p => p.asset_id).map(p => ({ id: p.asset_id, brand_id: p.brand_id, name: p.asset_name, mime: 'video/mp4', size: 214000000, duration_ms: 161000, thumb_url: p.asset_thumb, created_at: p.created_at, post_id: p.id, post_title: p.title, post_status: p.status, publish_at: p.publish_at }));
+      items = items.concat([
+        { id: 'a_unused1', brand_id: 'rm', name: 'RM_EP06_teaser.mp4', mime: 'video/mp4', size: 88000000, duration_ms: 41000, thumb_url: P + 'the-dream-chapter.webp', created_at: nowS - 3600, post_id: null },
+        { id: 'a_unused2', brand_id: 'hor', name: 'HOR_WALLPAPER_JUPITER.jpg', mime: 'image/jpeg', size: 4200000, thumb_url: null, created_at: nowS - 7200, post_id: null }
+      ]);
+      if (bId) items = items.filter(i => i.brand_id === bId);
+      if (used === '1') items = items.filter(i => i.post_id);
+      if (used === '0') items = items.filter(i => !i.post_id);
+      return ok({ items });
+    }
     return ok({});
   };
   // the demo opens Compose on a real post rather than the empty state
@@ -153,6 +165,22 @@
   window.addEventListener('hashchange', fixHash);
   // a hash that matches a section id makes the browser jump past the banner
   addEventListener('load', () => setTimeout(() => scrollTo(0, 0), 0));
+
+  // upload uses XMLHttpRequest for progress, so the fetch shim cannot catch it
+  const RealXHR = window.XMLHttpRequest;
+  window.XMLHttpRequest = function () {
+    const x = new RealXHR(); const open = x.open.bind(x);
+    let demo = false;
+    x.open = function (m, u, ...rest) { demo = String(u).includes('/api/upload'); return demo ? open('GET', '/assets/artery/demo.js', ...rest) : open(m, u, ...rest); };
+    const send = x.send.bind(x);
+    x.send = function (body) {
+      if (!demo) return send(body);
+      let pc = 0;
+      const tick = setInterval(() => { pc = Math.min(100, pc + 12); if (x.upload && x.upload.onprogress) x.upload.onprogress({ lengthComputable: true, loaded: pc, total: 100 }); if (pc >= 100) { clearInterval(tick); Object.defineProperty(x, 'status', { value: 403 }); Object.defineProperty(x, 'responseText', { value: JSON.stringify(REFUSE) }); if (x.onload) x.onload(); } }, 160);
+      return;
+    };
+    return x;
+  };
 
   // links that would leave the demo (OAuth, sign out) stay put
   document.addEventListener('click', e => {
