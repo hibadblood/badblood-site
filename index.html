@@ -2080,9 +2080,15 @@ function closeIris(){
   if(portalFrom) scrollTo(0, portalFrom.y);
   if(RM) staticFrame();
 }
+/* Every "Enter IRIS" control now goes to the map at /iris, which explains what
+   IRIS does and what each part of it is for. Nothing on this site links to the
+   studio's own IRIS, by any route: that system is not reachable from here and
+   must never be. The portal below stays in the file, unused, so it can be put
+   back if the live door is ever wired up again. */
+function goIris(e){ if(e) e.preventDefault(); location.href = '/iris'; }
 [].slice.call(document.querySelectorAll('[data-iris]')).forEach(function(b){
-  b.addEventListener('click', function(){ openIris('', b); }); });
-hit.addEventListener('click', function(){ openIris('', hit); });
+  b.addEventListener('click', goIris); });
+hit.addEventListener('click', goIris);
 $('portalX').addEventListener('click', closeIris);
 
 var MEDIUM=/^(film|video|movie|website|site|web|app|campaign|ad|advert|commercial|content|logo|brand|deck|animation)s?$/i;
