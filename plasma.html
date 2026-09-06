@@ -1,0 +1,241 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>PLASMA — one picture factory · BAD BLOOD COMPANY</title>
+<meta name="description" content="Every image for every Bad Blood brand comes out of one machine. The style lives in a pack, the model is a setting, and the letters are drawn by code.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;800;900&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,300;1,6..72,300&display=swap" rel="stylesheet">
+<style>
+:root{
+  --night:#050505;--panel:#0C0C0C;
+  --cream:#EFEBE5;--cream2:#B9B4AD;--grey:#7C7873;--faint:#4A4744;
+  --red:#C8202E;--red2:#E0303E;--good:#3FBF6F;--warn:#D9A441;
+  --line:rgba(255,255,255,.10);--line2:rgba(255,255,255,.22);
+  --disp:"Archivo",Helvetica,Arial,sans-serif;
+  --serif:"Newsreader",Georgia,serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --w:1080px;--p:0;
+  --spectrum:linear-gradient(90deg,#FF2D55 0%,#FF7A1A 20%,#FFD60A 40%,#34C759 60%,#32ADE6 80%,#8A5CFF 100%);
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--night);color:var(--cream);font-family:var(--disp);font-weight:500;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+img,svg{display:block;max-width:100%}
+::selection{background:var(--red);color:#fff}
+a{color:inherit}
+.container{width:min(var(--w),100% - 48px);margin:0 auto}
+@media(max-width:640px){.container{width:calc(100% - 28px)}}
+.label{font-family:var(--mono);font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--grey)}
+.label b{color:var(--red2);font-weight:500}
+.disp{font-family:var(--disp);font-weight:900;letter-spacing:-.035em;line-height:.96}
+.rain{background:var(--spectrum);-webkit-background-clip:text;background-clip:text;color:transparent}
+.sec{padding:clamp(60px,7.5vw,96px) 0;border-top:1px solid var(--line)}
+.sec-h{display:grid;gap:14px;margin-bottom:34px;max-width:720px}
+.sec-h h2{font-size:clamp(27px,3.6vw,44px)}
+.lede{font-family:var(--serif);font-weight:300;font-size:clamp(17px,1.6vw,21px);line-height:1.6;color:var(--cream2);max-width:620px}
+.snum{display:inline-flex;align-items:center;gap:11px;margin-bottom:10px}
+.snum .d{width:20px;height:20px;flex:none;border-radius:50%;background:var(--spectrum)}
+
+/* hero */
+.cover{position:relative;min-height:96svh;display:flex;flex-direction:column;justify-content:space-between;padding:22px 0 34px;overflow:hidden}
+.glow{position:absolute;z-index:0;width:min(140vw,1300px);aspect-ratio:1;right:-34%;top:-32%;border-radius:50%;
+  background:radial-gradient(circle at 50% 50%,rgba(255,90,42,.30),rgba(138,92,255,.10) 42%,transparent 64%);
+  transform:translate3d(0,calc(var(--p) * 26vh),0) scale(calc(1 + var(--p) * .28));will-change:transform}
+.cover .container{position:relative;z-index:2}
+.top{display:flex;justify-content:space-between;align-items:center;gap:16px}
+.top .bb{height:26px;width:auto}
+.heroGrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,380px);gap:44px;align-items:center;padding:24px 0}
+@media(max-width:900px){.heroGrid{grid-template-columns:1fr;gap:30px}}
+.heroGrid h1{font-size:clamp(38px,7vw,82px);margin:16px 0 18px}
+.heroGrid .say{font-family:var(--serif);font-weight:300;font-size:clamp(17px,1.7vw,21px);line-height:1.6;color:var(--cream2);max-width:520px}
+.heroMark{width:min(100%,340px);margin-left:auto;filter:drop-shadow(0 24px 60px rgba(255,90,42,.25));
+  transform:rotate(calc(var(--p) * 90deg));will-change:transform}
+@media(max-width:900px){.heroMark{width:230px;margin:0}}
+.scroll{font-family:var(--mono);font-size:9px;letter-spacing:.32em;text-transform:uppercase;color:var(--faint);display:flex;align-items:center;gap:12px}
+.scroll i{display:block;width:1px;height:32px;background:linear-gradient(180deg,var(--line2),transparent)}
+
+/* pipeline */
+.flow{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:1px;background:var(--line);border:1px solid var(--line);border-radius:4px;overflow:hidden}
+@media(max-width:820px){.flow{grid-template-columns:1fr 1fr}}
+@media(max-width:480px){.flow{grid-template-columns:1fr}}
+.step{background:var(--night);padding:18px 16px;display:flex;flex-direction:column;gap:8px;min-width:0}
+.step .n{font-family:var(--mono);font-size:9px;letter-spacing:.26em;color:var(--red2)}
+.step b{font-family:var(--disp);font-weight:800;font-size:15px;letter-spacing:-.01em}
+.step span{font-size:13px;line-height:1.5;color:var(--cream2)}
+
+/* layers */
+.layers{display:grid;border-top:1px solid var(--line)}
+.layer{display:grid;grid-template-columns:150px 1fr;gap:22px;padding:19px 0;border-bottom:1px solid var(--line);align-items:baseline}
+@media(max-width:700px){.layer{grid-template-columns:1fr;gap:6px;padding:16px 0}}
+.layer .nm{font-family:var(--disp);font-weight:900;font-size:19px;letter-spacing:-.02em}
+.layer .nm span{display:block;font-family:var(--mono);font-size:9px;letter-spacing:.24em;color:var(--red2);font-weight:400;margin-bottom:4px}
+.layer .tx{font-size:14.5px;color:var(--cream2);max-width:620px}
+.layer .tx b{color:var(--cream);font-weight:600}
+
+/* uses */
+.uses{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:0 36px}
+@media(max-width:700px){.uses{grid-template-columns:1fr}}
+.uses h4{font-family:var(--mono);font-size:9.5px;letter-spacing:.26em;text-transform:uppercase;color:var(--grey);padding-bottom:10px;border-bottom:1px solid var(--line);margin-bottom:2px}
+.uses ul{list-style:none}
+.uses li{padding:12px 0;border-bottom:1px solid var(--line);font-size:14px;color:var(--cream2)}
+.uses li b{color:var(--cream);font-weight:600}
+
+/* rule strip */
+.rule-strip{border:1px solid var(--line2);border-radius:4px;padding:clamp(20px,3vw,30px);background:var(--panel);display:grid;gap:12px}
+.rule-strip h3{font-family:var(--disp);font-weight:900;font-size:clamp(20px,2.6vw,30px);letter-spacing:-.02em}
+.rule-strip p{font-size:15px;line-height:1.6;color:var(--cream2);max-width:640px}
+.rule-strip p b{color:var(--cream);font-weight:600}
+
+/* close */
+.close{padding:clamp(64px,8vw,100px) 0 46px;border-top:1px solid var(--line)}
+.close h2{font-size:clamp(32px,6vw,78px)}
+.close p{font-family:var(--serif);font-weight:300;font-size:clamp(16px,1.6vw,20px);line-height:1.6;color:var(--cream2);max-width:520px;margin-top:18px}
+.foot{border-top:1px solid var(--line);padding:20px 0 36px;font-family:var(--mono);font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:var(--faint);display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px}
+.foot b{color:var(--cream2);font-weight:500}
+
+/* reveal */
+.rv{opacity:0;transform:translateY(18px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1)}
+.rv.in{opacity:1;transform:none}
+.rv.d1{transition-delay:.06s}.rv.d2{transition-delay:.12s}.rv.d3{transition-delay:.18s}
+@media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}.glow,.heroMark{transform:none}.scroll i{animation:none}}
+</style>
+</head>
+<body>
+
+<header class="cover">
+  <div class="glow" aria-hidden="true"></div>
+  <div class="container top">
+    <a href="/" aria-label="Bad Blood Company"><img class="bb" src="assets/ventures/plasma.webp" alt="PLASMA" style="height:30px"></a>
+    <span class="label">Sep 2026</span>
+  </div>
+
+  <div class="container heroGrid">
+    <div>
+      <span class="label">BAD BLOOD COMPANY</span>
+      <h1 class="disp">Every picture,<br><em class="rain" style="font-style:normal">one factory.</em></h1>
+      <p class="say">Each brand needs its own images, endlessly: a wallpaper drawn from one person's birth chart, a post, a story, a menu card, a thumbnail. They do not need their own machine. PLASMA is the machine; the brand is a pack of words it reads.</p>
+    </div>
+    <img class="heroMark" src="assets/plasma/mark.png" alt="" aria-hidden="true">
+  </div>
+
+  <div class="container">
+    <span class="scroll"><i></i> Scroll</span>
+  </div>
+</header>
+
+<section class="sec">
+  <div class="container">
+    <div class="sec-h rv">
+      <span class="snum"><span class="d"></span><span class="label"><b>01</b> · The run</span></span>
+      <h2 class="disp">Five steps.<br>Then the image <span class="rain">exists</span>.</h2>
+      <p class="lede">One path for every brand and every size. Nothing about a brand is written into the path — it arrives as data at step two.</p>
+    </div>
+    <div class="flow rv">
+      <div class="step"><span class="n">01</span><b>Take the job</b><span>A birth chart, a post idea, a product, a schedule slot. It becomes one numbered job with its variables.</span></div>
+      <div class="step"><span class="n">02</span><b>Build the prompt</b><span>The brand's pack fills a template: subject, palette, motif, camera, what to avoid. Versioned, testable, never typed twice.</span></div>
+      <div class="step"><span class="n">03</span><b>Ask a model</b><span>Whichever image model the pack names. Swapping model is a setting, not a rewrite. Failures fall through to the next one.</span></div>
+      <div class="step"><span class="n">04</span><b>Finish it</b><span>Crop to every size, place the logo, draw the words with real fonts, check contrast. This half is code, not luck.</span></div>
+      <div class="step"><span class="n">05</span><b>Deliver</b><span>Stored once, sent where it was needed: a chat reply, a scheduled post, a page, a folder.</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="container">
+    <div class="sec-h rv">
+      <span class="snum"><span class="d"></span><span class="label"><b>02</b> · The answer</span></span>
+      <h2 class="disp">One machine.<br>Every brand keeps its <span class="rain">own face</span>.</h2>
+      <p class="lede">The same shape as the rest of the house: a closed core, a pack per brand, a few dials, and a bespoke lane for the rest.</p>
+    </div>
+    <div class="layers">
+      <div class="layer rv"><span class="nm"><span>Layer 1</span>CORE</span><span class="tx">Queue, prompt assembly, provider calls, retries, cost ceiling, the finishing pass, storage, delivery. <b>It knows nothing about any brand</b> and never will.</span></div>
+      <div class="layer rv d1"><span class="nm"><span>Layer 2</span>PACK</span><span class="tx">One folder per brand: the style in words, prompt templates with holes in them, reference frames, the sizes it ships, what must never appear. <b>Text files, no code.</b></span></div>
+      <div class="layer rv d2"><span class="nm"><span>Layer 3</span>DIALS</span><span class="tx">What the owner changes without asking anyone: model, quality, how many options per job, the spend ceiling for the day. <b>Everything else is refused and written down.</b></span></div>
+      <div class="layer rv d3"><span class="nm"><span>Layer 4</span>DATA</span><span class="tx">The variables that make one image unlike the next — a chart, a name, a date, a product, a colour drawn from a person. <b>This is where "unique to you" actually lives.</b></span></div>
+      <div class="layer rv d3"><span class="nm"><span>Layer 5</span>BESPOKE</span><span class="tx">When a brand needs something the core cannot express, we write it and charge for it — and the result becomes a new pack version, <b>never a fork</b>.</span></div>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="container">
+    <div class="rule-strip rv">
+      <span class="label"><b>The one hard rule</b></span>
+      <h3 class="disp">Models draw pictures.<br><span class="rain">Code draws the letters.</span></h3>
+      <p>No image model spells Thai reliably, and a misspelt word on a customer's wallpaper is worse than no wallpaper. So the model is asked for a clean plate and nothing else. <b>Every word, logo, price and label is drawn afterwards with the real font</b>, at the exact size, by code that can be tested. It is the difference between a picture that looks right and one that is right.</p>
+    </div>
+  </div>
+</section>
+
+<section class="sec">
+  <div class="container">
+    <div class="sec-h rv">
+      <span class="snum"><span class="d"></span><span class="label"><b>03</b> · What it feeds</span></span>
+      <h2 class="disp">The same factory,<br>five <span class="rain">appetites</span>.</h2>
+    </div>
+    <div class="uses rv">
+      <div>
+        <h4>Made for one person</h4>
+        <ul>
+          <li><b>A wallpaper from a birth chart.</b> The chart becomes the variables; the image exists once, for the person who asked.</li>
+          <li><b>A card with someone's name on it.</b> Generated at the moment it is needed, not designed in advance.</li>
+          <li><b>A proof before the work.</b> Four options, one chosen, the rest thrown away.</li>
+        </ul>
+      </div>
+      <div>
+        <h4>Made for a feed</h4>
+        <ul>
+          <li><b>Daily posts and stories</b> from a list of subjects, in the brand's face, at every size a platform wants.</li>
+          <li><b>The brands' own surfaces:</b> covers, menus, thumbnails, the images a back office needs printed on a page.</li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="close">
+  <div class="container rv">
+    <span class="label">PLASMA · BAD BLOOD COMPANY</span>
+    <h2 class="disp">Plasma carries<br>what the <span class="rain">blood makes</span>.</h2>
+    <p>It is the part of blood that carries everything else where it needs to go. One core for the house, one pack per brand, and a picture at the end of every run.</p>
+  </div>
+</section>
+
+<footer class="foot">
+  <div class="container" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px">
+    <span><a href="/" style="color:inherit;text-decoration:none"><b>BAD BLOOD COMPANY</b></a></span>
+    <span>In build · 2026</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var root=document.documentElement, ticking=false;
+  var reduce=window.matchMedia&&window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  function frame(){
+    ticking=false;
+    var y=window.pageYOffset||document.documentElement.scrollTop||0;
+    var max=Math.max(1,document.body.scrollHeight-window.innerHeight);
+    root.style.setProperty('--p',(y/max).toFixed(4));
+  }
+  function onScroll(){ if(!ticking){ ticking=true; requestAnimationFrame(frame); } }
+  window.addEventListener('scroll',onScroll,{passive:true});
+  window.addEventListener('resize',onScroll,{passive:true});
+  frame();
+  var items=document.querySelectorAll('.rv');
+  if(reduce||!('IntersectionObserver' in window)){
+    for(var i=0;i<items.length;i++){ items[i].classList.add('in'); }
+  }else{
+    var io=new IntersectionObserver(function(es){
+      for(var k=0;k<es.length;k++){ if(es[k].isIntersecting){ es[k].target.classList.add('in'); io.unobserve(es[k].target); } }
+    },{rootMargin:'0px 0px -12% 0px',threshold:.12});
+    for(var j=0;j<items.length;j++){ io.observe(items[j]); }
+  }
+})();
+</script>
+</body>
+</html>
