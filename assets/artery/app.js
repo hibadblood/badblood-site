@@ -445,7 +445,11 @@
     const env = v => v ? '<span class="mi ok">key set</span>' : '<span class="mi hot">key missing</span>';
     const metaPages = c.meta ? c.meta.pages.map(p => `${esc(p.name)}${p.ig ? ' · IG @' + esc(p.ig.username) : ' · no IG linked'}`).join('<br>') : '';
     $('conns').innerHTML = `
-      <div class="card conn"><div class="h"><b>${sprite('fetch', 'px')} Google · Drive + YouTube</b>${ok(c.google)}</div><div class="d">${c.google ? esc(c.google.label) + (c.google.youtube ? ' · YouTube: ' + esc(c.google.youtube.title) : ' · no YouTube channel on this account') : 'Drive is where every post starts. One consent covers Drive and YouTube.'} ${env(e.google)}</div><div><a class="act small${e.google ? '' : ' quiet'}" href="/connect/google">${c.google ? 'Reconnect' : 'Connect Google'} →</a></div></div>
+      <div class="card conn"><div class="h"><b>${sprite('fetch', 'px')} Google · Drive</b>${ok(c.google)}</div><div class="d">${c.google ? esc(c.google.label) + (c.google.youtube ? ' · default YouTube channel: ' + esc(c.google.youtube.title) : ' · no YouTube channel on this account') : 'Drive is where every post starts.'} ${env(e.google)}<br><span class="mi">Uploads into Drive need write access. If you connected before 6 Sep, reconnect once.</span></div><div><a class="act small${e.google ? '' : ' quiet'}" href="/connect/google">${c.google ? 'Reconnect' : 'Connect Google'} →</a></div></div>
+      <div class="card conn"><div class="h"><b>${sprite('yt', 'px')} YouTube · one channel per brand</b>${ok(Object.keys(c.youtube || {}).length)}</div>
+        <div class="d">Each brand can own its own channel. Pick the right channel on Google's screen when you connect; a brand with no channel of its own falls back to the account above.</div>
+        <div class="ytrows">${S.brands.map(b => { const y = (c.youtube || {})[b.id]; const dupe = y && y.channel && S.brands.some(o => o.id !== b.id && ((c.youtube || {})[o.id] || {}).channel && c.youtube[o.id].channel.id === y.channel.id);
+          return `<div class="ytrow"><span class="tag" style="--dot:${b.color}">${esc(b.name)}</span><span class="d">${y ? (y.channel ? esc(y.channel.title) : esc(y.label)) : (c.google && c.google.youtube ? 'falls back to ' + esc(c.google.youtube.title) : 'no channel yet')}${dupe ? ' <span class="mi hot">same channel as another brand</span>' : ''}</span><span class="row"><a class="act small quiet" href="/connect/youtube/${b.id}">${y ? 'Change' : 'Connect'} →</a>${y ? `<button class="act small quiet danger" data-unyt="${b.id}">Unbind</button>` : ''}</span></div>`; }).join('')}</div></div>
       <div class="card conn"><div class="h"><b>${sprite('post', 'px')} Meta · Facebook Page + Instagram</b>${ok(c.meta)}</div><div class="d">${c.meta ? metaPages : 'Your Facebook Pages and the Instagram Business accounts linked to them. Development mode is enough for your own accounts.'} ${env(e.meta)}</div><div><a class="act small${e.meta ? '' : ' quiet'}" href="/connect/meta">${c.meta ? 'Reconnect' : 'Connect Meta'} →</a></div></div>
       <div class="card conn"><div class="h"><b>${sprite('tt', 'px')} TikTok</b>${ok(c.tiktok)}</div><div class="d">${c.tiktok ? esc(c.tiktok.label) : 'Direct posting needs TikTok\'s audit. Until then the crew sends the file and caption to your LINE for a one-tap share.'} ${env(e.tiktok)}</div><div><a class="act small${e.tiktok ? '' : ' quiet'}" href="/connect/tiktok">${c.tiktok ? 'Reconnect' : 'Connect TikTok'} →</a></div></div>
       <div class="card conn"><div class="h"><b>${sprite('tobtan', 'px')} LINE · approvals</b>${ok(e.line && e.line_boss)}</div><div class="d">Channel ${env(e.line)} · your user id ${env(e.line_boss)}. Add the bot as a friend, send the word <b>artery</b>, and it replies with your id.</div></div>
@@ -486,6 +490,12 @@
   }
   async function loadLog() { const { log } = await api('/api/log'); $('logBox').textContent = log.map(l => `${new Date(l.at * 1000).toISOString().slice(5, 16).replace('T', ' ')} ${l.level === 'error' ? '✕' : l.level === 'warn' ? '!' : '·'} ${l.area}: ${l.msg}${l.data ? ' ' + l.data.slice(0, 160) : ''}`).join('\n') || 'Quiet.'; }
   $('bRun').onclick = async () => { $('bRun').disabled = true; try { const r = await api('/api/cron/run', { method: 'POST' }); toast('Ran'); await refresh(); loadLog(); console.log(r); } finally { $('bRun').disabled = false; } };
+  $('conns').addEventListener('click', async e => {
+    const b = e.target.closest('[data-unyt]'); if (!b) return;
+    if (!confirm('Unbind this brand from its YouTube channel? It will fall back to the main Google account.')) return;
+    await api('/api/connections/' + encodeURIComponent('youtube:' + b.dataset.unyt), { method: 'DELETE' });
+    toast('Unbound'); S = await api('/api/state'); renderSettings();
+  });
   $('bChecklist').onclick = () => { store.set('checklistDone', '0'); renderChecklist(); location.hash = '#queue'; };
   $('bLineTest').onclick = async () => { const r = await api('/api/line/test', { method: 'POST' }); toast(r.ok ? 'Sent to LINE' : 'LINE not configured'); };
 

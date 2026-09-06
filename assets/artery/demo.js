@@ -107,6 +107,7 @@
     settings: { autonomous: true, auto_reply: false, yt_privacy: 'public' },
     connections: {
       google: { label: 'hi.badblood@gmail.com', youtube: { id: 'UCdemo', title: 'Bad Blood Company' } },
+    youtube: { hor: { label: 'หอดูดวง', channel: { id: 'UChor', title: 'หอดูดวง' } }, rm: { label: 'Rule Maker', channel: { id: 'UCrm', title: 'Rule Maker' } } },
       meta: { label: 'Bad Blood', pages: [{ id: '1001', name: 'หอดูดวง', ig: { id: '2001', username: 'hordooduang' } }, { id: '1002', name: 'ตอบแทน', ig: { id: '2002', username: 'tobtan.chat' } }, { id: '1003', name: 'Bad Blood Company', ig: { id: '2003', username: 'badblood.company' } }] },
       tiktok: { label: '@badblood.company' }
     },

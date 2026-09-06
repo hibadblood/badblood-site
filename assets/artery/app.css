@@ -177,3 +177,11 @@ main{padding:calc(var(--edge)*.9) var(--edge) calc(var(--edge)*2);max-width:1480
   .libgrid{grid-template-columns:repeat(auto-fill,minmax(120px,1fr))}
   main{padding-bottom:calc(var(--edge)*3)}
 }
+
+/* ══ one YouTube channel per brand ══ */
+.ytrows{display:grid;gap:8px}
+.ytrow{display:grid;grid-template-columns:minmax(110px,auto) 1fr auto;gap:12px;align-items:center;padding:10px 0;border-top:1px solid var(--line2)}
+.ytrow:first-child{border-top:0}
+.ytrow .d{font-size:13px;color:var(--ink2)}
+.ytrow .row{display:flex;gap:6px}
+@media(max-width:820px){.ytrow{grid-template-columns:1fr;gap:6px}.ytrow .row{justify-content:flex-start}}
