@@ -1,0 +1,240 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>IRIS — what it does · BAD BLOOD COMPANY</title>
+<meta name="description" content="IRIS is the brain Bad Blood runs on. Everything below it is one job it does, and each one is a thing you can look at.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;800;900&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Thai:wght@400;600&family=Newsreader:ital,opsz,wght@0,6..72,300;1,6..72,300&display=swap" rel="stylesheet">
+<style>
+:root{
+  --night:#050505;--panel:#0C0C0C;
+  --cream:#EFEBE5;--cream2:#B9B4AD;--grey:#7C7873;--faint:#4A4744;
+  --red:#C8202E;--red2:#E0303E;--live:#3FBF6F;
+  --line:rgba(255,255,255,.10);--line2:rgba(255,255,255,.22);
+  --disp:"Archivo",Helvetica,Arial,sans-serif;
+  --thai:"IBM Plex Sans Thai","Archivo",sans-serif;
+  --serif:"Newsreader",Georgia,serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --w:1080px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--night);color:var(--cream);font-family:var(--disp);font-weight:500;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+img,svg{display:block;max-width:100%}
+::selection{background:var(--red);color:#fff}
+a{color:inherit;text-decoration:none}
+.container{width:min(var(--w),100% - 48px);margin:0 auto}
+@media(max-width:640px){.container{width:calc(100% - 28px)}}
+.label{font-family:var(--mono);font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--grey)}
+.label b{color:var(--red2);font-weight:500}
+.disp{font-family:var(--disp);font-weight:900;letter-spacing:-.035em;line-height:.96}
+
+/* hero */
+.cover{padding:26px 0 clamp(46px,7vw,74px)}
+.top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:clamp(40px,7vw,86px)}
+.top .bb{height:26px;width:auto}
+.head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,420px);gap:clamp(28px,5vw,60px);align-items:center}
+@media(max-width:860px){.head{grid-template-columns:1fr;gap:34px}}
+.head h1{font-size:clamp(46px,10vw,110px);margin:12px 0 20px}
+.head .say{font-family:var(--serif);font-weight:300;font-size:clamp(18px,1.9vw,23px);line-height:1.55;color:var(--cream2);max-width:520px}
+.head .say b{color:var(--cream);font-weight:400;font-style:italic}
+
+/* the map graphic */
+.map{width:100%;max-width:420px;margin-left:auto}
+@media(max-width:860px){.map{margin:0 auto;max-width:320px}}
+.map .spoke{stroke:rgba(239,235,229,.20);stroke-width:.5}
+.map .node{fill:#EFEBE5}
+.map .halo{fill:var(--red);opacity:.16}
+.map .core{fill:var(--red)}
+.map .pip{fill:var(--red2)}
+@media(prefers-reduced-motion:no-preference){
+  .map .pip{animation:travel 3.6s ease-in-out infinite}
+  .map .pip:nth-of-type(2){animation-delay:.6s}
+  .map .pip:nth-of-type(3){animation-delay:1.2s}
+  .map .halo{animation:breathe 3.6s ease-in-out infinite}
+}
+@keyframes travel{0%{opacity:0;transform:scale(.4)}20%{opacity:1}70%{opacity:1}100%{opacity:0;transform:scale(1)}}
+@keyframes breathe{0%,100%{opacity:.10}50%{opacity:.24}}
+
+/* the answer strip */
+.answer{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:clamp(22px,3vw,32px) 0}
+.answer p{font-size:clamp(16px,1.7vw,20px);line-height:1.6;color:var(--cream2);max-width:760px}
+.answer p b{color:var(--cream);font-weight:700}
+
+/* the parts */
+.sec{padding:clamp(52px,7vw,88px) 0}
+.sec-h{display:grid;gap:12px;margin-bottom:30px;max-width:660px}
+.sec-h h2{font-size:clamp(26px,3.4vw,42px)}
+.sec-h h2 .rd{color:var(--red2)}
+.parts{display:grid;grid-template-columns:1fr;border-top:1px solid var(--line)}
+@media(min-width:760px){.parts{grid-template-columns:1fr 1fr}}
+.part{display:grid;grid-template-rows:auto auto 1fr auto;gap:9px;padding:22px 0;border-bottom:1px solid var(--line);min-width:0}
+@media(min-width:760px){
+  .part{padding:24px clamp(16px,2vw,28px) 24px 0;border-right:1px solid var(--line)}
+  .part:nth-child(even){border-right:0;padding-left:clamp(16px,2vw,28px)}
+}
+.part .nm{font-family:var(--disp);font-weight:900;font-size:clamp(21px,2.6vw,28px);letter-spacing:-.03em}
+.part .nm.th{font-family:var(--thai);font-weight:600;letter-spacing:0}
+.part .who{font-family:var(--mono);font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--red2)}
+.part p{font-size:14.5px;line-height:1.6;color:var(--cream2)}
+.part p b{color:var(--cream);font-weight:600}
+.part .foot{display:flex;justify-content:space-between;align-items:baseline;gap:12px;font-family:var(--mono);font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:var(--faint);padding-top:4px}
+.part .foot .go{color:var(--cream2)}
+.part .foot .go i{font-style:normal;color:var(--red2);margin-left:.5em;display:inline-block;transition:transform .3s cubic-bezier(.16,1,.3,1)}
+a.part:hover .foot .go i{transform:translateX(4px)}
+a.part:hover p{color:var(--cream)}
+.part .foot .live{color:var(--live)}
+
+/* why */
+.why{border:1px solid var(--line2);border-radius:4px;background:var(--panel);padding:clamp(22px,3.4vw,34px);display:grid;gap:14px}
+.why h3{font-family:var(--disp);font-weight:900;font-size:clamp(21px,2.8vw,32px);letter-spacing:-.025em}
+.why p{font-size:15px;line-height:1.65;color:var(--cream2);max-width:680px}
+.why p b{color:var(--cream);font-weight:600}
+
+.foot-b{border-top:1px solid var(--line);padding:20px 0 36px;font-family:var(--mono);font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:var(--faint)}
+.foot-b b{color:var(--cream2);font-weight:500}
+
+.rv{opacity:0;transform:translateY(16px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1)}
+.rv.in{opacity:1;transform:none}
+.rv.d1{transition-delay:.06s}.rv.d2{transition-delay:.12s}.rv.d3{transition-delay:.18s}
+@media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+</style>
+</head>
+<body>
+
+<header class="cover">
+  <div class="container">
+    <div class="top">
+      <a href="/" class="label" style="color:var(--cream)">BAD BLOOD COMPANY</a>
+      <span class="label">Sep 2026</span>
+    </div>
+
+    <div class="head">
+      <div>
+        <span class="label"><b>IRIS</b> · what it does</span>
+        <h1 class="disp">The brain,<br>and its <em style="font-style:normal;color:var(--red2)">organs</em>.</h1>
+        <p class="say">People ask what IRIS can do and the honest answer is a list, which is no answer at all. So here is the map instead. <b>Every part below is one job it already does, every day, for us.</b></p>
+      </div>
+
+      <svg class="map" viewBox="0 0 200 200" role="img" aria-label="IRIS at the centre, six parts around it">
+        <line class="spoke" x1="100" y1="100" x2="100" y2="30"></line>
+        <line class="spoke" x1="100" y1="100" x2="161" y2="65"></line>
+        <line class="spoke" x1="100" y1="100" x2="161" y2="135"></line>
+        <line class="spoke" x1="100" y1="100" x2="100" y2="170"></line>
+        <line class="spoke" x1="100" y1="100" x2="39" y2="135"></line>
+        <line class="spoke" x1="100" y1="100" x2="39" y2="65"></line>
+        <circle class="halo" cx="100" cy="100" r="34"></circle>
+        <circle class="core" cx="100" cy="100" r="13"></circle>
+        <circle class="node" cx="100" cy="30" r="5"></circle>
+        <circle class="node" cx="161" cy="65" r="5"></circle>
+        <circle class="node" cx="161" cy="135" r="5"></circle>
+        <circle class="node" cx="100" cy="170" r="5"></circle>
+        <circle class="node" cx="39" cy="135" r="5"></circle>
+        <circle class="node" cx="39" cy="65" r="5"></circle>
+        <circle class="pip" cx="100" cy="62" r="2.6"></circle>
+        <circle class="pip" cx="131" cy="118" r="2.6"></circle>
+        <circle class="pip" cx="69" cy="118" r="2.6"></circle>
+      </svg>
+    </div>
+  </div>
+</header>
+
+<div class="answer">
+  <div class="container">
+    <p><b>IRIS is the brain we run our own company on.</b> None of this was built to sell. It was built because we needed it, and Bad Blood runs on it every day. That is also the shortest reason to trust any of it.</p>
+  </div>
+</div>
+
+<section class="sec">
+  <div class="container">
+    <div class="sec-h rv">
+      <span class="label"><b>The parts</b> · pick the one that is your problem</span>
+      <h2 class="disp">Six organs.<br>One <span class="rd">bloodstream</span>.</h2>
+    </div>
+
+    <div class="parts">
+      <a class="part rv" href="https://tobtan.chat" target="_blank" rel="noopener">
+        <span class="nm th">ตอบแทน</span>
+        <span class="who">Your customers message all day</span>
+        <p>A LINE assistant that answers them <b>in the owner's own voice</b>, at three in the morning, without inventing anything it was not told.</p>
+        <span class="foot"><span class="go">tobtan.chat<i>&rarr;</i></span><span class="live">Live</span></span>
+      </a>
+
+      <a class="part rv d1" href="/type-o">
+        <span class="nm">TYPE O</span>
+        <span class="who">The work behind the counter</span>
+        <p>One back office for any trade: orders, jobs, stock, staff, money. <b>One core, one small pack per trade</b>, changed by the owner without a developer.</p>
+        <span class="foot"><span class="go">Read the idea<i>&rarr;</i></span><span class="live">Live</span></span>
+      </a>
+
+      <a class="part rv d2" href="/plasma">
+        <span class="nm">PLASMA</span>
+        <span class="who">A picture needed every day</span>
+        <p>One factory that makes them: the style lives in a pack, the model is a setting, and <b>the letters are drawn by code</b> so nothing is ever misspelt.</p>
+        <span class="foot"><span class="go">See how it works<i>&rarr;</i></span><span class="live">Live</span></span>
+      </a>
+
+      <a class="part rv d3" href="https://hordooduang.com" target="_blank" rel="noopener">
+        <span class="nm th">หอดูดวง</span>
+        <span class="who">Someone curious about their chart</span>
+        <p>A free birth-chart reading, and <b>a wallpaper drawn from that one chart</b> which exists exactly once and belongs to the person who asked.</p>
+        <span class="foot"><span class="go">hordooduang.com<i>&rarr;</i></span><span class="live">Live</span></span>
+      </a>
+
+      <a class="part rv d3" href="/artery">
+        <span class="nm">ARTERY</span>
+        <span class="who">One brand, every channel</span>
+        <p>The publishing line that carries our own brands out into the world <b>from one heart</b>, so a thing said once arrives everywhere it should.</p>
+        <span class="foot"><span class="go">See the demo<i>&rarr;</i></span><span>Internal</span></span>
+      </a>
+
+      <div class="part rv d3">
+        <span class="nm">TRACER</span>
+        <span class="who">You sent it. Then silence.</span>
+        <p>Proposal files that report back: <b>who opened it, how long they read, how far they got</b>, and a message the moment it happens. Sales work stops being a guess.</p>
+        <span class="foot"><span>Newest</span><span>In build</span></span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="sec" style="padding-top:0">
+  <div class="container">
+    <div class="why rv">
+      <span class="label"><b>Why one brain</b></span>
+      <h3 class="disp">Six products, one set of habits.</h3>
+      <p>They are separate businesses on purpose, but they are not separate craftsmanship. Each one is a closed core, a pack of words per customer, a few dials the owner can turn, and a refusal list. <b>Learning one teaches you the next</b>, and a fix in the way we build reaches all of them.</p>
+      <p>The part that stays ours is the judgement underneath: what to answer, what to refuse, what to escalate to a human. That is <a href="/iris-protocol" style="color:var(--red2)">IRIS Protocol</a>, and it opens to partners before it opens to anyone else.</p>
+    </div>
+  </div>
+</section>
+
+<footer class="foot-b">
+  <div class="container" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px">
+    <span><a href="/"><b>BAD BLOOD COMPANY</b></a></span>
+    <span>Built for ourselves first · 2026</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var items = document.querySelectorAll('.rv');
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce || !('IntersectionObserver' in window)){
+    for(var i = 0; i < items.length; i++){ items[i].classList.add('in'); }
+    return;
+  }
+  var io = new IntersectionObserver(function(es){
+    for(var k = 0; k < es.length; k++){
+      if(es[k].isIntersecting){ es[k].target.classList.add('in'); io.unobserve(es[k].target); }
+    }
+  }, { rootMargin: '0px 0px -12% 0px', threshold: .12 });
+  for(var j = 0; j < items.length; j++){ io.observe(items[j]); }
+})();
+</script>
+</body>
+</html>
