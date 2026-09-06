@@ -331,7 +331,7 @@ tr:last-child td{border-bottom:0}
         <figcaption><span class="t">Phone · /app/settings</span><b>The dials.</b> The pack, the auto-approve ceiling for transfer slips, the sign-off word, the hour the daily summary arrives. Change them from a phone; nothing else can be broken from here.</figcaption>
       </figure>
     </div>
-    <p class="label rv d2" style="margin-top:18px;letter-spacing:.12em;line-height:1.9">Real screens from the running system, unedited. The tenant is a demo vehicle-repair workshop on the second pack; the shop floor reads Thai because its people do. A clinic on its own pack sees the same three screens with different nouns.</p>
+    <p class="label rv d2" style="margin-top:18px;letter-spacing:.12em;line-height:1.9">Real screens from the running system, unedited. The tenant is a demo vehicle-repair workshop on the second pack, set to English; a Thai shop sees the same screens in Thai, because the language is a setting and not a build.</p>
   </div>
 </section>
 
@@ -378,7 +378,9 @@ tr:last-child td{border-bottom:0}
           <li><b>The ledger.</b> Lots, FIFO, FEFO, weighted average, recipes, landed cost — the database itself refuses stock below zero. Costing proven to the satang.</li>
           <li><b>Money.</b> QR payment, transfer slips read from the slip's own QR and checked with a vendor, duplicate slips refused, refunds, receivables, tax fields, monthly P&amp;L. Anything unsure goes to a human, never to "paid".</li>
           <li><b>In and out.</b> CSV import with a preview before anything is written, idempotent on re-upload; eleven CSV exports including the monthly P&amp;L.</li>
-          <li><b>Timers, roles, numbers.</b> Sub-minute offer timers on Durable Object alarms; job titles as data per company, gates by capability; utilisation and no-shows computed from real bookings. Every route replayed as a second company to prove nothing leaks. 521 tests.</li>
+          <li><b>Timers, roles, numbers.</b> Sub-minute offer timers on Durable Object alarms; job titles as data per company, gates by capability; utilisation and no-shows computed from real bookings.</li>
+          <li><b>Two languages, one build.</b> Thai or English per shop — the back office, the errors and the replies its customers get. Thai is the default; nothing is translated at build time and a pack's own words still win.</li>
+          <li><b>Proof it holds.</b> Every route replayed as a second company to prove nothing leaks, and every English screen swept for a Thai character that should not be there. 598 tests.</li>
         </ul>
       </div>
       <div>
