@@ -77,8 +77,10 @@ a{color:inherit;text-decoration:none}
   .part{padding:24px clamp(16px,2vw,28px) 24px 0;border-right:1px solid var(--line)}
   .part:nth-child(even){border-right:0;padding-left:clamp(16px,2vw,28px)}
 }
+.part .logo{height:46px;display:flex;align-items:center}
+.part .logo img{width:auto;max-width:min(100%,250px);display:block}
+.part .logo img.blend{mix-blend-mode:screen}
 .part .nm{font-family:var(--disp);font-weight:900;font-size:clamp(21px,2.6vw,28px);letter-spacing:-.03em}
-.part .nm.th{font-family:var(--thai);font-weight:600;letter-spacing:0}
 .part .who{font-family:var(--mono);font-size:10px;letter-spacing:.24em;text-transform:uppercase;color:var(--red2)}
 .part p{font-size:14.5px;line-height:1.6;color:var(--cream2)}
 .part p b{color:var(--cream);font-weight:600}
@@ -158,42 +160,42 @@ a.part:hover p{color:var(--cream)}
 
     <div class="parts">
       <a class="part rv" href="https://tobtan.chat" target="_blank" rel="noopener">
-        <span class="nm th">ตอบแทน</span>
+        <span class="logo"><img src="assets/ventures/tobtan.webp" alt="ตอบแทน" style="height:42px" loading="lazy" decoding="async"></span>
         <span class="who">Your customers message all day</span>
         <p>A LINE assistant that answers them <b>in the owner's own voice</b>, at three in the morning, without inventing anything it was not told.</p>
         <span class="foot"><span class="go">tobtan.chat<i>&rarr;</i></span><span class="live">Live</span></span>
       </a>
 
       <a class="part rv d1" href="/type-o">
-        <span class="nm">TYPE O</span>
+        <span class="logo"><img src="assets/ventures/type-o.webp" alt="TYPE O" style="height:29px" loading="lazy" decoding="async"></span>
         <span class="who">The work behind the counter</span>
         <p>One back office for any trade: orders, jobs, stock, staff, money. <b>One core, one small pack per trade</b>, changed by the owner without a developer.</p>
         <span class="foot"><span class="go">Read the idea<i>&rarr;</i></span><span class="live">Live</span></span>
       </a>
 
       <a class="part rv d2" href="/plasma">
-        <span class="nm">PLASMA</span>
+        <span class="logo"><img src="assets/ventures/plasma.webp" alt="PLASMA" style="height:31px" loading="lazy" decoding="async"></span>
         <span class="who">A picture needed every day</span>
         <p>One factory that makes them: the style lives in a pack, the model is a setting, and <b>the letters are drawn by code</b> so nothing is ever misspelt.</p>
         <span class="foot"><span class="go">See how it works<i>&rarr;</i></span><span class="live">Live</span></span>
       </a>
 
       <a class="part rv d3" href="https://hordooduang.com" target="_blank" rel="noopener">
-        <span class="nm th">หอดูดวง</span>
+        <span class="logo"><img src="assets/ventures/hordooduang.webp" alt="หอดูดวง" style="height:40px" loading="lazy" decoding="async"></span>
         <span class="who">Someone curious about their chart</span>
         <p>A free birth-chart reading, and <b>a wallpaper drawn from that one chart</b> which exists exactly once and belongs to the person who asked.</p>
         <span class="foot"><span class="go">hordooduang.com<i>&rarr;</i></span><span class="live">Live</span></span>
       </a>
 
       <a class="part rv d3" href="/artery">
-        <span class="nm">ARTERY</span>
+        <span class="logo"><img src="assets/ventures/artery.webp" alt="ARTERY" style="height:25px" loading="lazy" decoding="async"></span>
         <span class="who">One brand, every channel</span>
         <p>The publishing line that carries our own brands out into the world <b>from one heart</b>, so a thing said once arrives everywhere it should.</p>
         <span class="foot"><span class="go">See the demo<i>&rarr;</i></span><span>Internal</span></span>
       </a>
 
       <div class="part rv d3">
-        <span class="nm">TRACER</span>
+        <span class="logo"><span class="nm" style="font-size:27px">TRACER</span></span>
         <span class="who">You sent it. Then silence.</span>
         <p>Proposal files that report back: <b>who opened it, how long they read, how far they got</b>, and a message the moment it happens. Sales work stops being a guess.</p>
         <span class="foot"><span>Newest</span><span>In build</span></span>
@@ -208,7 +210,7 @@ a.part:hover p{color:var(--cream)}
       <span class="label"><b>Why one brain</b></span>
       <h3 class="disp">Six products, one set of habits.</h3>
       <p>They are separate businesses on purpose, but they are not separate craftsmanship. Each one is a closed core, a pack of words per customer, a few dials the owner can turn, and a refusal list. <b>Learning one teaches you the next</b>, and a fix in the way we build reaches all of them.</p>
-      <p>The part that stays ours is the judgement underneath: what to answer, what to refuse, what to escalate to a human. That is <a href="/iris-protocol" style="color:var(--red2)">IRIS Protocol</a>, and it opens to partners before it opens to anyone else.</p>
+      <p>The part that stays ours is the judgement underneath: what to answer, what to refuse, what to escalate to a human. That is <a href="/iris-protocol" style="color:var(--red2);border-bottom:1px solid rgba(224,48,62,.4)">IRIS Protocol</a>, and it opens to partners before it opens to anyone else.</p>
     </div>
   </div>
 </section>
