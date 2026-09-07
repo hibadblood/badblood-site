@@ -157,6 +157,30 @@
       if (used === '0') items = items.filter(i => !i.post_id);
       return ok({ items });
     }
+    if (path === '/api/map') {
+      const CH = ['ig', 'fb', 'yt', 'tt'];
+      const PUB = { hor: ['ig', 'fb'], tob: ['ig', 'fb', 'tt'], rm: ['ig', 'fb', 'yt', 'tt'] };
+      const IG = { hor: '@hordooduang', tob: '@tobtan.chat', rm: '@badblood.company' };
+      const FB = { hor: 'หอดูดวง', tob: 'ตอบแทน', rm: 'Bad Blood Company' };
+      const YT = { hor: 'หอดูดวง', tob: 'Bad Blood Company (shared)', rm: 'Rule Maker' };
+      const brands = STATE.brands.map(b => {
+        const chans = {}; const gaps = [];
+        for (const c of CH) {
+          const on = (PUB[b.id] || []).includes(c);
+          const mine = posts.filter(p => p.brand_id === b.id && p.channels.includes(c));
+          const live = mine.filter(p => p.status === 'live');
+          const next = mine.filter(p => p.publish_at > nowS && (p.status === 'sched' || p.status === 'wait')).sort((x, y) => x.publish_at - y.publish_at)[0];
+          const bound = c === 'ig' ? IG[b.id] : c === 'fb' ? FB[b.id] : c === 'yt' ? YT[b.id] : '@badblood.company (one account, every brand)';
+          chans[c] = { on, bound, needs: null, out30: live.length, failed30: 0,
+            last_at: live.length ? Math.max.apply(null, live.map(p => p.publish_at)) : null,
+            next_at: next ? next.publish_at : null, hour: (b.default_hours || {})[c] || null };
+          if (on && !chans[c].out30 && !chans[c].next_at) gaps.push('Nothing out or booked on ' + c.toUpperCase());
+        }
+        if (!(b.slots || []).length) gaps.push('No standing slot, so the queue has no rhythm');
+        return { id: b.id, name: b.name, color: b.color, language: b.language, drive: true, slots: b.slots || [], publish_to: PUB[b.id] || [], channels: chans, gaps };
+      });
+      return ok({ brands: brands, at: nowS });
+    }
     return ok({});
   };
   // the demo opens Compose on a real post rather than the empty state

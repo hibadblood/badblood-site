@@ -261,3 +261,51 @@ main{padding:calc(var(--edge)*.9) var(--edge) calc(var(--edge)*2);max-width:1480
   .lrow{padding:12px}
 }
 @media(max-width:380px){.tabs button{font-size:8px;letter-spacing:0}}
+
+/* ══ the map · one brand per row, one node per channel ══ */
+.maplist{display:grid;gap:14px}
+.mapb{padding:20px}
+.mapgrid{position:relative;display:grid;grid-template-columns:minmax(190px,240px) 1fr;gap:clamp(28px,6vw,80px);align-items:center}
+.mlinks{position:absolute;inset:0;pointer-events:none;overflow:visible}
+.mlinks path{fill:none;stroke-width:2;stroke-linecap:round}
+.mlinks path.live{stroke:var(--ink)}
+.mlinks path.broken{stroke:var(--blood);stroke-dasharray:5 5}
+.mlinks path.off{stroke:var(--line);stroke-dasharray:2 6}
+.mnode{position:relative;z-index:1;background:var(--white);border:1px solid var(--line);border-radius:12px;padding:14px 16px;display:grid;gap:6px;align-content:start}
+.mnode.brand{border-color:var(--ink);gap:8px}
+.mnode.brand .disp{font-size:26px;line-height:.95}
+.mchans{display:grid;gap:10px}
+.mnode.ch{gap:5px}
+.mnode.ch.off{background:transparent;border-style:dashed;color:var(--chrome)}
+.mnode.ch.off .chb,.mnode.ch.off .mi{opacity:.55}
+.mnode.ch.broken{border-color:var(--blood-soft)}
+.chh{display:flex;align-items:center;gap:8px}
+.chh b{font-family:var(--micro);font-size:11px;letter-spacing:.18em;text-transform:uppercase;font-weight:500}
+.chh .px{width:16px;height:16px;flex:0 0 auto}
+.chb{font-size:14px;line-height:1.35;min-width:0;overflow-wrap:anywhere}
+.sw{margin-left:auto;font-family:var(--micro);font-size:9.5px;letter-spacing:.16em;text-transform:uppercase;padding:5px 11px;border-radius:999px;border:1px solid var(--line);color:var(--chrome);background:var(--white)}
+.sw[aria-pressed="true"]{background:var(--ink);border-color:var(--ink);color:#fff}
+.sw:disabled{opacity:.5}
+.gaps{margin-top:16px;padding-top:14px;border-top:1px solid var(--line2);display:grid;gap:6px}
+.gaps ul{margin:0;padding-left:18px;display:grid;gap:4px;font-size:14px;color:var(--ink2)}
+@media(max-width:820px){
+  .mapgrid{grid-template-columns:1fr;gap:12px}
+  .mlinks{display:none}
+  .mchans{padding-left:14px;border-left:2px solid var(--line)}
+  .mnode.brand .disp{font-size:22px}
+  .tabs{grid-template-columns:repeat(7,1fr)}
+  .tabs button{font-size:8px;letter-spacing:0;padding:9px 1px 8px}
+  .tabs button svg{width:19px;height:19px}
+}
+
+/* ══ safe crop · what survives when a 9:16 master is cut for a feed ══ */
+.guide{position:absolute;inset:0;display:none;pointer-events:none;font-family:var(--micro);font-size:7px;letter-spacing:.1em;color:#fff}
+.previews.guides .guide{display:block}
+.guide::before,.guide::after{content:'';position:absolute;left:0;right:0;background:rgba(200,16,46,.22)}
+.guide::before{top:0;height:15%}
+.guide::after{bottom:0;height:20%}
+.guide i{position:absolute;left:0;right:0;display:block}
+.guide .c45{top:14.84%;bottom:14.84%;border:1px dashed rgba(255,255,255,.95)}
+.guide .c11{top:21.88%;bottom:21.88%;border:1px dotted rgba(255,255,255,.6)}
+.guide .c45::after{content:'4:5';position:absolute;top:2px;left:3px;text-shadow:0 1px 2px rgba(0,0,0,.8)}
+.guide .c11::after{content:'1:1';position:absolute;bottom:2px;right:3px;opacity:.75;text-shadow:0 1px 2px rgba(0,0,0,.8)}

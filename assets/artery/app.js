@@ -332,7 +332,7 @@
     catch (e) { $('pickFiles').innerHTML = '<div class="empty">Drive is not connected. Connect it in Settings, or start without a file.</div>'; }
   }
   $('pickBrand').onchange = loadPickFiles; $('pickBack').onclick = $('pickX').onclick = () => { $('pick').hidden = true; $('pickBack').hidden = true; };
-  $('pickFiles').addEventListener('click', async e => { const f = e.target.closest('[data-file]'); if (!f) return; const { id } = await api('/api/posts', { method: 'POST', body: { brand_id: $('pickBrand').value, drive_file_id: f.dataset.file, title: f.querySelector('h4').textContent.replace(/\.[^.]+$/, ''), publish_local: pickWhen, channels: /video/.test(f.querySelector('.mi').textContent) ? ['ig', 'fb', 'yt', 'tt'] : ['ig', 'fb'] } }); $('pick').hidden = true; $('pickBack').hidden = true; location.hash = '#compose/' + id; });
+  $('pickFiles').addEventListener('click', async e => { const f = e.target.closest('[data-file]'); if (!f) return; const { id } = await api('/api/posts', { method: 'POST', body: { brand_id: $('pickBrand').value, drive_file_id: f.dataset.file, title: f.querySelector('h4').textContent.replace(/\.[^.]+$/, ''), publish_local: pickWhen, mime: /video/.test(f.querySelector('.mi').textContent) ? 'video/mp4' : 'image/jpeg' } }); $('pick').hidden = true; $('pickBack').hidden = true; location.hash = '#compose/' + id; });
   $('pickNoFile').onclick = async () => { const { id } = await api('/api/posts', { method: 'POST', body: { brand_id: $('pickBrand').value, title: 'Untitled', publish_local: pickWhen, channels: ['fb'] } }); $('pick').hidden = true; $('pickBack').hidden = true; location.hash = '#compose/' + id; };
   $('newPost').onclick = () => openPick(null);
 
@@ -374,6 +374,9 @@
       tt: () => `<div class="stage"><div class="phone"><div class="scr">${media()}<div class="topbar"><span>Following</span><span>For You</span></div><div class="rail"><i></i><i></i><i></i></div><div class="ov"><b>@${esc(b.name.toLowerCase())}</b>${esc((caps.tt && caps.tt.text) || '')}</div></div></div></div><div class="edit"><div class="field"><label>TikTok caption</label><textarea rows="3" data-cap="tt.text">${esc((caps.tt && caps.tt.text) || '')}</textarea></div><span class="mi hot">One-tap share from LINE until TikTok's audit clears</span></div>`
     };
     $('previews').innerHTML = chs.map(c => `<div class="card pv"><header><b>${sprite(c, 'px')} ${CHN[c]}</b><span class="mi">${c === 'yt' ? '16:9 or 9:16 Shorts' : c === 'fb' ? 'auto' : '9:16'}</span></header>${block[c]()}<footer><span class="st ${(caps[c] && (caps[c].text || caps[c].title)) ? 'sched' : 'draft'}">${(caps[c] && (caps[c].text || caps[c].title)) ? 'Ready' : 'Needs a caption'}</span></footer></div>`).join('');
+    if (store.get('guides', '0') === '1') $('previews').classList.add('guides');
+    [].forEach.call($('previews').querySelectorAll('.phone .scr'), s => s.insertAdjacentHTML('beforeend',
+      '<div class="guide"><i class="c45"></i><i class="c11"></i></div>'));
   }
   async function save(quiet) {
     const body = { title: $('fTitle').value, master_caption: $('fMaster').value, captions: capsFromForm(), channels: channelsFromForm(), publish_local: $('fWhen').value || null };
@@ -404,7 +407,7 @@
       const b = brandOf(a.brand_id); const vid = /^video/.test(a.mime || '');
       const dur = a.duration_ms ? `${Math.floor(a.duration_ms / 60000)}:${pad(Math.round(a.duration_ms % 60000 / 1000))}` : '';
       const layers = [a.thumb, a.thumb_url].filter(Boolean).map(u => `url('${esc(u)}')`).join(','); const src = layers; const thumb = layers ? `style="background-image:${layers}"` : '';
-      return `<button class="lib${a.post_id ? '' : ' unused'}" data-asset="${a.id}" data-brand="${a.brand_id}" data-post="${a.post_id || ''}">
+      return `<button class="lib${a.post_id ? '' : ' unused'}" data-asset="${a.id}" data-brand="${a.brand_id}" data-mime="${esc(a.mime || '')}" data-post="${a.post_id || ''}">
         <span class="libthumb ${src ? '' : 'brand ' + a.brand_id}" ${thumb}>${src ? '' : `<span class="disp">${esc(b.name.slice(0, 10))}</span>`}${dur ? `<span class="dur">${dur}</span>` : ''}${vid ? '<span class="vid"></span>' : ''}</span>
         <span class="libt"><b>${esc(a.name)}</b><span class="mi">${esc(b.name)} · ${a.size ? (a.size / 1048576).toFixed(1) + ' MB' : ''}</span>
         ${a.post_id ? `<span class="st ${a.post_status}">${STN[a.post_status] || a.post_status}</span>` : '<span class="st hot">Never used</span>'}</span></button>`;
@@ -414,7 +417,7 @@
   $('libGrid').addEventListener('click', async e => {
     const b = e.target.closest('[data-asset]'); if (!b) return;
     if (b.dataset.post) return void (location.hash = '#compose/' + b.dataset.post);
-    const { id } = await api('/api/posts', { method: 'POST', body: { brand_id: b.dataset.brand, asset_id: b.dataset.asset, title: b.querySelector('b').textContent.replace(/\.[^.]+$/, ''), channels: ['ig', 'fb'] } });
+    const { id } = await api('/api/posts', { method: 'POST', body: { brand_id: b.dataset.brand, asset_id: b.dataset.asset, title: b.querySelector('b').textContent.replace(/\.[^.]+$/, ''), mime: b.dataset.mime || '' } });
     toast('New draft'); await refresh(); location.hash = '#compose/' + id;
   });
   $('libSeg').addEventListener('click', e => { const b = e.target.closest('button[data-u]'); if (!b) return; libUsed = b.dataset.u; [].forEach.call($('libSeg').children, x => x.setAttribute('aria-pressed', String(x === b))); loadLibrary(); });
@@ -505,20 +508,98 @@
     toast('Unbound'); S = await api('/api/state'); renderSettings();
   });
   $('bChecklist').onclick = () => { store.set('checklistDone', '0'); renderChecklist(); location.hash = '#queue'; };
+  $('bGuides').onclick = () => {
+    const on = !$('previews').classList.contains('guides');
+    $('previews').classList.toggle('guides', on); $('bGuides').setAttribute('aria-pressed', String(on));
+    store.set('guides', on ? '1' : '0');
+    toast(on ? 'Keep faces and words inside the 4:5 box' : 'Guides off');
+  };
   $('barMore').onclick = () => { const bar = $('barMore').closest('.bar'); bar.classList.toggle('open'); $('barMore').textContent = bar.classList.contains('open') ? 'Fewer' : 'More'; };
   $('bLineTest').onclick = async () => { const r = await api('/api/line/test', { method: 'POST' }); toast(r.ok ? 'Sent to LINE' : 'LINE not configured'); };
 
+
+  /* ── the map: where each brand publishes, and what is missing ── */
+  let mapData = null;
+  const DOW = ['Sun', 'Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat'];
+  const ago = u => { if (!u) return 'never'; const l = localParts(u); return `${l.d} ${monthName(l.m).slice(0, 3)}`; };
+  async function loadMap() {
+    mapData = await api('/api/map');
+    const t = localNow();
+    $('mapAt').textContent = `${t.d} ${monthName(t.m)} · Bangkok`;
+    $('mapList').innerHTML = mapData.brands.map(b => {
+      const nodes = ['ig', 'fb', 'yt', 'tt'].map(c => {
+        const x = b.channels[c];
+        const state = !x.on ? 'off' : (x.needs ? 'broken' : 'live');
+        const when = x.next_at ? (() => { const l = localParts(x.next_at); return `next ${l.d} ${monthName(l.m).slice(0, 3)} ${pad(l.h)}:${pad(l.min)}`; })() : (x.hour ? 'usual hour ' + x.hour : 'no time set');
+        return `<div class="mnode ch ${state}" id="n-${b.id}-${c}">
+          <div class="chh">${sprite(c, 'px')}<b>${CHN[c]}</b><button class="sw" data-ch="${b.id}:${c}" aria-pressed="${x.on}">${x.on ? 'On' : 'Off'}</button></div>
+          <div class="chb">${x.bound ? esc(x.bound) : `<span class="mi hot">${esc(x.needs || 'not connected')}</span>`}</div>
+          <div class="mi">${x.out30} out · 30 days${x.failed30 ? ` · <span class="hot">${x.failed30} failed</span>` : ''}</div>
+          <div class="mi">last ${ago(x.last_at)} · ${esc(when)}</div>
+        </div>`;
+      }).join('');
+      const slots = (b.slots || []).length ? b.slots.map(s => `${DOW[s.dow]} ${s.time}`).join(' · ') : 'no standing slot';
+      return `<div class="card mapb" data-brand="${b.id}" style="--dot:${b.color}">
+        <div class="mapgrid">
+          <div class="mnode brand" id="n-${b.id}">
+            <span class="tag">${b.language === 'th' ? 'Thai' : 'English'}</span>
+            <b class="disp">${esc(b.name)}</b>
+            <span class="mi">${b.drive ? 'Drive folder set' : '<span class="hot">no Drive folder</span>'}</span>
+            <span class="mi">${esc(slots)}</span>
+            <span class="mi">${b.publish_to.length} channel${b.publish_to.length === 1 ? '' : 's'} on</span>
+          </div>
+          <div class="mchans">${nodes}</div>
+          <svg class="mlinks" aria-hidden="true"></svg>
+        </div>
+        ${b.gaps.length ? `<div class="gaps"><span class="mi hot">Missing</span><ul>${b.gaps.map(g => `<li>${esc(g)}</li>`).join('')}</ul></div>` : '<div class="gaps ok"><span class="mi ok">Nothing missing</span></div>'}
+      </div>`;
+    }).join('') || '<div class="card"><div class="empty">No brands yet.</div></div>';
+    requestAnimationFrame(drawLinks);
+  }
+  function drawLinks() {
+    if (!mapData || $('map').hidden) return;
+    for (const b of mapData.brands) {
+      const wrap = $('mapList').querySelector(`[data-brand="${b.id}"] .mapgrid`);
+      const svg = wrap && wrap.querySelector('.mlinks'); const from = $('n-' + b.id);
+      if (!svg || !from || getComputedStyle(svg).display === 'none') continue;
+      const box = wrap.getBoundingClientRect(), a = from.getBoundingClientRect();
+      svg.setAttribute('viewBox', `0 0 ${box.width} ${box.height}`);
+      svg.setAttribute('width', box.width); svg.setAttribute('height', box.height);
+      const x1 = a.right - box.left, y1 = a.top + a.height / 2 - box.top;
+      svg.innerHTML = ['ig', 'fb', 'yt', 'tt'].map(c => {
+        const el = $(`n-${b.id}-${c}`); if (!el) return '';
+        const r = el.getBoundingClientRect();
+        const x2 = r.left - box.left, y2 = r.top + r.height / 2 - box.top, dx = Math.max(24, (x2 - x1) / 2);
+        const x = b.channels[c];
+        const cls = !x.on ? 'off' : (x.needs ? 'broken' : 'live');
+        return `<path class="${cls}" d="M${x1} ${y1} C${x1 + dx} ${y1}, ${x2 - dx} ${y2}, ${x2} ${y2}"${cls === 'live' ? ` style="stroke:${b.color}"` : ''}/>`;
+      }).join('');
+    }
+  }
+  $('mapList').addEventListener('click', async e => {
+    const sw = e.target.closest('.sw'); if (!sw) return;
+    const [bid, ch] = sw.dataset.ch.split(':');
+    const b = mapData.brands.find(x => x.id === bid); if (!b) return;
+    const on = !b.publish_to.includes(ch);
+    const next = on ? b.publish_to.concat(ch) : b.publish_to.filter(c => c !== ch);
+    sw.disabled = true;
+    try { await api('/api/brands/' + bid, { method: 'PUT', body: { publish_to: next } }); toast(on ? CHN[ch] + ' on for ' + b.name : CHN[ch] + ' off for ' + b.name); await loadMap(); S = await api('/api/state'); }
+    finally { sw.disabled = false; }
+  });
+  $('mapRefresh').onclick = () => loadMap();
+  addEventListener('resize', () => { clearTimeout(drawLinks._t); drawLinks._t = setTimeout(drawLinks, 120); });
+
   /* ── routing ── */
   const tabs = [].slice.call(document.querySelectorAll('.tabs [role=tab]'));
-  const TABSPR = { queue: 'schedule', compose: 'draft', library: 'cut', inbox: 'tobtan', pulse: 'iris', settings: 'fetch' };
+  const TABSPR = { queue: 'schedule', compose: 'draft', library: 'cut', inbox: 'tobtan', pulse: 'iris', map: 'post', settings: 'fetch' };
   tabs.forEach(t => t.insertAdjacentHTML('afterbegin', sprite(TABSPR[t.dataset.t], 'tabpx')));
-  function show(id) { tabs.forEach(t => t.setAttribute('aria-selected', String(t.dataset.t === id))); ['queue', 'compose', 'library', 'inbox', 'pulse', 'settings'].forEach(k => $(k).hidden = k !== id); }
+  function show(id) { tabs.forEach(t => t.setAttribute('aria-selected', String(t.dataset.t === id))); ['queue', 'compose', 'library', 'inbox', 'pulse', 'map', 'settings'].forEach(k => $(k).hidden = k !== id); }
   function route() {
     const h = (location.hash || '#queue').slice(1); const [tab, arg] = h.split('/');
-    if (!['queue', 'compose', 'library', 'inbox', 'pulse', 'settings'].includes(tab)) return show('queue');
+    if (!['queue', 'compose', 'library', 'inbox', 'pulse', 'map', 'settings'].includes(tab)) return show('queue');
     show(tab);
     if (tab === 'compose' && arg) loadCompose(arg); else if (tab === 'compose' && !cur) { $('cEmpty').hidden = false; $('cForm').hidden = true; }
-    if (tab === 'library') loadLibrary(); if (tab === 'inbox') loadInbox(); if (tab === 'pulse') loadPulse(); if (tab === 'settings') { renderSettings(); }
+    if (tab === 'library') loadLibrary(); if (tab === 'inbox') loadInbox(); if (tab === 'pulse') loadPulse(); if (tab === 'map') loadMap(); if (tab === 'settings') { renderSettings(); }
     if (tab === 'queue') refresh();
   }
   tabs.forEach(t => t.addEventListener('click', () => { location.hash = '#' + t.dataset.t + (t.dataset.t === 'compose' && cur ? '/' + cur.id : ''); }));

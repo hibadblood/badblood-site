@@ -33,6 +33,7 @@
     <button role="tab" data-t="library" aria-selected="false">Library<span class="n" id="nUnused" hidden></span></button>
     <button role="tab" data-t="inbox" aria-selected="false">Inbox<span class="n" id="nOpen" hidden></span></button>
     <button role="tab" data-t="pulse" aria-selected="false">Pulse</button>
+    <button role="tab" data-t="map" aria-selected="false">Map</button>
     <button role="tab" data-t="settings" aria-selected="false">Settings</button>
   </nav>
 </header>
@@ -80,7 +81,7 @@
       <div class="field"><label>Master caption · the one you write</label><textarea id="fMaster" rows="3" placeholder="What needs to be said. The crew adapts it per channel."></textarea></div>
       <div class="field"><label>Channels</label><div class="checks" id="fChannels"></div></div>
       <div class="field"><label>Publish · Bangkok</label><input id="fWhen" type="datetime-local"><span style="font-size:13px;color:var(--ink2)" id="fBest"></span></div>
-      <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="act quiet small" id="bRedraft">Redraft with the crew</button><button class="act quiet small" id="bSave">Save</button></div>
+      <div style="display:flex;gap:8px;flex-wrap:wrap"><button class="act quiet small" id="bRedraft">Redraft with the crew</button><button class="act quiet small" id="bSave">Save</button><button class="act quiet small" id="bGuides" aria-pressed="false">Safe crop</button></div>
     </div>
     <div class="previews" id="previews"></div>
   </div>
@@ -110,6 +111,13 @@
   <div class="tiles" id="tiles"></div>
   <div class="charts" id="charts"></div>
   <div class="card" style="padding:16px 18px;overflow:auto"><span class="mi">Top posts</span><table class="table" id="topTable"></table></div>
+</section>
+
+<section class="screen" id="map" hidden>
+  <div class="head"><div><span class="mi" id="mapMi">Every brand · every channel</span><h2 class="disp">Who feeds<br>what.</h2></div>
+    <div style="display:flex;gap:10px;flex-wrap:wrap;align-items:center"><span class="mi" id="mapAt"></span><button class="act quiet small" id="mapRefresh">Redraw</button></div></div>
+  <div id="mapList" class="maplist"></div>
+  <p class="note"><b>What this is.</b> One line per brand, one node per channel. A solid line is a channel this brand publishes to and that is wired up. A red line is switched on but not connected yet, so nothing can go out. A faint line is switched off on purpose. Turning a channel on here changes what new posts start with, nothing that is already scheduled.</p>
 </section>
 
 <section class="screen" id="settings" hidden>
