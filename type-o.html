@@ -8,7 +8,7 @@
 <meta name="description" content="Every business is different. Almost none of the differences are software. One core, one pack per trade, and the layers that absorb the rest.">
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;800;900&family=IBM+Plex+Mono:wght@400;500&family=Newsreader:ital,opsz,wght@0,6..72,300;1,6..72,300&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;800;900&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Thai:wght@400;600&family=Newsreader:ital,opsz,wght@0,6..72,300;1,6..72,300&display=swap" rel="stylesheet">
 <style>
 :root{
   --night:#050505;--panel:#0C0C0C;
@@ -184,6 +184,43 @@ tr:last-child td{border-bottom:0}
 .shot figcaption{font-size:13px;line-height:1.55;color:var(--cream2)}
 .shot figcaption b{color:var(--cream);font-weight:600}
 .shot figcaption .t{display:block;font-family:var(--mono);font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:var(--grey);margin-bottom:5px}
+/* the toy */
+.demo{margin-top:clamp(30px,4vw,46px);border:1px solid var(--line2);border-radius:6px;background:var(--panel);overflow:hidden}
+.demo .bar{display:flex;flex-wrap:wrap;gap:10px 16px;align-items:center;justify-content:space-between;padding:12px 16px;border-bottom:1px solid var(--line);background:#0A0A0A}
+.demo .bar .tag{font-family:var(--mono);font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:var(--warn)}
+.demo .bar .tag i{font-style:normal;color:var(--grey)}
+.demo .tabs{display:flex;gap:2px}
+.demo .tabs button{font-family:var(--mono);font-size:10px;letter-spacing:.18em;text-transform:uppercase;color:var(--grey);background:none;border:1px solid transparent;border-radius:2px;padding:7px 11px;cursor:pointer}
+.demo .tabs button[aria-selected="true"]{color:var(--cream);border-color:var(--line2);background:#141414}
+.demo .view{padding:clamp(14px,2.2vw,22px);min-height:330px}
+.demo .hint{font-size:12.5px;line-height:1.55;color:var(--grey);margin-bottom:14px}
+.demo .hint b{color:var(--red2);font-weight:600}
+.dstats{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px}
+@media(max-width:640px){.dstats{grid-template-columns:1fr 1fr}}
+.dstat{border:1px solid var(--line);border-radius:3px;padding:12px 13px;min-width:0}
+.dstat span{display:block;font-family:var(--mono);font-size:9px;letter-spacing:.18em;text-transform:uppercase;color:var(--grey);margin-bottom:6px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+.dstat b{font-family:var(--disp);font-weight:900;font-size:clamp(20px,2.6vw,27px);letter-spacing:-.03em}
+.dtodo{margin-top:14px;border-top:1px solid var(--line)}
+.dtodo div{display:flex;gap:10px;align-items:baseline;padding:10px 0;border-bottom:1px solid var(--line);font-size:13.5px;color:var(--cream2)}
+.dtodo i{font-style:normal;width:7px;height:7px;border-radius:1px;flex:none;transform:translateY(-1px)}
+.dboard{display:flex;gap:10px;overflow-x:auto;padding-bottom:6px;-webkit-overflow-scrolling:touch}
+.dcol{flex:0 0 200px;border:1px solid var(--line);border-radius:3px;padding:10px;min-width:0}
+.dcol h5{display:flex;justify-content:space-between;font-family:var(--mono);font-size:9px;letter-spacing:.16em;text-transform:uppercase;color:var(--grey);font-weight:400;margin-bottom:9px}
+.dcard{width:100%;text-align:left;background:#141414;border:1px solid var(--line);border-radius:3px;padding:9px 10px;margin-bottom:7px;cursor:pointer;color:inherit;font:inherit;transition:border-color .2s,transform .2s}
+.dcard:hover{border-color:var(--red2);transform:translateX(2px)}
+.dcard .id{font-family:var(--mono);font-size:9px;letter-spacing:.1em;color:var(--faint);display:block}
+.dcard .car{display:block;font-size:12.5px;font-weight:600;margin:3px 0;line-height:1.35}
+.dcard .who{font-family:var(--mono);font-size:9.5px;color:var(--grey)}
+.dcard .go{float:right;color:var(--red2)}
+.dctl{display:grid;gap:16px;max-width:460px}
+.dctl label{display:block;font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;text-transform:uppercase;color:var(--grey);margin-bottom:7px}
+.dctl input{width:100%;background:#141414;border:1px solid var(--line2);border-radius:3px;color:var(--cream);font-family:var(--disp);font-size:15px;padding:11px 12px}
+.dctl input:focus{outline:none;border-color:var(--red2)}
+.dctl .seg{display:flex;gap:2px}
+.dctl .seg button{flex:1;font-family:var(--mono);font-size:11px;letter-spacing:.16em;text-transform:uppercase;color:var(--grey);background:#141414;border:1px solid var(--line2);border-radius:3px;padding:10px;cursor:pointer}
+.dctl .seg button[aria-pressed="true"]{color:var(--cream);border-color:var(--red2);background:#1B1010}
+.dctl .note{font-size:12.5px;line-height:1.6;color:var(--grey)}
+.th{font-family:"IBM Plex Sans Thai",var(--disp)}
 /* facts */
 .facts{display:grid;grid-template-columns:1fr 1fr;gap:0 36px}
 @media(max-width:700px){.facts{grid-template-columns:1fr}}
@@ -332,6 +369,19 @@ tr:last-child td{border-bottom:0}
       </figure>
     </div>
     <p class="label rv d2" style="margin-top:18px;letter-spacing:.12em;line-height:1.9">Real screens from the running system, unedited. The tenant is a demo vehicle-repair workshop on the second pack, set to English; a Thai shop sees the same screens in Thai, because the language is a setting and not a build.</p>
+    <div class="demo rv d3" id="demo">
+      <div class="bar">
+        <span class="tag">Demo <i>· made-up shop, made-up numbers, nothing real behind it</i></span>
+        <div class="tabs" role="tablist">
+          <button role="tab" data-view="home" aria-selected="true"></button>
+          <button role="tab" data-view="board" aria-selected="false"></button>
+          <button role="tab" data-view="dials" aria-selected="false"></button>
+        </div>
+      </div>
+      <div class="view" id="demoView"></div>
+    </div>
+    <p class="label rv d3" style="margin-top:13px;letter-spacing:.12em;line-height:1.9">Push a job forward, rename the thing the shop sells, switch the language. Three clicks is the whole argument: the machine underneath never changed.</p>
+
   </div>
 </section>
 
@@ -459,6 +509,108 @@ tr:last-child td{border-bottom:0}
     }, { rootMargin:'0px 0px -12% 0px', threshold:0.12 });
     for(var j = 0; j < items.length; j++){ io.observe(items[j]); }
   }
+})();
+</script>
+
+<script>
+(function(){
+  var view = document.getElementById('demoView'), demo = document.getElementById('demo');
+  if(!view || !demo) return;
+
+  var STATES = ['intake','accepted','bay','ready','collected'];
+  var W = {
+    en: { unit:'Repair job', tabs:{home:'Overview',board:'Job board',dials:'Settings'},
+      st:{intake:'Intake',accepted:'Accepted',bay:'In the bay',ready:'Ready',collected:'Collected'},
+      stat:{open:'In the bay',month:'Closed this month',owed:'Owed to you',margin:'Margin per job'},
+      todo:'Needs you today',
+      todos:['Battery 12V 65Ah is out of stock','One account is overdue'],
+      hintBoard:'Click any card to push that job to its next state.',
+      hintHome:'The four numbers a workshop owner actually asks for.',
+      hintDials:'Two of the nine dials. Change either one and every screen follows.',
+      word:'Call one job a…', lang:'Language',
+      note:'Nothing was rebuilt. The words are data; the states, the money and the rules underneath are the same core a clinic or a courier would run.' },
+    th: { unit:'ใบงานซ่อม', tabs:{home:'ภาพรวม',board:'กระดานงาน',dials:'ตั้งค่า'},
+      st:{intake:'รับรถเข้า',accepted:'ลูกค้าตกลง',bay:'กำลังซ่อม',ready:'พร้อมส่งมอบ',collected:'รับรถแล้ว'},
+      stat:{open:'รถอยู่ในอู่',month:'งานปิดแล้วเดือนนี้',owed:'ยอดค้างชำระ',margin:'กำไรเฉลี่ยต่องาน'},
+      todo:'สิ่งที่ต้องทำวันนี้',
+      todos:['แบตเตอรี่ 12V 65Ah หมดสต็อก','ลูกหนี้เกินกำหนด 1 ราย'],
+      hintBoard:'กดใบงานเพื่อดันไปสถานะถัดไป',
+      hintHome:'ตัวเลขสี่ตัวที่เจ้าของอู่ถามจริงๆ',
+      hintDials:'สองในเก้าปุ่มที่เจ้าของปรับเองได้ เปลี่ยนแล้วทุกหน้าจอเปลี่ยนตาม',
+      word:'เรียกงานหนึ่งชิ้นว่า', lang:'ภาษา',
+      note:'ไม่มีการสร้างระบบใหม่ คำเรียกคือข้อมูล ส่วนสถานะ เงิน และกฎข้างใต้คือแกนเดียวกับที่คลินิกหรือบริษัทขนส่งใช้' }
+  };
+  var S = { lang:'en', view:'home', unit:null, jobs:[
+    { id:'JOB-260905-07', car:'Toyota Fortuner 2018', plate:'3KX 4040', who:'Mr Boss',  m:'',            baht:0,    st:0 },
+    { id:'JOB-260905-04', car:'Toyota Altis 2014',    plate:'KP 1199',  who:'Mr Jay',   m:'',            baht:3350, st:1 },
+    { id:'JOB-260905-03', car:'Nissan Almera 2020',   plate:'7KH 3310', who:'Ms Ann',   m:'Bank',        baht:1800, st:2 },
+    { id:'JOB-260905-02', car:'Isuzu D-Max 2021',     plate:'2TD 5560', who:'Siam Log.',m:'Nok',         baht:2450, st:2 },
+    { id:'JOB-260905-01', car:'Honda Jazz 2015',      plate:'SL 9012',  who:'Mr Ton',   m:'Bank',        baht:1950, st:3 },
+    { id:'JOB-260904-02', car:'Toyota Yaris 2019',    plate:'1KC 4455', who:'Ms Fon',   m:'Bank',        baht:3200, st:4 }
+  ]};
+  var esc = function(t){ var d=document.createElement('div'); d.textContent=t; return d.innerHTML; };
+  var money = function(n){ return '฿' + n.toLocaleString('en-US'); };
+  var w = function(){ return W[S.lang]; };
+  var unit = function(){ return S.unit !== null && S.unit !== '' ? S.unit : w().unit; };
+  var thai = function(){ return S.lang === 'th' ? ' class="th"' : ''; };
+
+  function home(){
+    var t=w(), inBay=S.jobs.filter(function(j){return j.st===2;}).length;
+    var done=S.jobs.filter(function(j){return j.st===4;}).length;
+    var owed=S.jobs.filter(function(j){return j.st>=1&&j.st<4;}).reduce(function(a,j){return a+j.baht;},0);
+    return '<p class="hint"'+thai()+'>'+esc(t.hintHome)+'</p><div class="dstats">'
+      + '<div class="dstat"><span>'+esc(t.stat.open)+'</span><b>'+inBay+'</b></div>'
+      + '<div class="dstat"><span>'+esc(t.stat.month)+'</span><b>'+done+'</b></div>'
+      + '<div class="dstat"><span>'+esc(t.stat.owed)+'</span><b>'+money(owed)+'</b></div>'
+      + '<div class="dstat"><span>'+esc(t.stat.margin)+'</span><b>42.9%</b></div></div>'
+      + '<div class="dtodo"><div><i style="background:var(--warn)"></i>'+esc(t.todos[0])+'</div>'
+      + '<div><i style="background:var(--red2)"></i>'+esc(t.todos[1])+'</div></div>';
+  }
+  function board(){
+    var t=w(), out='<p class="hint"'+thai()+'>'+esc(t.hintBoard)+'</p><div class="dboard">';
+    STATES.forEach(function(key, si){
+      var here=S.jobs.filter(function(j){ return j.st===si; });
+      out += '<div class="dcol"><h5><span>'+esc(t.st[key])+'</span><span>'+here.length+'</span></h5>';
+      here.forEach(function(j){
+        var idx=S.jobs.indexOf(j);
+        out += '<button class="dcard" data-job="'+idx+'">'
+             + '<span class="id">'+esc(j.id)+(si<4?'<span class="go">→</span>':'')+'</span>'
+             + '<span class="car">'+esc(unit())+' · '+esc(j.car)+' · '+esc(j.plate)+'</span>'
+             + '<span class="who">'+esc(j.who)+(j.m?' · '+esc(j.m):'')+(j.baht?' · '+money(j.baht):'')+'</span></button>';
+      });
+      out += '</div>';
+    });
+    return out+'</div>';
+  }
+  function dials(){
+    var t=w();
+    return '<p class="hint"'+thai()+'>'+esc(t.hintDials)+'</p><div class="dctl">'
+      + '<div><label>'+esc(t.word)+'</label><input id="dUnit" value="'+esc(unit())+'" maxlength="28" spellcheck="false"></div>'
+      + '<div><label>'+esc(t.lang)+'</label><div class="seg">'
+      + '<button data-lang="th" aria-pressed="'+(S.lang==='th')+'">ไทย</button>'
+      + '<button data-lang="en" aria-pressed="'+(S.lang==='en')+'">English</button></div></div>'
+      + '<p class="note"'+thai()+'>'+esc(t.note)+'</p></div>';
+  }
+  function render(){
+    var t=w();
+    demo.querySelectorAll('.tabs button').forEach(function(b){
+      b.textContent = t.tabs[b.dataset.view];
+      b.setAttribute('aria-selected', String(b.dataset.view === S.view));
+      b.className = S.lang === 'th' ? 'th' : '';
+    });
+    view.innerHTML = S.view === 'home' ? home() : S.view === 'board' ? board() : dials();
+  }
+  demo.addEventListener('click', function(e){
+    var tab=e.target.closest('.tabs button'); if(tab){ S.view=tab.dataset.view; return render(); }
+    var card=e.target.closest('.dcard');
+    if(card){ var j=S.jobs[+card.dataset.job]; if(j && j.st<4){ j.st++; render(); } return; }
+    var lang=e.target.closest('[data-lang]');
+    if(lang){ S.lang=lang.dataset.lang; if(S.unit==='' ) S.unit=null; return render(); }
+  });
+  demo.addEventListener('input', function(e){
+    if(e.target.id==='dUnit'){ S.unit=e.target.value; }
+  });
+  render();
 })();
 </script>
 </body>
