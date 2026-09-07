@@ -7,8 +7,7 @@
 <meta name="apple-mobile-web-app-title" content="Artery">
 <meta name="apple-mobile-web-app-status-bar-style" content="default"><title>ARTERY — Demo</title>
 <meta name="description" content="A look inside ARTERY, the private publishing hub Bad Blood built for its own brands. Sample data, read only."><meta name="robots" content="noindex">
-<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Space+Grotesk:wght@400;500&display=swap"><link rel="stylesheet" href="/assets/artery/app.css">
-<style>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Space+Grotesk:wght@400;500&display=swap"><link rel="stylesheet" href="/assets/artery/app.css"><style>
 .demo-strip{display:flex;align-items:center;gap:clamp(14px,3vw,32px);flex-wrap:wrap;padding:14px var(--edge);background:var(--ink);color:#fff}
 .demo-strip img{height:14px;width:auto;display:block}
 .demo-strip p{margin:0;font-size:13px;line-height:1.5;color:#B9BBBE;max-width:78ch}
@@ -87,14 +86,14 @@
   </div>
   <div class="bar">
     <span id="cHint">Approval goes to your LINE with all previews. Nothing goes live without you.</span>
-    <div style="display:flex;gap:10px;flex-wrap:wrap"><button class="act quiet small danger" id="bDelete">Delete</button><button class="act quiet small" id="bDuplicate">Duplicate</button><button class="act quiet small" id="bHold">Hold as draft</button><button class="act quiet small" id="bNow">Publish now</button><button class="act quiet small" id="bApprove">Approve &amp; schedule</button><button class="act" id="bLine">Send to LINE for approval →</button></div>
+    <div class="barrow"><button class="act quiet small danger sec" id="bDelete">Delete</button><button class="act quiet small sec" id="bDuplicate">Duplicate</button><button class="act quiet small sec" id="bHold">Hold as draft</button><button class="act quiet small sec" id="bNow">Publish now</button><button class="act quiet small" id="barMore">More</button><button class="act quiet small" id="bApprove">Approve &amp; schedule</button><button class="act" id="bLine">Send to LINE for approval →</button></div>
   </div>
   </div>
 </section>
 
 <section class="screen" id="library" hidden>
   <div class="head"><div><span class="mi" id="libMi">Everything in the folders</span><h2 class="disp">What we have.<br>What we used.</h2></div>
-    <div class="seg" id="libSeg"><button data-u="" aria-pressed="true">All</button><button data-u="0" aria-pressed="false">Unused</button><button data-u="1" aria-pressed="false">Used</button></div></div>
+    <div class="libtools"><input id="libQ" type="search" placeholder="Search files" aria-label="Search files"><div class="seg" id="libSeg"><button data-u="" aria-pressed="true">All</button><button data-u="0" aria-pressed="false">Unused</button><button data-u="1" aria-pressed="false">Used</button></div></div></div>
   <div class="libgrid" id="libGrid"></div>
 </section>
 

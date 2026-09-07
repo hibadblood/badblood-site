@@ -31,7 +31,7 @@
 
   /* ── state ── */
   let S = null, brandFilter = 'all', posts = [], cur = null, month = null, inboxStatus = 'open', pulseDays = 7;
-  let view = null, libUsed = '', selected = new Set(), openDayN = null;
+  let view = null, libUsed = '', selected = new Set(), openDayN = null, libItems = [], libQ = '', lastRefresh = 0;
   const store = { get(k, d) { try { return localStorage.getItem('artery.' + k) ?? d; } catch { return d; } }, set(k, v) { try { localStorage.setItem('artery.' + k, v); } catch {} } };
   const off = () => (S && S.tz_offset_min) || 420;
   const localNow = () => { const d = new Date(Date.now() + off() * 60000); return { y: d.getUTCFullYear(), m: d.getUTCMonth() + 1, d: d.getUTCDate() }; };
@@ -298,7 +298,7 @@
     $('approveAll').hidden = !S.counts.waiting; $('approveAll').textContent = `Approve all waiting (${S.counts.waiting})`;
     $('queueAll').hidden = !S.counts.drafts; $('queueAll').textContent = `Put ${S.counts.drafts} draft${S.counts.drafts === 1 ? '' : 's'} in the queue`;
   }
-  async function refresh() { S = await api('/api/state'); badges(); renderCrew(); renderChecklist(); await loadMonth(); }
+  async function refresh() { lastRefresh = Date.now(); S = await api('/api/state'); badges(); renderCrew(); renderChecklist(); await loadMonth(); }
 
   /* ── first run: the five things that have to be true ── */
   function renderChecklist() {
@@ -391,8 +391,15 @@
   /* ── library ── */
   async function loadLibrary() {
     const q = `/api/library?${brandFilter === 'all' ? '' : 'brand=' + brandFilter + '&'}${libUsed === '' ? '' : 'used=' + libUsed}`;
-    const { items } = await api(q);
-    $('libMi').textContent = `${items.length} file${items.length === 1 ? '' : 's'}${brandFilter === 'all' ? ' in every folder' : ' · ' + brandOf(brandFilter).name}`;
+    libItems = (await api(q)).items || [];
+    renderLib();
+  }
+  function renderLib() {
+    const needle = libQ.trim().toLowerCase();
+    const items = needle ? libItems.filter(a => (a.name || '').toLowerCase().includes(needle)) : libItems;
+    $('libMi').textContent = needle
+      ? `${items.length} of ${libItems.length} file${libItems.length === 1 ? '' : 's'} match “${libQ.trim()}”`
+      : `${items.length} file${items.length === 1 ? '' : 's'}${brandFilter === 'all' ? ' in every folder' : ' · ' + brandOf(brandFilter).name}`;
     $('libGrid').innerHTML = items.length ? items.map(a => {
       const b = brandOf(a.brand_id); const vid = /^video/.test(a.mime || '');
       const dur = a.duration_ms ? `${Math.floor(a.duration_ms / 60000)}:${pad(Math.round(a.duration_ms % 60000 / 1000))}` : '';
@@ -401,8 +408,9 @@
         <span class="libthumb ${src ? '' : 'brand ' + a.brand_id}" ${thumb}>${src ? '' : `<span class="disp">${esc(b.name.slice(0, 10))}</span>`}${dur ? `<span class="dur">${dur}</span>` : ''}${vid ? '<span class="vid"></span>' : ''}</span>
         <span class="libt"><b>${esc(a.name)}</b><span class="mi">${esc(b.name)} · ${a.size ? (a.size / 1048576).toFixed(1) + ' MB' : ''}</span>
         ${a.post_id ? `<span class="st ${a.post_status}">${STN[a.post_status] || a.post_status}</span>` : '<span class="st hot">Never used</span>'}</span></button>`;
-    }).join('') : '<div class="card"><div class="empty">Nothing here yet. Connect Google and give each brand a Drive folder.</div></div>';
+    }).join('') : `<div class="card"><div class="empty">${needle ? 'No file matches that name.' : 'Nothing here yet. Connect Google and give each brand a Drive folder.'}</div></div>`;
   }
+  $('libQ').addEventListener('input', () => { libQ = $('libQ').value; clearTimeout($('libQ')._t); $('libQ')._t = setTimeout(renderLib, 120); });
   $('libGrid').addEventListener('click', async e => {
     const b = e.target.closest('[data-asset]'); if (!b) return;
     if (b.dataset.post) return void (location.hash = '#compose/' + b.dataset.post);
@@ -497,10 +505,13 @@
     toast('Unbound'); S = await api('/api/state'); renderSettings();
   });
   $('bChecklist').onclick = () => { store.set('checklistDone', '0'); renderChecklist(); location.hash = '#queue'; };
+  $('barMore').onclick = () => { const bar = $('barMore').closest('.bar'); bar.classList.toggle('open'); $('barMore').textContent = bar.classList.contains('open') ? 'Fewer' : 'More'; };
   $('bLineTest').onclick = async () => { const r = await api('/api/line/test', { method: 'POST' }); toast(r.ok ? 'Sent to LINE' : 'LINE not configured'); };
 
   /* ── routing ── */
   const tabs = [].slice.call(document.querySelectorAll('.tabs [role=tab]'));
+  const TABSPR = { queue: 'schedule', compose: 'draft', library: 'cut', inbox: 'tobtan', pulse: 'iris', settings: 'fetch' };
+  tabs.forEach(t => t.insertAdjacentHTML('afterbegin', sprite(TABSPR[t.dataset.t], 'tabpx')));
   function show(id) { tabs.forEach(t => t.setAttribute('aria-selected', String(t.dataset.t === id))); ['queue', 'compose', 'library', 'inbox', 'pulse', 'settings'].forEach(k => $(k).hidden = k !== id); }
   function route() {
     const h = (location.hash || '#queue').slice(1); const [tab, arg] = h.split('/');
@@ -512,6 +523,10 @@
   }
   tabs.forEach(t => t.addEventListener('click', () => { location.hash = '#' + t.dataset.t + (t.dataset.t === 'compose' && cur ? '/' + cur.id : ''); }));
   window.addEventListener('hashchange', route);
+  document.addEventListener('visibilitychange', () => {
+    if (document.visibilityState !== 'visible' || !S || Date.now() - lastRefresh < 45000) return;
+    refresh().catch(() => {});
+  });
   document.addEventListener('keydown', e => { if (e.key === 'Escape') { closeSheet(); $('pick').hidden = true; $('pickBack').hidden = true; } });
   boot().catch(e => { console.error(e); toast('Could not load. Sign in again.'); });
 })();
