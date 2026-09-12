@@ -235,3 +235,19 @@ see?* The answer must be "the content, just without motion."
   finish pointing at Cloudflare.
 - Videos currently embed from Google Drive on `work.html`. Planned migration to
   Vimeo; when that happens, swap the iframe `src` values only.
+
+## Films (added 12 Sep 2026)
+
+- `films.html` (live at /films, `noindex`, not linked from the homepage yet) is
+  the draft video wall: rotating muted opening, poster grid with hover previews,
+  fullscreen player with sound, index list. It replaces `work.html` once the
+  owner approves it. Film order, brands and taglines live in the `FILMS` array
+  at the bottom of the file; posters are `assets/posters/<slug>.webp`.
+- The video files are NOT in this repo. They stream from a separate Worker,
+  `badblood-films` (`~/Desktop/IRIS/badblood-films`, live at
+  https://badblood-films.hi-badblood.workers.dev): `/f/<slug>.mp4` 720p,
+  `/m/<slug>.mp4` 540p, `/p/<slug>.mp4` small muted previews. Its README says
+  how to add a film. Deploy that worker by hand; this site only references URLs.
+- `_headers` CSP allows `media-src` from that worker and `frame-src` from
+  drive.google.com (the old /work players were showing "This content is blocked"
+  until that line was added).
