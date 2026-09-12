@@ -4,7 +4,7 @@
 <meta charset="UTF-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <title>Films — BAD BLOOD COMPANY</title>
-<meta name="description" content="Thirty-eight films by Bad Blood Company. Directed to read as shot, not generated.">
+<meta name="description" content="Thirty-eight films by Bad Blood Company.">
 <meta name="robots" content="noindex,nofollow">
 <meta name="theme-color" content="#08080A">
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -67,7 +67,7 @@ ol,ul{list-style:none}
 @media(max-width:700px){.hero{height:min(78vh,620px)} .hero .dots{display:none} .hero .cap{bottom:calc(var(--edge)*1.2)}}
 
 /* ── wall ────────────────────────────────────────── */
-.wall{padding:calc(var(--edge)*1.1) var(--edge) calc(var(--edge)*.6)}
+.wall{padding:calc(var(--edge)*1.1) var(--edge) calc(var(--edge)*1.4)}
 .head{display:flex;justify-content:space-between;align-items:flex-end;gap:22px;flex-wrap:wrap;
   padding-bottom:20px;border-bottom:1px solid var(--line);margin-bottom:2px}
 .head h2{font-weight:600;font-stretch:85%;font-size:clamp(26px,3vw,40px);letter-spacing:-.015em;line-height:1}
@@ -100,25 +100,6 @@ ol,ul{list-style:none}
 .tile:hover .play,.tile:focus-visible .play{opacity:1;transform:none}
 @media(hover:none){.tile .play{opacity:1;transform:none}}
 .tile .bar{position:absolute;left:0;bottom:0;height:2px;width:100%;background:var(--blood);transform:scaleX(0);transform-origin:left;z-index:3}
-
-/* ── index ───────────────────────────────────────── */
-.index{padding:calc(var(--edge)*.9) var(--edge) calc(var(--edge)*1.3)}
-.index .head{margin-bottom:0}
-.index ol{counter-reset:f}
-.index li{display:grid;grid-template-columns:52px 1fr auto;gap:18px;align-items:baseline;padding:16px 0;
-  border-bottom:1px solid var(--line);cursor:pointer;color:var(--chrome);transition:color .35s}
-.index li:hover,.index li:focus-within{color:var(--bone)}
-.index li .n{color:var(--smoke);font-family:var(--micro);font-size:11px;letter-spacing:.1em}
-.index li .b{font-weight:600;font-stretch:88%;font-size:clamp(21px,2.6vw,38px);letter-spacing:-.018em;line-height:1;color:var(--bone)}
-.index li .t{margin-top:6px;font-size:14px}
-.index li .g{font-family:var(--micro);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--smoke);white-space:nowrap}
-.index li button{text-align:left;width:100%;display:block}
-@media(max-width:560px){.index li{grid-template-columns:36px 1fr}.index li .g{display:none}}
-.ghost{position:fixed;left:0;top:0;width:min(27vw,380px);aspect-ratio:16/9;pointer-events:none;z-index:55;opacity:0;
-  transform:translate(-50%,-50%) scale(.96);transition:opacity .35s,transform .5s var(--lux);overflow:hidden;background:var(--graphite)}
-.ghost.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
-.ghost img{width:100%;height:100%;object-fit:cover}
-@media(hover:none),(max-width:900px){.ghost{display:none}}
 
 /* ── player ──────────────────────────────────────── */
 .cine{position:fixed;inset:0;z-index:100;background:#000;opacity:0;pointer-events:none;transition:opacity .45s;cursor:default}
@@ -154,6 +135,7 @@ footer{padding:calc(var(--edge)*.8) var(--edge) calc(var(--edge)*1.1);border-top
   display:flex;justify-content:space-between;align-items:flex-end;gap:22px;flex-wrap:wrap;color:var(--chrome)}
 footer img{height:22px;width:auto}
 footer .r{display:flex;gap:26px}
+footer .fine{flex-basis:100%;margin-top:34px;font-size:9px;line-height:1.5;color:var(--smoke);opacity:.42;letter-spacing:.01em}
 
 @media(prefers-reduced-motion:reduce){
   .hero .layer,.tile img,.tile video,.ghost,.cine{transition:none}
@@ -166,7 +148,7 @@ footer .r{display:flex;gap:26px}
 
 <nav class="nav">
   <a href="index.html" aria-label="Bad Blood Company"><img src="assets/bb-logo-horizontal.png" alt="BAD BLOOD COMPANY"></a>
-  <div class="links mi"><a href="#wall">Films</a><a href="#index">Index</a><a href="index.html">Home</a></div>
+  <div class="links mi"><a href="#wall">Films</a><a href="index.html">Home</a></div>
 </nav>
 
 <header class="hero" id="top">
@@ -190,7 +172,6 @@ footer .r{display:flex;gap:26px}
   <div class="head">
     <div>
       <h2>Every film.</h2>
-      <p class="sub">Directed to read as shot, not generated. Concept films are made to show how we direct — the brands named did not commission them.</p>
     </div>
     <div class="chips mi" id="chips" role="group" aria-label="Filter">
       <button class="chip" data-g="all" aria-pressed="true">All<small>38</small></button>
@@ -202,17 +183,11 @@ footer .r{display:flex;gap:26px}
   <div class="grid" id="grid" role="list"></div>
 </section>
 
-<section class="index" id="index">
-  <div class="head"><h2>Index</h2><span class="mi" style="color:var(--chrome)" id="icount">38 films · 2026</span></div>
-  <ol id="list"></ol>
-</section>
-
 <footer>
   <img src="assets/bb-logo-horizontal.png" alt="BAD BLOOD COMPANY">
   <div class="r mi"><span>Bangkok</span><span>BB / 2026</span></div>
+  <p class="fine">Concept films are self-initiated. The brands named did not commission them.</p>
 </footer>
-
-<div class="ghost" id="ghost" aria-hidden="true"><img id="gimg" alt=""></div>
 
 <div class="cine" id="cine" role="dialog" aria-modal="true" aria-label="Film player">
   <i class="load"></i>
@@ -238,9 +213,7 @@ footer .r{display:flex;gap:26px}
 var FILMS=[{"s":"herm-egrave-s-objects-remember-hands","b":"Hermès","t":"Objects remember hands","g":"concept"},{"s":"nike-0-01","b":"Nike","t":"0.01","g":"concept"},{"s":"cartier-time","b":"Cartier","t":"Time","g":"concept"},{"s":"saint-laurent-fashion-film","b":"Saint Laurent","t":"Fashion film","g":"concept"},{"s":"loewe-perfumes-you-cannot-film-a-scent","b":"Loewe Perfumes","t":"You cannot film a scent","g":"concept"},{"s":"bmw-motorrad-the-road-moves","b":"BMW Motorrad","t":"The road moves","g":"concept"},{"s":"leica-leica-through-our-eyes","b":"Leica","t":"Leica, through our eyes","g":"concept"},{"s":"rimowa-baggage-has-memory","b":"Rimowa","t":"Baggage has memory","g":"concept"},{"s":"adidas-originals-miss-the-beat","b":"Adidas Originals","t":"Miss the beat","g":"concept"},{"s":"coca-cola-wild","b":"Coca-Cola","t":"Wild","g":"concept"},{"s":"mastercard-the-price-is-never-the-point","b":"Mastercard","t":"The price is never the point","g":"concept"},{"s":"dyson-the-air-is-editing","b":"Dyson","t":"The air is editing","g":"concept"},{"s":"gopro-every-impact-is-a-beat","b":"GoPro","t":"Every impact is a beat","g":"concept"},{"s":"g-shock-impact-leaves-a-signature","b":"G-Shock","t":"Impact leaves a signature","g":"concept"},{"s":"under-armour-pressure-makes-no-sound","b":"Under Armour","t":"Pressure makes no sound","g":"concept"},{"s":"the-north-face-weather-has-no-schedule","b":"The North Face","t":"Weather has no schedule","g":"concept"},{"s":"ikea-a-room-changes-before-you","b":"IKEA","t":"A room changes before you","g":"concept"},{"s":"uniqlo-clothes-learn-your-body","b":"Uniqlo","t":"Clothes learn your body","g":"concept"},{"s":"starbucks-your-name-is-part-of-it","b":"Starbucks","t":"Your name is part of it","g":"concept"},{"s":"heineken-0-0-h-0","b":"Heineken 0.0","t":"H-0%","g":"concept"},{"s":"red-bull-up-only-30s-spec","b":"Red Bull","t":"Up only","g":"concept"},{"s":"kitkat-break","b":"KitKat","t":"Break","g":"concept"},{"s":"marshall-sound-is-physical","b":"Marshall","t":"Sound is physical","g":"concept"},{"s":"grab-th-every-city-has-a-shortcut","b":"Grab TH","t":"Every city has a shortcut","g":"concept"},{"s":"mcdonalds-th-concept-film","b":"McDonald's TH","t":"Concept film","g":"concept"},{"s":"oh-juice-fresh-hits-different","b":"Oh! Juice","t":"Fresh hits different","g":"concept"},{"s":"oh-juice-good-mood-in-a-cup","b":"Oh! Juice","t":"Good mood in a cup","g":"concept"},{"s":"joe-wings-crunch-changes-the-room","b":"Joe Wings","t":"Crunch changes the room","g":"concept"},{"s":"ader-error-fashion-film","b":"Ader Error","t":"Fashion film","g":"concept"},{"s":"ader-error-fashion-film-ii","b":"Ader Error","t":"Fashion film II","g":"concept"},{"s":"burning-city-main-cut","b":"Burning City","t":"Main cut","g":"city"},{"s":"the-first-chapter","b":"The First","t":"Chapter","g":"city"},{"s":"the-eclipse-chapter","b":"The Eclipse","t":"Chapter","g":"city"},{"s":"the-dream-chapter","b":"The Dream","t":"Chapter","g":"city"},{"s":"th-future-thai-future-fantasy","b":"TH Future","t":"Thai future fantasy","g":"lab"},{"s":"big-world-scale-study","b":"Big World","t":"Scale study","g":"lab"},{"s":"studio-dance-music-video-study","b":"Studio Dance","t":"Music video study","g":"lab"},{"s":"coffee-short-study","b":"Coffee","t":"Short study","g":"lab"}];
 var HOST='https://badblood-films.hi-badblood.workers.dev';
 var GROUP={concept:'Concept film',city:'Burning City',lab:'Black Lab'};
-var GRPLINE={concept:['Concept films','Made to show how we direct. Not commissioned by the brands named.'],
-             city:['Burning City','Our own universe — five chapters, one city.'],
-             lab:['Black Lab','Experiments and studies.']};
+var GRPLINE={concept:'Concept films',city:'Burning City',lab:'Black Lab'};
 var $=function(id){return document.getElementById(id)};
 var RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
 var WIDE=matchMedia('(min-width:900px)');
@@ -285,7 +258,7 @@ function build(){
   var lastG=null;
   FILMS.forEach(function(f,i){
     if(f.g!==lastG){ lastG=f.g; var g=document.createElement('div'); g.className='grp mi'; g.dataset.g=f.g;
-      g.innerHTML='<span class="mi" style="color:var(--chrome)">'+GRPLINE[f.g][0]+'</span><span>'+GRPLINE[f.g][1]+'</span>'; grid.appendChild(g); }
+      g.innerHTML='<span class="mi" style="color:var(--chrome)">'+GRPLINE[f.g]+'</span>'; grid.appendChild(g); }
     var t=document.createElement('button'); t.className='tile'; t.type='button'; t.setAttribute('role','listitem'); t.dataset.i=i; t.dataset.g=f.g;
     t.setAttribute('aria-label','Play '+f.b+' — '+f.t);
     t.innerHTML='<img src="'+poster(f)+'" alt="" loading="'+(i<6?'eager':'lazy')+'" decoding="async">'+
@@ -319,25 +292,9 @@ var cur='all';
 function show(g){
   cur=g; [].forEach.call($('chips').children,function(c){c.setAttribute('aria-pressed',String(c.dataset.g===g))});
   [].forEach.call(grid.children,function(el){ el.hidden = el.classList.contains('grp') ? g!=='all' : (g!=='all'&&el.dataset.g!==g) });
-  [].forEach.call($('list').children,function(li){ li.hidden = g!=='all'&&li.dataset.g!==g });
-  var n=visible().length; $('icount').textContent=n+(n===1?' film':' films')+' · 2026';
 }
 $('chips').addEventListener('click',function(e){ var c=e.target.closest('.chip'); if(c) show(c.dataset.g) });
 function visible(){ return FILMS.map(function(f,i){return i}).filter(function(i){return cur==='all'||FILMS[i].g===cur}) }
-
-/* ── index ── */
-var list=$('list'), ghost=$('ghost'), gimg=$('gimg');
-FILMS.forEach(function(f,i){
-  var li=document.createElement('li'); li.dataset.i=i; li.dataset.g=f.g;
-  li.innerHTML='<span class="n">'+pad(i)+'</span><button type="button"><span class="b">'+f.b+'</span><span class="t" style="display:block">'+f.t+'</span></button><span class="g">'+GROUP[f.g]+'</span>';
-  list.appendChild(li);
-});
-list.addEventListener('click',function(e){ var li=e.target.closest('li'); if(li) openFilm(+li.dataset.i) });
-if(HOVER){
-  list.addEventListener('pointerover',function(e){ var li=e.target.closest('li'); if(!li||li.contains(e.relatedTarget))return; gimg.src=poster(FILMS[li.dataset.i]); ghost.classList.add('on') });
-  list.addEventListener('pointerout',function(e){ var li=e.target.closest('li'); if(!li||li.contains(e.relatedTarget))return; ghost.classList.remove('on') });
-  list.addEventListener('pointermove',function(e){ ghost.style.transform='translate('+(e.clientX+40)+'px,'+(e.clientY-20)+'px) translate(0,-50%)' ; ghost.style.left='0';ghost.style.top='0'; });
-}
 
 /* ── player ── */
 var cine=$('cine'), cv=$('cv'), idx=-1, idleT=null, wasHero=false;
