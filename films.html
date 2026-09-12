@@ -1,0 +1,390 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>Films — BAD BLOOD COMPANY</title>
+<meta name="description" content="Thirty-eight films by Bad Blood Company. Directed to read as shot, not generated.">
+<meta name="robots" content="noindex,nofollow">
+<meta name="theme-color" content="#08080A">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="preconnect" href="https://badblood-films.hi-badblood.workers.dev" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Archivo:wdth,wght@62..125,100..900&family=Space+Grotesk:wght@400;500&display=swap">
+<style>
+:root{
+  --ink:#08080A; --carbon:#0B0B0F; --graphite:#15151A; --line:#232326;
+  --bone:#F2F2EF; --chrome:#9EA2A6; --smoke:#5C5C61; --blood:#C8102E;
+  --display:'Archivo',Impact,'Arial Narrow',sans-serif;
+  --micro:'Space Grotesk',ui-monospace,monospace;
+  --edge:clamp(18px,4.2vw,72px);
+  --lux:cubic-bezier(.19,1,.22,1); --cut:cubic-bezier(.85,0,.15,1);
+  --hold:9s;
+}
+*{margin:0;padding:0;box-sizing:border-box}
+html{background:var(--ink);color:var(--bone);-webkit-text-size-adjust:100%;scroll-behavior:smooth}
+body{font-family:var(--display);font-weight:300;line-height:1.45;background:var(--ink);overflow-x:hidden;min-height:100vh}
+img,video{display:block;max-width:100%}
+a{color:inherit;text-decoration:none}
+button{font:inherit;color:inherit;background:none;border:0;cursor:pointer}
+ol,ul{list-style:none}
+:focus-visible{outline:1px solid var(--bone);outline-offset:3px}
+.mi{font-family:var(--micro);font-size:clamp(9px,.72vw,10px);letter-spacing:.18em;text-transform:uppercase;font-weight:500}
+[hidden]{display:none!important}
+
+/* ── nav ─────────────────────────────────────────── */
+.nav{position:fixed;inset:0 0 auto;z-index:60;display:flex;align-items:center;justify-content:space-between;
+  padding:18px var(--edge);mix-blend-mode:difference}
+.nav img{height:17px;width:auto}
+.nav .links a{margin-left:24px;opacity:.75;transition:opacity .3s}
+.nav .links a:hover{opacity:1}
+
+/* ── opening ─────────────────────────────────────── */
+.hero{position:relative;height:min(84vh,780px);min-height:460px;overflow:hidden;background:var(--carbon)}
+.hero .layer{position:absolute;inset:0;width:100%;height:100%;object-fit:cover;opacity:0;transition:opacity 1.6s var(--lux)}
+.hero .layer.on{opacity:1}
+.hero .shade{position:absolute;inset:0;z-index:1;
+  background:linear-gradient(180deg,rgba(8,8,10,.5) 0%,rgba(8,8,10,0) 28%,rgba(8,8,10,0) 52%,rgba(8,8,10,.94) 100%)}
+.hero .cap{position:absolute;left:var(--edge);right:var(--edge);bottom:calc(var(--edge)*.85);z-index:2;display:grid;gap:16px}
+.hero .cap .k{color:var(--chrome);display:flex;gap:18px;align-items:center}
+.hero h1{font-weight:800;font-stretch:72%;text-transform:uppercase;line-height:.86;letter-spacing:-.012em;
+  font-size:clamp(50px,10.5vw,156px);text-wrap:balance;transition:opacity .6s}
+.hero .line{font-size:clamp(15px,1.45vw,21px);color:var(--chrome);max-width:40ch;transition:opacity .6s}
+.hero.fade h1,.hero.fade .line{opacity:0}
+.hero .row{display:flex;gap:14px;align-items:center;flex-wrap:wrap;margin-top:4px}
+.btn{display:inline-flex;align-items:center;gap:11px;padding:13px 20px;border:1px solid rgba(242,242,239,.32);
+  border-radius:999px;transition:border-color .3s,background .3s,color .3s}
+.btn:hover{border-color:var(--bone);background:rgba(242,242,239,.07)}
+.btn.solid{background:var(--bone);color:var(--ink);border-color:var(--bone)}
+.btn.solid:hover{background:#fff}
+.btn i{width:0;height:0;border-left:8px solid currentColor;border-top:5px solid transparent;border-bottom:5px solid transparent}
+.hero .dots{position:absolute;right:var(--edge);bottom:calc(var(--edge)*.85 + 6px);z-index:2;display:flex;gap:6px}
+.hero .dots b{position:relative;width:26px;height:2px;background:rgba(242,242,239,.22);overflow:hidden;display:block}
+.hero .dots b i{position:absolute;inset:0;background:var(--bone);transform:scaleX(0);transform-origin:left;display:block}
+.hero .dots b.on i{animation:fill var(--hold) linear forwards}
+.hero .dots b.done i{transform:scaleX(1)}
+@keyframes fill{to{transform:scaleX(1)}}
+@media(max-width:700px){.hero{height:min(78vh,620px)} .hero .dots{display:none} .hero .cap{bottom:calc(var(--edge)*1.2)}}
+
+/* ── wall ────────────────────────────────────────── */
+.wall{padding:calc(var(--edge)*1.1) var(--edge) calc(var(--edge)*.6)}
+.head{display:flex;justify-content:space-between;align-items:flex-end;gap:22px;flex-wrap:wrap;
+  padding-bottom:20px;border-bottom:1px solid var(--line);margin-bottom:2px}
+.head h2{font-weight:600;font-stretch:85%;font-size:clamp(26px,3vw,40px);letter-spacing:-.015em;line-height:1}
+.head .sub{color:var(--chrome);margin-top:10px;max-width:56ch;font-size:14px}
+.chips{display:flex;gap:6px;flex-wrap:wrap}
+.chip{padding:9px 13px;border:1px solid var(--line);border-radius:999px;color:var(--chrome);transition:color .3s,border-color .3s,background .3s}
+.chip:hover{border-color:var(--smoke);color:var(--bone)}
+.chip[aria-pressed=true]{color:var(--ink);background:var(--bone);border-color:var(--bone)}
+.chip small{opacity:.55;margin-left:6px}
+.grid{display:grid;grid-template-columns:repeat(3,1fr);gap:2px}
+@media(max-width:1100px){.grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:560px){.grid{grid-template-columns:1fr;gap:6px}}
+.grp{grid-column:1/-1;display:flex;justify-content:space-between;gap:16px;padding:30px 0 12px;color:var(--chrome)}
+.grp span{color:var(--smoke);text-transform:none;letter-spacing:0;font-family:var(--display);font-size:13px}
+.grid .grp:first-child{padding-top:22px}
+.tile{position:relative;aspect-ratio:16/9;background:var(--graphite);overflow:hidden;text-align:left;width:100%;display:block}
+.tile img,.tile video{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
+.tile img{transform:scale(1.001);transition:transform 1.8s var(--lux),opacity .8s}
+.tile video{opacity:0;transition:opacity .7s var(--lux)}
+.tile.live video{opacity:1}
+.tile:hover img{transform:scale(1.045)}
+.tile::after{content:"";position:absolute;inset:0;z-index:1;background:linear-gradient(180deg,rgba(8,8,10,0) 50%,rgba(8,8,10,.78) 100%);opacity:.9;transition:opacity .5s}
+.tile .m{position:absolute;left:16px;right:16px;bottom:14px;z-index:2;display:flex;justify-content:space-between;align-items:flex-end;gap:12px}
+.tile .b{font-weight:600;font-size:clamp(15px,1.2vw,18px);letter-spacing:-.005em;line-height:1.1}
+.tile .t{color:var(--chrome);font-size:13px;margin-top:3px}
+.tile .n{color:var(--chrome);flex:none}
+.tile .play{position:absolute;top:14px;right:14px;z-index:2;width:34px;height:34px;border:1px solid rgba(242,242,239,.35);border-radius:50%;
+  display:grid;place-items:center;opacity:0;transform:translateY(-4px);transition:opacity .4s,transform .4s var(--lux)}
+.tile .play i{width:0;height:0;border-left:8px solid var(--bone);border-top:5px solid transparent;border-bottom:5px solid transparent;margin-left:2px}
+.tile:hover .play,.tile:focus-visible .play{opacity:1;transform:none}
+@media(hover:none){.tile .play{opacity:1;transform:none}}
+.tile .bar{position:absolute;left:0;bottom:0;height:2px;width:100%;background:var(--blood);transform:scaleX(0);transform-origin:left;z-index:3}
+
+/* ── index ───────────────────────────────────────── */
+.index{padding:calc(var(--edge)*.9) var(--edge) calc(var(--edge)*1.3)}
+.index .head{margin-bottom:0}
+.index ol{counter-reset:f}
+.index li{display:grid;grid-template-columns:52px 1fr auto;gap:18px;align-items:baseline;padding:16px 0;
+  border-bottom:1px solid var(--line);cursor:pointer;color:var(--chrome);transition:color .35s}
+.index li:hover,.index li:focus-within{color:var(--bone)}
+.index li .n{color:var(--smoke);font-family:var(--micro);font-size:11px;letter-spacing:.1em}
+.index li .b{font-weight:600;font-stretch:88%;font-size:clamp(21px,2.6vw,38px);letter-spacing:-.018em;line-height:1;color:var(--bone)}
+.index li .t{margin-top:6px;font-size:14px}
+.index li .g{font-family:var(--micro);font-size:10px;letter-spacing:.16em;text-transform:uppercase;color:var(--smoke);white-space:nowrap}
+.index li button{text-align:left;width:100%;display:block}
+@media(max-width:560px){.index li{grid-template-columns:36px 1fr}.index li .g{display:none}}
+.ghost{position:fixed;left:0;top:0;width:min(27vw,380px);aspect-ratio:16/9;pointer-events:none;z-index:55;opacity:0;
+  transform:translate(-50%,-50%) scale(.96);transition:opacity .35s,transform .5s var(--lux);overflow:hidden;background:var(--graphite)}
+.ghost.on{opacity:1;transform:translate(-50%,-50%) scale(1)}
+.ghost img{width:100%;height:100%;object-fit:cover}
+@media(hover:none),(max-width:900px){.ghost{display:none}}
+
+/* ── player ──────────────────────────────────────── */
+.cine{position:fixed;inset:0;z-index:100;background:#000;opacity:0;pointer-events:none;transition:opacity .45s;cursor:default}
+.cine.on{opacity:1;pointer-events:auto}
+.cine video{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;background:#000}
+.cine .top,.cine .bot{position:absolute;left:var(--edge);right:var(--edge);z-index:2;display:flex;justify-content:space-between;
+  align-items:center;gap:16px;transition:opacity .4s}
+.cine .top{top:18px}.cine .bot{bottom:24px}
+.cine.idle .top,.cine.idle .bot,.cine.idle .seek{opacity:0}
+.cine.idle{cursor:none}
+.cine .title{font-weight:600;font-size:clamp(15px,1.4vw,20px);line-height:1.15}
+.cine .title small{display:block;color:var(--chrome);font-weight:300;font-size:13px;margin-top:3px}
+.cine .ctl{display:flex;gap:8px;align-items:center}
+.cine .rb{width:44px;height:44px;border:1px solid rgba(242,242,239,.3);border-radius:50%;display:grid;place-items:center;transition:border-color .3s,background .3s}
+.cine .rb:hover{border-color:var(--bone);background:rgba(242,242,239,.08)}
+.cine .rb svg{width:16px;height:16px;fill:none;stroke:var(--bone);stroke-width:1.6;stroke-linecap:round;stroke-linejoin:round}
+.cine .rb.play svg{fill:var(--bone);stroke:none}
+.cine .time{color:var(--chrome);font-variant-numeric:tabular-nums;min-width:8ch;text-align:right}
+.cine .seek{position:absolute;left:0;right:0;bottom:0;height:22px;z-index:2;cursor:pointer;transition:opacity .4s}
+.cine .seek::before{content:"";position:absolute;left:0;right:0;bottom:0;height:3px;background:rgba(242,242,239,.15)}
+.cine .seek i{position:absolute;left:0;right:0;bottom:0;height:3px;background:var(--blood);transform:scaleX(0);transform-origin:left;display:block}
+.cine .big{position:absolute;inset:0;display:grid;place-items:center;pointer-events:none;opacity:0;transition:opacity .3s;z-index:1}
+.cine .big b{width:84px;height:84px;border-radius:50%;border:1px solid rgba(242,242,239,.4);display:grid;place-items:center;background:rgba(8,8,10,.4)}
+.cine .big i{width:0;height:0;border-left:22px solid var(--bone);border-top:13px solid transparent;border-bottom:13px solid transparent;margin-left:5px}
+.cine.paused .big{opacity:1}
+.cine .load{position:absolute;left:0;top:0;height:2px;width:100%;background:var(--bone);transform:scaleX(0);transform-origin:left;opacity:0;z-index:3;transition:opacity .3s}
+.cine.loading .load{opacity:1;animation:load 1.4s var(--cut) infinite}
+@keyframes load{0%{transform:scaleX(0)}70%{transform:scaleX(1);transform-origin:left}71%{transform-origin:right}100%{transform:scaleX(0);transform-origin:right}}
+@media(max-width:700px){.cine .time,.cine .title small{display:none}.cine .rb{width:40px;height:40px}}
+
+/* ── foot ────────────────────────────────────────── */
+footer{padding:calc(var(--edge)*.8) var(--edge) calc(var(--edge)*1.1);border-top:1px solid var(--line);
+  display:flex;justify-content:space-between;align-items:flex-end;gap:22px;flex-wrap:wrap;color:var(--chrome)}
+footer img{height:22px;width:auto}
+footer .r{display:flex;gap:26px}
+
+@media(prefers-reduced-motion:reduce){
+  .hero .layer,.tile img,.tile video,.ghost,.cine{transition:none}
+  .hero .dots b.on i{animation:none;transform:scaleX(1)}
+  html{scroll-behavior:auto}
+}
+</style>
+</head>
+<body>
+
+<nav class="nav">
+  <a href="index.html" aria-label="Bad Blood Company"><img src="assets/bb-logo-horizontal.png" alt="BAD BLOOD COMPANY"></a>
+  <div class="links mi"><a href="#wall">Films</a><a href="#index">Index</a><a href="index.html">Home</a></div>
+</nav>
+
+<header class="hero" id="top">
+  <img class="layer on" id="hp" src="assets/posters/herm-egrave-s-objects-remember-hands.webp" alt="" decoding="async" fetchpriority="high">
+  <video class="layer" id="hv0" muted playsinline preload="auto" aria-hidden="true"></video>
+  <video class="layer" id="hv1" muted playsinline preload="none" aria-hidden="true"></video>
+  <div class="shade"></div>
+  <div class="cap">
+    <div class="k mi"><span id="hk">01 / 38</span><span id="hg">Concept film</span></div>
+    <h1 id="hb">Hermès</h1>
+    <p class="line" id="ht">Objects remember hands</p>
+    <div class="row">
+      <button class="btn solid" id="hplay"><i></i><span class="mi">Play with sound</span></button>
+      <a class="btn" href="#wall"><span class="mi">All 38 films</span></a>
+    </div>
+  </div>
+  <div class="dots" id="dots" aria-hidden="true"></div>
+</header>
+
+<section class="wall" id="wall">
+  <div class="head">
+    <div>
+      <h2>Every film.</h2>
+      <p class="sub">Directed to read as shot, not generated. Concept films are made to show how we direct — the brands named did not commission them.</p>
+    </div>
+    <div class="chips mi" id="chips" role="group" aria-label="Filter">
+      <button class="chip" data-g="all" aria-pressed="true">All<small>38</small></button>
+      <button class="chip" data-g="concept" aria-pressed="false">Concept films<small>30</small></button>
+      <button class="chip" data-g="city" aria-pressed="false">Burning City<small>4</small></button>
+      <button class="chip" data-g="lab" aria-pressed="false">Black Lab<small>4</small></button>
+    </div>
+  </div>
+  <div class="grid" id="grid" role="list"></div>
+</section>
+
+<section class="index" id="index">
+  <div class="head"><h2>Index</h2><span class="mi" style="color:var(--chrome)" id="icount">38 films · 2026</span></div>
+  <ol id="list"></ol>
+</section>
+
+<footer>
+  <img src="assets/bb-logo-horizontal.png" alt="BAD BLOOD COMPANY">
+  <div class="r mi"><span>Bangkok</span><span>BB / 2026</span></div>
+</footer>
+
+<div class="ghost" id="ghost" aria-hidden="true"><img id="gimg" alt=""></div>
+
+<div class="cine" id="cine" role="dialog" aria-modal="true" aria-label="Film player">
+  <i class="load"></i>
+  <video id="cv" playsinline preload="auto"></video>
+  <div class="big" aria-hidden="true"><b><i></i></b></div>
+  <div class="top">
+    <div class="title"><span id="ctitle">—</span><small id="csub"></small></div>
+    <button class="rb" id="cx" aria-label="Close"><svg viewBox="0 0 16 16"><path d="M3 3l10 10M13 3L3 13"/></svg></button>
+  </div>
+  <div class="bot">
+    <div class="ctl">
+      <button class="rb" id="cprev" aria-label="Previous film"><svg viewBox="0 0 16 16"><path d="M10 3L5 8l5 5"/></svg></button>
+      <button class="rb play" id="cplay" aria-label="Play or pause"><svg viewBox="0 0 16 16"><path id="pp" d="M5 3l8 5-8 5z"/></svg></button>
+      <button class="rb" id="cnext" aria-label="Next film"><svg viewBox="0 0 16 16"><path d="M6 3l5 5-5 5"/></svg></button>
+      <button class="rb" id="cmute" aria-label="Mute or unmute"><svg viewBox="0 0 16 16"><path id="mp" d="M2 6h3l4-3v10l-4-3H2zM11 6c1 1 1 3 0 4M13 4c2 2 2 6 0 8"/></svg></button>
+    </div>
+    <span class="time mi" id="ctime">0:00 / 0:30</span>
+  </div>
+  <div class="seek" id="seek"><i id="sf"></i></div>
+</div>
+
+<script>
+var FILMS=[{"s":"herm-egrave-s-objects-remember-hands","b":"Hermès","t":"Objects remember hands","g":"concept"},{"s":"nike-0-01","b":"Nike","t":"0.01","g":"concept"},{"s":"cartier-time","b":"Cartier","t":"Time","g":"concept"},{"s":"saint-laurent-fashion-film","b":"Saint Laurent","t":"Fashion film","g":"concept"},{"s":"loewe-perfumes-you-cannot-film-a-scent","b":"Loewe Perfumes","t":"You cannot film a scent","g":"concept"},{"s":"bmw-motorrad-the-road-moves","b":"BMW Motorrad","t":"The road moves","g":"concept"},{"s":"leica-leica-through-our-eyes","b":"Leica","t":"Leica, through our eyes","g":"concept"},{"s":"rimowa-baggage-has-memory","b":"Rimowa","t":"Baggage has memory","g":"concept"},{"s":"adidas-originals-miss-the-beat","b":"Adidas Originals","t":"Miss the beat","g":"concept"},{"s":"coca-cola-wild","b":"Coca-Cola","t":"Wild","g":"concept"},{"s":"mastercard-the-price-is-never-the-point","b":"Mastercard","t":"The price is never the point","g":"concept"},{"s":"dyson-the-air-is-editing","b":"Dyson","t":"The air is editing","g":"concept"},{"s":"gopro-every-impact-is-a-beat","b":"GoPro","t":"Every impact is a beat","g":"concept"},{"s":"g-shock-impact-leaves-a-signature","b":"G-Shock","t":"Impact leaves a signature","g":"concept"},{"s":"under-armour-pressure-makes-no-sound","b":"Under Armour","t":"Pressure makes no sound","g":"concept"},{"s":"the-north-face-weather-has-no-schedule","b":"The North Face","t":"Weather has no schedule","g":"concept"},{"s":"ikea-a-room-changes-before-you","b":"IKEA","t":"A room changes before you","g":"concept"},{"s":"uniqlo-clothes-learn-your-body","b":"Uniqlo","t":"Clothes learn your body","g":"concept"},{"s":"starbucks-your-name-is-part-of-it","b":"Starbucks","t":"Your name is part of it","g":"concept"},{"s":"heineken-0-0-h-0","b":"Heineken 0.0","t":"H-0%","g":"concept"},{"s":"red-bull-up-only-30s-spec","b":"Red Bull","t":"Up only","g":"concept"},{"s":"kitkat-break","b":"KitKat","t":"Break","g":"concept"},{"s":"marshall-sound-is-physical","b":"Marshall","t":"Sound is physical","g":"concept"},{"s":"grab-th-every-city-has-a-shortcut","b":"Grab TH","t":"Every city has a shortcut","g":"concept"},{"s":"mcdonalds-th-concept-film","b":"McDonald's TH","t":"Concept film","g":"concept"},{"s":"oh-juice-fresh-hits-different","b":"Oh! Juice","t":"Fresh hits different","g":"concept"},{"s":"oh-juice-good-mood-in-a-cup","b":"Oh! Juice","t":"Good mood in a cup","g":"concept"},{"s":"joe-wings-crunch-changes-the-room","b":"Joe Wings","t":"Crunch changes the room","g":"concept"},{"s":"ader-error-fashion-film","b":"Ader Error","t":"Fashion film","g":"concept"},{"s":"ader-error-fashion-film-ii","b":"Ader Error","t":"Fashion film II","g":"concept"},{"s":"burning-city-main-cut","b":"Burning City","t":"Main cut","g":"city"},{"s":"the-first-chapter","b":"The First","t":"Chapter","g":"city"},{"s":"the-eclipse-chapter","b":"The Eclipse","t":"Chapter","g":"city"},{"s":"the-dream-chapter","b":"The Dream","t":"Chapter","g":"city"},{"s":"th-future-thai-future-fantasy","b":"TH Future","t":"Thai future fantasy","g":"lab"},{"s":"big-world-scale-study","b":"Big World","t":"Scale study","g":"lab"},{"s":"studio-dance-music-video-study","b":"Studio Dance","t":"Music video study","g":"lab"},{"s":"coffee-short-study","b":"Coffee","t":"Short study","g":"lab"}];
+var HOST='https://badblood-films.hi-badblood.workers.dev';
+var GROUP={concept:'Concept film',city:'Burning City',lab:'Black Lab'};
+var GRPLINE={concept:['Concept films','Made to show how we direct. Not commissioned by the brands named.'],
+             city:['Burning City','Our own universe — five chapters, one city.'],
+             lab:['Black Lab','Experiments and studies.']};
+var $=function(id){return document.getElementById(id)};
+var RM=matchMedia('(prefers-reduced-motion: reduce)').matches;
+var WIDE=matchMedia('(min-width:900px)');
+var HOVER=matchMedia('(hover:hover)').matches;
+var SAVE=!!(navigator.connection&&navigator.connection.saveData);
+function src(f,k){return HOST+'/'+k+'/'+f.s+'.mp4'}
+function poster(f){return 'assets/posters/'+f.s+'.webp'}
+function full(f){return src(f,(WIDE.matches&&!SAVE)?'f':'m')}
+function pad(n){return String(n+1).padStart(2,'0')}
+function fmt(t){t=Math.max(0,t|0);return Math.floor(t/60)+':'+String(t%60).padStart(2,'0')}
+
+/* ── opening: a few famous films, ten seconds each, muted ── */
+var FEAT=['herm-egrave-s-objects-remember-hands','nike-0-01','cartier-time','saint-laurent-fashion-film','bmw-motorrad-the-road-moves','leica-leica-through-our-eyes']
+  .map(function(s){return FILMS.findIndex(function(f){return f.s===s})});
+var HOLD=9000, hero=$('hero')||document.querySelector('.hero'), hv=[$('hv0'),$('hv1')], hp=$('hp'), dots=$('dots');
+var hk=0, hcur=0, htimer=null, hfeat=0;
+FEAT.forEach(function(){var b=document.createElement('b');b.appendChild(document.createElement('i'));dots.appendChild(b)});
+function heroCaption(i){
+  var f=FILMS[i]; hero.classList.add('fade');
+  setTimeout(function(){ $('hk').textContent=pad(i)+' / '+FILMS.length; $('hg').textContent=GROUP[f.g];
+    $('hb').textContent=f.b; $('ht').textContent=f.t; hero.classList.remove('fade'); },RM?0:420);
+  [].forEach.call(dots.children,function(b,k){b.className=k<hfeat?'done':k===hfeat?'on':''});
+}
+function heroGo(k){
+  hfeat=k; var i=FEAT[k], f=FILMS[i]; heroCaption(i); $('hplay').dataset.i=i;
+  if(RM){ hp.src=poster(f); return; }
+  var v=hv[hcur^1], old=hv[hcur];
+  v.src=(WIDE.matches&&!SAVE)?src(f,'m'):src(f,'p'); v.currentTime=0;
+  var swapped=false;
+  function swap(){ if(swapped)return; swapped=true; v.classList.add('on'); old.classList.remove('on'); hp.classList.remove('on');
+    setTimeout(function(){ old.pause(); },1600); hcur^=1; }
+  v.addEventListener('playing',swap,{once:true});
+  var p=v.play(); if(p&&p.catch) p.catch(function(){ hp.src=poster(f); hp.classList.add('on'); });
+  clearTimeout(htimer); htimer=setTimeout(function(){ heroGo((k+1)%FEAT.length) },HOLD);
+}
+document.addEventListener('visibilitychange',function(){ if(document.hidden){clearTimeout(htimer); hv.forEach(function(v){v.pause()})} else if(!cine.classList.contains('on')) heroGo(hfeat) });
+$('hplay').addEventListener('click',function(){ openFilm(+this.dataset.i) });
+
+/* ── the wall ── */
+var grid=$('grid'), tiles=[];
+function build(){
+  var lastG=null;
+  FILMS.forEach(function(f,i){
+    if(f.g!==lastG){ lastG=f.g; var g=document.createElement('div'); g.className='grp mi'; g.dataset.g=f.g;
+      g.innerHTML='<span class="mi" style="color:var(--chrome)">'+GRPLINE[f.g][0]+'</span><span>'+GRPLINE[f.g][1]+'</span>'; grid.appendChild(g); }
+    var t=document.createElement('button'); t.className='tile'; t.type='button'; t.setAttribute('role','listitem'); t.dataset.i=i; t.dataset.g=f.g;
+    t.setAttribute('aria-label','Play '+f.b+' — '+f.t);
+    t.innerHTML='<img src="'+poster(f)+'" alt="" loading="'+(i<6?'eager':'lazy')+'" decoding="async">'+
+      '<video muted playsinline loop preload="none" aria-hidden="true"></video>'+
+      '<span class="play" aria-hidden="true"><i></i></span>'+
+      '<span class="m"><span><span class="b">'+f.b+'</span><span class="t" style="display:block">'+f.t+'</span></span><span class="n mi">'+pad(i)+'</span></span>'+
+      '<i class="bar"></i>';
+    grid.appendChild(t); tiles.push(t);
+  });
+}
+build();
+grid.addEventListener('click',function(e){ var t=e.target.closest('.tile'); if(t) openFilm(+t.dataset.i) });
+if(HOVER&&!RM){
+  var hoverT=null;
+  grid.addEventListener('pointerover',function(e){
+    var t=e.target.closest('.tile'); if(!t||t.contains(e.relatedTarget))return;
+    clearTimeout(hoverT); hoverT=setTimeout(function(){ var v=t.querySelector('video'); if(!v.getAttribute('src')){v.src=src(FILMS[t.dataset.i],'p')} 
+      var p=v.play(); if(p&&p.catch)p.catch(function(){}); t.classList.add('live'); },140);
+  });
+  grid.addEventListener('pointerout',function(e){
+    var t=e.target.closest('.tile'); if(!t||t.contains(e.relatedTarget))return;
+    clearTimeout(hoverT); var v=t.querySelector('video'); t.classList.remove('live');
+    setTimeout(function(){ if(!t.classList.contains('live')){ v.pause(); v.removeAttribute('src'); v.load(); t.querySelector('.bar').style.transform='scaleX(0)'; } },700);
+  });
+  grid.addEventListener('timeupdate',function(e){ var v=e.target; if(v.tagName!=='VIDEO'||!v.duration)return;
+    v.parentNode.querySelector('.bar').style.transform='scaleX('+(v.currentTime/v.duration)+')'; },true);
+}
+
+/* ── filter ── */
+var cur='all';
+function show(g){
+  cur=g; [].forEach.call($('chips').children,function(c){c.setAttribute('aria-pressed',String(c.dataset.g===g))});
+  [].forEach.call(grid.children,function(el){ el.hidden = el.classList.contains('grp') ? g!=='all' : (g!=='all'&&el.dataset.g!==g) });
+  [].forEach.call($('list').children,function(li){ li.hidden = g!=='all'&&li.dataset.g!==g });
+  var n=visible().length; $('icount').textContent=n+(n===1?' film':' films')+' · 2026';
+}
+$('chips').addEventListener('click',function(e){ var c=e.target.closest('.chip'); if(c) show(c.dataset.g) });
+function visible(){ return FILMS.map(function(f,i){return i}).filter(function(i){return cur==='all'||FILMS[i].g===cur}) }
+
+/* ── index ── */
+var list=$('list'), ghost=$('ghost'), gimg=$('gimg');
+FILMS.forEach(function(f,i){
+  var li=document.createElement('li'); li.dataset.i=i; li.dataset.g=f.g;
+  li.innerHTML='<span class="n">'+pad(i)+'</span><button type="button"><span class="b">'+f.b+'</span><span class="t" style="display:block">'+f.t+'</span></button><span class="g">'+GROUP[f.g]+'</span>';
+  list.appendChild(li);
+});
+list.addEventListener('click',function(e){ var li=e.target.closest('li'); if(li) openFilm(+li.dataset.i) });
+if(HOVER){
+  list.addEventListener('pointerover',function(e){ var li=e.target.closest('li'); if(!li||li.contains(e.relatedTarget))return; gimg.src=poster(FILMS[li.dataset.i]); ghost.classList.add('on') });
+  list.addEventListener('pointerout',function(e){ var li=e.target.closest('li'); if(!li||li.contains(e.relatedTarget))return; ghost.classList.remove('on') });
+  list.addEventListener('pointermove',function(e){ ghost.style.transform='translate('+(e.clientX+40)+'px,'+(e.clientY-20)+'px) translate(0,-50%)' ; ghost.style.left='0';ghost.style.top='0'; });
+}
+
+/* ── player ── */
+var cine=$('cine'), cv=$('cv'), idx=-1, idleT=null, wasHero=false;
+function openFilm(i){
+  idx=i; var f=FILMS[i];
+  clearTimeout(htimer); hv.forEach(function(v){v.pause()});
+  $('ctitle').textContent=f.b; $('csub').textContent=f.t+' — '+GROUP[f.g]+' · '+pad(i)+' / '+FILMS.length;
+  cv.poster=poster(f); cv.src=full(f); cv.muted=false; cv.currentTime=0;
+  cine.classList.add('on','loading'); cine.classList.remove('paused'); document.body.style.overflow='hidden';
+  var p=cv.play(); if(p&&p.catch)p.catch(function(){ cine.classList.add('paused') });
+  wake(); $('cx').focus({preventScroll:true});
+  try{history.replaceState(null,'','#'+f.s)}catch(e){}
+}
+function closeFilm(){
+  cv.pause(); cv.removeAttribute('src'); cv.load(); cine.classList.remove('on','loading','paused'); document.body.style.overflow='';
+  try{history.replaceState(null,'',location.pathname)}catch(e){}
+  var t=tiles[idx]; if(t&&!t.hidden) t.focus({preventScroll:true});
+  if(!RM) heroGo(hfeat);
+}
+function step(d){ var v=visible(); var k=v.indexOf(idx); if(k<0)k=0; openFilm(v[(k+d+v.length)%v.length]) }
+function wake(){ cine.classList.remove('idle'); clearTimeout(idleT); idleT=setTimeout(function(){ if(!cv.paused) cine.classList.add('idle') },2600) }
+cine.addEventListener('pointermove',wake); cine.addEventListener('pointerdown',wake);
+$('cx').addEventListener('click',closeFilm);
+$('cnext').addEventListener('click',function(){step(1)});
+$('cprev').addEventListener('click',function(){step(-1)});
+$('cplay').addEventListener('click',function(){ cv.paused?cv.play():cv.pause() });
+$('cmute').addEventListener('click',function(){ cv.muted=!cv.muted; $('mp').setAttribute('d',cv.muted?'M2 6h3l4-3v10l-4-3H2zM11 5l4 6M15 5l-4 6':'M2 6h3l4-3v10l-4-3H2zM11 6c1 1 1 3 0 4M13 4c2 2 2 6 0 8') });
+cv.addEventListener('click',function(){ cv.paused?cv.play():cv.pause() });
+cv.addEventListener('play',function(){ cine.classList.remove('paused'); $('pp').setAttribute('d','M4 3h3v10H4zM9 3h3v10H9z'); wake() });
+cv.addEventListener('pause',function(){ cine.classList.add('paused'); cine.classList.remove('idle'); $('pp').setAttribute('d','M5 3l8 5-8 5z') });
+cv.addEventListener('waiting',function(){ cine.classList.add('loading') });
+cv.addEventListener('playing',function(){ cine.classList.remove('loading') });
+cv.addEventListener('canplay',function(){ cine.classList.remove('loading') });
+cv.addEventListener('timeupdate',function(){ if(!cv.duration)return; $('sf').style.transform='scaleX('+(cv.currentTime/cv.duration)+')'; $('ctime').textContent=fmt(cv.currentTime)+' / '+fmt(cv.duration) });
+cv.addEventListener('ended',function(){ step(1) });
+cv.addEventListener('error',function(){ cine.classList.remove('loading'); $('csub').textContent='This film is not available right now.' });
+$('seek').addEventListener('click',function(e){ var r=this.getBoundingClientRect(); if(cv.duration) cv.currentTime=cv.duration*Math.min(1,Math.max(0,(e.clientX-r.left)/r.width)) });
+document.addEventListener('keydown',function(e){
+  if(!cine.classList.contains('on'))return;
+  if(e.key==='Escape')closeFilm(); else if(e.key==='ArrowRight')step(1); else if(e.key==='ArrowLeft')step(-1);
+  else if(e.key===' '||e.key==='k'){e.preventDefault(); cv.paused?cv.play():cv.pause()} else if(e.key==='m'){$('cmute').click()}
+});
+
+/* deep link: films.html#slug opens that film */
+(function(){ var s=location.hash.slice(1); var i=FILMS.findIndex(function(f){return f.s===s}); if(i>=0){ show('all'); openFilm(i) } })();
+if(!RM) heroGo(0); else heroCaption(FEAT[0]);
+show('all');
+</script>
+</body>
+</html>
