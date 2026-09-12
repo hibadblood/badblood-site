@@ -111,7 +111,7 @@ main{position:relative;z-index:2}
 /* ══ NAV ══ on the canvas, no container ════════════════════════════════ */
 .nav{position:fixed;top:0;left:0;right:0;z-index:60;display:flex;align-items:flex-start;
   justify-content:space-between;gap:20px;padding:var(--edge) var(--edge) 0;
-  mix-blend-mode:difference}
+  mix-blend-mode:normal}
 body.onwork .nav{mix-blend-mode:normal}
 body.onwork .marks{opacity:0;transition:opacity .4s}
 body.onwork #scars .hold{opacity:0;transition:opacity .5s var(--lux)}
@@ -2401,10 +2401,10 @@ var GROUP={concept:'Concept film',city:'Burning City',lab:'Black Lab'};
 var q=function(id){return document.getElementById(id)};
 var stage=q('thstage'); if(!stage) return;
 var RM=matchMedia('(prefers-reduced-motion: reduce)').matches, WIDE=matchMedia('(min-width:900px)');
-var SAVE=!!(navigator.connection&&navigator.connection.saveData);
+var NC=navigator.connection||{}, SLOW=!!NC.saveData||/(^|-)(2g|3g)$/.test(NC.effectiveType||'');
 function src(f,k){return HOST+'/'+k+'/'+f.s+'.mp4'}
 function poster(f){return 'assets/posters/'+f.s+'.webp'}
-function full(f){return src(f,(WIDE.matches&&!SAVE)?'f':'m')}
+function full(f){return src(f,SLOW?'m':'f')}
 function pad(n){return String(n+1).padStart(2,'0')}
 function fmt(t){t=Math.max(0,t|0);return Math.floor(t/60)+':'+String(t%60).padStart(2,'0')}
 
@@ -2437,11 +2437,11 @@ function go(i,byUser){
   idx=i; var f=FILMS[i]; caption(i); q('thplay').dataset.i=i;
   clearTimeout(timer);
   if(RM){ hp.src=poster(f); hp.classList.add('on'); hv.forEach(function(v){v.classList.remove('on')}); return; }
-  var v=hv[cur^1], old=hv[cur], want=(WIDE.matches&&!SAVE)?src(f,'f'):src(f,'m');
+  var v=hv[cur^1], old=hv[cur], want=full(f);
   if(v.getAttribute('src')!==want){ v.src=want; } v.currentTime=0;
   var swapped=false;
   function swap(){ if(swapped)return; swapped=true; v.classList.add('on'); old.classList.remove('on'); hp.classList.remove('on');
-    setTimeout(function(){ if(!old.classList.contains('on')) old.pause(); },1500); cur^=1; }
+    setTimeout(function(){ if(!old.classList.contains('on')){ old.pause(); old.removeAttribute('src'); old.load(); } },1500); cur^=1; }
   v.addEventListener('playing',swap,{once:true});
   var p=v.play(); if(p&&p.catch) p.catch(function(){ hp.src=poster(f); hp.classList.add('on'); });
   if(live&&visible) timer=setTimeout(function(){ go((idx+1)%FILMS.length) },HOLD);
