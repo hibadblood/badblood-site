@@ -34,7 +34,7 @@ ol,ul{list-style:none}
 
 /* ── nav ─────────────────────────────────────────── */
 .nav{position:fixed;inset:0 0 auto;z-index:60;display:flex;align-items:center;justify-content:space-between;
-  padding:18px var(--edge);mix-blend-mode:difference}
+  padding:18px var(--edge);background:linear-gradient(180deg,rgba(8,8,10,.55),rgba(8,8,10,0))}
 .nav img{height:17px;width:auto}
 .nav .links a{margin-left:24px;opacity:.75;transition:opacity .3s}
 .nav .links a:hover{opacity:1}
@@ -241,7 +241,7 @@ function heroGo(k){
   hfeat=k; var i=FEAT[k], f=FILMS[i]; heroCaption(i); $('hplay').dataset.i=i;
   if(RM){ hp.src=poster(f); return; }
   var v=hv[hcur^1], old=hv[hcur];
-  v.src=(WIDE.matches&&!SAVE)?src(f,'m'):src(f,'p'); v.currentTime=0;
+  v.src=(WIDE.matches&&!SAVE)?src(f,'f'):src(f,'m'); v.currentTime=0;
   var swapped=false;
   function swap(){ if(swapped)return; swapped=true; v.classList.add('on'); old.classList.remove('on'); hp.classList.remove('on');
     setTimeout(function(){ old.pause(); },1600); hcur^=1; }

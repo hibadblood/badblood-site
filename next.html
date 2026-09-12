@@ -454,6 +454,8 @@ a.venture:focus-visible{outline:1px solid var(--bone);outline-offset:6px}
 .th-arr.l{left:calc(var(--edge) - 12px)}.th-arr.r{right:calc(var(--edge) - 12px)}
 @media(hover:none),(max-width:700px){.th-arr{display:none}}
 @media(max-width:700px){.th-stage{height:min(72vh,600px)} .th-cap{bottom:24px} .th-hint{display:none}}
+/* the logo never changes colour: no blend on the nav, even over a film */
+.nav,.nav img,.nav a{mix-blend-mode:normal!important;filter:none!important}
 /* fullscreen player */
 .cine{position:fixed;inset:0;z-index:200;background:#000;opacity:0;pointer-events:none;transition:opacity .45s;cursor:default;font-family:var(--edit)}
 .cine.on{opacity:1;pointer-events:auto}
@@ -2435,7 +2437,7 @@ function go(i,byUser){
   idx=i; var f=FILMS[i]; caption(i); q('thplay').dataset.i=i;
   clearTimeout(timer);
   if(RM){ hp.src=poster(f); hp.classList.add('on'); hv.forEach(function(v){v.classList.remove('on')}); return; }
-  var v=hv[cur^1], old=hv[cur], want=(WIDE.matches&&!SAVE)?src(f,'m'):src(f,'p');
+  var v=hv[cur^1], old=hv[cur], want=(WIDE.matches&&!SAVE)?src(f,'f'):src(f,'m');
   if(v.getAttribute('src')!==want){ v.src=want; } v.currentTime=0;
   var swapped=false;
   function swap(){ if(swapped)return; swapped=true; v.classList.add('on'); old.classList.remove('on'); hp.classList.remove('on');
