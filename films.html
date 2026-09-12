@@ -157,7 +157,7 @@ footer .fine{flex-basis:100%;margin-top:34px;font-size:9px;line-height:1.5;color
   <video class="layer" id="hv1" muted playsinline loop preload="none" aria-hidden="true"></video>
   <div class="shade"></div>
   <div class="cap">
-    <div class="k mi"><span id="hk">01 / 38</span><span id="hg">Concept film</span></div>
+    <div class="k mi"><span id="hk">01 / 38</span></div>
     <h1 id="hb">Hermès</h1>
     <p class="line" id="ht">Objects remember hands</p>
     <div class="row">
@@ -233,7 +233,7 @@ var hk=0, hcur=0, htimer=null, hfeat=0;
 FEAT.forEach(function(){var b=document.createElement('b');b.appendChild(document.createElement('i'));dots.appendChild(b)});
 function heroCaption(i){
   var f=FILMS[i]; hero.classList.add('fade');
-  setTimeout(function(){ $('hk').textContent=pad(i)+' / '+FILMS.length; $('hg').textContent=GROUP[f.g];
+  setTimeout(function(){ $('hk').textContent=pad(i)+' / '+FILMS.length;
     $('hb').textContent=f.b; $('ht').textContent=f.t; hero.classList.remove('fade'); },RM?0:420);
   [].forEach.call(dots.children,function(b,k){b.className=k<hfeat?'done':k===hfeat?'on':''});
 }
@@ -301,7 +301,7 @@ var cine=$('cine'), cv=$('cv'), idx=-1, idleT=null, wasHero=false;
 function openFilm(i){
   idx=i; var f=FILMS[i];
   clearTimeout(htimer); hv.forEach(function(v){v.pause()});
-  $('ctitle').textContent=f.b; $('csub').textContent=f.t+' — '+GROUP[f.g]+' · '+pad(i)+' / '+FILMS.length;
+  $('ctitle').textContent=f.b; $('csub').textContent=f.t+' · '+pad(i)+' / '+FILMS.length;
   cv.poster=poster(f); cv.src=full(f); cv.muted=false; cv.currentTime=0;
   cine.classList.add('on','loading'); cine.classList.remove('paused'); document.body.style.overflow='hidden';
   var p=cv.play(); if(p&&p.catch)p.catch(function(){ cine.classList.add('paused') });

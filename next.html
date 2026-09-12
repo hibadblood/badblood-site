@@ -569,7 +569,7 @@ a.venture:focus-visible{outline:1px solid var(--bone);outline-offset:6px}
     <video class="th-layer" id="thv1" muted playsinline loop preload="none" aria-hidden="true"></video>
     <div class="th-shade"></div>
     <div class="th-cap">
-      <div class="k mi"><span id="thk">01 / 38</span><span id="thg">Concept film</span></div>
+      <div class="k mi"><span id="thk">01 / 38</span></div>
       <h2 id="thb">Hermès</h2>
       <p id="tht">Objects remember hands</p>
       <div class="th-row">
@@ -2426,7 +2426,7 @@ q('tharrr').addEventListener('click',function(){ userScrollUntil=Date.now()+5000
 var hv=[q('thv0'),q('thv1')], hp=q('thp'), cur=0, idx=0, timer=null, live=true, visible=true;
 function caption(i){
   var f=FILMS[i]; stage.classList.add('fade');
-  setTimeout(function(){ q('thk').textContent=pad(i)+' / '+FILMS.length; q('thg').textContent=GROUP[f.g];
+  setTimeout(function(){ q('thk').textContent=pad(i)+' / '+FILMS.length;
     q('thb').textContent=f.b; q('tht').textContent=f.t; stage.classList.remove('fade'); },RM?0:380);
   thumbs.forEach(function(b,k){ b.classList.remove('on'); if(k===i){ void b.offsetWidth; b.classList.add('on'); } });
   if(Date.now()>userScrollUntil){ var b=thumbs[i], left=b.offsetLeft-(strip.clientWidth-b.offsetWidth)/2; strip.scrollTo({left:left,behavior:RM?'auto':'smooth'}); }
@@ -2458,7 +2458,7 @@ q('thplay').addEventListener('click',function(){ openFilm(+this.dataset.i) });
 var cine=q('cine'), cv=q('cv'), pidx=-1, idleT=null;
 function openFilm(i){
   pidx=i; var f=FILMS[i]; hold(true);
-  q('ctitle').textContent=f.b; q('csub').textContent=f.t+' — '+GROUP[f.g]+' · '+pad(i)+' / '+FILMS.length;
+  q('ctitle').textContent=f.b; q('csub').textContent=f.t+' · '+pad(i)+' / '+FILMS.length;
   cv.poster=poster(f); cv.src=full(f); cv.muted=false; cv.currentTime=0;
   cine.classList.add('on','loading'); cine.classList.remove('paused'); document.body.style.overflow='hidden';
   var p=cv.play(); if(p&&p.catch)p.catch(function(){ cine.classList.add('paused') });
