@@ -9,6 +9,6 @@
   },
   // /join application storage. Create once: wrangler d1 create badblood-join-db  → paste the id below, then:
   // wrangler d1 execute badblood-join-db --remote --file join-migrations/0001_join.sql ; wrangler secret put ADMIN_KEY ; (optional) wrangler secret put IP_SALT
-  "d1_databases": [ { "binding": "DB", "database_name": "badblood-join-db", "database_id": "REPLACE_AT_DEPLOY" } ],
+  "d1_databases": [ { "binding": "DB", "database_name": "badblood-join-db", "database_id": "b077d2ef-c882-4b75-9a20-99ef21fc2aa7" } ],
   "triggers": { "crons": ["17 20 * * *"] }
 }
