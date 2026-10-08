@@ -22,3 +22,18 @@ draft-2026.html
 draft-2026.source.html
 draft-2026-v4.3.html
 draft-2026-v4.2.1-restored.html
+
+# 5 Oct 2026 security pass
+.gitignore
+.remember/
+AGENTS.md
+*.bak*
+.env*
+.dev.vars*
+*.pem
+*.key
+.secrets*
+
+join-worker.js
+join-migrations/
+join-test/
