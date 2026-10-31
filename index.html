@@ -298,8 +298,9 @@ a.venture:hover .foot i{transform:translateX(4px)}
 a.venture:focus-visible{outline:1px solid var(--bone);outline-offset:6px}
 .venture .logo img.eng{height:100%}
 .venture .foot .mi{white-space:nowrap}
-/* fixed corner marks (ORIGINALS / BANGKOK / SOUND) sit on a soft fade while the ventures are on screen, so rows never touch them */
-body.in-originals::after{content:"";position:fixed;left:0;right:0;bottom:0;height:120px;background:linear-gradient(to bottom,rgba(5,5,6,0),rgba(5,5,6,.97) 62%);pointer-events:none;z-index:57}
+/* the fixed corner marks (ORIGINALS / BANGKOK / SOUND) step aside while the ventures grid is on screen, so they can never touch a logo, line or text */
+.marks,#sndT{transition:opacity .35s}
+body.in-originals .marks,body.in-originals #sndT{opacity:0!important;pointer-events:none!important}
 
 /* ══ PORTAL ══ same eye, raised stage ═════════════════════════════════ */
 .portal{position:fixed;inset:0;z-index:95;display:none;flex-direction:column;
@@ -2531,3 +2532,8 @@ go(0);
 })();
 </script>
 
+<script>
+/* corner marks step aside while the ventures grid is on screen (see .in-originals in the CSS) */
+(function(){var o=document.getElementById('originals');if(!o||!('IntersectionObserver' in window))return;
+new IntersectionObserver(function(es){document.body.classList.toggle('in-originals',es[0].isIntersecting);},{threshold:0}).observe(o);})();
+</script>
