@@ -279,28 +279,27 @@ body.onwork .nav::before{background:linear-gradient(to bottom,rgba(5,5,6,.92),rg
 .ventures{grid-column:1/-1;display:grid;grid-template-columns:1fr;margin-top:clamp(14px,2.4vw,30px);border-top:1px solid var(--line)}
 @media (min-width:560px){.ventures{grid-template-columns:repeat(2,minmax(0,1fr))}}
 @media (min-width:1024px){.ventures{grid-template-columns:repeat(3,minmax(0,1fr))}}
-.venture{display:grid;grid-template-rows:auto 1fr auto;gap:14px;padding:clamp(18px,2.4vw,30px) clamp(14px,1.8vw,26px) clamp(18px,2.4vw,30px) 0;
+.venture{display:grid;grid-template-rows:auto 1fr auto;gap:9px;padding:clamp(14px,1.5vw,20px) clamp(14px,1.8vw,26px) clamp(14px,1.5vw,20px) 0;
   border-bottom:1px solid var(--line);color:var(--bone);text-decoration:none}
 @media (min-width:560px){.venture{border-right:1px solid var(--line);padding-left:clamp(14px,1.8vw,26px)}
   .venture:nth-child(odd){padding-left:0}.venture:nth-child(even){border-right:0}}
 @media (min-width:1024px){.venture{border-bottom:1px solid var(--line);border-right:1px solid var(--line);padding-left:clamp(14px,1.8vw,26px)}
   .venture:nth-child(3n+1){padding-left:0}.venture:nth-child(3n){border-right:0}
   .venture:nth-last-child(-n+3){border-bottom:0}}
-.venture .logo{height:clamp(44px,4.6vw,64px);display:flex;align-items:center}
+.venture .logo{height:clamp(36px,3.1vw,44px);display:flex;align-items:center}
 .venture .logo img{height:100%;width:auto;max-width:100%;object-fit:contain}
 .venture .logo img.blend{mix-blend-mode:screen}
-.venture .logo img.tight{height:72%}
-.venture p{margin:0;font-family:var(--micro);font-size:clamp(12.5px,1.05vw,14px);line-height:1.6;color:var(--smoke);max-width:30ch;transition:color var(--t-mid)}
+.venture .logo img.tight{height:80%}
+.venture p{margin:0;font-family:var(--micro);font-size:clamp(12.5px,1.05vw,14px);line-height:1.6;color:var(--smoke);max-width:none;transition:color var(--t-mid)}
 .venture .foot{display:flex;justify-content:space-between;gap:12px;align-items:baseline}
 .venture .foot i{font-style:normal;color:var(--blood);display:inline-block;margin-left:.5em;transition:transform var(--t-mid) var(--lux)}
 a.venture:hover p,a.venture:focus-visible p{color:var(--chrome)}
 a.venture:hover .foot i{transform:translateX(4px)}
 a.venture:focus-visible{outline:1px solid var(--bone);outline-offset:6px}
 .venture .logo img.eng{height:100%}
-.ventures.engines .venture{gap:8px;padding-block:clamp(12px,1.3vw,16px)}
-.ventures.engines .venture .logo{height:clamp(32px,2.8vw,38px)}
-.ventures.engines .venture p{max-width:none}
 .venture .foot .mi{white-space:nowrap}
+/* fixed corner marks (ORIGINALS / BANGKOK / SOUND) sit on a soft fade while the ventures are on screen, so rows never touch them */
+body.in-originals::after{content:"";position:fixed;left:0;right:0;bottom:0;height:120px;background:linear-gradient(to bottom,rgba(5,5,6,0),rgba(5,5,6,.97) 62%);pointer-events:none;z-index:57}
 
 /* ══ PORTAL ══ same eye, raised stage ═════════════════════════════════ */
 .portal{position:fixed;inset:0;z-index:95;display:none;flex-direction:column;
@@ -613,38 +612,34 @@ a.venture:focus-visible{outline:1px solid var(--bone);outline-offset:6px}
     <div class="ventures rv" style="margin-top:0">
         <a class="venture" href="https://tobtan.chat" target="_blank" rel="noopener">
           <span class="logo"><img src="assets/ventures/tobtan.webp" alt="ตอบแทน" loading="lazy" decoding="async"></span>
-          <p>A LINE assistant that answers a business's customers in the owner's own voice.</p>
-          <span class="foot"><span class="mi lit">tobtan.chat<i>→</i></span><span class="mi live">Live</span></span>
+          <p>A LINE assistant that answers in the owner&rsquo;s own voice.</p>
+          <span class="foot"><span class="mi lit">tobtan.chat<i>&rarr;</i></span><span class="mi live">Live</span></span>
         </a>
         <a class="venture" href="https://hordooduang.com" target="_blank" rel="noopener">
           <span class="logo"><img src="assets/ventures/hordooduang.webp" alt="หอดูดวง" loading="lazy" decoding="async"></span>
-          <p>A free birth-chart reading, and a wallpaper drawn from it that exists only once.</p>
-          <span class="foot"><span class="mi lit">hordooduang.com<i>→</i></span><span class="mi live">Live</span></span>
+          <p>A free birth-chart reading and a one-time wallpaper.</p>
+          <span class="foot"><span class="mi lit">hordooduang.com<i>&rarr;</i></span><span class="mi live">Live</span></span>
         </a>
         <a class="venture" href="/iris-protocol">
           <span class="logo"><img class="blend" src="assets/ventures/iris-protocol.webp" alt="IRIS Protocol" loading="lazy" decoding="async"></span>
-          <p>Bad Blood's intelligence, kept as a private black box and opened to partners first.</p>
-          <span class="foot"><span class="mi lit">IRIS Protocol<i>→</i></span><span class="mi">Partners first</span></span>
+          <p>Our intelligence, kept private and opened to partners first.</p>
+          <span class="foot"><span class="mi lit">IRIS Protocol<i>&rarr;</i></span><span class="mi">Partners first</span></span>
         </a>
         <a class="venture" href="/type-o">
           <span class="logo"><img class="tight" src="assets/ventures/type-o.webp" alt="TYPE O" loading="lazy" decoding="async"></span>
-          <p>The back office for every kind of business, sold as a template each company adapts.</p>
-          <span class="foot"><span class="mi lit">Read the idea<i>→</i></span><span class="mi live">Live</span></span>
+          <p>The back office for every kind of business.</p>
+          <span class="foot"><span class="mi lit">Read the idea<i>&rarr;</i></span><span class="mi live">Live</span></span>
         </a>
         <a class="venture" href="/artery">
           <span class="logo"><img class="tight" src="assets/ventures/artery.webp" alt="ARTERY" loading="lazy" decoding="async"></span>
-          <p>One heart, every channel. The publishing artery that carries Bad Blood's own brands out into the world.</p>
-          <span class="foot"><span class="mi lit">See the demo<i>→</i></span><span class="mi">Internal</span></span>
+          <p>One heart, every channel: publishing for our own brands.</p>
+          <span class="foot"><span class="mi lit">See the demo<i>&rarr;</i></span><span class="mi">Internal</span></span>
         </a>
         <a class="venture" href="/plasma">
           <span class="logo"><img class="tight" src="assets/ventures/plasma.webp" alt="PLASMA" loading="lazy" decoding="async"></span>
-          <p>One picture factory for every Bad Blood brand: prompts kept as packs, every image model behind one door.</p>
+          <p>One picture factory for every Bad Blood brand.</p>
           <span class="foot"><span class="mi lit">See how it works<i>&rarr;</i></span><span class="mi live">Live</span></span>
         </a>
-      </div>
-    <div class="rv" style="display:grid;gap:clamp(14px,2.4vw,26px)">
-    <span class="mi">The engines inside</span>
-    <div class="ventures engines" style="margin-top:0">
         <a class="venture" href="/marrow">
           <span class="logo"><img class="eng" src="assets/ventures/marrow.webp" alt="MARROW" loading="lazy" decoding="async"></span>
           <p>Every website we build, from sites that already work.</p>
@@ -653,7 +648,7 @@ a.venture:focus-visible{outline:1px solid var(--bone);outline-offset:6px}
         <a class="venture" href="/nerve">
           <span class="logo"><img class="eng" src="assets/ventures/nerve.webp" alt="NERVE" loading="lazy" decoding="async"></span>
           <p>Every chat, in the owner&rsquo;s language.</p>
-          <span class="foot"><span class="mi lit">Retina · Contact Lens<i>&rarr;</i></span><span class="mi">In use</span></span>
+          <span class="foot"><span class="mi lit">Retina &middot; Contact Lens<i>&rarr;</i></span><span class="mi">In use</span></span>
         </a>
         <a class="venture" href="/heartbeat">
           <span class="logo"><img class="eng" src="assets/ventures/heartbeat.webp" alt="HEARTBEAT" loading="lazy" decoding="async"></span>
@@ -676,7 +671,6 @@ a.venture:focus-visible{outline:1px solid var(--bone);outline-offset:6px}
           <span class="foot"><span class="mi lit">The parts library<i>&rarr;</i></span><span class="mi">Internal</span></span>
         </a>
       </div>
-    </div>
       <p class="rv" style="margin-top:clamp(20px,3vw,34px)"><a href="/iris" style="display:inline-flex;align-items:baseline;gap:.7em;border:1px solid var(--line);border-radius:2px;padding:14px 20px;font-family:var(--micro);font-size:clamp(12px,1.05vw,14px);letter-spacing:.18em;text-transform:uppercase;color:var(--bone)">What IRIS actually does<i style="font-style:normal;color:var(--blood)">&rarr;</i></a></p>
   </div>
 </section>
