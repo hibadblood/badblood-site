@@ -95,6 +95,7 @@ a.part:hover .foot .go i{transform:translateX(4px)}
 a.part:hover p{color:var(--cream)}
 .part .foot .live{color:var(--live)}
 .part .foot > span:last-child:not(.live){color:var(--grey)}
+@media(min-width:760px){.parts > .part:last-child:nth-child(odd){grid-column:1/-1;border-right:0;padding-right:0}}
 
 /* why */
 .why{border:1px solid var(--line2);border-radius:4px;background:var(--panel);padding:clamp(22px,3.4vw,34px);display:grid;gap:14px}
@@ -117,7 +118,7 @@ a.part:hover p{color:var(--cream)}
   <div class="container">
     <div class="top">
       <a href="/" class="label" style="color:var(--cream)">BAD BLOOD COMPANY</a>
-      <span class="label">Sep 2026</span>
+      <span class="label">Nov 2026</span>
     </div>
 
     <div class="head">
@@ -128,14 +129,14 @@ a.part:hover p{color:var(--cream)}
       </div>
 
       <svg class="map" viewBox="0 36 360 372" role="img" aria-labelledby="mapT">
-        <title id="mapT">IRIS at the centre, its organs in six groups around it: make and post (PLASMA, ARTERY), build (MARROW, TYPE O), talk (NERVE with RETINA, CONTACT LENS and IRIS Protocol), run (HEARTBEAT, X-RAY, LEFT EYE, TRACER), grow (BAD BLOOD LAB) and two products already shipped (ตอบแทน, หอดูดวง).</title>
+        <title id="mapT">IRIS at the centre, its organs in six groups around it: make and post (PLASMA, ARTERY), build (MARROW, TYPE O), talk (NERVE with RETINA, CONTACT LENS and IRIS Protocol), run (HEARTBEAT, X-RAY, LEFT EYE), grow (BAD BLOOD LAB) and two products already shipped (ตอบแทน, หอดูดวง).</title>
         <line class="spoke" x1="180" y1="215" x2="180" y2="82"></line><line class="spoke" x1="180" y1="215" x2="297" y2="148"></line><line class="spoke" x1="180" y1="215" x2="297" y2="282"></line><line class="spoke" x1="180" y1="215" x2="180" y2="348"></line><line class="spoke" x1="180" y1="215" x2="63" y2="282"></line><line class="spoke" x1="180" y1="215" x2="63" y2="148"></line>
         <circle class="halo" cx="180" cy="215" r="38"></circle>
         <circle class="core" cx="180" cy="215" r="14"></circle>
         <circle class="node" cx="180" cy="82" r="5"></circle><circle class="node" cx="297" cy="148" r="5"></circle><circle class="node" cx="297" cy="282" r="5"></circle><circle class="node" cx="180" cy="348" r="5"></circle><circle class="node" cx="63" cy="282" r="5"></circle><circle class="node" cx="63" cy="148" r="5"></circle>
         <circle class="pip" cx="180" cy="150" r="2.6"></circle><circle class="pip" cx="240" cy="248" r="2.6"></circle><circle class="pip" cx="120" cy="248" r="2.6"></circle>
         <text class="hub" x="180" y="249">IRIS</text>
-        <text class="tag" x="180" y="54">MAKE + POST</text><text class="org" x="180" y="68">PLASMA · ARTERY</text><text class="tag" x="297" y="170">BUILD</text><text class="org" x="297" y="184">MARROW</text><text class="org" x="297" y="198">TYPE O</text><text class="tag" x="297" y="304">TALK</text><text class="org" x="297" y="318">NERVE</text><text class="org" x="297" y="332">RETINA</text><text class="org" x="297" y="346">CONTACT LENS</text><text class="org" x="297" y="360">IRIS PROTOCOL</text><text class="tag" x="180" y="370">RUN</text><text class="org" x="180" y="384">HEARTBEAT · X-RAY</text><text class="org" x="180" y="398">LEFT EYE · TRACER</text><text class="tag" x="63" y="304">SHIPPED</text><text class="org th" x="63" y="318">ตอบแทน</text><text class="org th" x="63" y="332">หอดูดวง</text><text class="tag" x="63" y="170">GROW</text><text class="org" x="63" y="184">BAD BLOOD LAB</text>
+        <text class="tag" x="180" y="54">MAKE + POST</text><text class="org" x="180" y="68">PLASMA · ARTERY</text><text class="tag" x="297" y="170">BUILD</text><text class="org" x="297" y="184">MARROW</text><text class="org" x="297" y="198">TYPE O</text><text class="tag" x="297" y="304">TALK</text><text class="org" x="297" y="318">NERVE</text><text class="org" x="297" y="332">RETINA</text><text class="org" x="297" y="346">CONTACT LENS</text><text class="org" x="297" y="360">IRIS PROTOCOL</text><text class="tag" x="180" y="370">RUN</text><text class="org" x="180" y="384">HEARTBEAT · X-RAY</text><text class="org" x="180" y="398">LEFT EYE</text><text class="tag" x="63" y="304">SHIPPED</text><text class="org th" x="63" y="318">ตอบแทน</text><text class="org th" x="63" y="332">หอดูดวง</text><text class="tag" x="63" y="170">GROW</text><text class="org" x="63" y="184">BAD BLOOD LAB</text>
       </svg>
     </div>
   </div>
@@ -187,7 +188,7 @@ a.part:hover p{color:var(--cream)}
       </a>
       <a class="part rv" href="/nerve">
         <span class="logo"><img src="assets/ventures/nerve.webp" alt="NERVE" style="height:40px" loading="lazy" decoding="async"></span>
-        <span class="who">Every chat, in every language</span>
+        <span class="who">Every chat, in the owner's language</span>
         <p>Every conversation channel in one place: <b>RETINA answers with AI</b>, <b>CONTACT LENS runs without it</b> and costs nothing to keep.</p>
         <span class="foot"><span class="go">RETINA &middot; CONTACT LENS<i>&rarr;</i></span><span>In use</span></span>
       </a>
@@ -214,12 +215,6 @@ a.part:hover p{color:var(--cream)}
         <span class="who">A second screen</span>
         <p>A <b>view-only board</b> for a second screen: the newest finished work and the live state of each room. Nothing to tap, nothing to run.</p>
         <span class="foot"><span class="go">The second screen<i>&rarr;</i></span><span>Internal</span></span>
-      </a>
-      <a class="part rv" href="/tracer">
-        <span class="logo"><img src="assets/ventures/tracer.webp" alt="TRACER" style="height:44px" loading="lazy" decoding="async"></span>
-        <span class="who">You sent it. Then silence.</span>
-        <p>Proposal files that report back: <b>who opened it, how long they read, how far they got</b>, and a message the moment it happens. Sales work stops being a guess.</p>
-        <span class="foot"><span class="go">Tracking links<i>&rarr;</i></span><span>In build</span></span>
       </a>
       <a class="part rv" href="/bad-blood-lab">
         <span class="logo"><img src="assets/ventures/bad-blood-lab.webp" alt="BAD BLOOD LAB" style="height:38px" loading="lazy" decoding="async"></span>
