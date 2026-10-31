@@ -95,6 +95,8 @@ a.part:hover .foot .go i{transform:translateX(4px)}
 a.part:hover p{color:var(--cream)}
 .part .foot .live{color:var(--live)}
 .part .foot > span:last-child:not(.live){color:var(--grey)}
+.parts .part.tight{grid-template-rows:auto 1fr auto;gap:6px;padding-block:13px}
+.part.tight .logo{height:36px}
 @media(min-width:760px){.parts > .part:last-child:nth-child(odd){grid-column:1/-1;border-right:0;padding-right:0}}
 
 /* why */
@@ -156,70 +158,59 @@ a.part:hover p{color:var(--cream)}
     </div>
 
     <div class="parts">
-      <div class="part rv">
-        <span class="logo"><img src="assets/ventures/iris.webp" alt="IRIS" style="height:40px" loading="lazy" decoding="async"></span>
-        <span class="who">The one place it all runs from</span>
-        <p>The command face of Bad Blood: <b>every job and every organ in one view</b>, for the people who run the company. It has no public door, on purpose.</p>
+      <div class="part tight rv">
+        <span class="logo"><img src="assets/ventures/iris.webp" alt="IRIS" style="height:35px" loading="lazy" decoding="async"></span>
+        <p>Where every job and organ is run. No public door.</p>
         <span class="foot"><span>The brain</span><span>In use</span></span>
       </div>
-      <a class="part rv" href="/plasma">
-        <span class="logo"><img src="assets/ventures/plasma.webp" alt="PLASMA" style="height:31px" loading="lazy" decoding="async"></span>
-        <span class="who">A picture needed every day</span>
-        <p>One factory that makes them: the style lives in a pack, the model is a setting, and <b>the letters are drawn by code</b> so nothing is ever misspelt.</p>
+      <a class="part tight rv" href="/plasma">
+        <span class="logo"><img src="assets/ventures/plasma.webp" alt="PLASMA" style="height:27px" loading="lazy" decoding="async"></span>
+        <p>One factory for every picture, letters drawn by code.</p>
         <span class="foot"><span class="go">See how it works<i>&rarr;</i></span><span class="live">Live</span></span>
       </a>
-      <a class="part rv" href="/artery">
-        <span class="logo"><img src="assets/ventures/artery.webp" alt="ARTERY" style="height:25px" loading="lazy" decoding="async"></span>
-        <span class="who">One brand, every channel</span>
-        <p>The publishing line that carries our own brands out into the world <b>from one heart</b>, so a thing said once arrives everywhere it should.</p>
+      <a class="part tight rv" href="/artery">
+        <span class="logo"><img src="assets/ventures/artery.webp" alt="ARTERY" style="height:22px" loading="lazy" decoding="async"></span>
+        <p>Publishes our own brands everywhere, from one heart.</p>
         <span class="foot"><span class="go">See the demo<i>&rarr;</i></span><span>Internal</span></span>
       </a>
-      <a class="part rv" href="/marrow">
-        <span class="logo"><img src="assets/ventures/marrow.webp" alt="MARROW" style="height:40px" loading="lazy" decoding="async"></span>
-        <span class="who">Every website we build</span>
-        <p>The website factory: <b>a library of finished sites, fitted to each new business</b>, so a new site starts from one that already works.</p>
+      <a class="part tight rv" href="/marrow">
+        <span class="logo"><img src="assets/ventures/marrow.webp" alt="MARROW" style="height:35px" loading="lazy" decoding="async"></span>
+        <p>Every website we build, from sites that already work.</p>
         <span class="foot"><span class="go">How sites are made<i>&rarr;</i></span><span>In use</span></span>
       </a>
-      <a class="part rv" href="/type-o">
-        <span class="logo"><img src="assets/ventures/type-o.webp" alt="TYPE O" style="height:29px" loading="lazy" decoding="async"></span>
-        <span class="who">The work behind the counter</span>
-        <p>One back office for any trade: orders, jobs, stock, staff, money. <b>One core, one small pack per trade</b>, changed by the owner without a developer.</p>
+      <a class="part tight rv" href="/type-o">
+        <span class="logo"><img src="assets/ventures/type-o.webp" alt="TYPE O" style="height:26px" loading="lazy" decoding="async"></span>
+        <p>One back office for any trade, one pack per trade.</p>
         <span class="foot"><span class="go">Read the idea<i>&rarr;</i></span><span class="live">Live</span></span>
       </a>
-      <a class="part rv" href="/nerve">
-        <span class="logo"><img src="assets/ventures/nerve.webp" alt="NERVE" style="height:40px" loading="lazy" decoding="async"></span>
-        <span class="who">Every chat, in the owner's language</span>
-        <p>Every conversation channel in one place: <b>RETINA answers with AI</b>, <b>CONTACT LENS runs without it</b> and costs nothing to keep.</p>
+      <a class="part tight rv" href="/nerve">
+        <span class="logo"><img src="assets/ventures/nerve.webp" alt="NERVE" style="height:35px" loading="lazy" decoding="async"></span>
+        <p>Every chat, in the owner&rsquo;s language.</p>
         <span class="foot"><span class="go">RETINA &middot; CONTACT LENS<i>&rarr;</i></span><span>In use</span></span>
       </a>
-      <a class="part rv" href="/iris-protocol">
-        <span class="logo"><img class="blend" src="assets/ventures/iris-protocol.webp" alt="IRIS Protocol" style="height:56px" loading="lazy" decoding="async"></span>
-        <span class="who">When a client wants to see inside</span>
-        <p>How IRIS talks to our own clients: <b>a private place to review work and leave notes</b>, opened to partners first.</p>
+      <a class="part tight rv" href="/iris-protocol">
+        <span class="logo"><img class="blend" src="assets/ventures/iris-protocol.webp" alt="IRIS Protocol" style="height:49px" loading="lazy" decoding="async"></span>
+        <p>How IRIS talks to our own clients.</p>
         <span class="foot"><span class="go">IRIS Protocol<i>&rarr;</i></span><span>Partners first</span></span>
       </a>
-      <a class="part rv" href="/heartbeat">
-        <span class="logo"><img src="assets/ventures/heartbeat.webp" alt="HEARTBEAT" style="height:40px" loading="lazy" decoding="async"></span>
-        <span class="who">One client meeting, one link</span>
-        <p>A meeting mode: <b>everything for the meeting in one place</b>, in order, each item one tap away. What the client may see stays apart from what only we see.</p>
+      <a class="part tight rv" href="/heartbeat">
+        <span class="logo"><img src="assets/ventures/heartbeat.webp" alt="HEARTBEAT" style="height:35px" loading="lazy" decoding="async"></span>
+        <p>One link per client meeting, every item a tap away.</p>
         <span class="foot"><span class="go">Meeting mode<i>&rarr;</i></span><span>In use</span></span>
       </a>
-      <a class="part rv" href="/x-ray">
-        <span class="logo"><img src="assets/ventures/x-ray.webp" alt="X-RAY" style="height:40px" loading="lazy" decoding="async"></span>
-        <span class="who">Done, or only on paper?</span>
-        <p>Take a client's own plan and <b>stamp every box with its real status</b>: done, built and waiting, on paper, next phase, or not promised.</p>
+      <a class="part tight rv" href="/x-ray">
+        <span class="logo"><img src="assets/ventures/x-ray.webp" alt="X-RAY" style="height:35px" loading="lazy" decoding="async"></span>
+        <p>A client&rsquo;s plan, stamped with what is really done.</p>
         <span class="foot"><span class="go">Plan vs done<i>&rarr;</i></span><span>In use</span></span>
       </a>
-      <a class="part rv" href="/left-eye">
-        <span class="logo"><img src="assets/ventures/left-eye.webp" alt="LEFT EYE" style="height:38px" loading="lazy" decoding="async"></span>
-        <span class="who">A second screen</span>
-        <p>A <b>view-only board</b> for a second screen: the newest finished work and the live state of each room. Nothing to tap, nothing to run.</p>
+      <a class="part tight rv" href="/left-eye">
+        <span class="logo"><img src="assets/ventures/left-eye.webp" alt="LEFT EYE" style="height:33px" loading="lazy" decoding="async"></span>
+        <p>A view-only second screen for our own work.</p>
         <span class="foot"><span class="go">The second screen<i>&rarr;</i></span><span>Internal</span></span>
       </a>
-      <a class="part rv" href="/bad-blood-lab">
-        <span class="logo"><img src="assets/ventures/bad-blood-lab.webp" alt="BAD BLOOD LAB" style="height:38px" loading="lazy" decoding="async"></span>
-        <span class="who">Which part is worth improving?</span>
-        <p>Every reusable part of our systems, kept and counted. <b>The ones used most are the ones we improve first</b>, one exact part at a time.</p>
+      <a class="part tight rv" href="/bad-blood-lab">
+        <span class="logo"><img src="assets/ventures/bad-blood-lab.webp" alt="BAD BLOOD LAB" style="height:33px" loading="lazy" decoding="async"></span>
+        <p>The parts everything is made of, counted and improved.</p>
         <span class="foot"><span class="go">The parts library<i>&rarr;</i></span><span>Internal</span></span>
       </a>
     </div>

@@ -296,7 +296,10 @@ body.onwork .nav::before{background:linear-gradient(to bottom,rgba(5,5,6,.92),rg
 a.venture:hover p,a.venture:focus-visible p{color:var(--chrome)}
 a.venture:hover .foot i{transform:translateX(4px)}
 a.venture:focus-visible{outline:1px solid var(--bone);outline-offset:6px}
-.venture .logo img.eng{height:74%}
+.venture .logo img.eng{height:100%}
+.ventures.engines .venture{gap:8px;padding-block:clamp(12px,1.3vw,16px)}
+.ventures.engines .venture .logo{height:clamp(32px,2.8vw,38px)}
+.ventures.engines .venture p{max-width:none}
 .venture .foot .mi{white-space:nowrap}
 
 /* ══ PORTAL ══ same eye, raised stage ═════════════════════════════════ */
@@ -644,32 +647,32 @@ a.venture:focus-visible{outline:1px solid var(--bone);outline-offset:6px}
     <div class="ventures engines" style="margin-top:0">
         <a class="venture" href="/marrow">
           <span class="logo"><img class="eng" src="assets/ventures/marrow.webp" alt="MARROW" loading="lazy" decoding="async"></span>
-          <p>The website factory: finished sites, fitted to each new business, so none starts blank.</p>
+          <p>Every website we build, from sites that already work.</p>
           <span class="foot"><span class="mi lit">How sites are made<i>&rarr;</i></span><span class="mi">In use</span></span>
         </a>
         <a class="venture" href="/nerve">
           <span class="logo"><img class="eng" src="assets/ventures/nerve.webp" alt="NERVE" loading="lazy" decoding="async"></span>
-          <p>Every chat, in the owner's language. RETINA answers with AI. CONTACT LENS runs without it.</p>
+          <p>Every chat, in the owner&rsquo;s language.</p>
           <span class="foot"><span class="mi lit">Retina · Contact Lens<i>&rarr;</i></span><span class="mi">In use</span></span>
         </a>
         <a class="venture" href="/heartbeat">
           <span class="logo"><img class="eng" src="assets/ventures/heartbeat.webp" alt="HEARTBEAT" loading="lazy" decoding="async"></span>
-          <p>A meeting mode: everything for one client meeting in one place, each item a tap away.</p>
+          <p>One link per client meeting, every item a tap away.</p>
           <span class="foot"><span class="mi lit">Meeting mode<i>&rarr;</i></span><span class="mi">In use</span></span>
         </a>
         <a class="venture" href="/x-ray">
           <span class="logo"><img class="eng" src="assets/ventures/x-ray.webp" alt="X-RAY" loading="lazy" decoding="async"></span>
-          <p>A client's own plan, stamped box by box with what is done and what is only on paper.</p>
+          <p>A client&rsquo;s plan, stamped with what is really done.</p>
           <span class="foot"><span class="mi lit">Plan vs done<i>&rarr;</i></span><span class="mi">In use</span></span>
         </a>
         <a class="venture" href="/left-eye">
           <span class="logo"><img class="eng" src="assets/ventures/left-eye.webp" alt="LEFT EYE" loading="lazy" decoding="async"></span>
-          <p>A view-only second screen: the newest finished work and the state of every room.</p>
+          <p>A view-only second screen for our own work.</p>
           <span class="foot"><span class="mi lit">The second screen<i>&rarr;</i></span><span class="mi">Internal</span></span>
         </a>
         <a class="venture" href="/bad-blood-lab">
           <span class="logo"><img class="eng" src="assets/ventures/bad-blood-lab.webp" alt="BAD BLOOD LAB" loading="lazy" decoding="async"></span>
-          <p>The parts everything is made of, kept and counted. The most used get improved first.</p>
+          <p>The parts everything is made of, counted and improved.</p>
           <span class="foot"><span class="mi lit">The parts library<i>&rarr;</i></span><span class="mi">Internal</span></span>
         </a>
       </div>
