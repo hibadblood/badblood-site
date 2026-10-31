@@ -45,12 +45,16 @@ a{color:inherit;text-decoration:none}
 
 /* the map graphic */
 .map{width:100%;max-width:420px;margin-left:auto}
-@media(max-width:860px){.map{margin:0 auto;max-width:320px}}
+@media(max-width:860px){.map{margin:0 auto;max-width:360px}}
 .map .spoke{stroke:rgba(239,235,229,.20);stroke-width:.5}
 .map .node{fill:#EFEBE5}
 .map .halo{fill:var(--red);opacity:.16}
 .map .core{fill:var(--red)}
-.map .pip{fill:var(--red2)}
+.map .pip{fill:var(--red2);transform-box:fill-box;transform-origin:center}
+.map .tag{font-family:var(--mono);font-size:9.5px;letter-spacing:.2em;fill:var(--red2);text-anchor:middle}
+.map .org{font-family:var(--mono);font-size:10px;letter-spacing:.1em;fill:var(--cream2);text-anchor:middle}
+.map .org.th{font-family:var(--thai);letter-spacing:0;font-size:11px}
+.map .hub{font-family:var(--mono);font-size:9.5px;letter-spacing:.3em;fill:var(--cream);text-anchor:middle;paint-order:stroke;stroke:#050505;stroke-width:4px}
 @media(prefers-reduced-motion:no-preference){
   .map .pip{animation:travel 3.6s ease-in-out infinite}
   .map .pip:nth-of-type(2){animation-delay:.6s}
@@ -90,6 +94,7 @@ a{color:inherit;text-decoration:none}
 a.part:hover .foot .go i{transform:translateX(4px)}
 a.part:hover p{color:var(--cream)}
 .part .foot .live{color:var(--live)}
+.part .foot > span:last-child:not(.live){color:var(--grey)}
 
 /* why */
 .why{border:1px solid var(--line2);border-radius:4px;background:var(--panel);padding:clamp(22px,3.4vw,34px);display:grid;gap:14px}
@@ -122,24 +127,15 @@ a.part:hover p{color:var(--cream)}
         <p class="say">People ask what IRIS can do and the honest answer is a list, which is no answer at all. So here is the map instead. <b>Every part below is one job it already does, every day, for us.</b></p>
       </div>
 
-      <svg class="map" viewBox="0 0 200 200" role="img" aria-label="IRIS at the centre, six parts around it">
-        <line class="spoke" x1="100" y1="100" x2="100" y2="30"></line>
-        <line class="spoke" x1="100" y1="100" x2="161" y2="65"></line>
-        <line class="spoke" x1="100" y1="100" x2="161" y2="135"></line>
-        <line class="spoke" x1="100" y1="100" x2="100" y2="170"></line>
-        <line class="spoke" x1="100" y1="100" x2="39" y2="135"></line>
-        <line class="spoke" x1="100" y1="100" x2="39" y2="65"></line>
-        <circle class="halo" cx="100" cy="100" r="34"></circle>
-        <circle class="core" cx="100" cy="100" r="13"></circle>
-        <circle class="node" cx="100" cy="30" r="5"></circle>
-        <circle class="node" cx="161" cy="65" r="5"></circle>
-        <circle class="node" cx="161" cy="135" r="5"></circle>
-        <circle class="node" cx="100" cy="170" r="5"></circle>
-        <circle class="node" cx="39" cy="135" r="5"></circle>
-        <circle class="node" cx="39" cy="65" r="5"></circle>
-        <circle class="pip" cx="100" cy="62" r="2.6"></circle>
-        <circle class="pip" cx="131" cy="118" r="2.6"></circle>
-        <circle class="pip" cx="69" cy="118" r="2.6"></circle>
+      <svg class="map" viewBox="0 36 360 372" role="img" aria-labelledby="mapT">
+        <title id="mapT">IRIS at the centre, its organs in six groups around it: make and post (PLASMA, ARTERY), build (MARROW, TYPE O), talk (NERVE with RETINA, CONTACT LENS and IRIS Protocol), run (HEARTBEAT, X-RAY, LEFT EYE, TRACER), grow (BAD BLOOD LAB) and two products already shipped (ตอบแทน, หอดูดวง).</title>
+        <line class="spoke" x1="180" y1="215" x2="180" y2="82"></line><line class="spoke" x1="180" y1="215" x2="297" y2="148"></line><line class="spoke" x1="180" y1="215" x2="297" y2="282"></line><line class="spoke" x1="180" y1="215" x2="180" y2="348"></line><line class="spoke" x1="180" y1="215" x2="63" y2="282"></line><line class="spoke" x1="180" y1="215" x2="63" y2="148"></line>
+        <circle class="halo" cx="180" cy="215" r="38"></circle>
+        <circle class="core" cx="180" cy="215" r="14"></circle>
+        <circle class="node" cx="180" cy="82" r="5"></circle><circle class="node" cx="297" cy="148" r="5"></circle><circle class="node" cx="297" cy="282" r="5"></circle><circle class="node" cx="180" cy="348" r="5"></circle><circle class="node" cx="63" cy="282" r="5"></circle><circle class="node" cx="63" cy="148" r="5"></circle>
+        <circle class="pip" cx="180" cy="150" r="2.6"></circle><circle class="pip" cx="240" cy="248" r="2.6"></circle><circle class="pip" cx="120" cy="248" r="2.6"></circle>
+        <text class="hub" x="180" y="249">IRIS</text>
+        <text class="tag" x="180" y="54">MAKE + POST</text><text class="org" x="180" y="68">PLASMA · ARTERY</text><text class="tag" x="297" y="170">BUILD</text><text class="org" x="297" y="184">MARROW</text><text class="org" x="297" y="198">TYPE O</text><text class="tag" x="297" y="304">TALK</text><text class="org" x="297" y="318">NERVE</text><text class="org" x="297" y="332">RETINA</text><text class="org" x="297" y="346">CONTACT LENS</text><text class="org" x="297" y="360">IRIS PROTOCOL</text><text class="tag" x="180" y="370">RUN</text><text class="org" x="180" y="384">HEARTBEAT · X-RAY</text><text class="org" x="180" y="398">LEFT EYE · TRACER</text><text class="tag" x="63" y="304">SHIPPED</text><text class="org th" x="63" y="318">ตอบแทน</text><text class="org th" x="63" y="332">หอดูดวง</text><text class="tag" x="63" y="170">GROW</text><text class="org" x="63" y="184">BAD BLOOD LAB</text>
       </svg>
     </div>
   </div>
@@ -155,7 +151,91 @@ a.part:hover p{color:var(--cream)}
   <div class="container">
     <div class="sec-h rv">
       <span class="label"><b>The parts</b> · pick the one that is your problem</span>
-      <h2 class="disp">Six organs.<br>One <span class="rd">bloodstream</span>.</h2>
+      <h2 class="disp">Every organ.<br>One <span class="rd">bloodstream</span>.</h2>
+    </div>
+
+    <div class="parts">
+      <div class="part rv">
+        <span class="logo"><img src="assets/ventures/iris.webp" alt="IRIS" style="height:40px" loading="lazy" decoding="async"></span>
+        <span class="who">The one place it all runs from</span>
+        <p>The command face of Bad Blood: <b>every job and every organ in one view</b>, for the people who run the company. It has no public door, on purpose.</p>
+        <span class="foot"><span>The brain</span><span>In use</span></span>
+      </div>
+      <a class="part rv" href="/plasma">
+        <span class="logo"><img src="assets/ventures/plasma.webp" alt="PLASMA" style="height:31px" loading="lazy" decoding="async"></span>
+        <span class="who">A picture needed every day</span>
+        <p>One factory that makes them: the style lives in a pack, the model is a setting, and <b>the letters are drawn by code</b> so nothing is ever misspelt.</p>
+        <span class="foot"><span class="go">See how it works<i>&rarr;</i></span><span class="live">Live</span></span>
+      </a>
+      <a class="part rv" href="/artery">
+        <span class="logo"><img src="assets/ventures/artery.webp" alt="ARTERY" style="height:25px" loading="lazy" decoding="async"></span>
+        <span class="who">One brand, every channel</span>
+        <p>The publishing line that carries our own brands out into the world <b>from one heart</b>, so a thing said once arrives everywhere it should.</p>
+        <span class="foot"><span class="go">See the demo<i>&rarr;</i></span><span>Internal</span></span>
+      </a>
+      <a class="part rv" href="/marrow">
+        <span class="logo"><img src="assets/ventures/marrow.webp" alt="MARROW" style="height:40px" loading="lazy" decoding="async"></span>
+        <span class="who">Every website we build</span>
+        <p>The website factory: <b>a library of finished sites, fitted to each new business</b>, so a new site starts from one that already works.</p>
+        <span class="foot"><span class="go">How sites are made<i>&rarr;</i></span><span>In use</span></span>
+      </a>
+      <a class="part rv" href="/type-o">
+        <span class="logo"><img src="assets/ventures/type-o.webp" alt="TYPE O" style="height:29px" loading="lazy" decoding="async"></span>
+        <span class="who">The work behind the counter</span>
+        <p>One back office for any trade: orders, jobs, stock, staff, money. <b>One core, one small pack per trade</b>, changed by the owner without a developer.</p>
+        <span class="foot"><span class="go">Read the idea<i>&rarr;</i></span><span class="live">Live</span></span>
+      </a>
+      <a class="part rv" href="/nerve">
+        <span class="logo"><img src="assets/ventures/nerve.webp" alt="NERVE" style="height:40px" loading="lazy" decoding="async"></span>
+        <span class="who">Every chat, in every language</span>
+        <p>Every conversation channel in one place: <b>RETINA answers with AI</b>, <b>CONTACT LENS runs without it</b> and costs nothing to keep.</p>
+        <span class="foot"><span class="go">RETINA &middot; CONTACT LENS<i>&rarr;</i></span><span>In use</span></span>
+      </a>
+      <a class="part rv" href="/iris-protocol">
+        <span class="logo"><img class="blend" src="assets/ventures/iris-protocol.webp" alt="IRIS Protocol" style="height:56px" loading="lazy" decoding="async"></span>
+        <span class="who">When a client wants to see inside</span>
+        <p>How IRIS talks to our own clients: <b>a private place to review work and leave notes</b>, opened to partners first.</p>
+        <span class="foot"><span class="go">IRIS Protocol<i>&rarr;</i></span><span>Partners first</span></span>
+      </a>
+      <a class="part rv" href="/heartbeat">
+        <span class="logo"><img src="assets/ventures/heartbeat.webp" alt="HEARTBEAT" style="height:40px" loading="lazy" decoding="async"></span>
+        <span class="who">One client meeting, one link</span>
+        <p>A meeting mode: <b>everything for the meeting in one place</b>, in order, each item one tap away. What the client may see stays apart from what only we see.</p>
+        <span class="foot"><span class="go">Meeting mode<i>&rarr;</i></span><span>In use</span></span>
+      </a>
+      <a class="part rv" href="/x-ray">
+        <span class="logo"><img src="assets/ventures/x-ray.webp" alt="X-RAY" style="height:40px" loading="lazy" decoding="async"></span>
+        <span class="who">Done, or only on paper?</span>
+        <p>Take a client's own plan and <b>stamp every box with its real status</b>: done, built and waiting, on paper, next phase, or not promised.</p>
+        <span class="foot"><span class="go">Plan vs done<i>&rarr;</i></span><span>In use</span></span>
+      </a>
+      <a class="part rv" href="/left-eye">
+        <span class="logo"><img src="assets/ventures/left-eye.webp" alt="LEFT EYE" style="height:38px" loading="lazy" decoding="async"></span>
+        <span class="who">A second screen</span>
+        <p>A <b>view-only board</b> for a second screen: the newest finished work and the live state of each room. Nothing to tap, nothing to run.</p>
+        <span class="foot"><span class="go">The second screen<i>&rarr;</i></span><span>Internal</span></span>
+      </a>
+      <a class="part rv" href="/tracer">
+        <span class="logo"><img src="assets/ventures/tracer.webp" alt="TRACER" style="height:44px" loading="lazy" decoding="async"></span>
+        <span class="who">You sent it. Then silence.</span>
+        <p>Proposal files that report back: <b>who opened it, how long they read, how far they got</b>, and a message the moment it happens. Sales work stops being a guess.</p>
+        <span class="foot"><span class="go">Tracking links<i>&rarr;</i></span><span>In build</span></span>
+      </a>
+      <a class="part rv" href="/bad-blood-lab">
+        <span class="logo"><img src="assets/ventures/bad-blood-lab.webp" alt="BAD BLOOD LAB" style="height:38px" loading="lazy" decoding="async"></span>
+        <span class="who">Which part is worth improving?</span>
+        <p>Every reusable part of our systems, kept and counted. <b>The ones used most are the ones we improve first</b>, one exact part at a time.</p>
+        <span class="foot"><span class="go">The parts library<i>&rarr;</i></span><span>Internal</span></span>
+      </a>
+    </div>
+  </div>
+</section>
+
+<section class="sec" style="padding-top:0">
+  <div class="container">
+    <div class="sec-h rv">
+      <span class="label"><b>Already out there</b> · two companies running on it</span>
+      <h2 class="disp">Built on it,<br>out in the <span class="rd">open</span>.</h2>
     </div>
 
     <div class="parts">
@@ -165,41 +245,12 @@ a.part:hover p{color:var(--cream)}
         <p>A LINE assistant that answers them <b>in the owner's own voice</b>, at three in the morning, without inventing anything it was not told.</p>
         <span class="foot"><span class="go">tobtan.chat<i>&rarr;</i></span><span class="live">Live</span></span>
       </a>
-
-      <a class="part rv d1" href="/type-o">
-        <span class="logo"><img src="assets/ventures/type-o.webp" alt="TYPE O" style="height:29px" loading="lazy" decoding="async"></span>
-        <span class="who">The work behind the counter</span>
-        <p>One back office for any trade: orders, jobs, stock, staff, money. <b>One core, one small pack per trade</b>, changed by the owner without a developer.</p>
-        <span class="foot"><span class="go">Read the idea<i>&rarr;</i></span><span class="live">Live</span></span>
-      </a>
-
-      <a class="part rv d2" href="/plasma">
-        <span class="logo"><img src="assets/ventures/plasma.webp" alt="PLASMA" style="height:31px" loading="lazy" decoding="async"></span>
-        <span class="who">A picture needed every day</span>
-        <p>One factory that makes them: the style lives in a pack, the model is a setting, and <b>the letters are drawn by code</b> so nothing is ever misspelt.</p>
-        <span class="foot"><span class="go">See how it works<i>&rarr;</i></span><span class="live">Live</span></span>
-      </a>
-
-      <a class="part rv d3" href="https://hordooduang.com" target="_blank" rel="noopener">
+      <a class="part rv" href="https://hordooduang.com" target="_blank" rel="noopener">
         <span class="logo"><img src="assets/ventures/hordooduang.webp" alt="หอดูดวง" style="height:40px" loading="lazy" decoding="async"></span>
         <span class="who">Someone curious about their chart</span>
         <p>A free birth-chart reading, and <b>a wallpaper drawn from that one chart</b> which exists exactly once and belongs to the person who asked.</p>
         <span class="foot"><span class="go">hordooduang.com<i>&rarr;</i></span><span class="live">Live</span></span>
       </a>
-
-      <a class="part rv d3" href="/artery">
-        <span class="logo"><img src="assets/ventures/artery.webp" alt="ARTERY" style="height:25px" loading="lazy" decoding="async"></span>
-        <span class="who">One brand, every channel</span>
-        <p>The publishing line that carries our own brands out into the world <b>from one heart</b>, so a thing said once arrives everywhere it should.</p>
-        <span class="foot"><span class="go">See the demo<i>&rarr;</i></span><span>Internal</span></span>
-      </a>
-
-      <div class="part rv d3">
-        <span class="logo"><span class="nm" style="font-size:27px">TRACER</span></span>
-        <span class="who">You sent it. Then silence.</span>
-        <p>Proposal files that report back: <b>who opened it, how long they read, how far they got</b>, and a message the moment it happens. Sales work stops being a guess.</p>
-        <span class="foot"><span>Newest</span><span>In build</span></span>
-      </div>
     </div>
   </div>
 </section>
@@ -208,7 +259,7 @@ a.part:hover p{color:var(--cream)}
   <div class="container">
     <div class="why rv">
       <span class="label"><b>Why one brain</b></span>
-      <h3 class="disp">Six products, one set of habits.</h3>
+      <h3 class="disp">Many products, one set of habits.</h3>
       <p>They are separate businesses on purpose, but they are not separate craftsmanship. Each one is a closed core, a pack of words per customer, a few dials the owner can turn, and a refusal list. <b>Learning one teaches you the next</b>, and a fix in the way we build reaches all of them.</p>
       <p>The part that stays ours is the judgement underneath: what to answer, what to refuse, what to escalate to a human. That is <a href="/iris-protocol" style="color:var(--red2);border-bottom:1px solid rgba(224,48,62,.4)">IRIS Protocol</a>, and it opens to partners before it opens to anyone else.</p>
     </div>

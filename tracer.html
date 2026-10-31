@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="robots" content="noindex, nofollow">
+<title>TRACER — an organ of IRIS · BAD BLOOD COMPANY</title>
+<meta name="description" content="TRACER makes proposal files that report back when they are opened.">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@500;600;800;900&family=IBM+Plex+Mono:wght@400;500&family=IBM+Plex+Sans+Thai:wght@400;600&family=Newsreader:ital,opsz,wght@0,6..72,300;1,6..72,300&display=swap" rel="stylesheet">
+<style>
+:root{
+  --night:#050505;--panel:#0C0C0C;
+  --cream:#EFEBE5;--cream2:#B9B4AD;--grey:#7C7873;--faint:#4A4744;
+  --red:#C8202E;--red2:#E0303E;--live:#3FBF6F;
+  --line:rgba(255,255,255,.10);--line2:rgba(255,255,255,.22);
+  --disp:"Archivo",Helvetica,Arial,sans-serif;
+  --thai:"IBM Plex Sans Thai","Archivo",sans-serif;
+  --serif:"Newsreader",Georgia,serif;
+  --mono:"IBM Plex Mono",ui-monospace,Menlo,monospace;
+  --w:1080px;
+}
+*{box-sizing:border-box;margin:0;padding:0}
+html{-webkit-text-size-adjust:100%}
+body{background:var(--night);color:var(--cream);font-family:var(--disp);font-weight:500;line-height:1.6;overflow-x:hidden;-webkit-font-smoothing:antialiased}
+img,svg{display:block;max-width:100%}
+::selection{background:var(--red);color:#fff}
+a{color:inherit;text-decoration:none}
+.container{width:min(var(--w),100% - 48px);margin:0 auto}
+@media(max-width:640px){.container{width:calc(100% - 28px)}}
+.label{font-family:var(--mono);font-size:10px;letter-spacing:.3em;text-transform:uppercase;color:var(--grey)}
+.label b{color:var(--red2);font-weight:500}
+.disp{font-family:var(--disp);font-weight:900;letter-spacing:-.035em;line-height:.96}
+
+/* hero */
+.cover{padding:26px 0 clamp(46px,7vw,74px)}
+.top{display:flex;justify-content:space-between;align-items:center;gap:16px;margin-bottom:clamp(40px,7vw,86px)}
+.top .bb{height:26px;width:auto}
+.head{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,420px);gap:clamp(28px,5vw,60px);align-items:center}
+@media(max-width:860px){.head{grid-template-columns:1fr;gap:34px}}
+.head h1{font-size:clamp(46px,10vw,110px);margin:12px 0 20px}
+.head .say{font-family:var(--serif);font-weight:300;font-size:clamp(18px,1.9vw,23px);line-height:1.55;color:var(--cream2);max-width:520px}
+.head .say b{color:var(--cream);font-weight:400;font-style:italic}
+
+/* the answer strip */
+.answer{border-top:1px solid var(--line);border-bottom:1px solid var(--line);padding:clamp(22px,3vw,32px) 0}
+.answer p{font-size:clamp(16px,1.7vw,20px);line-height:1.6;color:var(--cream2);max-width:760px}
+.answer p b{color:var(--cream);font-weight:700}
+
+/* why */
+.why{border:1px solid var(--line2);border-radius:4px;background:var(--panel);padding:clamp(22px,3.4vw,34px);display:grid;gap:14px}
+.why h3{font-family:var(--disp);font-weight:900;font-size:clamp(21px,2.8vw,32px);letter-spacing:-.025em}
+.why p{font-size:15px;line-height:1.65;color:var(--cream2);max-width:680px}
+.why p b{color:var(--cream);font-weight:600}
+
+.foot-b{border-top:1px solid var(--line);padding:20px 0 36px;font-family:var(--mono);font-size:9px;letter-spacing:.24em;text-transform:uppercase;color:var(--faint)}
+.foot-b b{color:var(--cream2);font-weight:500}
+
+.rv{opacity:0;transform:translateY(16px);transition:opacity .7s cubic-bezier(.16,1,.3,1),transform .7s cubic-bezier(.16,1,.3,1)}
+.rv.in{opacity:1;transform:none}
+.rv.d1{transition-delay:.06s}.rv.d2{transition-delay:.12s}.rv.d3{transition-delay:.18s}
+@media(prefers-reduced-motion:reduce){.rv{opacity:1;transform:none;transition:none}}
+
+.sec{padding:clamp(52px,7vw,88px) 0}
+.sec-h{display:grid;gap:12px;margin-bottom:30px;max-width:660px}
+.sec-h h2{font-size:clamp(26px,3.4vw,42px)}
+/* explainer */
+.head{grid-template-columns:1fr}
+.head .say{max-width:640px}
+.logo-big{height:clamp(54px,7vw,84px);display:flex;align-items:center;margin:6px 0 4px}
+.logo-big img{height:100%;width:auto;max-width:100%;object-fit:contain;object-position:left center}
+.head h1.nm1{font-size:clamp(40px,8vw,88px);margin:12px 0 20px}
+.pill{display:inline-block;font-family:var(--mono);font-size:10px;letter-spacing:.26em;text-transform:uppercase;color:var(--cream2);border:1px solid var(--line2);border-radius:2px;padding:6px 10px;margin-top:6px}
+.pill.live{color:var(--live);border-color:rgba(63,191,111,.4)}
+.pts{display:grid;grid-template-columns:1fr;border-top:1px solid var(--line)}
+@media(min-width:760px){.pts{grid-template-columns:repeat(3,minmax(0,1fr))}}
+.pt{padding:24px 0;border-bottom:1px solid var(--line);display:grid;gap:10px;align-content:start}
+@media(min-width:760px){.pt{padding:26px clamp(14px,2vw,26px);border-right:1px solid var(--line)}.pt:first-child{padding-left:0}.pt:last-child{border-right:0;padding-right:0}}
+.pt .n{font-family:var(--mono);font-size:10px;letter-spacing:.3em;color:var(--red2)}
+.pt h3{font-family:var(--disp);font-weight:900;font-size:clamp(19px,2vw,24px);letter-spacing:-.02em;line-height:1.1}
+.pt p{font-size:14.5px;line-height:1.6;color:var(--cream2)}
+.pt p b{color:var(--cream);font-weight:600}
+.legend{display:grid;gap:10px;margin-top:6px}
+.legend div{display:grid;grid-template-columns:14px 1fr;gap:12px;align-items:baseline;font-size:14.5px;color:var(--cream2)}
+.legend i{width:12px;height:12px;border-radius:2px;display:block;transform:translateY(2px)}
+.back{display:inline-flex;align-items:baseline;gap:.7em;border:1px solid var(--line);border-radius:2px;padding:14px 20px;font-family:var(--mono);font-size:11px;letter-spacing:.2em;text-transform:uppercase;color:var(--cream)}
+.back i{font-style:normal;color:var(--red2)}
+.back:hover{border-color:var(--line2)}
+.back:focus-visible,a:focus-visible{outline:1px solid var(--cream);outline-offset:4px}
+</style>
+</head>
+<body>
+
+<header class="cover">
+  <div class="container">
+    <div class="top">
+      <a href="/" class="label" style="color:var(--cream)">BAD BLOOD COMPANY</a>
+      <a href="/iris" class="label">&larr; The map</a>
+    </div>
+    <div class="head">
+      <div>
+        <span class="label"><b>TRACER</b> · You sent it. Then silence.</span>
+        <div class="logo-big"><img src="assets/ventures/tracer.webp" alt="TRACER"></div>
+        <p class="say" style="margin-top:22px">You send a proposal and hear nothing. <b>TRACER is a proposal that reports back</b>: who opened it, how long they read, how far they got, and a message the moment it happens.</p>
+        <span class="pill">In build</span>
+      </div>
+    </div>
+  </div>
+</header>
+
+<div class="answer">
+  <div class="container">
+    <p><b>Named for the medical dye.</b> A tracer is what you put in so you can see where something went. Ours does the same for the files we send.</p>
+  </div>
+</div>
+
+<section class="sec">
+  <div class="container">
+    <div class="sec-h rv">
+      <span class="label"><b>What it does</b></span>
+    </div>
+    <div class="pts">
+      <div class="pt rv"><span class="n">01</span><h3>One link per recipient</h3><p>Every file goes out as <b>its own tracked link</b>, so we know which person opened it, not just that someone did.</p></div>
+      <div class="pt rv"><span class="n">02</span><h3>Open, read, reach</h3><p>How long they stayed and <b>how far down they got</b>, not only that the page loaded.</p></div>
+      <div class="pt rv"><span class="n">03</span><h3>A vault for what we send</h3><p>Client links, PDFs, pitches and quotes are meant to <b>live in one place</b>, each with its open record, so sales work stops being a guess.</p></div>
+
+    </div>
+  </div>
+</section>
+
+<section class="sec" style="padding-top:0">
+  <div class="container">
+    <a class="back" href="/iris">Back to the map of IRIS <i>&rarr;</i></a>
+  </div>
+</section>
+
+<footer class="foot-b">
+  <div class="container" style="display:flex;justify-content:space-between;flex-wrap:wrap;gap:10px">
+    <span><a href="/"><b>BAD BLOOD COMPANY</b></a></span>
+    <span>Built for ourselves first · 2026</span>
+  </div>
+</footer>
+
+<script>
+(function(){
+  var items = document.querySelectorAll('.rv');
+  var reduce = window.matchMedia && window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(reduce || !('IntersectionObserver' in window)){
+    for(var i = 0; i < items.length; i++){ items[i].classList.add('in'); }
+    return;
+  }
+  var io = new IntersectionObserver(function(es){
+    for(var k = 0; k < es.length; k++){
+      if(es[k].isIntersecting){ es[k].target.classList.add('in'); io.unobserve(es[k].target); }
+    }
+  }, { rootMargin: '0px 0px -12% 0px', threshold: .12 });
+  for(var j = 0; j < items.length; j++){ io.observe(items[j]); }
+})();
+</script>
+</body>
+</html>
