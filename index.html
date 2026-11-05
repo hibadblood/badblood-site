@@ -151,6 +151,31 @@ body.onwork .nav::before{background:linear-gradient(to bottom,rgba(5,5,6,.92),rg
 .marks .br{right:var(--edge);bottom:var(--edge);text-align:right}
 @media (max-width:820px){.marks .br{display:none}}
 
+/* HOME_CLIENTS_1105 START — reuse the property brand wall; no motion or JS */
+.brand-proof{position:relative;padding:24px var(--edge) 40px}
+.brand-proof>.hold{border-top:1px solid var(--line);padding-top:22px}
+.brand-proof-head{display:flex;align-items:baseline;gap:12px 24px;flex-wrap:wrap}
+.brand-proof-head h2{font-size:11px;font-weight:400;letter-spacing:.22em}
+.brand-proof-head p{font-family:var(--micro);font-size:12px;line-height:1.6;color:var(--chrome);max-width:68ch}
+.brand-clients{list-style:none;display:grid;grid-template-columns:repeat(7,minmax(0,1fr));gap:8px 16px;margin:24px 0 28px}
+.brand-clients li{display:flex;align-items:center;justify-content:center;min-width:0;min-height:50px}
+.brand-clients img{object-fit:contain;max-width:100%;height:auto;opacity:.86}
+.brand-word{font-family:var(--micro);font-size:11px;letter-spacing:.1em;line-height:1.35;text-align:center;color:var(--bone);opacity:.86}
+.brand-concepts{border-top:1px solid var(--line);padding-top:22px}
+.brand-concept-names{list-style:none;display:flex;flex-wrap:wrap;gap:10px 24px;margin-top:18px;font-family:var(--micro);font-size:12px;line-height:1.6;color:var(--chrome)}
+.brand-concept-names li{max-width:100%}
+@media(max-width:699px){
+  .brand-proof{padding-top:18px;padding-bottom:28px}
+  .brand-proof-head{gap:6px 16px}
+  .brand-proof-head p{font-size:11px}
+  .brand-clients{grid-template-columns:repeat(4,minmax(0,1fr));gap:8px;margin:18px 0 24px}
+  .brand-clients li{min-height:44px}
+  .brand-clients img{max-width:min(100%,80px);max-height:34px}
+  .brand-word{font-size:10px;letter-spacing:.06em}
+  .brand-concept-names{gap:8px 18px;font-size:11px}
+}
+/* HOME_CLIENTS_1105 END */
+
 /* ══ ARRIVAL ══════════════════════════════════════════════════════════ */
 .arrive{min-height:100svh;position:relative;display:grid;
   grid-template-rows:1fr auto 1fr;padding:calc(var(--edge)*3) var(--edge) var(--edge)}
@@ -524,6 +549,73 @@ a.venture:focus-visible{outline:1px solid var(--bone);outline-offset:6px}
   </div>
 </header>
 
+<!-- HOME_CLIENTS_1105 START -->
+<section class="brand-proof" id="brands" aria-label="Clients">
+  <div class="hold">
+    <div class="brand-proof-head">
+      <h2 class="mi lit" id="clients-title">Clients</h2>
+      <p>Brands we have made work for</p>
+    </div>
+    <ul class="brand-clients" aria-labelledby="clients-title" role="list">
+        <li><img src="assets/clients/l-canon.webp" alt="Canon" width="96" height="20" loading="lazy" decoding="async"></li>
+        <li><img src="assets/clients/l-leica.webp" alt="Leica" width="38" height="38" loading="lazy" decoding="async"></li>
+        <li><span class="brand-word">NIKON</span></li>
+        <li><img src="assets/clients/l-national_geographic.webp" alt="National Geographic" width="96" height="28" loading="lazy" decoding="async"></li>
+        <li><span class="brand-word">THAI AIRWAYS</span></li>
+        <li><img src="assets/clients/l-united_airlines.webp" alt="United Airlines" width="96" height="12" loading="lazy" decoding="async"></li>
+        <li><img src="assets/clients/l-bangkok_airways.webp" alt="Bangkok Airways" width="42" height="38" loading="lazy" decoding="async"></li>
+        <li><span class="brand-word">NOK AIR</span></li>
+        <li><img src="assets/clients/l-airasia.webp" alt="AirAsia" width="38" height="38" loading="lazy" decoding="async"></li>
+        <li><img src="assets/clients/l-marriott.webp" alt="Marriott" width="47" height="38" loading="lazy" decoding="async"></li>
+        <li><span class="brand-word">PARK HYATT</span></li>
+        <li><img src="assets/clients/l-pullman_white.webp" alt="Pullman" width="96" height="19" loading="lazy" decoding="async"></li>
+        <li><span class="brand-word">THE SUKOSOL</span></li>
+        <li><img src="assets/clients/l-north_face.webp" alt="The North Face" width="80" height="36" loading="lazy" decoding="async"></li>
+        <li><img src="assets/clients/l-columbia.webp" alt="Columbia" width="96" height="18" loading="lazy" decoding="async"></li>
+        <li><img src="assets/clients/l-patagonia.webp" alt="Patagonia" width="96" height="18" loading="lazy" decoding="async"></li>
+        <li><img src="assets/clients/l-mcdonalds.webp" alt="McDonald&#x27;s" width="39" height="38" loading="lazy" decoding="async"></li>
+        <li><img src="assets/clients/l-kfc.webp" alt="KFC" width="38" height="38" loading="lazy" decoding="async"></li>
+        <li><img src="assets/clients/l-mk.webp" alt="MK Restaurants" width="57" height="38" loading="lazy" decoding="async"></li>
+        <li><img src="assets/clients/l-johnnie_walker.webp" alt="Johnnie Walker" width="96" height="9" loading="lazy" decoding="async"></li>
+        <li><img src="assets/clients/l-garena.webp" alt="Garena" width="96" height="28" loading="lazy" decoding="async"></li>
+        <li><img src="assets/clients/l-pomelo.webp" alt="Pomelo" width="96" height="23" loading="lazy" decoding="async"></li>
+        <li><img src="assets/clients/l-b2s.webp" alt="B2S" width="61" height="36" loading="lazy" decoding="async"></li>
+        <li><img src="assets/clients/l-sec_th.webp" alt="SEC Thailand" width="38" height="38" loading="lazy" decoding="async"></li>
+        <li><span class="brand-word">DHIPAYA INSURANCE</span></li>
+        <li><img src="assets/clients/l-xiaomi.webp" alt="Xiaomi" width="38" height="38" loading="lazy" decoding="async"></li>
+        <li><span class="brand-word">S&amp;P</span></li>
+        <li><img src="assets/clients/pg-mono.webp" alt="PropertyGuru" width="100" height="21" loading="lazy" decoding="async"></li>
+        <li><span class="brand-word">HERMÈS</span></li>
+        <li><span class="brand-word">NIKE</span></li>
+        <li><span class="brand-word">CARTIER</span></li>
+        <li><span class="brand-word">SAINT LAURENT</span></li>
+        <li><span class="brand-word">LOEWE PERFUMES</span></li>
+        <li><span class="brand-word">BMW MOTORRAD</span></li>
+        <li><span class="brand-word">RIMOWA</span></li>
+        <li><span class="brand-word">ADIDAS ORIGINALS</span></li>
+        <li><span class="brand-word">COCA-COLA</span></li>
+        <li><span class="brand-word">MASTERCARD</span></li>
+        <li><span class="brand-word">DYSON</span></li>
+        <li><span class="brand-word">GOPRO</span></li>
+        <li><span class="brand-word">G-SHOCK</span></li>
+        <li><span class="brand-word">UNDER ARMOUR</span></li>
+        <li><span class="brand-word">IKEA</span></li>
+        <li><span class="brand-word">UNIQLO</span></li>
+        <li><span class="brand-word">STARBUCKS</span></li>
+        <li><span class="brand-word">HEINEKEN 0.0</span></li>
+        <li><span class="brand-word">RED BULL</span></li>
+        <li><span class="brand-word">KITKAT</span></li>
+        <li><span class="brand-word">MARSHALL</span></li>
+        <li><span class="brand-word">GRAB TH</span></li>
+        <li><span class="brand-word">OH! JUICE</span></li>
+        <li><span class="brand-word">JOE WINGS</span></li>
+        <li><span class="brand-word">ADER ERROR</span></li>
+    </ul>
+
+  </div>
+</section>
+<!-- HOME_CLIENTS_1105 END -->
+
 <section class="organ" id="anatomy" data-mode="dna" data-world-state="dna" data-mark="Anatomy / 01">
   <div class="hold">
     <div class="organ-head">
@@ -693,7 +785,7 @@ a.venture:focus-visible{outline:1px solid var(--bone);outline-offset:6px}
   <div class="case-hero">
     <img id="cImg" src="" alt="">
     <div class="case-title">
-      <span class="mi" id="cKind">Concept work</span>
+      <span class="mi" id="cKind">Brand film</span>
       <h2 class="disp lg" id="cName">—</h2>
       <span class="mi lit" id="cTags"></span>
     </div>
@@ -2394,9 +2486,9 @@ if(SAVE){ [].slice.call(document.querySelectorAll('img[loading="eager"]'))
 <script>
 /* ═══ THEATRE ══ plays the films by itself; the strip below picks and shows where it is ═══ */
 (function(){
-var FILMS=[{"s":"herm-egrave-s-objects-remember-hands","b":"Hermès","t":"Objects remember hands","g":"concept"},{"s":"nike-0-01","b":"Nike","t":"0.01","g":"concept"},{"s":"cartier-time","b":"Cartier","t":"Time","g":"concept"},{"s":"saint-laurent-fashion-film","b":"Saint Laurent","t":"Fashion film","g":"concept"},{"s":"loewe-perfumes-you-cannot-film-a-scent","b":"Loewe Perfumes","t":"You cannot film a scent","g":"concept"},{"s":"bmw-motorrad-the-road-moves","b":"BMW Motorrad","t":"The road moves","g":"concept"},{"s":"leica-leica-through-our-eyes","b":"Leica","t":"Leica, through our eyes","g":"concept"},{"s":"rimowa-baggage-has-memory","b":"Rimowa","t":"Baggage has memory","g":"concept"},{"s":"adidas-originals-miss-the-beat","b":"Adidas Originals","t":"Miss the beat","g":"concept"},{"s":"coca-cola-wild","b":"Coca-Cola","t":"Wild","g":"concept"},{"s":"mastercard-the-price-is-never-the-point","b":"Mastercard","t":"The price is never the point","g":"concept"},{"s":"dyson-the-air-is-editing","b":"Dyson","t":"The air is editing","g":"concept"},{"s":"gopro-every-impact-is-a-beat","b":"GoPro","t":"Every impact is a beat","g":"concept"},{"s":"g-shock-impact-leaves-a-signature","b":"G-Shock","t":"Impact leaves a signature","g":"concept"},{"s":"under-armour-pressure-makes-no-sound","b":"Under Armour","t":"Pressure makes no sound","g":"concept"},{"s":"the-north-face-weather-has-no-schedule","b":"The North Face","t":"Weather has no schedule","g":"concept"},{"s":"ikea-a-room-changes-before-you","b":"IKEA","t":"A room changes before you","g":"concept"},{"s":"uniqlo-clothes-learn-your-body","b":"Uniqlo","t":"Clothes learn your body","g":"concept"},{"s":"starbucks-your-name-is-part-of-it","b":"Starbucks","t":"Your name is part of it","g":"concept"},{"s":"heineken-0-0-h-0","b":"Heineken 0.0","t":"H-0%","g":"concept"},{"s":"red-bull-up-only-30s-spec","b":"Red Bull","t":"Up only","g":"concept"},{"s":"kitkat-break","b":"KitKat","t":"Break","g":"concept"},{"s":"marshall-sound-is-physical","b":"Marshall","t":"Sound is physical","g":"concept"},{"s":"grab-th-every-city-has-a-shortcut","b":"Grab TH","t":"Every city has a shortcut","g":"concept"},{"s":"mcdonalds-th-concept-film","b":"McDonald's TH","t":"Concept film","g":"concept"},{"s":"oh-juice-fresh-hits-different","b":"Oh! Juice","t":"Fresh hits different","g":"concept"},{"s":"oh-juice-good-mood-in-a-cup","b":"Oh! Juice","t":"Good mood in a cup","g":"concept"},{"s":"joe-wings-crunch-changes-the-room","b":"Joe Wings","t":"Crunch changes the room","g":"concept"},{"s":"ader-error-fashion-film","b":"Ader Error","t":"Fashion film","g":"concept"},{"s":"ader-error-fashion-film-ii","b":"Ader Error","t":"Fashion film II","g":"concept"},{"s":"burning-city-main-cut","b":"Burning City","t":"Main cut","g":"city"},{"s":"the-first-chapter","b":"The First","t":"Chapter","g":"city"},{"s":"the-eclipse-chapter","b":"The Eclipse","t":"Chapter","g":"city"},{"s":"the-dream-chapter","b":"The Dream","t":"Chapter","g":"city"},{"s":"th-future-thai-future-fantasy","b":"TH Future","t":"Thai future fantasy","g":"lab"},{"s":"big-world-scale-study","b":"Big World","t":"Scale study","g":"lab"},{"s":"studio-dance-music-video-study","b":"Studio Dance","t":"Music video study","g":"lab"},{"s":"coffee-short-study","b":"Coffee","t":"Short study","g":"lab"}];
+var FILMS=[{"s":"herm-egrave-s-objects-remember-hands","b":"Hermès","t":"Objects remember hands","g":"concept"},{"s":"nike-0-01","b":"Nike","t":"0.01","g":"concept"},{"s":"cartier-time","b":"Cartier","t":"Time","g":"concept"},{"s":"saint-laurent-fashion-film","b":"Saint Laurent","t":"Fashion film","g":"concept"},{"s":"loewe-perfumes-you-cannot-film-a-scent","b":"Loewe Perfumes","t":"You cannot film a scent","g":"concept"},{"s":"bmw-motorrad-the-road-moves","b":"BMW Motorrad","t":"The road moves","g":"concept"},{"s":"leica-leica-through-our-eyes","b":"Leica","t":"Leica, through our eyes","g":"concept"},{"s":"rimowa-baggage-has-memory","b":"Rimowa","t":"Baggage has memory","g":"concept"},{"s":"adidas-originals-miss-the-beat","b":"Adidas Originals","t":"Miss the beat","g":"concept"},{"s":"coca-cola-wild","b":"Coca-Cola","t":"Wild","g":"concept"},{"s":"mastercard-the-price-is-never-the-point","b":"Mastercard","t":"The price is never the point","g":"concept"},{"s":"dyson-the-air-is-editing","b":"Dyson","t":"The air is editing","g":"concept"},{"s":"gopro-every-impact-is-a-beat","b":"GoPro","t":"Every impact is a beat","g":"concept"},{"s":"g-shock-impact-leaves-a-signature","b":"G-Shock","t":"Impact leaves a signature","g":"concept"},{"s":"under-armour-pressure-makes-no-sound","b":"Under Armour","t":"Pressure makes no sound","g":"concept"},{"s":"the-north-face-weather-has-no-schedule","b":"The North Face","t":"Weather has no schedule","g":"concept"},{"s":"ikea-a-room-changes-before-you","b":"IKEA","t":"A room changes before you","g":"concept"},{"s":"uniqlo-clothes-learn-your-body","b":"Uniqlo","t":"Clothes learn your body","g":"concept"},{"s":"starbucks-your-name-is-part-of-it","b":"Starbucks","t":"Your name is part of it","g":"concept"},{"s":"heineken-0-0-h-0","b":"Heineken 0.0","t":"H-0%","g":"concept"},{"s":"red-bull-up-only-30s-spec","b":"Red Bull","t":"Up only","g":"concept"},{"s":"kitkat-break","b":"KitKat","t":"Break","g":"concept"},{"s":"marshall-sound-is-physical","b":"Marshall","t":"Sound is physical","g":"concept"},{"s":"grab-th-every-city-has-a-shortcut","b":"Grab TH","t":"Every city has a shortcut","g":"concept"},{"s":"mcdonalds-th-concept-film","b":"McDonald's TH","t":"Brand film","g":"concept"},{"s":"oh-juice-fresh-hits-different","b":"Oh! Juice","t":"Fresh hits different","g":"concept"},{"s":"oh-juice-good-mood-in-a-cup","b":"Oh! Juice","t":"Good mood in a cup","g":"concept"},{"s":"joe-wings-crunch-changes-the-room","b":"Joe Wings","t":"Crunch changes the room","g":"concept"},{"s":"ader-error-fashion-film","b":"Ader Error","t":"Fashion film","g":"concept"},{"s":"ader-error-fashion-film-ii","b":"Ader Error","t":"Fashion film II","g":"concept"},{"s":"burning-city-main-cut","b":"Burning City","t":"Main cut","g":"city"},{"s":"the-first-chapter","b":"The First","t":"Chapter","g":"city"},{"s":"the-eclipse-chapter","b":"The Eclipse","t":"Chapter","g":"city"},{"s":"the-dream-chapter","b":"The Dream","t":"Chapter","g":"city"},{"s":"th-future-thai-future-fantasy","b":"TH Future","t":"Thai future fantasy","g":"lab"},{"s":"big-world-scale-study","b":"Big World","t":"Scale study","g":"lab"},{"s":"studio-dance-music-video-study","b":"Studio Dance","t":"Music video study","g":"lab"},{"s":"coffee-short-study","b":"Coffee","t":"Short study","g":"lab"}];
 var HOST='https://badblood-films.hi-badblood.workers.dev', HOLD=9000;
-var GROUP={concept:'Concept film',city:'Burning City',lab:'Black Lab'};
+var GROUP={concept:'Brand film',city:'Burning City',lab:'Black Lab'};
 var q=function(id){return document.getElementById(id)};
 var stage=q('thstage'); if(!stage) return;
 var RM=matchMedia('(prefers-reduced-motion: reduce)').matches, WIDE=matchMedia('(min-width:900px)');
