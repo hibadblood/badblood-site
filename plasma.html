@@ -62,7 +62,7 @@ h1{font-family:var(--disp);font-weight:900;font-size:clamp(44px,9vw,112px);line-
 .stagebox .spin.kick img{animation:spin .6s cubic-bezier(.2,.8,.2,1) 1,spin 5s linear .6s infinite}
 @keyframes spin{to{transform:rotate(360deg)}}
 @media (prefers-reduced-motion:reduce){.stagebox .spin img{animation:none}}
-.steps4{list-style:none;display:grid;gap:10px}
+.steps4{list-style:none;display:grid;gap:10px}.steps4 li{display:flex}.steps4 button{height:100%}
 .steps4 button{width:100%;text-align:left;background:transparent;border:1px solid var(--line);color:var(--cream);border-radius:10px;padding:16px 18px;cursor:pointer;font-family:var(--th)}
 .steps4 button b{display:block;font:500 12px var(--mono);letter-spacing:.14em;color:var(--grey);margin-bottom:6px}
 .steps4 button strong{font-size:20px}.steps4 button span{display:block;color:var(--cream2);font-size:14px;margin-top:4px}
@@ -84,7 +84,7 @@ h1{font-family:var(--disp);font-weight:900;font-size:clamp(44px,9vw,112px);line-
 .ba .sim{position:absolute;right:10px;bottom:10px;font:500 10px var(--mono);letter-spacing:.1em;background:rgba(5,5,5,.7);color:var(--cream2);padding:3px 7px;border-radius:3px;pointer-events:none}
 section{padding:64px 0;border-top:1px solid var(--line)}
 h2{font-family:var(--disp);font-weight:900;font-size:clamp(32px,5.5vw,64px);line-height:1;letter-spacing:-.03em;margin:10px 0 14px}
-.tabs{display:flex;gap:8px;overflow-x:auto;margin:20px 0 18px;padding-bottom:4px;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}.tabs button{flex:none}
+.tabs{display:flex;flex-wrap:wrap;gap:6px;margin:18px 0 16px}.tabs button{flex:none}
 .tabs button{font-family:var(--th);font-weight:600;font-size:15px;color:var(--cream);background:transparent;border:1px solid rgba(255,255,255,.22);padding:8px 15px;border-radius:999px;cursor:pointer}
 .tabs button[aria-pressed=true]{background:var(--cream);color:var(--night);border-color:var(--cream)}
 .show{max-width:760px;margin:0 auto}
@@ -120,6 +120,7 @@ footer{border-top:1px solid var(--line);padding:30px 0 50px}footer .wrap{display
 footer img{height:44px;width:auto}
 .note{font-size:13px;color:var(--grey);margin-top:14px}
 @media (max-width:560px){nav .btn{padding:9px 14px;font-size:14px}.grid{grid-template-columns:1fr}header{padding-top:36px}}
+@media (max-width:560px){.tabs{gap:6px}.tabs button{font-size:13.5px;padding:7px 12px}}
 </style>
 </head>
 <body>
@@ -142,7 +143,7 @@ footer img{height:44px;width:auto}
 <div class="flow4">
 <div class="stagebox" id="stagebox" role="button" tabindex="0" aria-label="Tap to see the next format">
 <div class="lay on" data-i="0"><img src="assets/plasma/demo/B13.jpg" alt="Original phone photo of a face-oil bottle at a market stall"></div>
-<div class="lay" data-i="1"><img src="assets/plasma/demo/A13.jpg" alt="The same bottle as a luxury product photograph"></div>
+<div class="lay" data-i="1"><img src="assets/plasma/demo/A13f.jpg" alt="The same bottle as a luxury product photograph"></div>
 <div class="lay" data-i="2"><img src="assets/plasma/demo/kh/p1.jpg" alt="Finished brand artwork with code-set typography"></div>
 <div class="lay" data-i="3"><div class="g9"><img src="assets/plasma/demo/kh/p1.jpg" alt="Post 1 of a nine-post brand feed" loading="lazy"><img src="assets/plasma/demo/kh/p2.jpg" alt="Post 2 of a nine-post brand feed" loading="lazy"><img src="assets/plasma/demo/kh/p3.jpg" alt="Post 3 of a nine-post brand feed" loading="lazy"><img src="assets/plasma/demo/kh/p4.jpg" alt="Post 4 of a nine-post brand feed" loading="lazy"><img src="assets/plasma/demo/kh/p5.jpg" alt="Post 5 of a nine-post brand feed" loading="lazy"><img src="assets/plasma/demo/kh/p6.jpg" alt="Post 6 of a nine-post brand feed" loading="lazy"><img src="assets/plasma/demo/kh/p7.jpg" alt="Post 7 of a nine-post brand feed" loading="lazy"><img src="assets/plasma/demo/kh/p8.jpg" alt="Post 8 of a nine-post brand feed" loading="lazy"><img src="assets/plasma/demo/kh/p9.jpg" alt="Post 9 of a nine-post brand feed" loading="lazy"></div></div>
 <span class="chip" id="chip">01 · PHONE PHOTO</span><span class="spin" id="spin" aria-hidden="true"><img src="assets/plasma/mark.png" alt=""></span>
@@ -232,7 +233,7 @@ const P=[
 ['food','B24','X24','Thai tea','DRINK LAUNCH','Beverage launch'],
 ['food','B10','A10','Green curry','EDITORIAL','Food magazine'],
 ['food','B12','A12','Iced latte','CAFE','Morning cafe light'],
-['beauty','B13','A13','KHAO HOM','RICE-BRAN OIL','Invented community brand'],
+['beauty','B13','A13f','KHAO HOM','RICE-BRAN OIL','Invented community brand'],
 ['beauty','B14','A14','KRAM','INDIGO','Invented community brand'],
 ['beauty','B15','A15','RANG','WILD HONEY','Invented community brand'],
 ['beauty','B16','A16','DIN','BENJARONG CANDLE','Invented community brand'],
