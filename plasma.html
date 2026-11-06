@@ -57,13 +57,17 @@ h1{font-family:var(--disp);font-weight:900;font-size:clamp(44px,9vw,112px);line-
 .stagebox .lay.on .g9 img{animation:pop .5s ease both}
 @keyframes pop{from{opacity:0;transform:scale(.92)}to{opacity:1;transform:none}}
 .stagebox .chip{position:absolute;left:12px;top:12px;z-index:3;font:500 12px var(--mono);letter-spacing:.12em;background:var(--cream);color:var(--night);padding:5px 9px;border-radius:3px}
-.stagebox .hint{position:absolute;right:12px;bottom:12px;z-index:3;font:500 12px var(--mono);letter-spacing:.1em;background:rgba(5,5,5,.75);color:var(--cream);padding:5px 9px;border-radius:3px}
+.stagebox .spin{position:absolute;left:50%;bottom:16px;z-index:3;width:84px;height:84px;margin-left:-42px;display:grid;place-items:center;pointer-events:none}
+.stagebox .spin img{width:84px;height:84px;object-fit:contain;filter:drop-shadow(0 3px 10px rgba(0,0,0,.7));animation:spin 5s linear infinite}
+.stagebox .spin.kick img{animation:spin .6s cubic-bezier(.2,.8,.2,1) 1,spin 5s linear .6s infinite}
+@keyframes spin{to{transform:rotate(360deg)}}
+@media (prefers-reduced-motion:reduce){.stagebox .spin img{animation:none}}
 .steps4{list-style:none;display:grid;gap:10px}
 .steps4 button{width:100%;text-align:left;background:transparent;border:1px solid var(--line);color:var(--cream);border-radius:10px;padding:16px 18px;cursor:pointer;font-family:var(--th)}
 .steps4 button b{display:block;font:500 12px var(--mono);letter-spacing:.14em;color:var(--grey);margin-bottom:6px}
 .steps4 button strong{font-size:20px}.steps4 button span{display:block;color:var(--cream2);font-size:14px;margin-top:4px}
 .steps4 button[aria-pressed=true]{border-color:transparent;background:linear-gradient(var(--panel),var(--panel)) padding-box,linear-gradient(90deg,#FF2D55,#FFD60A,#34C759,#32ADE6,#8A5CFF) border-box;border:2px solid transparent}
-@media (max-width:760px){.flow4{grid-template-columns:1fr}}
+@media (max-width:760px){.flow4{grid-template-columns:1fr;gap:12px}.steps4{grid-template-columns:repeat(4,1fr);gap:6px}.steps4 button{padding:10px 8px;text-align:center}.steps4 button strong{font-size:13px}.steps4 button span{display:none}.steps4 button b{margin-bottom:2px}}
 /* before/after */
 .ba .gl{position:absolute;top:0;bottom:0;left:var(--x,50%);width:140px;transform:translateX(-50%);background:linear-gradient(#FF2D55,#FF7A1A,#FFD60A,#34C759,#32ADE6,#8A5CFF);filter:blur(26px);opacity:.18;mix-blend-mode:screen;pointer-events:none;transition:opacity .3s,width .3s}
 .ba.drag .gl{opacity:.75;width:200px}
@@ -74,27 +78,37 @@ h1{font-family:var(--disp);font-weight:900;font-size:clamp(44px,9vw,112px);line-
 .ba .bf{clip-path:inset(0 calc(100% - var(--x,50%)) 0 0)}
 .ba .hd{position:absolute;top:0;bottom:0;left:var(--x,50%);width:3px;transform:translateX(-50%);background:var(--sp);background:linear-gradient(#FF2D55,#FFD60A,#34C759,#32ADE6,#8A5CFF)}
 .ba .kn{position:absolute;top:50%;left:var(--x,50%);width:54px;height:54px;margin:-27px 0 0 -27px;display:grid;place-items:center;pointer-events:none}.ba .kn img{position:static;inset:auto;width:84px;height:84px;max-width:none;filter:drop-shadow(0 2px 8px rgba(0,0,0,.6));object-fit:contain;transform:rotate(var(--r,0deg));transition:transform .08s linear}
-.ba input{position:absolute;inset:0;width:100%;height:100%;opacity:0;cursor:ew-resize;margin:0}
+.ba{cursor:ew-resize}.ba input{position:absolute;inset:0;width:100%;height:100%;opacity:0;margin:0;pointer-events:none}
 .ba .tg{position:absolute;top:10px;font:500 11px var(--mono);letter-spacing:.12em;padding:4px 8px;border-radius:3px;z-index:2;pointer-events:none}
 .ba .tg.l{left:10px;background:rgba(5,5,5,.8);color:var(--cream)}.ba .tg.r{right:10px;background:var(--cream);color:var(--night)}
 .ba .sim{position:absolute;right:10px;bottom:10px;font:500 10px var(--mono);letter-spacing:.1em;background:rgba(5,5,5,.7);color:var(--cream2);padding:3px 7px;border-radius:3px;pointer-events:none}
 section{padding:64px 0;border-top:1px solid var(--line)}
 h2{font-family:var(--disp);font-weight:900;font-size:clamp(32px,5.5vw,64px);line-height:1;letter-spacing:-.03em;margin:10px 0 14px}
-.tabs{display:flex;gap:8px;flex-wrap:wrap;margin:22px 0 26px}
+.tabs{display:flex;gap:8px;overflow-x:auto;margin:20px 0 18px;padding-bottom:4px;scrollbar-width:none}.tabs::-webkit-scrollbar{display:none}.tabs button{flex:none}
 .tabs button{font-family:var(--th);font-weight:600;font-size:15px;color:var(--cream);background:transparent;border:1px solid rgba(255,255,255,.22);padding:8px 15px;border-radius:999px;cursor:pointer}
 .tabs button[aria-pressed=true]{background:var(--cream);color:var(--night);border-color:var(--cream)}
-.grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(300px,1fr));gap:26px 20px}
+.show{max-width:760px;margin:0 auto}
+#stage .ba{--ar:4/5;max-height:72vh;margin:0 auto}
+.cap{display:flex;justify-content:space-between;align-items:center;gap:12px;margin-top:12px}
+.cap h3{font-family:var(--th);font-weight:800;font-size:20px}.cap h3 span{font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:.12em;color:var(--grey);margin-left:8px}
+.cap p{font-family:var(--serif);font-style:italic;color:var(--cream2);font-size:16px}
+.nv{display:flex;align-items:center;gap:8px;flex:none}.nv button{width:44px;height:44px;border-radius:50%;border:1px solid rgba(255,255,255,.25);background:transparent;color:var(--cream);font-size:24px;line-height:1;cursor:pointer}
+.thumbs{display:flex;gap:8px;overflow-x:auto;scroll-snap-type:x mandatory;margin-top:14px;padding-bottom:6px;scrollbar-width:none}.thumbs::-webkit-scrollbar{display:none}
+.thumbs button{flex:none;width:62px;height:62px;padding:0;border:2px solid transparent;border-radius:8px;overflow:hidden;background:var(--panel);cursor:pointer;scroll-snap-align:start}
+.thumbs button img{width:100%;height:100%;object-fit:cover;display:block}
+.thumbs button[aria-current=true]{border-color:var(--cream)}
 .card h3{font-family:var(--th);font-weight:800;font-size:20px;margin-top:12px}
 .card h3 span{font-family:var(--mono);font-weight:500;font-size:12px;letter-spacing:.12em;color:var(--grey);margin-left:8px}
 .card p{font-family:var(--serif);font-style:italic;color:var(--cream2);font-size:17px}
+details{border-bottom:1px solid var(--line)}summary{list-style:none;cursor:pointer;padding:16px 0;font-family:var(--th);font-weight:700;font-size:18px;display:flex;justify-content:space-between}summary::-webkit-details-marker{display:none}summary::after{content:'+';color:var(--grey)}details[open] summary::after{content:'–'}details p{color:var(--cream2);font-size:15px;padding:0 0 16px;line-height:1.55}.qa{margin-top:14px;max-width:760px}
 .run{display:grid;grid-template-columns:repeat(auto-fit,minmax(150px,1fr));gap:14px;margin-top:26px}
 .run div{background:var(--panel);border:1px solid var(--line);border-radius:10px;padding:18px}
 .run b{display:block;font:500 13px var(--mono);color:var(--grey);margin-bottom:8px}
 .run strong{font-size:19px}.run p{color:var(--cream2);font-size:14px;margin-top:6px}
-.menu{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:14px;margin-top:26px}
-.menu div{border:1px solid var(--line);border-radius:10px;padding:20px;background:var(--panel)}
+.menu{display:grid;grid-template-columns:repeat(auto-fit,minmax(170px,1fr));gap:8px;margin-top:20px}
+.menu div{border:1px solid var(--line);border-radius:10px;padding:12px 14px;background:var(--panel)}.menu p{display:none}
 .menu small{display:block;font:500 11px var(--mono);letter-spacing:.12em;color:var(--grey);margin-bottom:8px}
-.menu strong{font-size:20px}.menu p{color:var(--cream2);font-size:15px;margin-top:6px}
+.menu strong{font-size:16px}.menu p{color:var(--cream2);font-size:15px;margin-top:6px}
 .modes{display:grid;grid-template-columns:repeat(auto-fit,minmax(280px,1fr));gap:14px;margin-top:16px}
 .modes div{border:1px solid rgba(255,255,255,.22);border-radius:10px;padding:20px}
 .rule{font-family:var(--disp);font-weight:900;font-size:clamp(34px,6vw,76px);line-height:1;letter-spacing:-.03em}
@@ -131,7 +145,7 @@ footer img{height:44px;width:auto}
 <div class="lay" data-i="1"><img src="assets/plasma/demo/A13.jpg" alt="The same bottle as a luxury product photograph"></div>
 <div class="lay" data-i="2"><img src="assets/plasma/demo/kh/p1.jpg" alt="Finished brand artwork with code-set typography"></div>
 <div class="lay" data-i="3"><div class="g9"><img src="assets/plasma/demo/kh/p1.jpg" alt="Post 1 of a nine-post brand feed" loading="lazy"><img src="assets/plasma/demo/kh/p2.jpg" alt="Post 2 of a nine-post brand feed" loading="lazy"><img src="assets/plasma/demo/kh/p3.jpg" alt="Post 3 of a nine-post brand feed" loading="lazy"><img src="assets/plasma/demo/kh/p4.jpg" alt="Post 4 of a nine-post brand feed" loading="lazy"><img src="assets/plasma/demo/kh/p5.jpg" alt="Post 5 of a nine-post brand feed" loading="lazy"><img src="assets/plasma/demo/kh/p6.jpg" alt="Post 6 of a nine-post brand feed" loading="lazy"><img src="assets/plasma/demo/kh/p7.jpg" alt="Post 7 of a nine-post brand feed" loading="lazy"><img src="assets/plasma/demo/kh/p8.jpg" alt="Post 8 of a nine-post brand feed" loading="lazy"><img src="assets/plasma/demo/kh/p9.jpg" alt="Post 9 of a nine-post brand feed" loading="lazy"></div></div>
-<span class="chip" id="chip">01 · PHONE PHOTO</span><span class="hint">TAP ›</span>
+<span class="chip" id="chip">01 · PHONE PHOTO</span><span class="spin" id="spin" aria-hidden="true"><img src="assets/plasma/mark.png" alt=""></span>
 </div>
 <ol class="steps4" id="steps4">
 <li><button data-i="0" aria-pressed="true"><b>01</b><strong>Phone photo</strong><span>Shot at a market stall. Plastic tablecloth, calculator, glare.</span></button></li>
@@ -147,24 +161,12 @@ footer img{height:44px;width:auto}
 <h2>Ordinary photo.<br><span class="sp">Every category.</span></h2>
 <p class="lede" style="margin-top:0">Property · products · food · beauty · fashion · cars · people — drag any picture.</p>
 <div class="tabs" role="toolbar" aria-label="Categories"></div>
-<div class="grid" id="grid"></div>
+<div class="show"><div id="stage"></div><div class="cap"><div><h3 id="capT"></h3><p id="capS"></p></div><div class="nv"><button id="pv" aria-label="Previous pair">‹</button><span id="cnt" class="m"></span><button id="nx" aria-label="Next pair">›</button></div></div><div class="thumbs" id="thumbs" role="list"></div></div>
 <p class="note">Every pair on this page is a demonstration: both the before and the after were made to show the process. Brand names are invented.</p>
 </div></section>
 
-<section id="run"><div class="wrap">
-<p class="m">03 · The run</p>
-<h2>Six steps.<br><span class="sp">Then the picture exists.</span></h2>
-<div class="run">
-<div><b>01</b><strong>Send photos + links</strong><p>Phone photos, plus your Instagram or website.</p></div>
-<div><b>02</b><strong>We read your brand</strong><p>Your look, your customers, your words — kept on file.</p></div>
-<div><b>03</b><strong>You choose</strong><p>Retouch, add life, restage, change the hour, make a poster.</p></div>
-<div><b>04</b><strong>The factory runs</strong><p>One idea per picture, never one template for all.</p></div>
-<div><b>05</b><strong>A person checks</strong><p>Nothing leaves until a human passes it.</p></div>
-<div><b>06</b><strong>Delivered</strong><p>Every size each platform needs. One free revision.</p></div>
-</div></div></section>
-
 <section id="menu"><div class="wrap">
-<p class="m">04 · You choose</p>
+<p class="m">03 · You choose</p>
 <h2>You choose.<br><span class="sp">We check every picture.</span></h2>
 <div class="menu">
 <div><small>01</small><strong>Pro retouch</strong><p>Light, colour, straight lines, clear sky, no clutter — structure untouched.</p></div>
@@ -181,30 +183,19 @@ footer img{height:44px;width:auto}
 <div><p class="m">Package</p><strong style="font-size:20px">The whole brand</strong><p style="color:var(--cream2);margin-top:6px">A set of pictures, ready-to-post graphics in every size, captions — starting from your Instagram and website.</p></div>
 </div></div></section>
 
-<section><div class="wrap">
-<p class="m">05 · The one hard rule</p>
-<p class="rule" style="margin-top:14px">Models draw pictures.<br><span class="sp">Code draws the letters.</span></p>
-<div class="prom">
-<div><strong>The real thing stays</strong><p>Room, product, dish unchanged. Anything added is labelled simulated.</p></div>
-<div><strong>Human-checked</strong><p>No picture leaves the factory unseen.</p></div>
-<div><strong>Every letter right</strong><p>Names, prices, logos set by code in real fonts.</p></div>
-<div><strong>Remembers your brand</strong><p>Every job builds on the last. One look across your profile.</p></div>
-</div></div></section>
-
 <section id="faq"><div class="wrap">
-<p class="m">06 · Questions</p>
-<h2>What PLASMA <span class="sp">does.</span></h2>
-<div class="prom">
-<div><strong>Real estate photo editing</strong><p>Retouching, sky and lawn, day to twilight, virtual staging and renovation previews for listings, developers and hotels.</p></div>
-<div><strong>Product & marketplace photos</strong><p>White-backdrop, supplier and shop photos turned into campaign pictures and marketplace-ready listings.</p></div>
-<div><strong>Food & delivery menus</strong><p>The same dish, its own concept, ready for delivery apps and social posts.</p></div>
-<div><strong>People</strong><p>Executive headshots, photo restoration, travel clean-up and virtual try-on — with consent.</p></div>
+<p class="m">04 · Questions</p>
+<div class="qa">
+<details><summary>How does it work?</summary><p>Send phone photos plus your Instagram or website. We read your brand, you choose the menu, the factory makes one idea per picture, a person checks every picture, and you get every size each platform needs. One free revision.</p></details>
+<details><summary>Does the real thing stay the same?</summary><p>Yes. Room, product and dish stay unchanged. Anything added — furniture, people, a new angle — is labelled simulated. Models draw pictures; code draws the letters, so names and prices are always right.</p></details>
+<details><summary>What can PLASMA do?</summary><p>Real estate photo editing, virtual staging and day-to-twilight; product, marketplace and store-brand photos; food photos for delivery apps; executive headshots, photo restoration, travel clean-up and virtual try-on — with consent.</p></details>
+<details><summary>How do I try it?</summary><p>DM “PLASMA” on Instagram, or email one to three photos to hi.badblood@gmail.com.</p></details>
 </div></div></section>
 <section class="cta" id="try"><div class="wrap">
 <p class="m">Early access</p>
 <h2>Try it first.<br><span class="sp">Limited spots.</span></h2>
 <p class="lede" style="margin:0 auto">DM “PLASMA” on Instagram, or email one to three photos you want to see change.</p>
-<div class="row"><a class="btn" href="mailto:hi.badblood@gmail.com?subject=PLASMA%20early%20access&body=Hi%2C%20I%27d%20like%20to%20try%20PLASMA.%0ABusiness%3A%0AInstagram%20%2F%20website%3A%0A">Email your photos</a><a class="btn ghost" href="#work">See the pairs again</a></div>
+<div class="row"><a class="btn" href="mailto:hi.badblood@gmail.com?subject=PLASMA%20early%20access&body=Hi%2C%20I%27d%20like%20to%20try%20PLASMA.%0ABusiness%3A%0AInstagram%20%2F%20website%3A%0A">Email your photos</a><a class="btn ghost" href="#work">See the pairs</a></div>
 <p class="note">Online payment is not open yet — we reply to every request ourselves.</p>
 </div></section>
 
@@ -255,15 +246,27 @@ const P=[
 ['people','TB1','TA1','Travel photo','CLEAN-UP','Crowded viewpoint → just you']];
 const T=[['all','All'],['prop','Property'],['product','Products'],['store','Store brands'],['food','Food & delivery'],['beauty','Beauty & community'],['fashion','Fashion'],['car','Cars'],['people','People']];
 function ba(el){const b=el.dataset.b,a=el.dataset.a;el.innerHTML=`<img src="${a}" alt="${el.dataset.t||'Photo'} after PLASMA editing" loading="lazy"><img class="bf" src="${b}" alt="${el.dataset.t||'Photo'} before, ordinary phone photo" loading="lazy"><span class="tg l">BEFORE</span><span class="tg r">AFTER</span><div class="gl"></div><div class="hd"></div><div class="kn"><img src="assets/plasma/mark.png" alt=""></div><span class="sim">DEMO</span><input type="range" min="0" max="100" value="50" aria-label="Compare before and after">`;
-const i=el.querySelector('input');const s=()=>{el.style.setProperty('--x',i.value+'%');el.style.setProperty('--r',(i.value*3.6)+'deg')};i.addEventListener('input',s);const on=()=>el.classList.add('drag'),off=()=>el.classList.remove('drag');i.addEventListener('pointerdown',on);i.addEventListener('touchstart',on,{passive:true});['pointerup','pointercancel','touchend','blur'].forEach(e=>i.addEventListener(e,off));s();return i;}
-const grid=document.getElementById('grid'),tabs=document.querySelector('.tabs');
-function render(k){grid.innerHTML='';P.filter(p=>k==='all'||p[0]===k).forEach(p=>{const c=document.createElement('div');c.className='card';const r=(p[0]==='food')?'1/1':'4/5';c.innerHTML=`<div class="ba" style="--ar:${r}" data-t="${p[3]} ${p[4].toLowerCase()}" data-b="${D+p[1]}.jpg" data-a="${D+p[2]}.jpg"></div><h3>${p[3]}<span>${p[4]}</span></h3><p>${p[5]}</p>`;grid.appendChild(c);ba(c.querySelector('.ba'))});
+const i=el.querySelector('input');const s=()=>{el.style.setProperty('--x',i.value+'%');el.style.setProperty('--r',(i.value*3.6)+'deg')};i.addEventListener('input',s);
+let dn=false,sx=0,sy=0,lock=null,id=null;
+const at=x=>{const r=el.getBoundingClientRect();i.value=Math.max(0,Math.min(100,(x-r.left)/r.width*100));s()};
+el.addEventListener('pointerdown',e=>{if(e.button>0)return;dn=true;sx=e.clientX;sy=e.clientY;id=e.pointerId;lock=e.pointerType==='mouse'?'x':null;if(lock==='x'){el.setPointerCapture(id);el.classList.add('drag');at(e.clientX)}});
+el.addEventListener('pointermove',e=>{if(!dn||e.pointerId!==id)return;if(lock===null){const dx=Math.abs(e.clientX-sx),dy=Math.abs(e.clientY-sy);if(dx<6&&dy<6)return;lock=dx>=dy?'x':'y';if(lock==='x'){try{el.setPointerCapture(id)}catch(_){}el.classList.add('drag')}}if(lock==='x')at(e.clientX)});
+const end=e=>{if(dn&&lock===null&&e&&e.type==='pointerup')at(e.clientX);dn=false;lock=null;el.classList.remove('drag')};
+['pointerup','pointercancel'].forEach(t=>el.addEventListener(t,end));
+el.addEventListener('touchmove',e=>{if(lock==='x')e.preventDefault()},{passive:false});
+i.addEventListener('focus',()=>el.classList.add('drag'));i.addEventListener('blur',()=>el.classList.remove('drag'));s();return i;}
+const stage=document.getElementById('stage'),thumbs=document.getElementById('thumbs'),tabs=document.querySelector('.tabs');let L=[],cur=0;
+function show(n){cur=(n+L.length)%L.length;const p=L[cur];const r=(p[0]==='food')?'1/1':'4/5';stage.innerHTML=`<div class="ba" style="--ar:${r}" data-t="${p[3]} ${p[4].toLowerCase()}" data-b="${D+p[1]}.jpg" data-a="${D+p[2]}.jpg"></div>`;ba(stage.firstChild);
+document.getElementById('capT').innerHTML=`${p[3]}<span>${p[4]}</span>`;document.getElementById('capS').textContent=p[5];document.getElementById('cnt').textContent=(cur+1)+' / '+L.length;
+[...thumbs.children].forEach((b,j)=>{b.setAttribute('aria-current',j===cur);if(j===cur)thumbs.scrollTo({left:b.offsetLeft-thumbs.clientWidth/2+31,behavior:'smooth'})})}
+function render(k){L=P.filter(p=>k==='all'||p[0]===k);thumbs.innerHTML='';L.forEach((p,j)=>{const b=document.createElement('button');b.setAttribute('aria-label',p[3]+' '+p[4].toLowerCase());b.innerHTML=`<img src="${D+p[2]}.jpg" alt="" loading="lazy">`;b.onclick=()=>show(j);thumbs.appendChild(b)});show(0);
 tabs.querySelectorAll('button').forEach(b=>b.setAttribute('aria-pressed',b.dataset.k===k))}
+document.getElementById('pv').onclick=()=>show(cur-1);document.getElementById('nx').onclick=()=>show(cur+1);
 T.forEach(([k,l])=>{const b=document.createElement('button');b.textContent=l;b.dataset.k=k;b.onclick=()=>render(k);tabs.appendChild(b)});
 
 (function(){const box=document.getElementById('stagebox');if(!box)return;const lays=[...box.querySelectorAll('.lay')],btns=[...document.querySelectorAll('#steps4 button')],chip=document.getElementById('chip');
 const names=['01 · PHONE PHOTO','02 · WORLD-CLASS PHOTO','03 · ARTWORK','04 · NINE-POST FEED'];let cur=0;
-function go(i){cur=(i+4)%4;lays.forEach(l=>l.classList.toggle('on',+l.dataset.i===cur));btns.forEach(b=>b.setAttribute('aria-pressed',+b.dataset.i===cur));chip.textContent=names[cur]}
+function go(i){cur=(i+4)%4;lays.forEach(l=>l.classList.toggle('on',+l.dataset.i===cur));btns.forEach(b=>b.setAttribute('aria-pressed',+b.dataset.i===cur));chip.textContent=names[cur];const sp=document.getElementById('spin');if(sp){sp.classList.remove('kick');void sp.offsetWidth;sp.classList.add('kick')}}
 box.addEventListener('click',()=>go(cur+1));box.addEventListener('keydown',e=>{if(e.key==='Enter'||e.key===' '){e.preventDefault();go(cur+1)}});btns.forEach(b=>b.addEventListener('click',()=>go(+b.dataset.i)));})();
 document.querySelectorAll('header .ba').forEach(el=>{const i=ba(el);if(matchMedia('(prefers-reduced-motion: reduce)').matches)return;i.value=96;el.dispatchEvent(new Event('x'));el.style.setProperty('--x','96%');el.classList.add('drag');let v=96;const t=setInterval(()=>{v-=1.5;if(v<=50){v=50;clearInterval(t);setTimeout(()=>el.classList.remove('drag'),400)}i.value=v;el.style.setProperty('--x',v+'%');el.style.setProperty('--r',(v*3.6)+'deg')},16)});render('all');
 </script>
