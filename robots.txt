@@ -1,0 +1,3 @@
+User-agent: *
+Allow: /
+Sitemap: https://badblood.company/sitemap.xml
