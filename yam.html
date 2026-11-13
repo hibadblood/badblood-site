@@ -1,0 +1,374 @@
+<!doctype html>
+<html lang="en" class="no-js">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+<title>Today’s Hours · หอดูดวง</title>
+<meta name="description" content="Which hours of today are good for travel, talks and new starts, from the Thai Ubakong time table. Live, free, in English and Thai.">
+<meta property="og:title" content="Today’s Hours · หอดูดวง">
+<meta property="og:description" content="The Thai Ubakong time table as a live answer: what window you are in now, and when the next prime window opens.">
+<meta property="og:type" content="website">
+<meta name="theme-color" content="#1A110B">
+<script>document.documentElement.classList.remove("no-js")</script>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Trirong:wght@500;600&family=IBM+Plex+Sans+Thai+Looped:wght@400;500;600&display=swap">
+<style>
+/* Layout: one phone-first column. Answer first (now), then the day as a 24h ribbon like an hourly forecast, then personal layer, week, legend. */
+:root{
+  --bg:#1A110B; --surface:#23170F; --raise:#2E2015; --line:#43311F;
+  --fg:#F2E7D3; --muted:#B39E83; --gold:#E2B04F;
+  --l2:#E2B04F; --l1:#9E7A3C; --l0:#5E4B37; --lm1:#3A2A1C; --lm2:#24180F;
+  --i2:#1A110B; --i1:#1A110B; --i0:#F2E7D3; --im1:#C9B596; --im2:#9C8669;
+  --good:#E2B04F; --caution:#E07A5F;
+  --display:"Trirong","Noto Serif Thai",Georgia,serif;
+  --body:"IBM Plex Sans Thai Looped","Noto Sans Thai","Leelawadee UI",system-ui,sans-serif;
+  color-scheme:dark;
+}
+@media (prefers-color-scheme: light){:root:not([data-theme="dark"]){
+  --bg:#EDE3D1; --surface:#F6EFE2; --raise:#E4D6BE; --line:#D2BF9F;
+  --fg:#2A1A0E; --muted:#6C563E; --gold:#8E5F0C;
+  --l2:#D29A2E; --l1:#E7C985; --l0:#E9DDC8; --lm1:#CDBB9D; --lm2:#A38F72;
+  --i2:#2A1A0E; --i1:#2A1A0E; --i0:#2A1A0E; --im1:#2A1A0E; --im2:#F6EFE2;
+  --good:#8E5F0C; --caution:#A8442A; color-scheme:light;
+}}
+:root[data-theme="light"]{
+  --bg:#EDE3D1; --surface:#F6EFE2; --raise:#E4D6BE; --line:#D2BF9F;
+  --fg:#2A1A0E; --muted:#6C563E; --gold:#8E5F0C;
+  --l2:#D29A2E; --l1:#E7C985; --l0:#E9DDC8; --lm1:#CDBB9D; --lm2:#A38F72;
+  --i2:#2A1A0E; --i1:#2A1A0E; --i0:#2A1A0E; --im1:#2A1A0E; --im2:#F6EFE2;
+  --good:#8E5F0C; --caution:#A8442A; color-scheme:light;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+.no-js .needs-js{display:none!important}
+body{background:var(--bg);color:var(--fg);font-family:var(--body);font-size:16px;line-height:1.6;
+  padding-left:max(16px,env(safe-area-inset-left,0px));padding-right:max(16px,env(safe-area-inset-right,0px));padding-block:20px 48px}
+.wrap{max-width:560px;margin:0 auto;display:flex;flex-direction:column;gap:28px}
+button{font:inherit;color:inherit}
+button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.top{display:flex;justify-content:space-between;align-items:center;gap:12px}
+.brand{font-family:var(--display);font-weight:600;font-size:18px;letter-spacing:.01em}
+.brand small{display:block;font-family:var(--body);font-weight:400;font-size:12px;color:var(--muted);letter-spacing:.06em}
+.seg-toggle{display:flex;border:1px solid var(--line);border-radius:999px;padding:2px}
+.seg-toggle button{border:0;background:none;padding:4px 12px;border-radius:999px;font-size:13px;cursor:pointer;color:var(--muted)}
+.seg-toggle button[aria-pressed="true"]{background:var(--raise);color:var(--fg)}
+.label{font-size:12px;letter-spacing:.08em;color:var(--muted);text-transform:uppercase;margin:0 0 10px}
+
+/* now */
+.now{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:22px 20px;display:flex;flex-direction:column;gap:14px}
+.now-head{display:flex;align-items:center;gap:16px}
+.now-glyph{width:64px;height:64px;border-radius:16px;display:grid;place-items:center;flex:none}
+.now h1{font-family:var(--display);font-weight:600;font-size:clamp(34px,9vw,46px);line-height:1.1;margin:0;text-wrap:balance}
+.now .meaning{margin:0;font-size:17px}
+.now-meta{display:grid;grid-template-columns:1fr 1fr;gap:12px;border-top:1px solid var(--line);padding-top:14px}
+.now-meta div{min-width:0}
+.now-meta span{display:block;font-size:13px;color:var(--muted)}
+.now-meta b{font-size:20px;font-weight:600;font-variant-numeric:tabular-nums}
+.day-badge{display:flex;gap:10px;align-items:flex-start;background:var(--raise);border-radius:12px;padding:10px 12px;font-size:14px}
+.day-badge i{font-style:normal;font-weight:600;white-space:nowrap}
+.tone-g i{color:var(--good)} .tone-c i{color:var(--caution)}
+
+/* chips */
+.chips{display:flex;flex-wrap:wrap;gap:8px}
+.chip{border:1px solid var(--line);background:none;border-radius:999px;padding:6px 14px;font-size:14px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
+
+/* ribbon */
+.halves{display:grid;grid-template-columns:1fr 1fr;font-size:12px;color:var(--muted);margin-bottom:6px}
+.halves span:last-child{padding-left:4px;border-left:1px solid var(--line)}
+.ribbon{position:relative;display:grid;grid-template-columns:repeat(10,1fr);gap:3px}
+.cell{height:64px;border:0;border-radius:8px;display:grid;place-items:center;cursor:pointer;padding:0;transition:opacity .2s}
+.cell.dim{opacity:.22}
+.cell[aria-pressed="true"]{outline:2px solid var(--fg);outline-offset:2px}
+.needle{position:absolute;top:-6px;bottom:-6px;width:2px;background:var(--fg);border-radius:2px;pointer-events:none}
+.needle::before{content:"";position:absolute;top:-4px;left:-4px;width:10px;height:10px;border-radius:50%;background:var(--fg)}
+.ticks{position:relative;height:20px;margin-top:6px;font-size:12px;color:var(--muted);font-variant-numeric:tabular-nums}
+.ticks span{position:absolute;transform:translateX(-50%)}
+.ticks span:first-child{transform:none}
+.ticks span:last-child{transform:translateX(-100%)}
+.detail{margin-top:14px;background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;gap:14px;align-items:flex-start}
+.detail .g{width:40px;height:40px;border-radius:10px;display:grid;place-items:center;flex:none}
+.detail p{margin:0}
+.detail .t{font-weight:600}
+.detail .when{color:var(--muted);font-size:14px;font-variant-numeric:tabular-nums}
+.verse{font-family:var(--display);font-size:14px;color:var(--muted);margin-top:4px!important}
+
+/* week */
+.week{display:flex;flex-direction:column;border-top:1px solid var(--line)}
+.wrow{display:grid;grid-template-columns:64px 1fr;gap:10px;align-items:center;padding:10px 0;border-bottom:1px solid var(--line);font-variant-numeric:tabular-nums}
+.wrow.today .wd{color:var(--gold);font-weight:600}
+.wd{font-weight:500;display:flex;flex-direction:column;align-items:flex-start;gap:4px}
+.wtimes{font-size:14px;min-width:0}
+.wtimes div{display:flex;gap:6px;align-items:center;white-space:nowrap}
+.wtimes .rest{color:var(--muted)}
+.role{font-size:12px;padding:2px 8px;border-radius:999px;border:1px solid var(--line);white-space:nowrap;color:var(--muted)}
+.role.tone-g{color:var(--good);border-color:var(--good)}
+.role.tone-c{color:var(--caution);border-color:var(--caution)}
+
+/* legend */
+.legend{display:flex;flex-direction:column;gap:12px}
+.lrow{display:grid;grid-template-columns:40px 1fr;gap:12px;align-items:start}
+.lrow .g{width:40px;height:40px;border-radius:10px;display:grid;place-items:center}
+.lrow p{margin:0}
+.lrow .n{font-weight:600}
+.lrow .n small{font-weight:400;color:var(--muted);margin-left:6px}
+
+.actions{display:flex;gap:10px;flex-wrap:wrap;align-items:center}
+.btn{border:1px solid var(--gold);background:var(--gold);color:var(--bg);border-radius:999px;padding:10px 18px;font-weight:600;cursor:pointer}
+.copied{font-size:14px;color:var(--muted)}
+.btn-copy{border:1px solid var(--line);background:none;border-radius:999px;padding:10px 18px;font-weight:500;cursor:pointer}
+.fine{font-size:13px;color:var(--muted);border-top:1px solid var(--line);padding-top:16px;margin:0}
+textarea.fallback{width:100%;min-height:90px;background:var(--surface);color:var(--fg);border:1px solid var(--line);border-radius:10px;padding:10px;font:inherit;font-size:14px}
+@media (prefers-reduced-motion:reduce){.cell{transition:none}}
+.cta{background:var(--surface);border:1px solid var(--line);border-radius:20px;padding:20px;display:flex;flex-direction:column;gap:12px}
+.cta h2{font-family:var(--display);font-weight:600;font-size:24px;line-height:1.25;margin:0;text-wrap:balance}
+.cta p{margin:0;color:var(--muted)}
+.cta-row{display:flex;flex-wrap:wrap;gap:10px}
+a.btn{text-decoration:none;display:inline-block}
+a.btn-ghost{border:1px solid var(--line);color:var(--fg);border-radius:999px;padding:10px 18px;font-weight:500;text-decoration:none}
+a.btn-ghost:focus-visible,a.btn:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
+.noscript-table{width:100%;border-collapse:collapse;font-size:14px;font-variant-numeric:tabular-nums}
+.noscript-table td,.noscript-table th{border-bottom:1px solid var(--line);padding:8px 4px;text-align:left}
+</style>
+</head>
+<body>
+<div class="wrap">
+  <header class="top">
+    <div class="brand">หอดูดวง<small id="sub">Today’s hours · the Ubakong table</small></div>
+    <div class="seg-toggle needs-js" role="group" aria-label="Language">
+      <button id="lang-en" aria-pressed="true">EN</button>
+      <button id="lang-th" aria-pressed="false">ไทย</button>
+    </div>
+  </header>
+
+  <noscript><table class="noscript-table"><tr><th>Day</th><th>Prime</th><th>Rest</th></tr><tr><td>Sunday</td><td>06:01–08:24, 18:01–20:24</td><td>08:25–10:48, 20:25–22:48</td></tr><tr><td>Monday</td><td>08:25–10:48, 20:25–22:48</td><td>10:49–13:12, 22:49–01:12</td></tr><tr><td>Tuesday</td><td>10:49–13:12, 22:49–01:12</td><td>13:13–15:36, 01:13–03:36</td></tr><tr><td>Wednesday</td><td>13:13–15:36, 01:13–03:36</td><td>15:37–18:00, 03:37–06:00</td></tr><tr><td>Thursday</td><td>15:37–18:00, 03:37–06:00</td><td>06:01–08:24, 18:01–20:24</td></tr><tr><td>Friday</td><td>06:01–08:24, 18:01–20:24</td><td>08:25–10:48, 20:25–22:48</td></tr><tr><td>Saturday</td><td>08:25–10:48, 20:25–22:48</td><td>10:49–13:12, 22:49–01:12</td></tr></table></noscript>
+
+  <section class="now needs-js" aria-live="polite">
+    <p class="label" id="now-when"></p>
+    <div class="now-head">
+      <div class="now-glyph" id="now-glyph"></div>
+      <h1 id="now-name"></h1>
+    </div>
+    <p class="meaning" id="now-meaning"></p>
+    <div class="now-meta">
+      <div><span id="left-lbl"></span><b id="left"></b><span id="left-until"></span></div>
+      <div><span id="next-lbl"></span><b id="next"></b><span id="next-day"></span></div>
+    </div>
+    <div class="day-badge" id="badge" hidden></div>
+  </section>
+
+  <section class="needs-js">
+    <p class="label" id="act-lbl"></p>
+    <div class="chips" id="acts"></div>
+  </section>
+
+  <section class="needs-js">
+    <p class="label" id="day-lbl"></p>
+    <div class="halves"><span id="h-day"></span><span id="h-night"></span></div>
+    <div class="ribbon" id="ribbon"></div>
+    <div class="ticks" id="ticks"></div>
+    <div class="detail" id="detail"></div>
+  </section>
+
+  <section class="needs-js">
+    <p class="label" id="born-lbl"></p>
+    <div class="chips" id="born"></div>
+  </section>
+
+  <section class="needs-js">
+    <p class="label" id="week-lbl"></p>
+    <div class="week" id="week"></div>
+  </section>
+
+  <section class="cta">
+    <h2 id="cta-h">Want the reading for your own chart</h2>
+    <p id="cta-p">Send your birth date to หอดูดวง on LINE once. You get your master chart and a personal file you can reopen any time. Free. Readings are in Thai.</p>
+    <div class="cta-row">
+      <a class="btn" id="cta-free" href="https://line.me/R/oaMessage/%40hordooduang/?%E0%B8%9C%E0%B8%B9%E0%B8%81%E0%B8%94%E0%B8%A7%E0%B8%87%E0%B8%9F%E0%B8%A3%E0%B8%B5" target="_blank" rel="noopener">Free reading on LINE</a>
+      <a class="btn-ghost" id="cta-wall" href="https://line.me/R/oaMessage/%40hordooduang/?%E0%B8%A7%E0%B8%AD%E0%B8%A5%E0%B9%80%E0%B8%9B%E0%B9%80%E0%B8%9B%E0%B8%AD%E0%B8%A3%E0%B9%8C" target="_blank" rel="noopener">Order your chart wallpaper · ฿399</a>
+    </div>
+  </section>
+
+  <section class="needs-js">
+    <div class="actions">
+      <button class="btn-copy" id="copy"></button>
+      <span class="copied" id="copied" aria-live="polite"></span>
+    </div>
+    <textarea class="fallback" id="fallback" hidden readonly aria-label="summary"></textarea>
+  </section>
+
+  <section class="needs-js">
+    <p class="label" id="legend-lbl"></p>
+    <div class="legend" id="legend"></div>
+  </section>
+
+  <p class="fine" id="fine">Times follow your device clock. A Thai day starts at 06:01. Night windows follow the same order as day, as in the source chart.</p>
+</div>
+
+<script>
+(function(){
+  // ── The formula. Sun=0 … Sat=6, slot 0..4 = เช้า..เย็น. Night uses the same column (as the source chart). ──
+  var SEQ=[2,-2,0,1,-1];
+  function level(d,s){return SEQ[((s-d)%5+5)%5];}
+
+  var L={
+    th:{
+      sub:'ยามวันนี้ · ตำรายามอุบากอง', now:'ตอนนี้', left:'เหลือเวลาในยามนี้', until:'ถึง ', nextP:'ยามทองถัดไป', nextA:'ช่วงที่เหมาะถัดไป',
+      today:'วันนี้', tomorrow:'พรุ่งนี้', act:'อยากทำอะไร', dayL:'ยามทั้งวัน (เริ่ม 06:01)', hDay:'กลางวัน', hNight:'กลางคืน',
+      born:'คุณเกิดวันอะไร (ไม่ต้องเลือกก็ใช้ได้)', week:'ยามทองและยามพัก 7 วัน', copy:'คัดลอกยามวันนี้', copied:'คัดลอกแล้ว ส่งต่อในไลน์ได้เลย',
+      copyFail:'คัดลอกอัตโนมัติไม่ได้ เลือกข้อความด้านล่างแล้วคัดลอกเอง', legend:'อ่านสัญลักษณ์', hr:'ชม.', min:'นาที',
+      fine:'เวลาตามนาฬิกาเครื่องของคุณ วันใหม่เริ่ม 06:01 ตามคติไทย กลางคืนใช้ลำดับเดียวกับกลางวันตามตารางต้นฉบับ ชั้น "วันของคุณ" มาจากทักษา เป็นสูตรของหอ ไม่ใช่ส่วนหนึ่งของตำราอุบากอง',
+      days:['อาทิตย์','จันทร์','อังคาร','พุธ','พฤหัสบดี','ศุกร์','เสาร์'], dshort:['อา','จ','อ','พ','พฤ','ศ','ส'],
+      lv:{'2':['ยามทอง','ดีที่สุดของวัน เหมาะเริ่มเรื่องสำคัญ ออกเดินทาง เรื่องเงิน'],
+          '1':['ยามเปิดทาง','ดี เหมาะออกไปติดต่อ นัดพบ เดินทาง'],
+          '0':['ยามเจรจา','กลาง ๆ คุยง่าย เจรจาราบรื่น แต่ไม่มีลาภเพิ่ม'],
+          '-1':['ยามตั้งรับ','อยู่กับที่ดีกว่า เลี่ยงการปะทะหรือต่อรองแข็ง'],
+          '-2':['ยามพัก','พักไว้ก่อน เลื่อนการเดินทางและเรื่องใหญ่']},
+      acts:[['all','ทั้งหมด'],['go','เดินทาง'],['talk','เจรจา เซ็นสัญญา'],['start','เริ่มเรื่องใหม่ เรื่องเงิน']],
+      bornOpts:[['sun','อา'],['mon','จ'],['tue','อ'],['wed','พ (กลางวัน)'],['rahu','พ (กลางคืน)'],['thu','พฤ'],['fri','ศ'],['sat','ส']],
+      roles:[['บริวาร','คนรอบตัวช่วยงาน'],['อายุ','ดูแลกายและใจ'],['เดช','อำนาจ บารมี'],['ศรี','โชคลาภ เสน่ห์'],['มูละ','ทรัพย์สิน ฐานราก'],['อุตสาหะ','ลงแรงแล้วได้ผล'],['มนตรี','ผู้ใหญ่หนุน'],['กาลกิณี','อุปสรรค ระวังเป็นพิเศษ']],
+      badge:function(day,role,desc){return 'วัน'+day+'เป็นวัน <i>'+role+'</i> ของคุณ · '+desc;},
+      sum:'ยามวันนี้ (วัน{d})\nยามทอง {p}\nยามพัก {r}\nดูสดที่ badblood.company/yam',
+      'cta-h':'อยากรู้ว่าดวงของคุณเองเป็นยังไง', 'cta-p':'ส่งวันเดือนปีเกิดในไลน์ครั้งเดียว ได้ดวงแม่บทและแฟ้มดวงส่วนตัวถาวร ฟรี', 'cta-free':'ผูกดวงฟรีในไลน์', 'cta-wall':'สั่งวอลเปเปอร์จากดวงคุณ ฿399'
+    },
+    en:{
+      sub:'Today’s hours · the Ubakong table', now:'Now', left:'Left in this window', until:'until ', nextP:'Next prime window', nextA:'Next good window',
+      today:'today', tomorrow:'tomorrow', act:'What are you planning', dayL:'The whole day (starts 06:01)', hDay:'Day', hNight:'Night',
+      born:'Your birth weekday (optional)', week:'Prime and rest windows, next 7 days', copy:'Copy today’s windows', copied:'Copied. Paste it anywhere.',
+      copyFail:'Copy was blocked. Select the text below and copy it.', legend:'How to read the marks', hr:'h', min:'min',
+      fine:'Times follow your device clock. A Thai day starts at 06:01. Night windows follow the same order as day, as in the source chart. The "your day" layer comes from Thai taksa and is our own blend, not part of the Ubakong table.',
+      days:['Sunday','Monday','Tuesday','Wednesday','Thursday','Friday','Saturday'], dshort:['Sun','Mon','Tue','Wed','Thu','Fri','Sat'],
+      lv:{'2':['Prime','Best window of the day. Start what matters, travel, money.'],
+          '1':['Go','Good for heading out, meetings, travel.'],
+          '0':['Talk','Neutral. Conversations go smoothly, no windfall.'],
+          '-1':['Hold','Stay put. Avoid confrontation and hard bargaining.'],
+          '-2':['Rest','Pause. Postpone travel and big decisions.']},
+      acts:[['all','Everything'],['go','Travel'],['talk','Talks, signing'],['start','New start, money']],
+      bornOpts:[['sun','Sun'],['mon','Mon'],['tue','Tue'],['wed','Wed (day)'],['rahu','Wed (night)'],['thu','Thu'],['fri','Fri'],['sat','Sat']],
+      roles:[['Circle','people around you help'],['Vitality','look after body and mind'],['Power','authority, influence'],['Fortune','luck and charm'],['Roots','assets, foundations'],['Effort','hard work pays off'],['Patron','elders back you'],['Obstacle','take extra care']],
+      badge:function(day,role,desc){return day+' is your <i>'+role+'</i> day · '+desc;},
+      sum:'Today’s hours ({d})\nPrime {p}\nRest {r}\nLive at badblood.company/yam',
+      'cta-h':'Want the reading for your own chart', 'cta-p':'Send your birth date to หอดูดวง on LINE once. You get your master chart and a personal file you can reopen any time. Free. Readings are in Thai.', 'cta-free':'Free reading on LINE', 'cta-wall':'Order your chart wallpaper · ฿399'
+    }
+  };
+  var VERSE={'2':'สี่ศูนย์ จะพูนผล แม้จรดลดีหนักหนา มีลาภล้นคณนา เร่งยาตราจะมีชัย','1':'สองศูนย์ เร่งยาตรา จะมีลาภสวัสดิ์','0':'ปลอดศูนย์ พูดสวัสดิ์ ภัยพิบัติลาภบ่มี','-1':'ศูนย์หนึ่ง อย่าพึงจร แม้ราญรอนจะอัปรา','-2':'กากบาท ตัวอัปรีย์ แม้จรลีจะอัปรา'};
+  var ACT={all:[2,1,0,-1,-2],go:[2,1],talk:[0,2],start:[2]};
+  // Taksa circle: sun mon tue wed sat thu rahu fri
+  var CIRCLE={sun:0,mon:1,tue:2,wed:3,sat:4,thu:5,rahu:6,fri:7};
+  var WD2C=[0,1,2,3,5,7,4];
+  var TONE=['n','n','g','g','n','n','g','c'];
+
+  var BORN_KEYS=['sun','mon','tue','wed','rahu','thu','fri','sat'];
+  var st={lang:'en', act:'all', born:'', sel:null};
+  location.hash.replace('#','').split('-').forEach(function(x){if(x==='th')st.lang='th';if(BORN_KEYS.indexOf(x)>-1)st.born=x;});
+  function saveHash(){var p=[];if(st.lang==='th')p.push('th');if(st.born)p.push(st.born);try{history.replaceState(null,'',p.length?'#'+p.join('-'):location.pathname);}catch(e){}}
+
+  function glyph(lv,size){
+    var c='var(--'+({'2':'i2','1':'i1','0':'i0','-1':'im1','-2':'im2'})[lv]+')', s=size||20, r=s*0.11, p='';
+    if(lv===2){[[.3,.3],[.7,.3],[.3,.7],[.7,.7]].forEach(function(q){p+='<circle cx="'+q[0]*s+'" cy="'+q[1]*s+'" r="'+r+'" fill="'+c+'"/>';});}
+    else if(lv===1){p='<circle cx="'+.32*s+'" cy="'+.32*s+'" r="'+r+'" fill="'+c+'"/><circle cx="'+.68*s+'" cy="'+.68*s+'" r="'+r+'" fill="'+c+'"/>';}
+    else if(lv===0){p='<circle cx="'+s/2+'" cy="'+s/2+'" r="'+r*1.6+'" fill="none" stroke="'+c+'" stroke-width="'+Math.max(1.2,s*.05)+'"/>';}
+    else if(lv===-1){p='<circle cx="'+s/2+'" cy="'+s/2+'" r="'+r+'" fill="'+c+'"/>';}
+    else {var a=s*.3,b=s*.7,w=Math.max(1.6,s*.07);p='<path d="M'+a+' '+a+'L'+b+' '+b+'M'+b+' '+a+'L'+a+' '+b+'" stroke="'+c+'" stroke-width="'+w+'" stroke-linecap="round" fill="none"/>';}
+    return '<svg width="'+s+'" height="'+s+'" viewBox="0 0 '+s+' '+s+'" aria-hidden="true">'+p+'</svg>';
+  }
+  function bg(lv){return 'var(--'+({'2':'l2','1':'l1','0':'l0','-1':'lm1','-2':'lm2'})[lv]+')';}
+  function pad(n){return (n<10?'0':'')+n;}
+  function hm(mins){mins=((mins%1440)+1440)%1440;return pad(Math.floor(mins/60))+':'+pad(mins%60);}
+  function segStart(k){return 361+144*k;}            // minutes after midnight, 06:01 + k*144
+  function segRange(k){return hm(segStart(k))+'–'+hm(segStart(k)+143);}
+
+  function thaiNow(){
+    var now=new Date(), t=new Date(now.getTime()-361*60000);
+    var mmf=t.getHours()*60+t.getMinutes()+t.getSeconds()/60;
+    var k=Math.floor(mmf/144);
+    return {now:now,d:t.getDay(),k:k,mmf:mmf,left:(k+1)*144-mmf};
+  }
+  function lvAt(d,k){return level(d,k%5);}
+  function roleFor(d){
+    if(!st.born)return null;
+    var i=((WD2C[d]-CIRCLE[st.born])%8+8)%8;
+    return {i:i,tone:TONE[i]};
+  }
+  function dur(m){var T=L[st.lang];m=Math.max(1,Math.round(m));var h=Math.floor(m/60),mm=m%60;return (h?h+' '+T.hr+' ':'')+mm+' '+T.min;}
+
+  function render(){
+    var T=L[st.lang], n=thaiNow(), lvNow=lvAt(n.d,n.k);
+    document.documentElement.lang=st.lang;
+    document.getElementById('lang-th').setAttribute('aria-pressed',st.lang==='th');
+    document.getElementById('lang-en').setAttribute('aria-pressed',st.lang==='en');
+    ['cta-h','cta-p','cta-free','cta-wall','sub','act-lbl:act','day-lbl:dayL','born-lbl:born','week-lbl:week','legend-lbl:legend','fine','copy','h-day:hDay','h-night:hNight'].forEach(function(x){var p=x.split(':');document.getElementById(p[0]).textContent=T[p[1]||p[0]];});
+
+    // Now card
+    document.getElementById('now-when').textContent=T.now+' · '+T.days[n.d]+' '+hm(n.now.getHours()*60+n.now.getMinutes());
+    var g=document.getElementById('now-glyph');g.style.background=bg(lvNow);g.innerHTML=glyph(lvNow,40);
+    document.getElementById('now-name').textContent=T.lv[lvNow][0];
+    document.getElementById('now-meaning').textContent=T.lv[lvNow][1];
+    document.getElementById('left-lbl').textContent=T.left;
+    document.getElementById('left').textContent=dur(n.left);
+    document.getElementById('left-until').textContent=T.until+hm(segStart(n.k)+143);
+    var want=ACT[st.act], found=null;
+    for(var step=1;step<=20&&!found;step++){var kk=n.k+step,dd=(n.d+Math.floor(kk/10))%7,ks=kk%10;
+      if(st.act==='all'?lvAt(dd,ks)===2:want.indexOf(lvAt(dd,ks))>-1)found={k:ks,at:new Date(n.now.getTime()+(kk*144-n.mmf)*60000)};}
+    document.getElementById('next-lbl').textContent=st.act==='all'?T.nextP:T.nextA;
+    document.getElementById('next').textContent=found?hm(segStart(found.k)):'';
+    document.getElementById('next-day').textContent=found?(found.at.toDateString()===n.now.toDateString()?T.today:T.tomorrow):'';
+
+    var r=roleFor(n.d),b=document.getElementById('badge');
+    if(r){b.hidden=false;b.className='day-badge tone-'+r.tone;b.innerHTML='<span>'+T.badge(T.days[n.d],T.roles[r.i][0],T.roles[r.i][1])+'</span>';}else b.hidden=true;
+
+    // Activity chips
+    document.getElementById('acts').innerHTML=T.acts.map(function(a){return '<button class="chip" data-act="'+a[0]+'" aria-pressed="'+(st.act===a[0])+'">'+a[1]+'</button>';}).join('');
+
+    // Ribbon
+    var sel=st.sel===null?n.k:st.sel, html='';
+    for(var k=0;k<10;k++){var v=lvAt(n.d,k),dim=want.indexOf(v)<0;
+      html+='<button class="cell'+(dim?' dim':'')+'" data-k="'+k+'" aria-pressed="'+(k===sel)+'" style="background:'+bg(v)+'" aria-label="'+segRange(k)+' '+T.lv[v][0]+'">'+glyph(v,18)+'</button>';}
+    html+='<div class="needle" style="left:calc('+((n.mmf+1)/1440*100).toFixed(2)+'% - 1px)"></div>';
+    var rb=document.getElementById('ribbon');rb.innerHTML=html;
+    document.getElementById('ticks').innerHTML=['06','09','12','15','18','21','00','03','06'].map(function(h,i){return '<span style="left:'+(i*12.5)+'%">'+h+'</span>';}).join('');
+    var sv=lvAt(n.d,sel),det=document.getElementById('detail');
+    det.innerHTML='<div class="g" style="background:'+bg(sv)+'">'+glyph(sv,26)+'</div><div><p class="t">'+T.lv[sv][0]+'</p><p class="when">'+segRange(sel)+' · '+(sel<5?T.hDay:T.hNight)+'</p><p>'+T.lv[sv][1]+'</p><p class="verse">'+VERSE[sv]+'</p></div>';
+
+    // Birth weekday chips
+    document.getElementById('born').innerHTML=T.bornOpts.map(function(o){return '<button class="chip" data-born="'+o[0]+'" aria-pressed="'+(st.born===o[0])+'">'+o[1]+'</button>';}).join('');
+
+    // Week
+    var w='';
+    for(var i=0;i<7;i++){var d=(n.d+i)%7,pk=null,rk=null;
+      for(var s=0;s<5;s++){var v2=level(d,s);if(v2===2)pk=s;if(v2===-2)rk=s;}
+      var rr=roleFor(d);
+      w+='<div class="wrow'+(i===0?' today':'')+'"><div class="wd">'+T.dshort[d]+(rr?'<span class="role tone-'+rr.tone+'">'+T.roles[rr.i][0]+'</span>':'')+'</div><div class="wtimes"><div>'+glyph(2,14).replace('var(--i2)','var(--gold)')+segRange(pk)+' · '+segRange(pk+5)+'</div><div class="rest">'+glyph(-2,14).replace('var(--im2)','var(--muted)')+segRange(rk)+' · '+segRange(rk+5)+'</div></div></div>';}
+    document.getElementById('week').innerHTML=w;
+
+    // Legend
+    document.getElementById('legend').innerHTML=[2,1,0,-1,-2].map(function(v){return '<div class="lrow"><div class="g" style="background:'+bg(v)+'">'+glyph(v,26)+'</div><div><p class="n">'+T.lv[v][0]+(st.lang==='en'?'<small>'+L.th.lv[v][0]+'</small>':'')+'</p><p>'+T.lv[v][1]+'</p><p class="verse">'+VERSE[v]+'</p></div></div>';}).join('');
+  }
+
+  function summary(){
+    var T=L[st.lang],n=thaiNow(),p=[],r=[];
+    for(var k=0;k<10;k++){var v=lvAt(n.d,k);if(v===2)p.push(segRange(k));if(v===-2)r.push(segRange(k));}
+    return T.sum.replace('{d}',T.days[n.d]).replace('{p}',p.join(', ')).replace('{r}',r.join(', '));
+  }
+
+  document.addEventListener('click',function(e){
+    var t=e.target.closest('button');if(!t)return;
+    if(t.id==='lang-th'||t.id==='lang-en'){st.lang=t.id==='lang-en'?'en':'th';saveHash();}
+    else if(t.dataset.act){st.act=t.dataset.act;}
+    else if(t.dataset.k){st.sel=+t.dataset.k;}
+    else if(t.dataset.born){st.born=st.born===t.dataset.born?'':t.dataset.born;saveHash();}
+    else if(t.id==='copy'){
+      var txt=summary(),msg=document.getElementById('copied'),fb=document.getElementById('fallback');
+      try{navigator.clipboard.writeText(txt).then(function(){msg.textContent=L[st.lang].copied;fb.hidden=true;},function(){msg.textContent=L[st.lang].copyFail;fb.value=txt;fb.hidden=false;fb.select();});}
+      catch(err){msg.textContent=L[st.lang].copyFail;fb.value=txt;fb.hidden=false;fb.select();}
+      return;
+    } else return;
+    render();
+  });
+  render();
+  setInterval(function(){var keep=st.sel;render();st.sel=keep;},30000);
+})();
+</script>
+</body>
+</html>

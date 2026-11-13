@@ -251,3 +251,16 @@ see?* The answer must be "the content, just without motion."
 - `_headers` CSP allows `media-src` from that worker and `frame-src` from
   drive.google.com (the old /work players were showing "This content is blocked"
   until that line was added).
+
+## Today's Hours (added 13 Nov 2026)
+
+- `yam.html` (live at /yam) is a หอดูดวง tool hosted here at the owner's choice:
+  the Thai Ubakong time table as a live "what window am I in now" page, plus a
+  taksa layer from the visitor's birth weekday and LINE order buttons for
+  หอดูดวง. Not linked from the homepage.
+- Exception to the English-only rule, approved by the owner: the page opens in
+  English and has a ไทย toggle. Language and birth weekday live in the link hash
+  (`#th-sat`), never in storage.
+- The formula is one line: `SEQ = [prime, rest, talk, go, hold]`,
+  `level = SEQ[(slot − weekday) mod 5]`, checked against all 35 cells of the
+  source chart. A Thai day starts at 06:01; night uses the same order as day.
