@@ -1,0 +1,229 @@
+BEGIN:VCALENDAR
+VERSION:2.0
+PRODID:-//Bad Blood Company//Yam Ubakong//TH
+CALSCALE:GREGORIAN
+METHOD:PUBLISH
+X-WR-CALNAME:ยามพัก
+X-WR-TIMEZONE:Asia/Bangkok
+REFRESH-INTERVAL;VALUE=DURATION:P7D
+X-PUBLISHED-TTL:P7D
+BEGIN:VTIMEZONE
+TZID:Asia/Bangkok
+BEGIN:STANDARD
+DTSTART:19700101T000000
+TZOFFSETFROM:+0700
+TZOFFSETTO:+0700
+TZNAME:+07
+END:STANDARD
+END:VTIMEZONE
+BEGIN:VEVENT
+UID:yam-rest-d0-k1@badblood.company
+DTSTAMP:20261113T000000Z
+DTSTART;TZID=Asia/Bangkok:20261108T082500
+DTEND;TZID=Asia/Bangkok:20261108T104800
+RRULE:FREQ=WEEKLY
+SUMMARY:ยามพัก
+DESCRIPTION:พักไว้ก่อน เลื่อนกา
+ รเดินทางและเรื่องใหญ่\nก
+ ากบาท ตัวอัปรีย์ แม้จรลี
+ จะอัปรา\n\nวันอาทิตย์ กลาง
+ วัน 08:25–10:48\n\nตำรายามอุบากอ
+ ง · ดูสดที่ https://badblood.company/yam
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:yam-rest-d0-k6@badblood.company
+DTSTAMP:20261113T000000Z
+DTSTART;TZID=Asia/Bangkok:20261108T202500
+DTEND;TZID=Asia/Bangkok:20261108T224800
+RRULE:FREQ=WEEKLY
+SUMMARY:ยามพัก
+DESCRIPTION:พักไว้ก่อน เลื่อนกา
+ รเดินทางและเรื่องใหญ่\nก
+ ากบาท ตัวอัปรีย์ แม้จรลี
+ จะอัปรา\n\nวันอาทิตย์ กลาง
+ คืน 20:25–22:48\n\nตำรายามอุบากอ
+ ง · ดูสดที่ https://badblood.company/yam
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:yam-rest-d1-k2@badblood.company
+DTSTAMP:20261113T000000Z
+DTSTART;TZID=Asia/Bangkok:20261109T104900
+DTEND;TZID=Asia/Bangkok:20261109T131200
+RRULE:FREQ=WEEKLY
+SUMMARY:ยามพัก
+DESCRIPTION:พักไว้ก่อน เลื่อนกา
+ รเดินทางและเรื่องใหญ่\nก
+ ากบาท ตัวอัปรีย์ แม้จรลี
+ จะอัปรา\n\nวันจันทร์ กลางวั
+ น 10:49–13:12\n\nตำรายามอุบากอง · 
+ ดูสดที่ https://badblood.company/yam
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:yam-rest-d1-k7@badblood.company
+DTSTAMP:20261113T000000Z
+DTSTART;TZID=Asia/Bangkok:20261109T224900
+DTEND;TZID=Asia/Bangkok:20261110T011200
+RRULE:FREQ=WEEKLY
+SUMMARY:ยามพัก
+DESCRIPTION:พักไว้ก่อน เลื่อนกา
+ รเดินทางและเรื่องใหญ่\nก
+ ากบาท ตัวอัปรีย์ แม้จรลี
+ จะอัปรา\n\nวันจันทร์ กลางคื
+ น 22:49–01:12\n\nตำรายามอุบากอง · 
+ ดูสดที่ https://badblood.company/yam
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:yam-rest-d2-k3@badblood.company
+DTSTAMP:20261113T000000Z
+DTSTART;TZID=Asia/Bangkok:20261110T131300
+DTEND;TZID=Asia/Bangkok:20261110T153600
+RRULE:FREQ=WEEKLY
+SUMMARY:ยามพัก
+DESCRIPTION:พักไว้ก่อน เลื่อนกา
+ รเดินทางและเรื่องใหญ่\nก
+ ากบาท ตัวอัปรีย์ แม้จรลี
+ จะอัปรา\n\nวันอังคาร กลางวั
+ น 13:13–15:36\n\nตำรายามอุบากอง · 
+ ดูสดที่ https://badblood.company/yam
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:yam-rest-d2-k8@badblood.company
+DTSTAMP:20261113T000000Z
+DTSTART;TZID=Asia/Bangkok:20261111T011300
+DTEND;TZID=Asia/Bangkok:20261111T033600
+RRULE:FREQ=WEEKLY
+SUMMARY:ยามพัก
+DESCRIPTION:พักไว้ก่อน เลื่อนกา
+ รเดินทางและเรื่องใหญ่\nก
+ ากบาท ตัวอัปรีย์ แม้จรลี
+ จะอัปรา\n\nวันอังคาร กลางคื
+ น 01:13–03:36\n\nตำรายามอุบากอง · 
+ ดูสดที่ https://badblood.company/yam
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:yam-rest-d3-k4@badblood.company
+DTSTAMP:20261113T000000Z
+DTSTART;TZID=Asia/Bangkok:20261111T153700
+DTEND;TZID=Asia/Bangkok:20261111T180000
+RRULE:FREQ=WEEKLY
+SUMMARY:ยามพัก
+DESCRIPTION:พักไว้ก่อน เลื่อนกา
+ รเดินทางและเรื่องใหญ่\nก
+ ากบาท ตัวอัปรีย์ แม้จรลี
+ จะอัปรา\n\nวันพุธ กลางวัน 15
+ :37–18:00\n\nตำรายามอุบากอง · ดู
+ สดที่ https://badblood.company/yam
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:yam-rest-d3-k9@badblood.company
+DTSTAMP:20261113T000000Z
+DTSTART;TZID=Asia/Bangkok:20261112T033700
+DTEND;TZID=Asia/Bangkok:20261112T060000
+RRULE:FREQ=WEEKLY
+SUMMARY:ยามพัก
+DESCRIPTION:พักไว้ก่อน เลื่อนกา
+ รเดินทางและเรื่องใหญ่\nก
+ ากบาท ตัวอัปรีย์ แม้จรลี
+ จะอัปรา\n\nวันพุธ กลางคืน 03
+ :37–06:00\n\nตำรายามอุบากอง · ดู
+ สดที่ https://badblood.company/yam
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:yam-rest-d4-k0@badblood.company
+DTSTAMP:20261113T000000Z
+DTSTART;TZID=Asia/Bangkok:20261112T060100
+DTEND;TZID=Asia/Bangkok:20261112T082400
+RRULE:FREQ=WEEKLY
+SUMMARY:ยามพัก
+DESCRIPTION:พักไว้ก่อน เลื่อนกา
+ รเดินทางและเรื่องใหญ่\nก
+ ากบาท ตัวอัปรีย์ แม้จรลี
+ จะอัปรา\n\nวันพฤหัสบดี กลา
+ งวัน 06:01–08:24\n\nตำรายามอุบาก
+ อง · ดูสดที่ https://badblood.company/yam
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:yam-rest-d4-k5@badblood.company
+DTSTAMP:20261113T000000Z
+DTSTART;TZID=Asia/Bangkok:20261112T180100
+DTEND;TZID=Asia/Bangkok:20261112T202400
+RRULE:FREQ=WEEKLY
+SUMMARY:ยามพัก
+DESCRIPTION:พักไว้ก่อน เลื่อนกา
+ รเดินทางและเรื่องใหญ่\nก
+ ากบาท ตัวอัปรีย์ แม้จรลี
+ จะอัปรา\n\nวันพฤหัสบดี กลา
+ งคืน 18:01–20:24\n\nตำรายามอุบาก
+ อง · ดูสดที่ https://badblood.company/yam
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:yam-rest-d5-k1@badblood.company
+DTSTAMP:20261113T000000Z
+DTSTART;TZID=Asia/Bangkok:20261113T082500
+DTEND;TZID=Asia/Bangkok:20261113T104800
+RRULE:FREQ=WEEKLY
+SUMMARY:ยามพัก
+DESCRIPTION:พักไว้ก่อน เลื่อนกา
+ รเดินทางและเรื่องใหญ่\nก
+ ากบาท ตัวอัปรีย์ แม้จรลี
+ จะอัปรา\n\nวันศุกร์ กลางวั
+ น 08:25–10:48\n\nตำรายามอุบากอง · 
+ ดูสดที่ https://badblood.company/yam
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:yam-rest-d5-k6@badblood.company
+DTSTAMP:20261113T000000Z
+DTSTART;TZID=Asia/Bangkok:20261113T202500
+DTEND;TZID=Asia/Bangkok:20261113T224800
+RRULE:FREQ=WEEKLY
+SUMMARY:ยามพัก
+DESCRIPTION:พักไว้ก่อน เลื่อนกา
+ รเดินทางและเรื่องใหญ่\nก
+ ากบาท ตัวอัปรีย์ แม้จรลี
+ จะอัปรา\n\nวันศุกร์ กลางคื
+ น 20:25–22:48\n\nตำรายามอุบากอง · 
+ ดูสดที่ https://badblood.company/yam
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:yam-rest-d6-k2@badblood.company
+DTSTAMP:20261113T000000Z
+DTSTART;TZID=Asia/Bangkok:20261114T104900
+DTEND;TZID=Asia/Bangkok:20261114T131200
+RRULE:FREQ=WEEKLY
+SUMMARY:ยามพัก
+DESCRIPTION:พักไว้ก่อน เลื่อนกา
+ รเดินทางและเรื่องใหญ่\nก
+ ากบาท ตัวอัปรีย์ แม้จรลี
+ จะอัปรา\n\nวันเสาร์ กลางวั
+ น 10:49–13:12\n\nตำรายามอุบากอง · 
+ ดูสดที่ https://badblood.company/yam
+TRANSP:TRANSPARENT
+END:VEVENT
+BEGIN:VEVENT
+UID:yam-rest-d6-k7@badblood.company
+DTSTAMP:20261113T000000Z
+DTSTART;TZID=Asia/Bangkok:20261114T224900
+DTEND;TZID=Asia/Bangkok:20261115T011200
+RRULE:FREQ=WEEKLY
+SUMMARY:ยามพัก
+DESCRIPTION:พักไว้ก่อน เลื่อนกา
+ รเดินทางและเรื่องใหญ่\nก
+ ากบาท ตัวอัปรีย์ แม้จรลี
+ จะอัปรา\n\nวันเสาร์ กลางคื
+ น 22:49–01:12\n\nตำรายามอุบากอง · 
+ ดูสดที่ https://badblood.company/yam
+TRANSP:TRANSPARENT
+END:VEVENT
+END:VCALENDAR

@@ -264,3 +264,10 @@ see?* The answer must be "the content, just without motion."
 - The formula is one line: `SEQ = [prime, rest, talk, go, hold]`,
   `level = SEQ[(slot − weekday) mod 5]`, checked against all 35 cells of the
   source chart. A Thai day starts at 06:01; night uses the same order as day.
+- Calendar feeds (added 13 Nov 2026, for the owner's personal use): static
+  weekly-repeating `.ics` files in `assets/cal/` — `yam-prime.ics` (ยามทอง),
+  `yam-rest.ics` (ยามพัก) and `yam-prime-<born>.ics` for each birth weekday
+  (sun mon tue wed rahu thu fri sat), titled with that day's taksa role.
+  Times are Asia/Bangkok. Rebuild with `python3 assets/cal/make_yam_ics.py`
+  (the script is not served: `*.py` is in `.assetsignore`). Keep UIDs stable so
+  subscribed calendars update in place instead of duplicating.
