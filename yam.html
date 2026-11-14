@@ -71,6 +71,11 @@ button:focus-visible{outline:2px solid var(--gold);outline-offset:2px}
 
 /* chips */
 .chips{display:flex;flex-wrap:wrap;gap:8px}
+.chips.swipe{flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none;margin-inline:-16px;padding-inline:16px;scroll-padding-inline:16px}
+.chips.swipe::-webkit-scrollbar{display:none}
+.chips.swipe .chip{flex:none}
+@media (min-width:600px){.chips.swipe{flex-wrap:wrap;overflow:visible;margin-inline:0;padding-inline:0}}
+.why{margin:10px 0 0;font-size:14px;color:var(--muted)}
 .chip{border:1px solid var(--line);background:none;border-radius:999px;padding:6px 14px;font-size:14px;cursor:pointer}
 .chip[aria-pressed="true"]{background:var(--fg);color:var(--bg);border-color:var(--fg)}
 
@@ -160,7 +165,8 @@ a.btn-ghost:focus-visible,a.btn:focus-visible{outline:2px solid var(--gold);outl
 
   <section class="needs-js">
     <p class="label" id="act-lbl"></p>
-    <div class="chips" id="acts"></div>
+    <div class="chips swipe" id="acts"></div>
+    <p class="why" id="act-why" hidden></p>
   </section>
 
   <section class="needs-js">
@@ -225,7 +231,7 @@ a.btn-ghost:focus-visible,a.btn:focus-visible{outline:2px solid var(--gold);outl
           '0':['ยามเจรจา','กลาง ๆ คุยง่าย เจรจาราบรื่น แต่ไม่มีลาภเพิ่ม'],
           '-1':['ยามตั้งรับ','อยู่กับที่ดีกว่า เลี่ยงการปะทะหรือต่อรองแข็ง'],
           '-2':['ยามพัก','พักไว้ก่อน เลื่อนการเดินทางและเรื่องใหญ่']},
-      acts:[['all','ทั้งหมด'],['go','เดินทาง'],['talk','เจรจา เซ็นสัญญา'],['start','เริ่มเรื่องใหม่ เรื่องเงิน']],
+      acts:[['all','ทั้งหมด'],['go','เดินทาง','สี่ศูนย์และสองศูนย์ ตำราว่า "เร่งยาตรา"'],['talk','เจรจา เซ็นสัญญา','ปลอดศูนย์ "พูดสวัสดิ์" คุยราบรื่น และสี่ศูนย์ดีทุกเรื่อง'],['sell','ขายของ ปิดการขาย','สองศูนย์ "มีลาภสวัสดิ์" สี่ศูนย์ "มีลาภล้นคณนา"'],['start','เริ่มเรื่องใหม่ เรื่องเงิน','เฉพาะสี่ศูนย์ "จะพูนผล"'],['ask','ขอขึ้นเงินเดือน สัมภาษณ์งาน','ต้องพูดให้ราบรื่นและหวังผล: สี่ศูนย์กับปลอดศูนย์'],['love','สารภาพรัก ขอแต่งงาน','คำพูดต้องไปถึงใจ: ปลอดศูนย์ "พูดสวัสดิ์" และสี่ศูนย์'],['car','ออกรถ รับรถ','เกี่ยวกับการเดินทาง ใช้ยามที่ตำราว่า "เร่งยาตรา"'],['home','ย้ายบ้าน ขึ้นบ้านใหม่','เรื่องใหญ่ระยะยาว ใช้เฉพาะสี่ศูนย์'],['launch','เปิดร้าน เปิดตัว','หวังลาภ: สี่ศูนย์และสองศูนย์'],['fight','ทวงหนี้ ต่อรองแข็ง','ศูนย์หนึ่ง "ราญรอนจะอัปรา" ต้องสี่ศูนย์ "จะมีชัย"'],['merit','ทำบุญ ไหว้พระ','เลี่ยงแค่ยามตั้งรับกับยามพัก'],['stay','อยู่บ้าน งานเงียบ ๆ','ศูนย์หนึ่ง "อย่าพึงจร" ใช้ช่วงนี้อยู่กับที่ให้เป็นประโยชน์']],
       bornOpts:[['sun','อา'],['mon','จ'],['tue','อ'],['wed','พ (กลางวัน)'],['rahu','พ (กลางคืน)'],['thu','พฤ'],['fri','ศ'],['sat','ส']],
       roles:[['บริวาร','คนรอบตัวช่วยงาน'],['อายุ','ดูแลกายและใจ'],['เดช','อำนาจ บารมี'],['ศรี','โชคลาภ เสน่ห์'],['มูละ','ทรัพย์สิน ฐานราก'],['อุตสาหะ','ลงแรงแล้วได้ผล'],['มนตรี','ผู้ใหญ่หนุน'],['กาลกิณี','อุปสรรค ระวังเป็นพิเศษ']],
       badge:function(day,role,desc){return 'วัน'+day+'เป็นวัน <i>'+role+'</i> ของคุณ · '+desc;},
@@ -244,7 +250,7 @@ a.btn-ghost:focus-visible,a.btn:focus-visible{outline:2px solid var(--gold);outl
           '0':['Talk','Neutral. Conversations go smoothly, no windfall.'],
           '-1':['Hold','Stay put. Avoid confrontation and hard bargaining.'],
           '-2':['Rest','Pause. Postpone travel and big decisions.']},
-      acts:[['all','Everything'],['go','Travel'],['talk','Talks, signing'],['start','New start, money']],
+      acts:[['all','Everything'],['go','Travel','Prime and Go: the verse says set out now.'],['talk','Talks, signing','Talk: "speech goes well". Prime is good for everything.'],['sell','Sell, close a deal','Go brings gain, Prime brings more than you can count.'],['start','New start, money','Prime only: "it will bear fruit".'],['ask','Raise, job interview','You need smooth words and a result: Prime and Talk.'],['love','Confess, propose','Words have to land: Talk and Prime.'],['car','New car, pick-up','It is about the road: the two windows that say set out.'],['home','Move house','A big long-term move: Prime only.'],['launch','Open a shop, launch','You want gain: Prime and Go.'],['fight','Collect debts, hard bargaining','Hold says a fight is lost. Prime says you win.'],['merit','Merit, temple visit','Anything but Hold and Rest.'],['stay','Stay in, quiet work','Hold says don\'t go out, so use it for work at home.']],
       bornOpts:[['sun','Sun'],['mon','Mon'],['tue','Tue'],['wed','Wed (day)'],['rahu','Wed (night)'],['thu','Thu'],['fri','Fri'],['sat','Sat']],
       roles:[['Circle','people around you help'],['Vitality','look after body and mind'],['Power','authority, influence'],['Fortune','luck and charm'],['Roots','assets, foundations'],['Effort','hard work pays off'],['Patron','elders back you'],['Obstacle','take extra care']],
       badge:function(day,role,desc){return day+' is your <i>'+role+'</i> day · '+desc;},
@@ -253,7 +259,7 @@ a.btn-ghost:focus-visible,a.btn:focus-visible{outline:2px solid var(--gold);outl
     }
   };
   var VERSE={'2':'สี่ศูนย์ จะพูนผล แม้จรดลดีหนักหนา มีลาภล้นคณนา เร่งยาตราจะมีชัย','1':'สองศูนย์ เร่งยาตรา จะมีลาภสวัสดิ์','0':'ปลอดศูนย์ พูดสวัสดิ์ ภัยพิบัติลาภบ่มี','-1':'ศูนย์หนึ่ง อย่าพึงจร แม้ราญรอนจะอัปรา','-2':'กากบาท ตัวอัปรีย์ แม้จรลีจะอัปรา'};
-  var ACT={all:[2,1,0,-1,-2],go:[2,1],talk:[0,2],start:[2]};
+  var ACT={all:[2,1,0,-1,-2],go:[2,1],talk:[0,2],sell:[2,1],start:[2],ask:[2,0],love:[2,0],car:[2,1],home:[2],launch:[2,1],fight:[2],merit:[2,1,0],stay:[-1,-2]};
   // Taksa circle: sun mon tue wed sat thu rahu fri
   var CIRCLE={sun:0,mon:1,tue:2,wed:3,sat:4,thu:5,rahu:6,fri:7};
   var WD2C=[0,1,2,3,5,7,4];
@@ -261,8 +267,8 @@ a.btn-ghost:focus-visible,a.btn:focus-visible{outline:2px solid var(--gold);outl
 
   var BORN_KEYS=['sun','mon','tue','wed','rahu','thu','fri','sat'];
   var st={lang:'en', act:'all', born:'', sel:null};
-  location.hash.replace('#','').split('-').forEach(function(x){if(x==='th')st.lang='th';if(BORN_KEYS.indexOf(x)>-1)st.born=x;});
-  function saveHash(){var p=[];if(st.lang==='th')p.push('th');if(st.born)p.push(st.born);try{history.replaceState(null,'',p.length?'#'+p.join('-'):location.pathname);}catch(e){}}
+  location.hash.replace('#','').split('-').forEach(function(x){if(x==='th')st.lang='th';if(BORN_KEYS.indexOf(x)>-1)st.born=x;if(x!=='all'&&ACT[x])st.act=x;});
+  function saveHash(){var p=[];if(st.lang==='th')p.push('th');if(st.born)p.push(st.born);if(st.act!=='all')p.push(st.act);try{history.replaceState(null,'',p.length?'#'+p.join('-'):location.pathname);}catch(e){}}
 
   function glyph(lv,size){
     var c='var(--'+({'2':'i2','1':'i1','0':'i0','-1':'im1','-2':'im2'})[lv]+')', s=size||20, r=s*0.11, p='';
@@ -319,7 +325,11 @@ a.btn-ghost:focus-visible,a.btn:focus-visible{outline:2px solid var(--gold);outl
     if(r){b.hidden=false;b.className='day-badge tone-'+r.tone;b.innerHTML='<span>'+T.badge(T.days[n.d],T.roles[r.i][0],T.roles[r.i][1])+'</span>';}else b.hidden=true;
 
     // Activity chips
-    document.getElementById('acts').innerHTML=T.acts.map(function(a){return '<button class="chip" data-act="'+a[0]+'" aria-pressed="'+(st.act===a[0])+'">'+a[1]+'</button>';}).join('');
+    var ac=document.getElementById('acts'),keepX=ac.scrollLeft;
+    ac.innerHTML=T.acts.map(function(a){return '<button class="chip" data-act="'+a[0]+'" aria-pressed="'+(st.act===a[0])+'">'+a[1]+'</button>';}).join('');
+    ac.scrollLeft=keepX;
+    var why=document.getElementById('act-why'),cur=T.acts.filter(function(a){return a[0]===st.act;})[0];
+    why.hidden=!cur||!cur[2];why.textContent=cur&&cur[2]?cur[2]:'';
 
     // Ribbon
     var sel=st.sel===null?n.k:st.sel, html='';
@@ -355,7 +365,7 @@ a.btn-ghost:focus-visible,a.btn:focus-visible{outline:2px solid var(--gold);outl
   document.addEventListener('click',function(e){
     var t=e.target.closest('button');if(!t)return;
     if(t.id==='lang-th'||t.id==='lang-en'){st.lang=t.id==='lang-en'?'en':'th';saveHash();}
-    else if(t.dataset.act){st.act=t.dataset.act;}
+    else if(t.dataset.act){st.act=t.dataset.act;saveHash();}
     else if(t.dataset.k){st.sel=+t.dataset.k;}
     else if(t.dataset.born){st.born=st.born===t.dataset.born?'':t.dataset.born;saveHash();}
     else if(t.id==='copy'){

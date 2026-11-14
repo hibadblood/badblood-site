@@ -271,3 +271,7 @@ see?* The answer must be "the content, just without motion."
   Times are Asia/Bangkok. Rebuild with `python3 assets/cal/make_yam_ics.py`
   (the script is not served: `*.py` is in `.assetsignore`). Keep UIDs stable so
   subscribed calendars update in place instead of duplicating.
+- "What are you planning" modes (14 Nov 2026): 12 activities in `ACT` (levels
+  each one accepts) and `acts` in both languages (label + the verse-based reason
+  shown under the chips). The chosen mode also goes in the link hash
+  (`#th-sat-fight`). Chips are one swipeable row on phones, wrapped on wide screens.
